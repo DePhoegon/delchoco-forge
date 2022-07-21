@@ -1,0 +1,27 @@
+modLoader="javafml"
+loaderVersion="[39,)"
+issueTrackerURL="https://github.com/Mrbysco/ChocoCraft4/issues"
+license="MIT"
+
+[[mods]]
+modId="chococraft"
+version="${file.jarVersion}"
+displayName="Chococraft 4"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/chococraft"
+authors="Mrbysco, Xalcon, Slayer5934, balika011"
+credits="Thanks to EddieV for the original Chococraft, ArnoSaxena(Torojimas) and clienthax for maintaining it"
+description='''
+Chocobos in Minecraft
+'''
+[[dependencies.chococraft]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.18.1,1.19)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.chococraft]]
+modId="forge"
+mandatory=true
+versionRange="[39.0.57,)"
+ordering="NONE"
+side="BOTH"
