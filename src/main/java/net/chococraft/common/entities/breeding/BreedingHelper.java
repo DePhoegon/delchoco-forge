@@ -34,19 +34,19 @@ public class BreedingHelper {
         float stamina = Math.round((mother.stamina + father.stamina) / 2) * (ChocoConfig.COMMON.poslossStamina.get().floatValue() + ((float) Math.random() * ChocoConfig.COMMON.posgainStamina.get().floatValue()));
         baby.getAttribute(ModAttributes.MAX_STAMINA.get()).setBaseValue(Math.min(stamina, ChocoConfig.COMMON.maxStamina.get().floatValue()));
 
-        float canFlyChance = calculateChance(0.005f, 0.15f, 0.35f, mother.canFly, father.canFly);
+        float canFlyChance = calculateChance(0.025f, 0.15f, 0.35f, mother.canFly, father.canFly);
         float canflychancerandom = (float) Math.random();
         baby.setCanFly(canFlyChance > canflychancerandom);
 
-        float canDiveChance = calculateChance(0.01f, 0.20f, 0.40f, mother.canDive, father.canDive);
+        float canDiveChance = calculateChance(0.05f, 0.20f, 0.40f, mother.canDive, father.canDive);
         float candivechancerandom = (float) Math.random();
         baby.setCanDive(canDiveChance > candivechancerandom);
 
-        float canGlideChance = calculateChance(0.01f, 0.20f, 0.45f, mother.canGlide, father.canGlide);
+        float canGlideChance = calculateChance(0.05f, 0.20f, 0.45f, mother.canGlide, father.canGlide);
         float canglidechancerandom = (float) Math.random();
         baby.setCanGlide(canGlideChance > canglidechancerandom);
 
-        float canSprintChance = calculateChance(0.03f, 0.25f, 0.5f, mother.canSprint, father.canSprint);
+        float canSprintChance = calculateChance(0.15f, 0.25f, 0.5f, mother.canSprint, father.canSprint);
         float cansprintchancerandom = (float) Math.random();
         baby.setCanSprint(canSprintChance > cansprintchancerandom);
 
@@ -69,7 +69,7 @@ public class BreedingHelper {
 
         baby.setChocoboColor(color);
 
-        baby.setAge(-24000);
+        baby.setAge(-2000);
 
         return baby;
     }

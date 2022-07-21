@@ -2,9 +2,9 @@ package net.chococraft.common.entities.properties;
 
 import net.chococraft.Chococraft;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.Tags.IOptionalNamedTag;
 import net.minecraftforge.common.Tags.Items;
 
 import java.util.Optional;
@@ -23,10 +23,10 @@ public enum ChocoboColor {
     FLAME(null);
 
     private final static Random rand = new Random();
-    private final IOptionalNamedTag<Item> colorTag;
+    private final TagKey<Item> colorTag;
     private final TranslatableComponent eggText;
 
-    ChocoboColor(IOptionalNamedTag<Item> colorIngredient) {
+    ChocoboColor(TagKey<Item> colorIngredient) {
         this.colorTag = colorIngredient;
         this.eggText = new TranslatableComponent("item." + Chococraft.MODID + ".chocobo_egg.tooltip." + this.name().toLowerCase());
     }

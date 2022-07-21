@@ -38,7 +38,7 @@ public class ChocoboInfoScreen extends Screen {
     private TexturedButton[] abilityButton = new TexturedButton[4];
 
     public ChocoboInfoScreen(ChocoboEntity chocobo, Player player) {
-        super(new TranslatableComponent("IF YOU SEE THIS, YELL AT BYSCO"));
+        super(new TranslatableComponent(player.getName().getString()));
         this.chocobo = chocobo;
         this.player = player;
     }
@@ -182,9 +182,12 @@ public class ChocoboInfoScreen extends Screen {
     }
 
     private void updateButtonTextures() {
+        /*
         for(int i = 0; i < abilityButton.length; i++) {
+
             abilityButton[i].setTexture(TEXTURE, i * 18 - 1, canUseAbility(i) ? 89 : 107, 256, 256);
         }
+         */
     }
 
     @Override

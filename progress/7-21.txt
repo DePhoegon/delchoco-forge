@@ -1,0 +1,42 @@
+Forge Updates 'patching'
+
+net.chococraft.client.gui.ChocoboInfoScreen.java
+-Commented Out for I loop with ' setTexture ' inside it.
+
+net.chococraft.client.gui.TexturedButton.java
+- Commented out ' public void setTexture(ResourceLocation resourceLocation, int textureX, int textureY, int textureWidth, int textureHeight) '
+== calls private private finals in 'ImageButton'
+~~ 1.18.1 -> 1.18.2 --  int & resourcelocation went from public to private
+==== Does not seem to do anything, anyways.
+
+net.chococraft.common.entities.ChocoboEntity.java
+- Changed ' rider.jumping ' into ' Minecraft.getInstance().options.keyJump.isDown() '
+== Player extends LivingEntity
+==~~ LivingEntity.java
+==~~-- boolean ' jumping ' is Protected
+==~~~~ 1.18.1 -> 1.18.2 --  boolean Jumping changed to protected (inside of livingingentity.java)
+
+net.chococraft.common.entities.properties.ChocoboColor.java
+- Swapped out Every ' net.minecraftforge.common.Tags.IOptionalNamedTag ' into ' net.minecraft.tags.TagKey '
+== 1.18.1 -> 1.18.2 --  forced change.
+
+net.chococraft.common.world.worldgen.ModFeaturesConfigs.java
+- Changed ' PATCH_GYSAHL_GREEN ' type
+==  Was [ ConfiguredFeature<RandomPatchConfiguration, ?> ] into [ Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> ]
+== Updated Syntax to match the .register methods needed to be called.
+
+net.chococraft.common.world.worldgen.ModPlacements.java
+- Changed ' PATCH_GYSAHL_GREEN ' type
+== was [ PlacedFeature ] into [ Holder<PlacedFeature> ]
+
+ModPlacments & ModFeaturesConfig
+~~ Forge changed forced by [ net.minecraft.world.level.biome.BiomeGenerationSettings.java ] addFeature() Method
+~~~  addFeature(GenerationStep.Decoration, PlacedFeature)  in 1.18.1 Updated to addFeature(GenerationStep.Decoration, Holder<PlacedFeature>) in 1.18.2
+~~~+ Method Forced change [ public void biomeLoadingEvent(BiomeLoadingEvent event) ]
+~~~+-- Subscribed Event [BiomeLoadingEvent] calls { addFeature() }
+
+=======
+
+Works the same as it did in 1.18.1
+-Abilities do not unlock/work.
+-Red/Purple/Black are not possible to get naturally.

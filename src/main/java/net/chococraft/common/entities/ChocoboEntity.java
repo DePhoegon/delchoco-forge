@@ -17,7 +17,9 @@ import net.chococraft.common.network.PacketManager;
 import net.chococraft.common.network.packets.OpenChocoboGuiMessage;
 import net.chococraft.utils.RandomHelper;
 import net.chococraft.utils.WorldUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -69,6 +71,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.PacketDistributor;
@@ -77,6 +81,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
+
+import static net.minecraft.world.level.biome.Biome.getBiomeCategory;
 
 public class ChocoboEntity extends TamableAnimal {
     private static final String NBTKEY_CHOCOBO_COLOR = "Color";
@@ -172,8 +178,8 @@ public class ChocoboEntity extends TamableAnimal {
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setMale(this.level.random.nextBoolean());
-        final Biome currentBiome = this.level.getBiome(blockPosition().below());
-        if (currentBiome.getBiomeCategory() == Biome.BiomeCategory.NETHER) {
+        final Holder<Biome> currentBiome = this.level.getBiome(blockPosition().below());
+        if (getBiomeCategory(currentBiome) == Biome.BiomeCategory.NETHER) {
             this.setChocoboColor(ChocoboColor.FLAME);
         }
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
@@ -432,7 +438,7 @@ public class ChocoboEntity extends TamableAnimal {
             }
 
             if (this.isControlledByLocalInstance()) {
-                if (rider.jumping) {
+                if (Minecraft.getInstance().options.keyJump.isDown()) {
                     if (rider.isSprinting() && this.canFly() && !rider.isInWater() && this.useStamina(ChocoConfig.COMMON.flyStaminaCost.get().floatValue())) {
                         // flight logic
                         Vec3 motion = getDeltaMovement();
@@ -461,14 +467,14 @@ public class ChocoboEntity extends TamableAnimal {
                                 setDeltaMovement(new Vec3(motion.x, 0.7f, motion.z));
                         }
 
-                        if (rider.jumping) {
+                        if (Minecraft.getInstance().options.keyJump.isDown()) {
                             setDeltaMovement(new Vec3(motion.x, .5f, motion.z));
                         }
 
                         this.wasTouchingWater = false;
                         this.setSprinting(false);
                     } else {
-                        if (rider.jumping) {
+                        if (Minecraft.getInstance().options.keyJump.isDown()) {
                             setDeltaMovement(new Vec3(motion.x, .5f, motion.z));
                         } else if (this.getDeltaMovement().y < 0) {
                             int distance = WorldUtils.getDistanceToSurface(this.blockPosition(), this.getCommandSenderWorld());
