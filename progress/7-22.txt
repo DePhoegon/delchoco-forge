@@ -1,0 +1,10 @@
+Tested edits
+- Still loads
+
+Dependency Included
+-DePhoegons' Reclaim
+=Cursemaven
+~~~What a mess of fucking documents, & headache to sort through.
+
+Tested w/ new dependency inplace
+- Still Functional

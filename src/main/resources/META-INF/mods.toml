@@ -25,3 +25,9 @@ mandatory=true
 versionRange="[39,)"
 ordering="NONE"
 side="BOTH"
+[[dependencies.chococraft]]
+modId="delbase"
+mandatory=true
+versionRange="[1,)"
+ordering="AFTER"
+side="BOTH"
