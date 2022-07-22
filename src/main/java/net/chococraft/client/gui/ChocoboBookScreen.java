@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 
 
 public class ChocoboBookScreen extends Screen {
-    private final static ResourceLocation TEXTURE = new ResourceLocation(Chococraft.MODID, "textures/gui/chocobo_book.png");
+    private final static ResourceLocation TEXTURE = new ResourceLocation(Chococraft.MOD_ID, "textures/gui/chocobo_book.png");
 
     private int xSize = 130;
     private int ySize = 185;

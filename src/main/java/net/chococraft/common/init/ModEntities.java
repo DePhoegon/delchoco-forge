@@ -19,7 +19,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModEntities {
-    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Chococraft.MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Chococraft.MOD_ID);
 
     public static final RegistryObject<EntityType<ChocoboEntity>> CHOCOBO = ENTITIES.register("chocobo", () ->
             register("chocobo", EntityType.Builder.of(ChocoboEntity::new, MobCategory.CREATURE).sized(1.2f, 2.8f).clientTrackingRange(64)));

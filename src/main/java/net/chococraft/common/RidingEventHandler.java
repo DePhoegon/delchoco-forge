@@ -9,7 +9,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = Chococraft.MODID)
+@Mod.EventBusSubscriber(modid = Chococraft.MOD_ID)
 public class RidingEventHandler {
     @SubscribeEvent
     public static void onMountEntity(EntityMountEvent event) {

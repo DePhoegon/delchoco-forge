@@ -4,11 +4,7 @@ import net.chococraft.client.ClientHandler;
 import net.chococraft.common.ChocoConfig;
 import net.chococraft.common.commands.ChocoboCommand;
 import net.chococraft.common.entities.properties.ModDataSerializers;
-import net.chococraft.common.init.ModAttributes;
-import net.chococraft.common.init.ModContainers;
-import net.chococraft.common.init.ModEntities;
-import net.chococraft.common.init.ModRegistry;
-import net.chococraft.common.init.ModSounds;
+import net.chococraft.common.init.*;
 import net.chococraft.common.network.PacketManager;
 import net.chococraft.common.world.worldgen.ModWorldgen;
 import net.chococraft.utils.Log4jFilter;
@@ -28,13 +24,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @SuppressWarnings("unused")
-@Mod(Chococraft.MODID)
+@Mod(Chococraft.MOD_ID)
 public class Chococraft {
-    public static final String MODID = "chococraft";
+    public static final String MOD_ID = "chococraft";
+    public final static Logger log = LogManager.getLogger(MOD_ID);
 
-    public final static Logger log = LogManager.getLogger(MODID);
-
-    public static final CreativeModeTab creativeTab = new CreativeModeTab(MODID) {
+    public static final CreativeModeTab creativeTab = new CreativeModeTab(MOD_ID) {
           @Override
         public ItemStack makeIcon() {
             return new ItemStack(ModRegistry.GYSAHL_GREEN.get());

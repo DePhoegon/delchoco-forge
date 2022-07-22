@@ -15,9 +15,9 @@ import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = Chococraft.MODID, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = Chococraft.MOD_ID, value = Dist.CLIENT)
 public class RenderChocoboOverlay {
-    private static final ResourceLocation ICONS = new ResourceLocation(Chococraft.MODID, "textures/gui/icons.png");
+    private static final ResourceLocation ICONS = new ResourceLocation(Chococraft.MOD_ID, "textures/gui/icons.png");
 
     @SubscribeEvent
     public static void onGuiIngameOverlayRender(RenderGameOverlayEvent.PostLayer event) {

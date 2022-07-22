@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LayerPlumage extends RenderLayer<ChocoboEntity, AdultChocoboModel<ChocoboEntity>> {
 
-	private ResourceLocation PLUMAGE = new ResourceLocation(Chococraft.MODID,"textures/entities/chocobos/plumage.png");
+	private ResourceLocation PLUMAGE = new ResourceLocation(Chococraft.MOD_ID,"textures/entities/chocobos/plumage.png");
 	
 	public LayerPlumage(RenderLayerParent<ChocoboEntity, AdultChocoboModel<ChocoboEntity>> rendererIn) {
 		super(rendererIn);

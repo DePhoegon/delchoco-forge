@@ -28,7 +28,7 @@ public enum ChocoboColor {
 
     ChocoboColor(TagKey<Item> colorIngredient) {
         this.colorTag = colorIngredient;
-        this.eggText = new TranslatableComponent("item." + Chococraft.MODID + ".chocobo_egg.tooltip." + this.name().toLowerCase());
+        this.eggText = new TranslatableComponent("item." + Chococraft.MOD_ID + ".chocobo_egg.tooltip." + this.name().toLowerCase());
     }
 
     public static ChocoboColor getRandomColor() {

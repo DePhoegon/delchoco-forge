@@ -1,0 +1,29 @@
+net.chococraft.common.entities.breeding.BreedingHelper.java
+-private static boolean alter(BlockState centerDefaultBlockstate, BlockState NEWS_blockstate, BlockPos centerPos, @NotNull Level world) { }
+== created
+== Used for T/F, testing for blocks being 'alter' blocks
+== Used to significantly boost colored breeding.
+~~+45% more or less. (like really, without abilities.. I'm kinda annoyed at such low odd, but wanted to change outcome without futzing with the breeding directly.)
+
+Adjusted MODID to Mod_ID
+
+Aligned 'Chocopedia'
+
+Removed accesstransformer.cfg
+- part of garbage feature cleanup.
+
+Gold Block used for Gold chocobo
+Lapis Block used for blue
+Bone Block used for white
+Emerald Block used for Green
+-others tofollow
+
+Untested - Will Test & verify next commit
+
+Tweaked Mods.toml
+Tweaked pack.mcmeta
+
+Added in Patchouli for Future use
+-Matches Dependencies for Delbase (the intended mod to pair with)
+
+updated Forge to 40.1.68

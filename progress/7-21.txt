@@ -40,3 +40,12 @@ ModPlacments & ModFeaturesConfig
 Works the same as it did in 1.18.1
 -Abilities do not unlock/work.
 -Red/Purple/Black are not possible to get naturally.
+
+net.chococraft.client.gui.ChocoboBookScreen.java
+- Aligned Chocopedia Text
+== private void renderpage() { } updated
+~~ Starting X changed [ 5 ] to [ this.guiLeft+5 ]
+~~ Starting Y changed [ 20 ] to [ this.guiTop+20 ]
+~~~~  Text was floating to the minecraft window & not the book.  Values picked up from where the book was drawn, and the included offsets added.
+==== suspect something did not carry over correclty Unknown
+==== was broken like this in 1.18.1 as well.

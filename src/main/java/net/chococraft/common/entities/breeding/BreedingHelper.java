@@ -5,8 +5,14 @@ import net.chococraft.common.entities.ChocoboEntity;
 import net.chococraft.common.entities.properties.ChocoboColor;
 import net.chococraft.common.init.ModAttributes;
 import net.chococraft.common.init.ModEntities;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+
+import static net.minecraft.world.level.block.Blocks.*;
 
 public class BreedingHelper {
 
@@ -34,20 +40,45 @@ public class BreedingHelper {
         float stamina = Math.round((mother.stamina + father.stamina) / 2) * (ChocoConfig.COMMON.poslossStamina.get().floatValue() + ((float) Math.random() * ChocoConfig.COMMON.posgainStamina.get().floatValue()));
         baby.getAttribute(ModAttributes.MAX_STAMINA.get()).setBaseValue(Math.min(stamina, ChocoConfig.COMMON.maxStamina.get().floatValue()));
 
+        BlockPos centerBlock = null;
+        if (baby.getNestPosition() != null) {
+            centerBlock = baby.getNestPosition().below();
+        }
         float canFlyChance = calculateChance(0.025f, 0.15f, 0.35f, mother.canFly, father.canFly);
         float canflychancerandom = (float) Math.random();
+        if (centerBlock !=null) {
+            if (alter(GOLD_BLOCK.defaultBlockState(), HAY_BLOCK.defaultBlockState(), centerBlock, world)) {
+                canFlyChance = canFlyChance + .45f;
+            }
+        }
         baby.setCanFly(canFlyChance > canflychancerandom);
 
         float canDiveChance = calculateChance(0.05f, 0.20f, 0.40f, mother.canDive, father.canDive);
         float candivechancerandom = (float) Math.random();
+        if (centerBlock !=null) {
+            if (alter(LAPIS_BLOCK.defaultBlockState(), HAY_BLOCK.defaultBlockState(), centerBlock, world)) {
+                canFlyChance = canFlyChance + .45f;
+            }
+        }
         baby.setCanDive(canDiveChance > candivechancerandom);
 
         float canGlideChance = calculateChance(0.05f, 0.20f, 0.45f, mother.canGlide, father.canGlide);
         float canglidechancerandom = (float) Math.random();
+        if (centerBlock !=null) {
+            if (alter(BONE_BLOCK.defaultBlockState(), HAY_BLOCK.defaultBlockState(), centerBlock, world)) {
+                canFlyChance = canFlyChance + .45f;
+            }
+        }
         baby.setCanGlide(canGlideChance > canglidechancerandom);
 
         float canSprintChance = calculateChance(0.15f, 0.25f, 0.5f, mother.canSprint, father.canSprint);
         float cansprintchancerandom = (float) Math.random();
+
+        if (centerBlock !=null) {
+            if (alter(EMERALD_BLOCK.defaultBlockState(), HAY_BLOCK.defaultBlockState(), centerBlock, world)) {
+                canFlyChance = canFlyChance + .45f;
+            }
+        }
         baby.setCanSprint(canSprintChance > cansprintchancerandom);
 
         baby.setMale(.50f > (float) Math.random());
@@ -76,5 +107,10 @@ public class BreedingHelper {
 
     private static float calculateChance(float baseChance, float perParentChance, float bothParentsChance, boolean motherHasAbility, boolean fatherHasAbility) {
         return baseChance + (motherHasAbility || fatherHasAbility ? perParentChance : 0) + (motherHasAbility && fatherHasAbility ? bothParentsChance : 0);
+    }
+    private static boolean alter(BlockState centerDefaultBlockstate, BlockState NEWS_blockstate, BlockPos centerPos, @NotNull Level world) {
+        if (world.getBlockState(centerPos).getBlock().defaultBlockState() == centerDefaultBlockstate && world.getBlockState(centerPos.north()).getBlock().defaultBlockState() == NEWS_blockstate && world.getBlockState(centerPos.south()).getBlock().defaultBlockState() == NEWS_blockstate && world.getBlockState(centerPos.east()).getBlock().defaultBlockState() == NEWS_blockstate && world.getBlockState(centerPos.west()).getBlock().defaultBlockState() == NEWS_blockstate) {
+            return true;
+        } else { return false; }
     }
 }

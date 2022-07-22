@@ -71,8 +71,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.PacketDistributor;
@@ -688,9 +686,9 @@ public class ChocoboEntity extends TamableAnimal {
             if ((float) Math.random() < ChocoConfig.COMMON.tameChance.get().floatValue()) {
                 this.setOwnerUUID(player.getUUID());
                 this.setTame(true);
-                player.displayClientMessage(new TranslatableComponent(Chococraft.MODID + ".entity_chocobo.tame_success"), true);
+                player.displayClientMessage(new TranslatableComponent(Chococraft.MOD_ID + ".entity_chocobo.tame_success"), true);
             } else {
-                player.displayClientMessage(new TranslatableComponent(Chococraft.MODID + ".entity_chocobo.tame_fail"), true);
+                player.displayClientMessage(new TranslatableComponent(Chococraft.MOD_ID + ".entity_chocobo.tame_fail"), true);
             }
             return InteractionResult.SUCCESS;
         }
@@ -700,7 +698,7 @@ public class ChocoboEntity extends TamableAnimal {
                 this.usePlayerItem(player, hand, player.getInventory().getSelected());
                 heal(5);
             } else {
-                player.displayClientMessage(new TranslatableComponent(Chococraft.MODID + ".entity_chocobo.heal_fail"), true);
+                player.displayClientMessage(new TranslatableComponent(Chococraft.MOD_ID + ".entity_chocobo.heal_fail"), true);
             }
         }
 
@@ -711,20 +709,20 @@ public class ChocoboEntity extends TamableAnimal {
                     this.setNoAi(false);
                     this.goalSelector.addGoal(0, this.follow);
                     followingmrhuman = 1;
-                    player.displayClientMessage(new TranslatableComponent(Chococraft.MODID + ".entity_chocobo.chocobo_followcmd"), true);
+                    player.displayClientMessage(new TranslatableComponent(Chococraft.MOD_ID + ".entity_chocobo.chocobo_followcmd"), true);
                 } else if (this.followingmrhuman == 1) {
                     this.playSound(ModSounds.WHISTLE_SOUND_WANDER.get(), 1.0F, 1.0F);
                     this.goalSelector.removeGoal(this.follow);
                     followingmrhuman = 2;
-                    player.displayClientMessage(new TranslatableComponent(Chococraft.MODID + ".entity_chocobo.chocobo_wandercmd"), true);
+                    player.displayClientMessage(new TranslatableComponent(Chococraft.MOD_ID + ".entity_chocobo.chocobo_wandercmd"), true);
                 } else if (this.followingmrhuman == 2) {
                     this.playSound(ModSounds.WHISTLE_SOUND_STAY.get(), 1.0F, 1.0F);
                     this.setNoAi(true);
                     followingmrhuman = 3;
-                    player.displayClientMessage(new TranslatableComponent(Chococraft.MODID + ".entity_chocobo.chocobo_staycmd"), true);
+                    player.displayClientMessage(new TranslatableComponent(Chococraft.MOD_ID + ".entity_chocobo.chocobo_staycmd"), true);
                 }
             } else {
-                player.displayClientMessage(new TranslatableComponent(Chococraft.MODID + ".entity_chocobo.not_owner"), true);
+                player.displayClientMessage(new TranslatableComponent(Chococraft.MOD_ID + ".entity_chocobo.not_owner"), true);
             }
             return InteractionResult.SUCCESS;
         }
@@ -749,14 +747,14 @@ public class ChocoboEntity extends TamableAnimal {
                     this.usePlayerItem(player, hand, heldItemStack);
                     this.setChocoboColor(color.get());
                 } else {
-                    player.displayClientMessage(new TranslatableComponent(Chococraft.MODID + ".entity_chocobo.not_owner"), true);
+                    player.displayClientMessage(new TranslatableComponent(Chococraft.MOD_ID + ".entity_chocobo.not_owner"), true);
                 }
                 return InteractionResult.SUCCESS;
             }
         }
 
         if (this.isTame() && heldItemStack.getItem() == Items.NAME_TAG && !isOwnedBy(player)) {
-            player.displayClientMessage(new TranslatableComponent(Chococraft.MODID + ".entity_chocobo.not_owner"), true);
+            player.displayClientMessage(new TranslatableComponent(Chococraft.MOD_ID + ".entity_chocobo.not_owner"), true);
             return InteractionResult.SUCCESS;
         }
 

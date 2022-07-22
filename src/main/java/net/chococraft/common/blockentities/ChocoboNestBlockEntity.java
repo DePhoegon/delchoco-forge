@@ -247,7 +247,7 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
     @Nonnull
     @Override
     public Component getDisplayName() {
-        return new TranslatableComponent(Chococraft.MODID + ".container.nest");
+        return new TranslatableComponent(Chococraft.MOD_ID + ".container.nest");
     }
 
     public void onInventoryChanged() {

@@ -11,8 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class NestScreen extends AbstractContainerScreen<NestContainer> {
-    private final static ResourceLocation TEXTURE = new ResourceLocation(Chococraft.MODID, "textures/gui/chocobo_nest.png");
-    private final static ResourceLocation TEXTURE_SHELTERED = new ResourceLocation(Chococraft.MODID, "textures/gui/chocobo_nest_sheltered.png");
+    private final static ResourceLocation TEXTURE = new ResourceLocation(Chococraft.MOD_ID, "textures/gui/chocobo_nest.png");
+    private final static ResourceLocation TEXTURE_SHELTERED = new ResourceLocation(Chococraft.MOD_ID, "textures/gui/chocobo_nest_sheltered.png");
 
     public NestScreen(NestContainer screenContainer, Inventory inv, Component titleIn) {
         super(screenContainer, inv, titleIn);

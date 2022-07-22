@@ -30,7 +30,7 @@ public class ChocoDisguiseItem extends ArmorItem {
 	
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-		return Chococraft.MODID + ":textures/models/armor/chocodisguise.png";
+		return Chococraft.MOD_ID + ":textures/models/armor/chocodisguise.png";
 	}
 
 	@OnlyIn(Dist.CLIENT)

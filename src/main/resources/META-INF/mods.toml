@@ -1,14 +1,14 @@
 modLoader="javafml"
 loaderVersion="[39,)"
-issueTrackerURL="https://github.com/Mrbysco/ChocoCraft4/issues"
+issueTrackerURL=""
 license="MIT"
 
 [[mods]]
 modId="chococraft"
-version="${file.jarVersion}"
-displayName="Chococraft 4"
-displayURL="https://www.curseforge.com/minecraft/mc-mods/chococraft"
-authors="Mrbysco, Xalcon, Slayer5934, balika011"
+version="0.5"
+displayName="Chococraft Delbase Patch"
+displayURL=""
+authors="Mrbysco, Xalcon, Slayer5934, balika011, DePhoegon"
 credits="Thanks to EddieV for the original Chococraft, ArnoSaxena(Torojimas) and clienthax for maintaining it"
 description='''
 Chocobos in Minecraft
@@ -16,12 +16,12 @@ Chocobos in Minecraft
 [[dependencies.chococraft]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.18.1,1.19)"
+versionRange="[1.18.2,1.19)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.chococraft]]
 modId="forge"
 mandatory=true
-versionRange="[39.0.57,)"
+versionRange="[39,)"
 ordering="NONE"
 side="BOTH"

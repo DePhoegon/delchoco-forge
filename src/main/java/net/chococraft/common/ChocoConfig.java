@@ -255,7 +255,7 @@ public class ChocoConfig {
     @SubscribeEvent
     public static void onFileChange(final ModConfigEvent.Reloading configEvent) {
         Chococraft.log.debug("Chococraft's config just got changed on the file system!");
-        if(configEvent.getConfig().getModId() == Chococraft.MODID) {
+        if(configEvent.getConfig().getModId() == Chococraft.MOD_ID) {
             if (COMMON.chocoboPackSizeMin.get() > COMMON.chocoboPackSizeMax.get()) {
                 int t = COMMON.chocoboPackSizeMax.get();
                 COMMON.chocoboPackSizeMax.set(COMMON.chocoboPackSizeMin.get());

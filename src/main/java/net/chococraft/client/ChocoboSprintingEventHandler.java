@@ -10,7 +10,7 @@ import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = Chococraft.MODID, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = Chococraft.MOD_ID, value = Dist.CLIENT)
 public class ChocoboSprintingEventHandler {
     private static boolean isSprinting = false;
 

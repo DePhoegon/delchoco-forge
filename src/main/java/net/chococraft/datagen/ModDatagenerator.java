@@ -119,7 +119,7 @@ public class ModDatagenerator {
 
 	private static class FarmingItemModels extends ItemModelProvider {
 		public FarmingItemModels(DataGenerator gen, ExistingFileHelper helper) {
-			super(gen, Chococraft.MODID, helper);
+			super(gen, Chococraft.MOD_ID, helper);
 		}
 
 		@Override

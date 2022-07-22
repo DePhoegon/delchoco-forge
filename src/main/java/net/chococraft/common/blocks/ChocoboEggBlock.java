@@ -115,10 +115,10 @@ public class ChocoboEggBlock extends BaseEntityBlock {
             final ChocoboStatSnapshot mother = info.getMother();
             final ChocoboStatSnapshot father = info.getFather();
 
-            tooltip.add(new TranslatableComponent("item." + Chococraft.MODID + ".chocobo_egg.tooltip.mother_info", (int) mother.health, (int) (mother.speed * 100), (int) mother.stamina, mother.color.getEggText()));
-            tooltip.add(new TranslatableComponent("item." + Chococraft.MODID + ".chocobo_egg.tooltip.father_info", (int) father.health, (int) (father.speed * 100), (int) father.stamina, father.color.getEggText()));
+            tooltip.add(new TranslatableComponent("item." + Chococraft.MOD_ID + ".chocobo_egg.tooltip.mother_info", (int) mother.health, (int) (mother.speed * 100), (int) mother.stamina, mother.color.getEggText()));
+            tooltip.add(new TranslatableComponent("item." + Chococraft.MOD_ID + ".chocobo_egg.tooltip.father_info", (int) father.health, (int) (father.speed * 100), (int) father.stamina, father.color.getEggText()));
         } else {
-            tooltip.add(new TranslatableComponent("item." + Chococraft.MODID + ".chocobo_egg.tooltip.invalid_egg"));
+            tooltip.add(new TranslatableComponent("item." + Chococraft.MOD_ID + ".chocobo_egg.tooltip.invalid_egg"));
         }
     }
 }

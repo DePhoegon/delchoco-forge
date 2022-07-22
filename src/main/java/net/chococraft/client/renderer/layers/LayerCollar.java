@@ -10,8 +10,8 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 
 public class LayerCollar extends RenderLayer<ChocoboEntity, AdultChocoboModel<ChocoboEntity>> {
-	private ResourceLocation COLLAR_CHOCOBO = new ResourceLocation(Chococraft.MODID,"textures/entities/chocobos/collar.png");
-	private ResourceLocation COLLAR_CHICOBO = new ResourceLocation(Chococraft.MODID,"textures/entities/chicobos/collar.png");
+	private ResourceLocation COLLAR_CHOCOBO = new ResourceLocation(Chococraft.MOD_ID,"textures/entities/chocobos/collar.png");
+	private ResourceLocation COLLAR_CHICOBO = new ResourceLocation(Chococraft.MOD_ID,"textures/entities/chicobos/collar.png");
 	
 	public LayerCollar(RenderLayerParent<ChocoboEntity, AdultChocoboModel<ChocoboEntity>> rendererIn) {
 		super(rendererIn);

@@ -14,7 +14,7 @@ import java.util.Optional;
 public class PacketManager {
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(Chococraft.MODID, "main"),
+            new ResourceLocation(Chococraft.MOD_ID, "main"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals

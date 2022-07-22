@@ -16,9 +16,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public class ChocoboInventoryScreen extends AbstractContainerScreen<SaddleBagContainer> {
-    private static final ResourceLocation INV_TEXTURE_NULL = new ResourceLocation(Chococraft.MODID, "textures/gui/chocobo_inventory_null.png");
-    private static final ResourceLocation INV_TEXTURE_SMALL = new ResourceLocation(Chococraft.MODID, "textures/gui/chocobo_inventory_small.png");
-    private static final ResourceLocation INV_TEXTURE_LARGE = new ResourceLocation(Chococraft.MODID, "textures/gui/chocobo_inventory_large.png");
+    private static final ResourceLocation INV_TEXTURE_NULL = new ResourceLocation(Chococraft.MOD_ID, "textures/gui/chocobo_inventory_null.png");
+    private static final ResourceLocation INV_TEXTURE_SMALL = new ResourceLocation(Chococraft.MOD_ID, "textures/gui/chocobo_inventory_small.png");
+    private static final ResourceLocation INV_TEXTURE_LARGE = new ResourceLocation(Chococraft.MOD_ID, "textures/gui/chocobo_inventory_large.png");
 
     private ChocoboEntity chocobo;
 

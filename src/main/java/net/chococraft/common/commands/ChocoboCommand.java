@@ -46,7 +46,7 @@ public class ChocoboCommand {
         dispatcher.register(root);
     }
 
-    private static final String MODID = Chococraft.MODID;
+    private static final String MODID = Chococraft.MOD_ID;
 
     private static final Map<String, BiConsumer<ChocoboEntity, String>> setMap;
 
