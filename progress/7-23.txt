@@ -1,0 +1,47 @@
+~~ [ Removal of Ability Fruits, Pointless for this patch & planned reworking of unique abilities for chocobos based on color ] ~~
+
+Removal of entire files
+-AbilityFruitItem
+-AbilityFruitEnum
+
+Removal of Code segments
+- ChocoConfig.java
+= commented out & Generalized DungeonLoot Properties
+= commented out & Generalized Adding to Dungeon loot builder code
+- LootTableEventHandler.java
+= Matched all Generalized Names to the ones in the ChocoConfig.java
+= Commented out all code in java & the eventSubscriber
+== Kept Files for skeleton use later & leaving a understanding of how to achieve it.
+-ModRegistry.java
+= Removal of Ability fruits registrations.
+
+~~ [ Cleanup ] ~~
+-ModRegistry.java
+=removal of unnecessary qualifications on ' public static final ' objects.
+
+~~ [ Goal Setting/Clearing ] ~~
+Redid ToDo list
+- 7-21.txt into ToDo-Checklist.txt
+- Put sections by Dates
+- Included Notes, relevent to sections.
+
+~~[ Edits for Testing ] ~~
+net.chococraft.client.gui.chocoboInfoScreen.java
+- Line 59 [ public void init() ]
+= Commented out Ability Buttons.
+== Lines 63-140
+- Line 196 [ public void tick() ]
+= Experience handler for ability cost
+== Commented out - Should not be needed.
+- Lines now Not called
+= 256 [ private boolean canUseAbility() ]
+= 267 [ private String getAbilityFromButton() ]
+= 278 [ private int getAbilityXPCost() ]
+
+~~ [ Client Tests ] ~~
+After Code removal/Commenting/Item removals
+- Still Works
+== Needs further testing still
+
+~~ [ Status ] ~~
+Not Finished Yet

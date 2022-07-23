@@ -60,6 +60,7 @@ public class ChocoboInfoScreen extends Screen {
         this.guiLeft = (this.width - this.xSize) / 2;
         this.guiTop = (this.height - this.ySize) / 2;
 
+        /*
         abilityButton[0] = this.addRenderableWidget(new TexturedButton(25, 52, 18, 18, 0, 107, 0, TEXTURE, 256, 256, (button) -> {
             UpgradeChocoboMessage packet = new UpgradeChocoboMessage(chocobo, 1);
             PacketManager.CHANNEL.sendToServer(packet);
@@ -136,6 +137,7 @@ public class ChocoboInfoScreen extends Screen {
             text.add(new TranslatableComponent("gui.chocoinfo.button.button_format", new TranslatableComponent(getAbilityFromButton(3))));
             renderComponentTooltip(poseStack, text, mouseX, mouseY);
         }, new TextComponent("Fly")));
+        */
     }
 
     @Override
@@ -192,9 +194,11 @@ public class ChocoboInfoScreen extends Screen {
 
     @Override
     public void tick() {
+        /*
         for(int i = 0; i < abilityButton.length; i++) {
             abilityButton[0].active = (getAbilityXPCost(i) <= ExperienceHandler.getExperience(player)) && !canUseAbility(i);
         }
+         */
     }
 
     private void drawGenderInfo(PoseStack matrixStack) {

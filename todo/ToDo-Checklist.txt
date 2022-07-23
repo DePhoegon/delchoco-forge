@@ -1,0 +1,57 @@
+Added 7-21
+
+net.chococraft.common.entities.breeding.BreedingHelper.java
+- Implement The other three colors with other alters, using Base math systems.
+
+Implement Patchouli Guide Book
+-- Intending to Functionally replace Chocopedia, except for Seeing the stats of the chocobo.
+
+Find where the background sounds have a complete heart attack.
+
+Find/Remove Useless code (In Progress)
+
+Lookinto updating nest on chocobo hatching
+-visual bleh
+
+Add parent check to some colors as alternates, breeding colors directly
+
+Added 7-23
+
+Investigate
+net.chococraft.common.handler.ExperienceHandler.java
+- Might be a starting point to removing cutting out 'leveling'/'unlocking' systems
+
+net.chococraft.common.entities.properties.ChocoboColor.java
+- Might be a link to tying abilities to colors
+- will link to every type of chocobo in some way.
+
+net.chococraft.common.entities.breeding.BreedingHelper.java
+- Start looking here to redo breeding rules
+
+net.chococraft.common.entities.ChocoboEntity.java
+- Line 246 [ public boolean fireImmune() ]
+= FireImmunity section.
+== Returns true if Fire immune
+= Consider Purple & Gold for this section.
+- line 181 [ public SpawnGroupData finalizeSpawn() ]
+= Ability to set color of chocobo based on logic, can use biomeCategory.
+- Line 558 [ public void aiStep() ]
+= Can apply effects on conditions
+== is currently using remainder of (this.tickCount % 60 == 0)
+==~ every 60 ticks (~3 seconds)
+= Can test for other abilities, and give effects to player as well
+==Test if MobEffectInsantce(mobEffects.xx) can be applied to player
+
+net.chococraft.client.gui.ChocoboInfoScreen.java
+- Line 144 [ public void render() ]
+= Display section for Chocobo Information.
+= Work this into something other than 'That Chocopedia'
+== Book still shows abilities, but no overlay/interaction with ability buttons (A+)
+
+net.chococraft.common.ChocoConfig.java
+- Config Values to Track down for removal [ No longer wanted/needed ]
+= public final IntValue ExpCostSprint [ line 37 ]
+= public final IntValue ExpCostGlide [ line 38 ]
+= public final IntValue ExpCostDive [ line 39 ]
+= public final IntValue ExpCostFly [ line 40 ]
+== Abilities aimed to be color bound, not unlockable.

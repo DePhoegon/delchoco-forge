@@ -12,8 +12,8 @@ import org.apache.commons.lang3.tuple.Pair;
 public class ChocoConfig {
 
     public static class Common {
-        public final BooleanValue addAbilityFruitsToDungeonLoot;
-        public final IntValue abilityFruitDungeonLootWeight;
+        // public final BooleanValue add_blank_ToDungeonLoot;
+        // public final IntValue _blank_DungeonLootWeight;
         public final IntValue gysahlGreenSpawnWeight;
         public final IntValue gysahlGreenPatchSize;
         public final DoubleValue gysahlGreenSpawnChance;
@@ -53,21 +53,23 @@ public class ChocoConfig {
         Common(ForgeConfigSpec.Builder builder) {
             builder.comment("World generation related configuration")
                     .push("World");
+            // Commenting out for future use & removed ability fruits  mentioning (Planned removal of them)
+            /*
+                builder.comment("_blank_")
+                    .push("_blank_");
 
-                builder.comment("Ability Fruit")
-                    .push("ability_fruit");
-
-                addAbilityFruitsToDungeonLoot = builder
+                add_blank_ToDungeonLoot = builder
                         .worldRestart()
-                        .comment("Add ability fruit to dungeon loot [Default: true]")
-                        .define("addAbilityFruitsToDungeonLoot", true);
+                        .comment("Add _blank_ to dungeon loot [Default: true]")
+                        .define("add_blank_ToDungeonLoot", true);
 
-                abilityFruitDungeonLootWeight = builder
+                _blank_DungeonLootWeight = builder
                         .worldRestart()
                         .comment("This number controls the weight ability fruit has compared to other items in a loot table. [Default: 1]")
-                        .defineInRange("abilityFruitDungeonLootWeight", 1, 0, Integer.MAX_VALUE);
+                        .defineInRange("_blank_DungeonLootWeight", 1, 0, Integer.MAX_VALUE);
 
                 builder.pop();
+             */
 
             gysahlGreenSpawnWeight = builder
                     .worldRestart()
