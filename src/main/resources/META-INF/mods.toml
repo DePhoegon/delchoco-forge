@@ -5,7 +5,7 @@ license="MIT"
 
 [[mods]]
 modId="chococraft"
-version="0.5"
+version="${file.jarVersion}"
 displayName="Chococraft Delbase Patch"
 displayURL=""
 authors="Mrbysco, Xalcon, Slayer5934, balika011, DePhoegon"

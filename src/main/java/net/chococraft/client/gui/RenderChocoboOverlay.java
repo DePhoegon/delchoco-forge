@@ -14,13 +14,14 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.jetbrains.annotations.NotNull;
 
 @Mod.EventBusSubscriber(modid = Chococraft.MOD_ID, value = Dist.CLIENT)
 public class RenderChocoboOverlay {
     private static final ResourceLocation ICONS = new ResourceLocation(Chococraft.MOD_ID, "textures/gui/icons.png");
 
     @SubscribeEvent
-    public static void onGuiIngameOverlayRender(RenderGameOverlayEvent.PostLayer event) {
+    public static void onGuiIngameOverlayRender(RenderGameOverlayEvent.@NotNull PostLayer event) {
         if (event.getOverlay() != ForgeIngameGui.PLAYER_HEALTH_ELEMENT) return;
         Minecraft minecraft = Minecraft.getInstance();
         PoseStack matrixStack = event.getMatrixStack();

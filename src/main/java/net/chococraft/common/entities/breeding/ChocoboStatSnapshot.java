@@ -6,6 +6,7 @@ import net.chococraft.common.entities.properties.ChocoboColor;
 import net.chococraft.common.init.ModAttributes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import org.jetbrains.annotations.NotNull;
 
 public class ChocoboStatSnapshot {
     public static final ChocoboStatSnapshot DEFAULT;
@@ -46,7 +47,7 @@ public class ChocoboStatSnapshot {
     private ChocoboStatSnapshot() {
     }
 
-    public ChocoboStatSnapshot(ChocoboEntity chocobo) {
+    public ChocoboStatSnapshot(@NotNull ChocoboEntity chocobo) {
         this.generation = chocobo.getGeneration();
         this.health = (float) chocobo.getAttribute(Attributes.MAX_HEALTH).getBaseValue();
         this.speed = (float) chocobo.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue();
@@ -59,7 +60,7 @@ public class ChocoboStatSnapshot {
         this.color = chocobo.getChocoboColor();
     }
 
-    public ChocoboStatSnapshot(CompoundTag nbt) {
+    public ChocoboStatSnapshot(@NotNull CompoundTag nbt) {
         this.generation = nbt.getInt(NBTKEY_GENERATION);
         this.health = nbt.getFloat(NBTKEY_HEALTH);
         this.speed = nbt.getFloat(NBTKEY_SPEED);

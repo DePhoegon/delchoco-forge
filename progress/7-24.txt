@@ -1,0 +1,31 @@
+Gradle cleaning
+- Version centralization
+- parchmentmc.librarian [Added]
+== helping to trace faults in code.
+
+Gradle.properties
+- Added Version variable for mod.
+
+ChocoboInfoScreen
+- Cleanup Overlay Drawing for 'Chocopedia' Book bliz call.
+- Fixed Male/Female Icon Drawing.
+== Unknown reason The call used to draw female/male icon lost the Resource file.  Put it back on the stack.
+- Added divide method to prevent QQ from IDE.
+
+Chocobo StatSnapshot
+-Annotations.
+
+Mods.toml
+- Changed version to ${file.jarVersion}
+
+pack.mcmeta
+- Changed Description to drop version & imply it to be for another mod requiring it as a dependency
+
+RenderChocoboOverlay
+- Annotations
+
+ReadMe & Credits
+Starting to actually say something instead of default text there.
+---------------
+
+Have been annotating as I've had to dig through the files.

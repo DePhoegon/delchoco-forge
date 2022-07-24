@@ -5,16 +5,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.chococraft.Chococraft;
 import net.chococraft.common.ChocoConfig;
 import net.chococraft.common.entities.ChocoboEntity;
-import net.chococraft.common.handler.ExperienceHandler;
 import net.chococraft.common.init.ModAttributes;
-import net.chococraft.common.network.PacketManager;
-import net.chococraft.common.network.packets.UpgradeChocoboMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -200,31 +196,37 @@ public class ChocoboInfoScreen extends Screen {
         }
          */
     }
+    private int divideTwo(int iOne) {
+        return (iOne/ 2);
+    }
 
     private void drawGenderInfo(PoseStack matrixStack) {
-        this.blit(matrixStack, 26, 18, 176, this.chocobo.isMale() ? 16 : 0, 16, 16);
+        RenderSystem.setShaderTexture(0, TEXTURE);
+        matrixStack.pushPose();
+
+            this.blit(matrixStack, 26, 18, 176, this.chocobo.isMale() ? 16: 0, 16, 16);
 
         String value = I18n.get(this.chocobo.isMale() ? "gui.chocoinfo.texture.male" : "gui.chocoinfo.texture.female");
         int width = this.font.width(value);
-        this.font.drawShadow(matrixStack, value, 35 - (width / 2), 36, -1);
+        this.font.drawShadow(matrixStack, value, 35 - divideTwo(width), 36, -1);
     }
 
     private void drawHealthInfo(PoseStack matrixStack) {
         String value = String.valueOf((int) this.chocobo.getAttribute(Attributes.MAX_HEALTH).getBaseValue());
         int width = this.font.width(value);
-        this.font.drawShadow(matrixStack, value, 70 - (width / 2), 36, -1);
+        this.font.drawShadow(matrixStack, value, 70 - divideTwo(width), 36, -1);
     }
 
     private void drawSpeedInfo(PoseStack matrixStack) {
         String value = String.valueOf((int) Math.round(this.chocobo.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue() * 100));
         int width = this.font.width(value);
-        this.font.drawShadow(matrixStack, value, 106 - (width / 2), 36, -1);
+        this.font.drawShadow(matrixStack, value, 106 - divideTwo(width), 36, -1);
     }
 
     private void drawStaminaInfo(PoseStack matrixStack) {
         String value = String.valueOf((int) this.chocobo.getAttribute(ModAttributes.MAX_STAMINA.get()).getBaseValue());
         int width = this.font.width(value);
-        this.font.drawShadow(matrixStack, value, 142 - (width / 2), 36, -1);
+        this.font.drawShadow(matrixStack, value, 142 - divideTwo(width), 36, -1);
     }
 
     private void drawHover(PoseStack poseStack, int mouseX, int mouseY) {

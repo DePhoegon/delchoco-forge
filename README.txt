@@ -1,46 +1,32 @@
+Welcome to the Wonderful World of Chocobos.
 
-Source installation information for modders
--------------------------------------------
-This code follows the Minecraft Forge installation methodology. It will apply
-some small patches to the vanilla MCP source code, giving you and it access 
-to some of the data and functions you need to build a successful mod.
+This mod is intended to be with DePhoegons' Reclaim  [ Is on forge & on Github ]
 
-Note also that the patches are built against "un-renamed" MCP source code (aka
-SRG Names) - this means that you will not be able to read them directly against
-normal code.
+Currently, in active development to fix 'Chococraft 4' for 1.18.2 & theme it for my Decorative & resource reclaiming, Vanilla+ like mod.
+-Please forgive me as I am learning as I go & working with ...  unfamiliar bits & bobs because I REALLY want chocobos myself & no one else was seeming to do it.
 
-Setup Process:
-==============================
+The Press files include the change & by date.
 
-Step 1: Open your command-line and browse to the folder where you extracted the zip file.
+Actual Jar files will be start to  archived here when they are near release date.
+-- Failing & attempting to put them into a beta release on Curseforge  {DePhoegons' Chocobos}
 
-Step 2: You're left with a choice.
-If you prefer to use Eclipse:
-1. Run the following command: `gradlew genEclipseRuns` (`./gradlew genEclipseRuns` if you are on Mac/Linux)
-2. Open Eclipse, Import > Existing Gradle Project > Select Folder 
-   or run `gradlew eclipse` to generate the project.
+There are many changes coming, and some visual rework on other things.
 
-If you prefer to use IntelliJ:
-1. Open IDEA, and import project.
-2. Select your build.gradle file and have it import.
-3. Run the following command: `gradlew genIntellijRuns` (`./gradlew genIntellijRuns` if you are on Mac/Linux)
-4. Refresh the Gradle Project in IDEA if required.
+I can provide an updated version of it, if requested.  It is 'stable' with 1 known (to me) bug around taking packs/bags off the chocobos without emptying their items inventory first.  This will take time to figure out & may not be sorted easily (still learning my way around all the forge, java, & MC silliness.
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can 
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+Future plans around chocobos
+- Access to each of the chocobos
+- Reworking what each chocobo has
+- Reworking where they can spawn
+- Reworking their Breeding.
 
-Mapping Names:
-=============================
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license, if you do not agree with it you can change your mapping names to other crowdsourced names in your 
-build.gradle. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/MinecraftForge/MCPConfig/blob/master/Mojang.md
+Some future updates to be hand.
 
-Additional Resources: 
-=========================
-Community Documentation: http://mcforge.readthedocs.io/en/latest/gettingstarted/  
-LexManos' Install Video: https://www.youtube.com/watch?v=8VEdtQLuLO0  
-Forge Forum: https://forums.minecraftforge.net/  
-Forge Discord: https://discord.gg/UvedJ9m  
+https://www.curseforge.com/minecraft/mc-mods/dephoegons-chocobos   (assuming it ever gets approved, because I can't write a description to save my life for it)
+https://www.curseforge.com/minecraft/mc-mods/dephoegons-reclaim
+-This is the main mod it will 'require', future plans will call for blocks that exist within this mod.
+
+I can produce a depenancy free version (from my mod), but it will still require
+-JEI (for now, just bad book in it atm)
+-Configured (just highly suggested)
+-Patchouli (Guide Book)  - Not yet put in.
