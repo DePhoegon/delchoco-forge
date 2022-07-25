@@ -25,6 +25,8 @@ import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import static net.chococraft.Chococraft.creativeTab;
+
 @SuppressWarnings("unused")
 public class ModRegistry {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Chococraft.MOD_ID);
@@ -42,10 +44,10 @@ public class ModRegistry {
 
 
     public static final RegistryObject<BlockEntityType<ChocoboNestBlockEntity>> STRAW_NEST_TILE = BLOCK_ENTITIES.register("chocobo_nest", () -> BlockEntityType.Builder.of(
-            ChocoboNestBlockEntity::new, ModRegistry.STRAW_NEST.get()).build(null));
+            ChocoboNestBlockEntity::new, STRAW_NEST.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<ChocoboEggBlockEntity>> CHOCOBO_EGG_TILE = BLOCK_ENTITIES.register("chocobo_egg", () -> BlockEntityType.Builder.of(
-            ChocoboEggBlockEntity::new, ModRegistry.CHOCOBO_EGG.get()).build(null));
+            ChocoboEggBlockEntity::new, CHOCOBO_EGG.get()).build(null));
 
 
     public static final RegistryObject<Item> CHOCOBO_SADDLE = ITEMS.register("chocobo_saddle", () -> new ChocoboSaddleItem(itemBuilder(), 0));
@@ -63,7 +65,7 @@ public class ModRegistry {
     public static final RegistryObject<Item> PURPLE_CHOCOBO_SPAWN_EGG = ITEMS.register("purple_chocobo_spawn_egg", () -> new ChocoboSpawnEggItem(itemBuilder(), ChocoboColor.PURPLE));
     public static final RegistryObject<Item> FLAME_CHOCOBO_SPAWN_EGG = ITEMS.register("flame_chocobo_spawn_egg", () -> new ChocoboSpawnEggItem(itemBuilder(), ChocoboColor.FLAME));
 
-    public static final RegistryObject<Item> GYSAHL_GREEN_SEEDS = ITEMS.register("gysahl_green_seeds", () -> new CustomBlockNamedItem(ModRegistry.GYSAHL_GREEN, itemBuilder()));
+    public static final RegistryObject<Item> GYSAHL_GREEN_SEEDS = ITEMS.register("gysahl_green_seeds", () -> new CustomBlockNamedItem(GYSAHL_GREEN, itemBuilder()));
 
     public static final RegistryObject<Item> GYSAHL_GREEN_ITEM = ITEMS.register("gysahl_green", () -> new Item(itemBuilder().food(ModFoods.GYSAHL_GREEN)));
     public static final RegistryObject<Item> CHOCOBO_WHISTLE = ITEMS.register("chocobo_whistle", () -> new Item(itemBuilder()));
@@ -89,6 +91,6 @@ public class ModRegistry {
 
 
     private static Item.Properties itemBuilder() {
-        return new Item.Properties().tab(Chococraft.creativeTab);
+        return new Item.Properties().tab(creativeTab);
     }
 }

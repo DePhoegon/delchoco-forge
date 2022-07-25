@@ -31,8 +31,6 @@ public class ChocoboInfoScreen extends Screen {
     private int guiLeft;
     private int guiTop;
 
-    private TexturedButton[] abilityButton = new TexturedButton[4];
-
     public ChocoboInfoScreen(ChocoboEntity chocobo, Player player) {
         super(new TranslatableComponent(player.getName().getString()));
         this.chocobo = chocobo;
@@ -55,85 +53,6 @@ public class ChocoboInfoScreen extends Screen {
     public void init() {
         this.guiLeft = (this.width - this.xSize) / 2;
         this.guiTop = (this.height - this.ySize) / 2;
-
-        /*
-        abilityButton[0] = this.addRenderableWidget(new TexturedButton(25, 52, 18, 18, 0, 107, 0, TEXTURE, 256, 256, (button) -> {
-            UpgradeChocoboMessage packet = new UpgradeChocoboMessage(chocobo, 1);
-            PacketManager.CHANNEL.sendToServer(packet);
-        }, (button, poseStack, mouseX, mouseY) -> {
-            boolean flag = chocobo.canSprint();
-            String abilityText = I18n.get(getAbilityFromButton(0));
-            int centerX = width / 2;
-            String tooltip;
-            if (flag) {
-                tooltip = I18n.get("gui.chocoinfo.button.already_unlocked_ability", abilityText);
-            } else {
-                tooltip = I18n.get("gui.chocoinfo.button.ability", ExperienceHandler.getExperience(player), getAbilityXPCost(0), abilityText);
-            }
-            int width = this.font.width(tooltip);
-            this.font.draw(poseStack, tooltip, 90 - centerX, 93, -1);
-            List<Component> text = new ArrayList<>();
-            text.add(new TranslatableComponent("gui.chocoinfo.button.button_format", new TranslatableComponent(getAbilityFromButton(0))));
-            renderComponentTooltip(poseStack, text, mouseX, mouseY);
-        }, new TextComponent("Sprint")));
-        abilityButton[1] = this.addRenderableWidget(new TexturedButton(61, 52, 18, 18, 18, 107, 0, TEXTURE, 256, 256, (button) -> {
-            UpgradeChocoboMessage packet = new UpgradeChocoboMessage(chocobo, 2);
-            PacketManager.CHANNEL.sendToServer(packet);
-        }, (button, poseStack, mouseX, mouseY) -> {
-            boolean flag = chocobo.canGlide();
-            String abilityText = I18n.get(getAbilityFromButton(1));
-            int centerX = width / 2;
-            String tooltip;
-            if (flag) {
-                tooltip = I18n.get("gui.chocoinfo.button.already_unlocked_ability", abilityText);
-            } else {
-                tooltip = I18n.get("gui.chocoinfo.button.ability", ExperienceHandler.getExperience(player), getAbilityXPCost(1), abilityText);
-            }
-            int width = this.font.width(tooltip);
-            this.font.draw(poseStack, tooltip, 90 - centerX, 93, -1);
-            List<Component> text = new ArrayList<>();
-            text.add(new TranslatableComponent("gui.chocoinfo.button.button_format", new TranslatableComponent(getAbilityFromButton(1))));
-            renderComponentTooltip(poseStack, text, mouseX, mouseY);
-        }, new TextComponent("Glide")));
-        abilityButton[2] = this.addRenderableWidget(new TexturedButton(97, 52, 18, 18, 36, 107, 0, TEXTURE, 256, 256, (button) -> {
-            UpgradeChocoboMessage packet = new UpgradeChocoboMessage(chocobo, 3);
-            PacketManager.CHANNEL.sendToServer(packet);
-        }, (button, poseStack, mouseX, mouseY) -> {
-            boolean flag = chocobo.canDive();
-            String abilityText = I18n.get(getAbilityFromButton(2));
-            int centerX = width / 2;
-            String tooltip;
-            if (flag) {
-                tooltip = I18n.get("gui.chocoinfo.button.already_unlocked_ability", abilityText);
-            } else {
-                tooltip = I18n.get("gui.chocoinfo.button.ability", ExperienceHandler.getExperience(player), getAbilityXPCost(2), abilityText);
-            }
-            int width = this.font.width(tooltip);
-            this.font.draw(poseStack, tooltip, 90 - centerX, 93, -1);
-            List<Component> text = new ArrayList<>();
-            text.add(new TranslatableComponent("gui.chocoinfo.button.button_format", new TranslatableComponent(getAbilityFromButton(2))));
-            renderComponentTooltip(poseStack, text, mouseX, mouseY);
-        }, new TextComponent("Dive")));
-        abilityButton[3] = this.addRenderableWidget(new TexturedButton(133, 52, 18, 18, 54, 107, 0, TEXTURE, 256, 256, (button) -> {
-            UpgradeChocoboMessage packet = new UpgradeChocoboMessage(chocobo, 4);
-            PacketManager.CHANNEL.sendToServer(packet);
-        }, (button, poseStack, mouseX, mouseY) -> {
-            boolean flag = chocobo.canFly();
-            String abilityText = I18n.get(getAbilityFromButton(3));
-            int centerX = width / 2;
-            String tooltip;
-            if (flag) {
-                tooltip = I18n.get("gui.chocoinfo.button.already_unlocked_ability", abilityText);
-            } else {
-                tooltip = I18n.get("gui.chocoinfo.button.ability", ExperienceHandler.getExperience(player), getAbilityXPCost(3), abilityText);
-            }
-            int width = this.font.width(tooltip);
-            this.font.draw(poseStack, tooltip, 90 - centerX, 93, -1);
-            List<Component> text = new ArrayList<>();
-            text.add(new TranslatableComponent("gui.chocoinfo.button.button_format", new TranslatableComponent(getAbilityFromButton(3))));
-            renderComponentTooltip(poseStack, text, mouseX, mouseY);
-        }, new TextComponent("Fly")));
-        */
     }
 
     @Override
@@ -170,8 +89,6 @@ public class ChocoboInfoScreen extends Screen {
         this.drawSpeedInfo(matrixStack);
         this.drawStaminaInfo(matrixStack);
 
-        this.updateButtonTextures();
-
         super.render(matrixStack, mouseX, mouseY, partialTicks);
 
         this.drawHover(matrixStack, mouseX, mouseY);
@@ -179,23 +96,10 @@ public class ChocoboInfoScreen extends Screen {
         matrixStack.popPose();
     }
 
-    private void updateButtonTextures() {
-        /*
-        for(int i = 0; i < abilityButton.length; i++) {
-
-            abilityButton[i].setTexture(TEXTURE, i * 18 - 1, canUseAbility(i) ? 89 : 107, 256, 256);
-        }
-         */
-    }
+    private void updateButtonTextures() {}
 
     @Override
-    public void tick() {
-        /*
-        for(int i = 0; i < abilityButton.length; i++) {
-            abilityButton[0].active = (getAbilityXPCost(i) <= ExperienceHandler.getExperience(player)) && !canUseAbility(i);
-        }
-         */
-    }
+    public void tick() { }
     private int divideTwo(int iOne) {
         return (iOne/ 2);
     }
@@ -253,37 +157,5 @@ public class ChocoboInfoScreen extends Screen {
             text.add(new TranslatableComponent("gui.chocoinfo.texture.stamina"));
             renderComponentTooltip(poseStack, text, mouseX, mouseY);
         }
-    }
-
-    private boolean canUseAbility(int i) {
-        return switch (i) {
-            case 0 -> chocobo.canSprint();
-            case 1 -> chocobo.canGlide();
-            case 2 -> chocobo.canDive();
-            case 3 -> chocobo.canFly();
-            default -> false;
-        };
-
-    }
-
-    private String getAbilityFromButton(int i) {
-        String key = "gui.chocoinfo.button.";
-        return switch (i) {
-            case 0 -> key + "sprint";
-            case 1 -> key + "glide";
-            case 2 -> key + "dive";
-            case 3 -> key + "fly";
-            default -> key + "";
-        };
-    }
-
-    private int getAbilityXPCost(int i) {
-        return switch (i) {
-            case 0 -> ChocoConfig.COMMON.ExpCostSprint.get();
-            case 1 -> ChocoConfig.COMMON.ExpCostGlide.get();
-            case 2 -> ChocoConfig.COMMON.ExpCostDive.get();
-            case 3 -> ChocoConfig.COMMON.ExpCostFly.get();
-            default -> 0;
-        };
     }
 }

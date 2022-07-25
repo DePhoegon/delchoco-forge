@@ -1,13 +1,11 @@
 package net.chococraft.common.entities;
 
 import net.chococraft.Chococraft;
-import net.chococraft.common.ChocoConfig;
 import net.chococraft.common.entities.breeding.ChocoboMateGoal;
 import net.chococraft.common.entities.properties.ChocoboColor;
 import net.chococraft.common.entities.properties.ModDataSerializers;
 import net.chococraft.common.entities.properties.MovementType;
 import net.chococraft.common.init.ModAttributes;
-import net.chococraft.common.init.ModRegistry;
 import net.chococraft.common.init.ModSounds;
 import net.chococraft.common.inventory.SaddleBagContainer;
 import net.chococraft.common.inventory.SaddleItemStackHandler;
@@ -18,10 +16,12 @@ import net.chococraft.common.network.packets.OpenChocoboGuiMessage;
 import net.chococraft.utils.RandomHelper;
 import net.chococraft.utils.WorldUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -61,6 +61,7 @@ import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -71,16 +72,27 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.PacketDistributor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jline.utils.Log;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.Console;
 import java.util.Optional;
 import java.util.UUID;
 
+import static net.chococraft.client.gui.ChocoboInfoScreen.openScreen;
+import static net.chococraft.common.ChocoConfig.COMMON;
+import static net.chococraft.common.init.ModRegistry.*;
+import static net.chococraft.common.init.ModSounds.AMBIENT_SOUND;
 import static net.minecraft.world.level.biome.Biome.getBiomeCategory;
+import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 
 public class ChocoboEntity extends TamableAnimal {
     private static final String NBTKEY_CHOCOBO_COLOR = "Color";
@@ -145,7 +157,7 @@ public class ChocoboEntity extends TamableAnimal {
     protected void registerGoals() {
         this.goalSelector.addGoal(2, new ChocoboMateGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 0.6D));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, Ingredient.of(ModRegistry.GYSAHL_GREEN.get()), false));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, Ingredient.of(GYSAHL_GREEN.get()), false));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(1, new FloatGoal(this));
@@ -156,9 +168,9 @@ public class ChocoboEntity extends TamableAnimal {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(ModAttributes.MAX_STAMINA.get(), ChocoConfig.COMMON.defaultStamina.get())
-                .add(Attributes.MOVEMENT_SPEED, ChocoConfig.COMMON.defaultSpeed.get() / 100f)
-                .add(Attributes.MAX_HEALTH, ChocoConfig.COMMON.defaultHealth.get());
+                .add(ModAttributes.MAX_STAMINA.get(), COMMON.defaultStamina.get())
+                .add(Attributes.MOVEMENT_SPEED, COMMON.defaultSpeed.get() / 100f)
+                .add(Attributes.MAX_HEALTH, COMMON.defaultHealth.get());
     }
 
     @Override
@@ -168,7 +180,7 @@ public class ChocoboEntity extends TamableAnimal {
         this.entityData.define(PARAM_IS_MALE, false);
         this.entityData.define(PARAM_MOVEMENT_TYPE, MovementType.WANDER);
         this.entityData.define(PARAM_SADDLE_ITEM, ItemStack.EMPTY);
-        this.entityData.define(PARAM_STAMINA, (float) ChocoConfig.COMMON.defaultStamina.get());
+        this.entityData.define(PARAM_STAMINA, (float) COMMON.defaultStamina.get());
         this.entityData.define(PARAM_GENERATION, 0);
         this.entityData.define(PARAM_ABILITY_MASK, (byte) 0);
     }
@@ -209,6 +221,7 @@ public class ChocoboEntity extends TamableAnimal {
         this.setCanGlide(compound.getBoolean(NBTKEY_CHOCOBO_CAN_GLIDE));
         this.setCanSprint(compound.getBoolean(NBTKEY_CHOCOBO_CAN_SPRINT));
         this.setCanDive(compound.getBoolean(NBTKEY_CHOCOBO_CAN_DIVE));
+
     }
 
     @Override
@@ -224,6 +237,7 @@ public class ChocoboEntity extends TamableAnimal {
 
         if (this.nestPos != null)
             compound.put(NBTKEY_NEST_POSITION, NbtUtils.writeBlockPos(this.nestPos));
+
 
         compound.putInt(NBTKEY_CHOCOBO_GENERATION, this.getGeneration());
         compound.putFloat(NBTKEY_CHOCOBO_STAMINA, this.getStamina());
@@ -437,7 +451,7 @@ public class ChocoboEntity extends TamableAnimal {
 
             if (this.isControlledByLocalInstance()) {
                 if (Minecraft.getInstance().options.keyJump.isDown()) {
-                    if (rider.isSprinting() && this.canFly() && !rider.isInWater() && this.useStamina(ChocoConfig.COMMON.flyStaminaCost.get().floatValue())) {
+                    if (rider.isSprinting() && this.canFly() && !rider.isInWater() && this.useStamina(COMMON.flyStaminaCost.get().floatValue())) {
                         // flight logic
                         Vec3 motion = getDeltaMovement();
                         double groundValue = this.onGround ? .5F : .1F;
@@ -448,7 +462,7 @@ public class ChocoboEntity extends TamableAnimal {
                         this.setSprinting(false);
                     } else {
                         // jump logic
-                        if (!this.isChocoboJumping && this.onGround && this.useStamina(ChocoConfig.COMMON.jumpStaminaCost.get().floatValue())) {
+                        if (!this.isChocoboJumping && this.onGround && this.useStamina(COMMON.jumpStaminaCost.get().floatValue())) {
                             Vec3 motion = getDeltaMovement();
                             setDeltaMovement(new Vec3(motion.x, .6f, motion.z));
                             this.isChocoboJumping = true;
@@ -483,14 +497,14 @@ public class ChocoboEntity extends TamableAnimal {
                 }
 
                 if (!this.onGround && !this.isInWater() && !rider.isShiftKeyDown() && this.getDeltaMovement().y < 0 && this.canGlide() &&
-                        this.useStamina(ChocoConfig.COMMON.glideStaminaCost.get().floatValue())) {
+                        this.useStamina(COMMON.glideStaminaCost.get().floatValue())) {
                     Vec3 motion = getDeltaMovement();
                     setDeltaMovement(new Vec3(motion.x, motion.y * 0.65F, motion.z));
                 }
 
-                if ((this.isSprinting() && !this.useStamina(ChocoConfig.COMMON.sprintStaminaCost.get().floatValue())) || (this.isSprinting() &&
-                        this.isInWater() && this.useStamina(ChocoConfig.COMMON.sprintStaminaCost.get().floatValue())) || (this.isSprinting() &&
-                        !this.canSprint() && this.useStamina(ChocoConfig.COMMON.sprintStaminaCost.get().floatValue()))) {
+                if ((this.isSprinting() && !this.useStamina(COMMON.sprintStaminaCost.get().floatValue())) || (this.isSprinting() &&
+                        this.isInWater() && this.useStamina(COMMON.sprintStaminaCost.get().floatValue())) || (this.isSprinting() &&
+                        !this.canSprint() && this.useStamina(COMMON.sprintStaminaCost.get().floatValue()))) {
                     this.setSprinting(false);
                 }
 
@@ -544,7 +558,7 @@ public class ChocoboEntity extends TamableAnimal {
         if (this.isBaby())
             return;
 
-        this.spawnAtLocation(new ItemStack(ModRegistry.CHOCOBO_FEATHER.get(), 1), 0.0F);
+        this.spawnAtLocation(new ItemStack(CHOCOBO_FEATHER.get(), 1), 0.0F);
     }
 
     public int TimeSinceFeatherChance = 0;
@@ -575,6 +589,7 @@ public class ChocoboEntity extends TamableAnimal {
             this.TimeSinceFeatherChance++;
         }
 
+        //Change effects to chocobo colors
         if (!this.getCommandSenderWorld().isClientSide) {
             if (this.tickCount % 60 == 0)
             {
@@ -634,7 +649,7 @@ public class ChocoboEntity extends TamableAnimal {
         if (!this.onGround && !this.isInWater() && !this.isInLava() && !this.isSprinting())
             return;
 
-        float regen = ChocoConfig.COMMON.staminaRegenRate.get().floatValue();
+        float regen = COMMON.staminaRegenRate.get().floatValue();
 
         // half the amount of regeneration while moving
         Vec3 motion = getDeltaMovement();
@@ -654,15 +669,15 @@ public class ChocoboEntity extends TamableAnimal {
     public InteractionResult interactAt(Player player, Vec3 vec, InteractionHand hand) {
         ItemStack heldItemStack = player.getItemInHand(hand);
 
-        if (heldItemStack.getItem() == ModRegistry.GYSAHL_CAKE.get()) {
+        if (heldItemStack.getItem() == GYSAHL_CAKE.get()) {
             this.usePlayerItem(player, hand, heldItemStack);
             ageBoundaryReached();
             return InteractionResult.SUCCESS;
         }
 
-        if (heldItemStack.getItem() == ModRegistry.CHOCOPEDIA.get()) {
+        if (heldItemStack.getItem() == CHOCOPEDIA.get()) {
             if(level.isClientSide) {
-                net.chococraft.client.gui.ChocoboInfoScreen.openScreen(this, player);
+                openScreen(this, player);
             }
             return InteractionResult.SUCCESS;
         }
@@ -681,9 +696,9 @@ public class ChocoboEntity extends TamableAnimal {
             return InteractionResult.SUCCESS;
         }
 
-        if (!this.isTame() && heldItemStack.getItem() == ModRegistry.GYSAHL_GREEN_ITEM.get()) {
+        if (!this.isTame() && heldItemStack.getItem() == GYSAHL_GREEN_ITEM.get()) {
             this.usePlayerItem(player, hand, player.getInventory().getSelected());
-            if ((float) Math.random() < ChocoConfig.COMMON.tameChance.get().floatValue()) {
+            if ((float) Math.random() < COMMON.tameChance.get().floatValue()) {
                 this.setOwnerUUID(player.getUUID());
                 this.setTame(true);
                 player.displayClientMessage(new TranslatableComponent(Chococraft.MOD_ID + ".entity_chocobo.tame_success"), true);
@@ -693,7 +708,7 @@ public class ChocoboEntity extends TamableAnimal {
             return InteractionResult.SUCCESS;
         }
 
-        if (this.isTame() && heldItemStack.getItem() == ModRegistry.GYSAHL_GREEN_ITEM.get()) {
+        if (this.isTame() && heldItemStack.getItem() == GYSAHL_GREEN_ITEM.get()) {
             if (getHealth() != getMaxHealth()) {
                 this.usePlayerItem(player, hand, player.getInventory().getSelected());
                 heal(5);
@@ -702,7 +717,7 @@ public class ChocoboEntity extends TamableAnimal {
             }
         }
 
-        if (this.isTame() && heldItemStack.getItem() == ModRegistry.CHOCOBO_WHISTLE.get() && !this.isBaby()) {
+        if (this.isTame() && heldItemStack.getItem() == CHOCOBO_WHISTLE.get() && !this.isBaby()) {
             if (isOwnedBy(player)) {
                 if (this.followingmrhuman == 3) {
                     this.playSound(ModSounds.WHISTLE_SOUND_FOLLOW.get(), 1.0F, 1.0F);
@@ -727,7 +742,7 @@ public class ChocoboEntity extends TamableAnimal {
             return InteractionResult.SUCCESS;
         }
 
-        if (this.isTame() && !this.isInLove() && heldItemStack.getItem() == ModRegistry.LOVELY_GYSAHL_GREEN.get() && !this.isBaby()) {
+        if (this.isTame() && !this.isInLove() && heldItemStack.getItem() == LOVELY_GYSAHL_GREEN.get() && !this.isBaby()) {
             this.usePlayerItem(player, hand, player.getInventory().getSelected());
             this.setInLove(player);
             return InteractionResult.SUCCESS;
@@ -753,11 +768,20 @@ public class ChocoboEntity extends TamableAnimal {
             }
         }
 
-        if (this.isTame() && heldItemStack.getItem() == Items.NAME_TAG && !isOwnedBy(player)) {
-            player.displayClientMessage(new TranslatableComponent(Chococraft.MOD_ID + ".entity_chocobo.not_owner"), true);
+        if (this.isTame() && heldItemStack.getItem() == Items.NAME_TAG) {
+            if (isOwnedBy(player)) {
+                this.setCustomName(heldItemStack.getHoverName());
+                this.setCustomNameVisible(true);
+                heldItemStack.setCount(heldItemStack.getCount()-1);
+            } else {
+                player.displayClientMessage(new TranslatableComponent(Chococraft.MOD_ID + ".entity_chocobo.not_owner"), true);
+            }
             return InteractionResult.SUCCESS;
         }
-
+        if (this.isTame() && heldItemStack.getItem() == CHOCOBO_FEATHER.get().asItem()) {
+            if (isOwnedBy(player)) { this.setCustomNameVisible(!this.isCustomNameVisible()); }
+            return InteractionResult.SUCCESS;
+        }
         return super.interactAt(player, vec, hand);
     }
 
@@ -770,7 +794,7 @@ public class ChocoboEntity extends TamableAnimal {
         PacketManager.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new OpenChocoboGuiMessage(this, player.containerCounter));
         player.containerMenu = new SaddleBagContainer(player.containerCounter, player.getInventory(), this);
         player.initMenu(player.containerMenu);
-        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.player.PlayerContainerEvent.Open(player, player.containerMenu));
+        EVENT_BUS.post(new PlayerContainerEvent.Open(player, player.containerMenu));
     }
 
     private void reconfigureInventory(ItemStack oldSaddle, ItemStack newSaddle) {
@@ -806,15 +830,15 @@ public class ChocoboEntity extends TamableAnimal {
     }
 
     protected SoundEvent getAmbientSound() {
-        return ModSounds.AMBIENT_SOUND.get();
+        return AMBIENT_SOUND.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.AMBIENT_SOUND.get();
+        return AMBIENT_SOUND.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return ModSounds.AMBIENT_SOUND.get();
+        return AMBIENT_SOUND.get();
     }
 
     @Override

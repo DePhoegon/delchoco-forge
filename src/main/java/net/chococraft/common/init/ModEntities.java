@@ -18,6 +18,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import static net.chococraft.common.ChocoConfig.COMMON;
+import static net.chococraft.common.entities.ChocoboEntity.*;
+
 public class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Chococraft.MOD_ID);
 
@@ -33,15 +36,16 @@ public class ModEntities {
             return;
         }
 
+        // Biome Spawning area
         ResourceKey<Biome> biomeKey = ResourceKey.create(Registry.BIOME_REGISTRY, event.getName());
         if(BiomeDictionary.hasType(biomeKey, Type.PLAINS) || BiomeDictionary.hasType(biomeKey, Type.HILLS) || BiomeDictionary.hasType(biomeKey, Type.NETHER)) {
 
-            event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(ModEntities.CHOCOBO.get(),
-                    ChocoConfig.COMMON.chocoboSpawnWeight.get(), ChocoConfig.COMMON.chocoboPackSizeMin.get(), ChocoConfig.COMMON.chocoboPackSizeMax.get()));
+            event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(),
+                    COMMON.chocoboSpawnWeight.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get()));
         }
     }
 
     public static void registerEntityAttributes(EntityAttributeCreationEvent event) {
-        event.put(ModEntities.CHOCOBO.get(), ChocoboEntity.createAttributes().build());
+        event.put(CHOCOBO.get(), createAttributes().build());
     }
 }

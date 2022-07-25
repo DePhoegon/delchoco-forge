@@ -6,6 +6,7 @@ import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
@@ -25,15 +26,15 @@ public enum ModArmorMaterial implements ArmorMaterial {
 	private final float knockbackResistance;
 	private final LazyLoadedValue<Ingredient> repairIngredient;
 
-	ModArmorMaterial(String p_40474_, int p_40475_, int[] p_40476_, int p_40477_, SoundEvent p_40478_, float p_40479_, float p_40480_, Supplier<Ingredient> p_40481_) {
-		this.name = p_40474_;
-		this.durabilityMultiplier = p_40475_;
-		this.slotProtections = p_40476_;
-		this.enchantmentValue = p_40477_;
-		this.sound = p_40478_;
-		this.toughness = p_40479_;
-		this.knockbackResistance = p_40480_;
-		this.repairIngredient = new LazyLoadedValue<>(p_40481_);
+	ModArmorMaterial(String pName, int pDurabilityMultiplier, int[] pSlotProtections, int pEnchantmentValue, SoundEvent soundEvent, float pToughness, float pKnockbackResistance, Supplier<Ingredient> pRepairIngredient) {
+		this.name = pName;
+		this.durabilityMultiplier = pDurabilityMultiplier;
+		this.slotProtections = pSlotProtections;
+		this.enchantmentValue = pEnchantmentValue;
+		this.sound = soundEvent;
+		this.toughness = pToughness;
+		this.knockbackResistance = pKnockbackResistance;
+		this.repairIngredient = new LazyLoadedValue<>(pRepairIngredient);
 	}
 
 	public int getDurabilityForSlot(EquipmentSlot p_40484_) {
@@ -48,15 +49,15 @@ public enum ModArmorMaterial implements ArmorMaterial {
 		return this.enchantmentValue;
 	}
 
-	public SoundEvent getEquipSound() {
+	public @NotNull SoundEvent getEquipSound() {
 		return this.sound;
 	}
 
-	public Ingredient getRepairIngredient() {
+	public @NotNull Ingredient getRepairIngredient() {
 		return this.repairIngredient.get();
 	}
 
-	public String getName() {
+	public @NotNull String getName() {
 		return this.name;
 	}
 

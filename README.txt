@@ -30,3 +30,5 @@ I can produce a depenancy free version (from my mod), but it will still require
 -JEI (for now, just bad book in it atm)
 -Configured (just highly suggested)
 -Patchouli (Guide Book)  - Not yet put in.
+
+Naming Now works Correctly, and  So does the stat screen

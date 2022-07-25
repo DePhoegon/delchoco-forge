@@ -1,0 +1,36 @@
+Removed Code/Files
+- ExperienceHandler.java
+- TexturedButtons.java
+- UpgradeChocoboMessage.java
+== ALl 3 removed because the ability system is being removed & reworked.  With special aiblities tied to the chocobo colors themselves
+
+-PacketManager.java
+== removal of Code relating to UpgradeMessages
+
+-ModRegistry.java
+-ModEntities.java
+== Cleanup of imports/name qualifiers.
+
+-Mod Containers
+== Spacing
+
+-ModArmorMaterial.java
+== annotations
+== naming anon objects for easier understanding.
+
+-LayerSaddle.java
+-LayerPlumage.java
+== Notes for later.
+
+-ChocopediaItem.java
+== Disabling of Chocopedia pages being opened.
+== Future removal Book, if stat screen can be put someplace else.
+
+-ChocoinfoScreen.java
+== Removal of Ability buttons & Hovers - Ability system being removed as it stands.
+== Fixed Drawing Overlay of Gender.
+
+-ChocoboEntity.java
+== Cleanup of imports/name qualifiers.
+== Fixed/Added The ability to Rename tamed Chocobo you own.
+== Added the ability to toggle Chocobos name once it is named.

@@ -12,11 +12,13 @@ import net.minecraft.resources.ResourceLocation;
 public class LayerPlumage extends RenderLayer<ChocoboEntity, AdultChocoboModel<ChocoboEntity>> {
 
 	private ResourceLocation PLUMAGE = new ResourceLocation(Chococraft.MOD_ID,"textures/entities/chocobos/plumage.png");
-	
+	//Insert ResourceLocations for Plumable Recolored for different colors
+
 	public LayerPlumage(RenderLayerParent<ChocoboEntity, AdultChocoboModel<ChocoboEntity>> rendererIn) {
 		super(rendererIn);
 	}
 
+	// Use logic to use different Plumage on tames opf different Colors
 	@Override
 	public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, ChocoboEntity chocoboEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 		if (chocoboEntity.isTame() && !chocoboEntity.isInvisible()) {

@@ -25,7 +25,7 @@ public class LayerSaddle extends RenderLayer<ChocoboEntity, AdultChocoboModel<Ch
 	public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, ChocoboEntity chocoboEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 		if(!chocoboEntity.isInvisible() && chocoboEntity.isSaddled()) {
 			ResourceLocation saddleTexture = null;
-
+			// Possible location for Renaming the Chocobos
 			ItemStack saddleStack = chocoboEntity.getSaddle();
 			if(!saddleStack.isEmpty()){
 				Item item = saddleStack.getItem();

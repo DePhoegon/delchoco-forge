@@ -18,8 +18,7 @@ Add parent check to some colors as alternates, breeding colors directly
 Added 7-23
 
 Investigate
-net.chococraft.common.handler.ExperienceHandler.java
-- Might be a starting point to removing cutting out 'leveling'/'unlocking' systems
+
 
 net.chococraft.common.entities.properties.ChocoboColor.java
 - Might be a link to tying abilities to colors
@@ -50,8 +49,4 @@ net.chococraft.client.gui.ChocoboInfoScreen.java
 
 net.chococraft.common.ChocoConfig.java
 - Config Values to Track down for removal [ No longer wanted/needed ]
-= public final IntValue ExpCostSprint [ line 37 ]
-= public final IntValue ExpCostGlide [ line 38 ]
-= public final IntValue ExpCostDive [ line 39 ]
-= public final IntValue ExpCostFly [ line 40 ]
 == Abilities aimed to be color bound, not unlockable.
