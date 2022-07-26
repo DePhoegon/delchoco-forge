@@ -1,30 +1,28 @@
 package net.chococraft.common.entities.breeding;
 
 import net.minecraft.nbt.CompoundTag;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
 public class ChocoboBreedInfo {
     public final static String NBTKEY_MOTHER_STATSNAPSHOT = "mother";
     public final static String NBTKEY_FATHER_STATSNAPSHOT = "father";
-
     private ChocoboStatSnapshot mother = ChocoboStatSnapshot.DEFAULT;
     private ChocoboStatSnapshot father = ChocoboStatSnapshot.DEFAULT;
 
     public ChocoboStatSnapshot getMother() {
         return this.mother;
     }
-
     public ChocoboStatSnapshot getFather() {
         return this.father;
     }
-
     public ChocoboBreedInfo(ChocoboStatSnapshot mother, ChocoboStatSnapshot father) {
         this.mother = mother;
         this.father = father;
     }
 
-    public ChocoboBreedInfo(CompoundTag nbt) {
+    public ChocoboBreedInfo(@NotNull CompoundTag nbt) {
         if (nbt.contains(NBTKEY_MOTHER_STATSNAPSHOT))
             this.mother = new ChocoboStatSnapshot(nbt.getCompound(NBTKEY_MOTHER_STATSNAPSHOT));
         if (nbt.contains(NBTKEY_FATHER_STATSNAPSHOT))

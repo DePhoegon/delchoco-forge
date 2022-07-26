@@ -1,0 +1,36 @@
+ChocoboEntity.java
+- Code cleanup (Not done yet)
+- Removed Abilities Fly, Dive
+- Sprint is in all Chocobos
+- Glide is in all Chocobos
+-- Stamina costs can matter.
+- Removed NBTKEYS
+= Glide, Fly, Dive, Sprint
+- Added NBTKEY
+= FlameBlood
+== Is set to true for flame chocobos @spawning.
+== Is passed down from parent to child.
+== Immune to fire/Lava
+
+ChocoboStatSnapshot.java
+- Removal of NBT (put & get), Boolean & NBTKEY objects
+= Sprint, Glide, Dive, Fly
+- Added NBT (put & get), Boolen & NBTKEY object
+= Flameblood
+
+ChocoboCommand.java
+-Removal mappings, send/recieve lists
+= Sprint, Glide, Dive, Fly
+
+ChocoboBreedingInfo.java
+-Code cleanup
+-Code Annotation
+
+BreedingHelper.java
+-Code Cleanup (not done yet)
+-Code Annotation (not done yet)
+-refactored
+= line 23 [ public static ChocoboEntity createChild() ]
+== Replaced Breeding logic entirely
+== Can obtain with reasonable luck every color.
+== passes Flameblood down to egg if either parent has it.

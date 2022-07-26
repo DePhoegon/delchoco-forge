@@ -15,15 +15,15 @@ There are many changes coming, and some visual rework on other things.
 I can provide an updated version of it, if requested.  It is 'stable' with 1 known (to me) bug around taking packs/bags off the chocobos without emptying their items inventory first.  This will take time to figure out & may not be sorted easily (still learning my way around all the forge, java, & MC silliness.
 
 Future plans around chocobos
-- Access to each of the chocobos
 - Reworking what each chocobo has
 - Reworking where they can spawn
-- Reworking their Breeding.
 
 Some future updates to be hand.
 
-https://www.curseforge.com/minecraft/mc-mods/dephoegons-chocobos   (assuming it ever gets approved, because I can't write a description to save my life for it)
+https://www.curseforge.com/minecraft/mc-mods/dephoegons-chocobos
 https://www.curseforge.com/minecraft/mc-mods/dephoegons-reclaim
+https://www.curseforge.com/minecraft/modpacks/dephoegons-isles   - Waiting on approval
+-- Is a modpack meant around chocobos, exploration, Horses, & Llamas, and decoration around larger animal stall style building.
 -This is the main mod it will 'require', future plans will call for blocks that exist within this mod.
 
 I can produce a depenancy free version (from my mod), but it will still require

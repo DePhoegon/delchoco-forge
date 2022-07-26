@@ -8,26 +8,22 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class ChocoboStatSnapshot {
     public static final ChocoboStatSnapshot DEFAULT;
     public static final String NBTKEY_GENERATION = "Generation";
     public static final String NBTKEY_HEALTH = "Health";
     public static final String NBTKEY_SPEED = "Speed";
     public static final String NBTKEY_STAMINA = "Stamina";
-    public static final String NBTKEY_CAN_SPRINT = "CanSprint";
-    public static final String NBTKEY_CAN_GLIDE = "CanGlide";
-    public static final String NBTKEY_CAN_DIVE = "CanDive";
-    public static final String NBTKEY_CAN_FLY = "CanFly";
     public static final String NBTKEY_COLOR = "Color";
+    public static final String NBTKEY_FLAME_BLOOD = "FlameBlood";
 
     public int generation;
     public float health;
     public float speed;
     public float stamina;
-    public boolean canSprint;
-    public boolean canGlide;
-    public boolean canDive;
-    public boolean canFly;
+    public boolean flameBlood;
     public ChocoboColor color;
 
     static {
@@ -36,11 +32,7 @@ public class ChocoboStatSnapshot {
         DEFAULT.health = ChocoConfig.COMMON.defaultHealth.get();
         DEFAULT.stamina = ChocoConfig.COMMON.defaultStamina.get();
         DEFAULT.speed = ChocoConfig.COMMON.defaultSpeed.get() / 100f;
-
-        DEFAULT.canSprint = false;
-        DEFAULT.canGlide = false;
-        DEFAULT.canDive = false;
-        DEFAULT.canFly = false;
+        DEFAULT.flameBlood = false;
         DEFAULT.color = ChocoboColor.YELLOW;
     }
 
@@ -49,14 +41,10 @@ public class ChocoboStatSnapshot {
 
     public ChocoboStatSnapshot(@NotNull ChocoboEntity chocobo) {
         this.generation = chocobo.getGeneration();
-        this.health = (float) chocobo.getAttribute(Attributes.MAX_HEALTH).getBaseValue();
-        this.speed = (float) chocobo.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue();
-        this.stamina = (float) chocobo.getAttribute(ModAttributes.MAX_STAMINA.get()).getBaseValue();
-
-        this.canSprint = chocobo.canSprint();
-        this.canGlide = chocobo.canGlide();
-        this.canDive = chocobo.canDive();
-        this.canFly = chocobo.canFly();
+        this.health = (float) Objects.requireNonNull(chocobo.getAttribute(Attributes.MAX_HEALTH)).getBaseValue();
+        this.speed = (float) Objects.requireNonNull(chocobo.getAttribute(Attributes.MOVEMENT_SPEED)).getBaseValue();
+        this.stamina = (float) Objects.requireNonNull(chocobo.getAttribute(ModAttributes.MAX_STAMINA.get())).getBaseValue();
+        this.flameBlood = chocobo.isFlame();
         this.color = chocobo.getChocoboColor();
     }
 
@@ -65,11 +53,7 @@ public class ChocoboStatSnapshot {
         this.health = nbt.getFloat(NBTKEY_HEALTH);
         this.speed = nbt.getFloat(NBTKEY_SPEED);
         this.stamina = nbt.getFloat(NBTKEY_STAMINA);
-
-        this.canSprint = nbt.getBoolean(NBTKEY_CAN_SPRINT);
-        this.canGlide = nbt.getBoolean(NBTKEY_CAN_GLIDE);
-        this.canDive = nbt.getBoolean(NBTKEY_CAN_DIVE);
-        this.canFly = nbt.getBoolean(NBTKEY_CAN_FLY);
+        this.flameBlood = nbt.getBoolean(NBTKEY_FLAME_BLOOD);
         this.color = ChocoboColor.values()[nbt.getByte(NBTKEY_COLOR)];
     }
 
@@ -79,11 +63,7 @@ public class ChocoboStatSnapshot {
         nbt.putFloat(NBTKEY_HEALTH, this.health);
         nbt.putFloat(NBTKEY_SPEED, this.speed);
         nbt.putFloat(NBTKEY_STAMINA, this.stamina);
-
-        nbt.putBoolean(NBTKEY_CAN_FLY, this.canFly);
-        nbt.putBoolean(NBTKEY_CAN_GLIDE, this.canGlide);
-        nbt.putBoolean(NBTKEY_CAN_SPRINT, this.canSprint);
-        nbt.putBoolean(NBTKEY_CAN_DIVE, this.canDive);
+        nbt.putBoolean(NBTKEY_FLAME_BLOOD, this.flameBlood);
         nbt.putByte(NBTKEY_COLOR, (byte) this.color.ordinal());
         return nbt;
     }

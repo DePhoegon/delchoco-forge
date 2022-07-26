@@ -34,15 +34,7 @@ public class ChocoboCommand {
                     .then(Commands.literal("speed").then(Commands.argument("value", FloatArgumentType.floatArg(0))).executes((ctx) ->
                         setAttribute(ctx, "speed", String.valueOf(FloatArgumentType.getFloat(ctx, "value")))))
                     .then(Commands.literal("stamina").then(Commands.argument("value", FloatArgumentType.floatArg(0))).executes((ctx) ->
-                        setAttribute(ctx, "stamina", String.valueOf(FloatArgumentType.getFloat(ctx, "value")))))
-                    .then(Commands.literal("sprint").then(Commands.argument("value", BoolArgumentType.bool())).executes((ctx) ->
-                        setAttribute(ctx, "sprint", String.valueOf(BoolArgumentType.getBool(ctx, "value")))))
-                    .then(Commands.literal("dive").then(Commands.argument("value", BoolArgumentType.bool())).executes((ctx) ->
-                        setAttribute(ctx, "dive", String.valueOf(BoolArgumentType.getBool(ctx, "value")))))
-                    .then(Commands.literal("glide").then(Commands.argument("value", BoolArgumentType.bool())).executes((ctx) ->
-                        setAttribute(ctx, "glide", String.valueOf(BoolArgumentType.getBool(ctx, "value")))))
-                    .then(Commands.literal("fly").then(Commands.argument("value", BoolArgumentType.bool())).executes((ctx) ->
-                        setAttribute(ctx, "fly", String.valueOf(BoolArgumentType.getBool(ctx, "value"))))));
+                        setAttribute(ctx, "stamina", String.valueOf(FloatArgumentType.getFloat(ctx, "value"))))));
         dispatcher.register(root);
     }
 
@@ -56,11 +48,6 @@ public class ChocoboCommand {
         setMap.put("resistance", (entity, arg) -> entity.getAttribute(Attributes.ARMOR).setBaseValue(Float.parseFloat(arg)));
         setMap.put("speed", (entity, arg) -> entity.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(Float.parseFloat(arg)));
         setMap.put("stamina", (entity, arg) -> entity.getAttribute(ModAttributes.MAX_STAMINA.get()).setBaseValue(Float.parseFloat(arg)));
-
-        setMap.put("sprint", (entity, arg) -> entity.setCanSprint(Boolean.parseBoolean(arg)));
-        setMap.put("dive", (entity, arg) -> entity.setCanDive(Boolean.parseBoolean(arg)));
-        setMap.put("glide", (entity, arg) -> entity.setCanGlide(Boolean.parseBoolean(arg)));
-        setMap.put("fly", (entity, arg) -> entity.setCanFly(Boolean.parseBoolean(arg)));
     }
 
 
@@ -77,11 +64,6 @@ public class ChocoboCommand {
                 source.sendSuccess(getText("get_resistance", chocobo, Attributes.ARMOR), false);
                 source.sendSuccess(getText("get_speed", chocobo, Attributes.MOVEMENT_SPEED), false);
                 source.sendSuccess(getText("get_stamina", chocobo, ModAttributes.MAX_STAMINA.get()), false);
-
-                source.sendSuccess(getText("sprint", chocobo.canSprint()), false);
-                source.sendSuccess(getText("dive", chocobo.canDive()), false);
-                source.sendSuccess(getText("glide", chocobo.canGlide()), false);
-                source.sendSuccess(getText("fly", chocobo.canFly()), false);
             }
         }
 

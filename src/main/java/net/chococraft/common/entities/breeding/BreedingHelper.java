@@ -12,101 +12,88 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
+import static java.lang.Math.*;
+import static net.chococraft.common.ChocoConfig.COMMON;
 import static net.minecraft.world.level.block.Blocks.*;
 
 public class BreedingHelper {
 
-    public static ChocoboBreedInfo getBreedInfo(ChocoboEntity mother, ChocoboEntity father) {
-        return new ChocoboBreedInfo(new ChocoboStatSnapshot(mother), new ChocoboStatSnapshot(father));
-    }
-
     public static ChocoboEntity createChild(ChocoboBreedInfo breedInfo, Level world) {
         final ChocoboEntity baby = ModEntities.CHOCOBO.get().create(world);
-        if (baby == null) {
-            return null;
-        }
+        if (baby == null) { return null; }
 
         final ChocoboStatSnapshot mother = breedInfo.getMother();
         final ChocoboStatSnapshot father = breedInfo.getFather();
 
         baby.setGeneration(((mother.generation + father.generation) / 2) + 1);
 
-        float health = Math.round(((mother.health + father.health) / 2) * (ChocoConfig.COMMON.poslossHealth.get().floatValue() + ((float) Math.random() * ChocoConfig.COMMON.posgainHealth.get().floatValue())));
-        baby.getAttribute(Attributes.MAX_HEALTH).setBaseValue(Math.min(health, ChocoConfig.COMMON.maxHealth.get().floatValue()));
+        float health = round(((mother.health + father.health) / 2) * (COMMON.poslossHealth.get().floatValue() + ((float) random() * COMMON.posgainHealth.get().floatValue())));
+        Objects.requireNonNull(baby.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(min(health, COMMON.maxHealth.get().floatValue()));
 
-        float speed = ((mother.speed + father.speed) / 2f) * (ChocoConfig.COMMON.poslossSpeed.get().floatValue() + ((float) Math.random() * ChocoConfig.COMMON.posgainSpeed.get().floatValue()));
-        baby.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(Math.min(speed, (ChocoConfig.COMMON.maxSpeed.get().floatValue() / 100f)));
+        float speed = ((mother.speed + father.speed) / 2f) * (COMMON.poslossSpeed.get().floatValue() + ((float) random() * COMMON.posgainSpeed.get().floatValue()));
+        Objects.requireNonNull(baby.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(min(speed, (COMMON.maxSpeed.get().floatValue() / 100f)));
 
-        float stamina = Math.round((mother.stamina + father.stamina) / 2) * (ChocoConfig.COMMON.poslossStamina.get().floatValue() + ((float) Math.random() * ChocoConfig.COMMON.posgainStamina.get().floatValue()));
-        baby.getAttribute(ModAttributes.MAX_STAMINA.get()).setBaseValue(Math.min(stamina, ChocoConfig.COMMON.maxStamina.get().floatValue()));
+        float stamina = round((mother.stamina + father.stamina) / 2) * (COMMON.poslossStamina.get().floatValue() + ((float) random() * COMMON.posgainStamina.get().floatValue()));
+        Objects.requireNonNull(baby.getAttribute(ModAttributes.MAX_STAMINA.get())).setBaseValue(min(stamina, COMMON.maxStamina.get().floatValue()));
 
         BlockPos centerBlock = null;
-        if (baby.getNestPosition() != null) {
-            centerBlock = baby.getNestPosition().below();
-        }
-        float canFlyChance = calculateChance(0.025f, 0.15f, 0.35f, mother.canFly, father.canFly);
-        float canflychancerandom = (float) Math.random();
-        if (centerBlock !=null) {
-            if (alter(GOLD_BLOCK.defaultBlockState(), HAY_BLOCK.defaultBlockState(), centerBlock, world)) {
-                canFlyChance = canFlyChance + .45f;
+        if (baby.getNestPosition() != null) { centerBlock = baby.getNestPosition().below(); }
+
+        ChocoboColor yellow = ChocoboColor.YELLOW;
+        ChocoboColor green = ChocoboColor.GREEN;
+        ChocoboColor blue = ChocoboColor.BLUE;
+        ChocoboColor white = ChocoboColor.WHITE;
+        ChocoboColor black = ChocoboColor.BLACK;
+        ChocoboColor gold = ChocoboColor.GOLD;
+        ChocoboColor pink = ChocoboColor.PINK;
+        ChocoboColor red = ChocoboColor.RED;
+        ChocoboColor purple = ChocoboColor.PURPLE;
+        ChocoboColor flame = ChocoboColor.FLAME;
+        ChocoboColor mColor = mother.color;
+        ChocoboColor fColor = father.color;
+        ChocoboColor bColor = eggColor(mColor, fColor, yellow, .03f);
+
+        if (mColor == yellow) {
+            if (fColor == yellow) {
+                int rng = (int)(random()*(100-1+1)+1);
+                if (rng < 25) { bColor = eggColor(mColor, fColor, yellow, .50f); }
+                else if (rng < 50) { bColor = eggColor(mColor, fColor, green, .50f); }
+                else if (rng < 75) { bColor = eggColor(mColor, fColor, blue, .50f); }
+                else { bColor = eggColor(mColor, fColor, white, .50f); }
             }
+            if (fColor == black) { bColor = eggColor(mColor, fColor, gold, .35f); }
         }
-        baby.setCanFly(canFlyChance > canflychancerandom);
-
-        float canDiveChance = calculateChance(0.05f, 0.20f, 0.40f, mother.canDive, father.canDive);
-        float candivechancerandom = (float) Math.random();
-        if (centerBlock !=null) {
-            if (alter(LAPIS_BLOCK.defaultBlockState(), HAY_BLOCK.defaultBlockState(), centerBlock, world)) {
-                canFlyChance = canFlyChance + .45f;
-            }
+        if (mColor == green) { if (fColor == blue) { bColor = eggColor(mColor,fColor, black, .40f); } }
+        if (mColor == blue) {
+            if (fColor == red) { bColor = eggColor(mColor, fColor, purple, .40f); }
+            if (fColor == green) { bColor = eggColor(mColor, fColor, black, .40f); }
         }
-        baby.setCanDive(canDiveChance > candivechancerandom);
-
-        float canGlideChance = calculateChance(0.05f, 0.20f, 0.45f, mother.canGlide, father.canGlide);
-        float canglidechancerandom = (float) Math.random();
-        if (centerBlock !=null) {
-            if (alter(BONE_BLOCK.defaultBlockState(), HAY_BLOCK.defaultBlockState(), centerBlock, world)) {
-                canFlyChance = canFlyChance + .45f;
-            }
+        if (mColor == white) {
+            if (fColor == flame) { bColor = eggColor(mColor, fColor, red, .60f); }
+            if (fColor == red) { bColor = eggColor(mColor, fColor, pink, .50f); }
         }
-        baby.setCanGlide(canGlideChance > canglidechancerandom);
-
-        float canSprintChance = calculateChance(0.15f, 0.25f, 0.5f, mother.canSprint, father.canSprint);
-        float cansprintchancerandom = (float) Math.random();
-
-        if (centerBlock !=null) {
-            if (alter(EMERALD_BLOCK.defaultBlockState(), HAY_BLOCK.defaultBlockState(), centerBlock, world)) {
-                canFlyChance = canFlyChance + .45f;
-            }
+        if (mColor == black) { if (fColor == yellow) { bColor = eggColor(mColor, fColor, gold, .35f); } }
+        if (mColor == red) {
+            if (fColor == white) { bColor = eggColor(mColor, fColor, pink, .50f); }
+            if (fColor == blue) { bColor = eggColor(mColor, fColor, purple, .40f); }
         }
-        baby.setCanSprint(canSprintChance > cansprintchancerandom);
+        if (mColor == flame) { if (fColor == white) { bColor = eggColor(mColor, fColor, red, .60f); } }
 
-        baby.setMale(.50f > (float) Math.random());
-
-        ChocoboColor color = ChocoboColor.YELLOW;
-
-        if (mother.color == ChocoboColor.FLAME && father.color == ChocoboColor.FLAME) {
-            color = ChocoboColor.FLAME;
-        } else if (canFlyChance > canflychancerandom) {
-            color = ChocoboColor.GOLD;
-        } else if (canDiveChance > candivechancerandom) {
-            color = ChocoboColor.BLUE;
-        } else if (canGlideChance > canglidechancerandom) {
-            color = ChocoboColor.WHITE;
-        } else if (canSprintChance > cansprintchancerandom) {
-            color = ChocoboColor.GREEN;
-        }
-        // BLACK PINK RED PURPLE ?
-
-        baby.setChocoboColor(color);
+        baby.setMale(.50f > (float) random());
+        baby.setChocoboColor(bColor);
+        if (mother.flameBlood || father.flameBlood) { baby.setIsFlame(true); }
 
         baby.setAge(-2000);
 
         return baby;
     }
 
-    private static float calculateChance(float baseChance, float perParentChance, float bothParentsChance, boolean motherHasAbility, boolean fatherHasAbility) {
-        return baseChance + (motherHasAbility || fatherHasAbility ? perParentChance : 0) + (motherHasAbility && fatherHasAbility ? bothParentsChance : 0);
+    private static ChocoboColor eggColor(ChocoboColor mother, ChocoboColor father, ChocoboColor baby, float chance) {
+        boolean newColor = chance > Math.random();
+        if (newColor) { return baby; }
+        else return .50f > Math.random() ? mother : father;
     }
     private static boolean alter(BlockState centerDefaultBlockstate, BlockState NEWS_blockstate, BlockPos centerPos, @NotNull Level world) {
         if (world.getBlockState(centerPos).getBlock().defaultBlockState() == centerDefaultBlockstate && world.getBlockState(centerPos.north()).getBlock().defaultBlockState() == NEWS_blockstate && world.getBlockState(centerPos.south()).getBlock().defaultBlockState() == NEWS_blockstate && world.getBlockState(centerPos.east()).getBlock().defaultBlockState() == NEWS_blockstate && world.getBlockState(centerPos.west()).getBlock().defaultBlockState() == NEWS_blockstate) {

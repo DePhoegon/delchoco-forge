@@ -19,19 +19,7 @@ Added 7-23
 
 Investigate
 
-
-net.chococraft.common.entities.properties.ChocoboColor.java
-- Might be a link to tying abilities to colors
-- will link to every type of chocobo in some way.
-
-net.chococraft.common.entities.breeding.BreedingHelper.java
-- Start looking here to redo breeding rules
-
 net.chococraft.common.entities.ChocoboEntity.java
-- Line 246 [ public boolean fireImmune() ]
-= FireImmunity section.
-== Returns true if Fire immune
-= Consider Purple & Gold for this section.
 - line 181 [ public SpawnGroupData finalizeSpawn() ]
 = Ability to set color of chocobo based on logic, can use biomeCategory.
 - Line 558 [ public void aiStep() ]
@@ -47,6 +35,7 @@ net.chococraft.client.gui.ChocoboInfoScreen.java
 = Work this into something other than 'That Chocopedia'
 == Book still shows abilities, but no overlay/interaction with ability buttons (A+)
 
-net.chococraft.common.ChocoConfig.java
-- Config Values to Track down for removal [ No longer wanted/needed ]
-== Abilities aimed to be color bound, not unlockable.
+Added 7-25/7-26
+Critical -
+Address Chocobo Iventory
+--reDesign.

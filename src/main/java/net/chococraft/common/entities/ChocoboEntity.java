@@ -16,12 +16,10 @@ import net.chococraft.common.network.packets.OpenChocoboGuiMessage;
 import net.chococraft.utils.RandomHelper;
 import net.chococraft.utils.WorldUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -38,30 +36,15 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -76,14 +59,10 @@ import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.PacketDistributor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
-import org.jline.utils.Log;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.Console;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -103,15 +82,9 @@ public class ChocoboEntity extends TamableAnimal {
     private static final String NBTKEY_NEST_POSITION = "NestPos";
     private static final String NBTKEY_CHOCOBO_GENERATION = "Generation";
     private static final String NBTKEY_CHOCOBO_STAMINA = "Stamina";
-    private static final String NBTKEY_CHOCOBO_CAN_FLY = "CanFly";
-    private static final String NBTKEY_CHOCOBO_CAN_GLIDE = "CanGlide";
-    private static final String NBTKEY_CHOCOBO_CAN_SPRINT = "CanSprint";
-    private static final String NBTKEY_CHOCOBO_CAN_DIVE = "CanDive";
+    private static final String NBTKEY_CHOCOBO_FLAME_BLOOD = "FlameBlood";
 
-    private static final byte CAN_SPRINT_BIT = 0b0001;
-    private static final byte CAN_DIVE_BIT = 0b0010;
-    private static final byte CAN_GLIDE_BIT = 0b0100;
-    private static final byte CAN_FLY_BIT = 0b1000;
+    private static final byte IS_FLAME_BLOOD = 0b1001;
 
     private static final EntityDataAccessor<ChocoboColor> PARAM_COLOR = SynchedEntityData.defineId(ChocoboEntity.class, ModDataSerializers.CHOCOBO_COLOR);
     private static final EntityDataAccessor<Boolean> PARAM_IS_MALE = SynchedEntityData.defineId(ChocoboEntity.class, EntityDataSerializers.BOOLEAN);
@@ -186,11 +159,12 @@ public class ChocoboEntity extends TamableAnimal {
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor worldIn, @NotNull DifficultyInstance difficultyIn, @NotNull MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setMale(this.level.random.nextBoolean());
         final Holder<Biome> currentBiome = this.level.getBiome(blockPosition().below());
         if (getBiomeCategory(currentBiome) == Biome.BiomeCategory.NETHER) {
             this.setChocoboColor(ChocoboColor.FLAME);
+            this.setIsFlame(true);
         }
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
@@ -201,26 +175,17 @@ public class ChocoboEntity extends TamableAnimal {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
+    public void readAdditionalSaveData(@NotNull CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setChocoboColor(ChocoboColor.values()[compound.getByte(NBTKEY_CHOCOBO_COLOR)]);
         this.setMale(compound.getBoolean(NBTKEY_CHOCOBO_IS_MALE));
         this.setMovementType(MovementType.values()[compound.getByte(NBTKEY_MOVEMENTTYPE)]);
         this.saddleItemStackHandler.deserializeNBT(compound.getCompound(NBTKEY_SADDLE_ITEM));
-
-        if (!getSaddle().isEmpty())
-            this.chocoboInventory.deserializeNBT(compound.getCompound(NBTKEY_INVENTORY));
-
-        if (compound.contains(NBTKEY_NEST_POSITION))
-            this.nestPos = NbtUtils.readBlockPos(compound.getCompound(NBTKEY_NEST_POSITION));
-
+        if (!getSaddle().isEmpty()) { this.chocoboInventory.deserializeNBT(compound.getCompound(NBTKEY_INVENTORY)); }
+        if (compound.contains(NBTKEY_NEST_POSITION)) { this.nestPos = NbtUtils.readBlockPos(compound.getCompound(NBTKEY_NEST_POSITION)); }
         this.setGeneration(compound.getInt(NBTKEY_CHOCOBO_GENERATION));
         this.setStamina(compound.getFloat(NBTKEY_CHOCOBO_STAMINA));
-
-        this.setCanFly(compound.getBoolean(NBTKEY_CHOCOBO_CAN_FLY));
-        this.setCanGlide(compound.getBoolean(NBTKEY_CHOCOBO_CAN_GLIDE));
-        this.setCanSprint(compound.getBoolean(NBTKEY_CHOCOBO_CAN_SPRINT));
-        this.setCanDive(compound.getBoolean(NBTKEY_CHOCOBO_CAN_DIVE));
+        this.setIsFlame(compound.contains(NBTKEY_CHOCOBO_FLAME_BLOOD));
 
     }
 
@@ -231,60 +196,25 @@ public class ChocoboEntity extends TamableAnimal {
         compound.putBoolean(NBTKEY_CHOCOBO_IS_MALE, this.isMale());
         compound.putByte(NBTKEY_MOVEMENTTYPE, (byte) this.getMovementType().ordinal());
         compound.put(NBTKEY_SADDLE_ITEM, this.saddleItemStackHandler.serializeNBT());
-
-        if (!getSaddle().isEmpty())
-            compound.put(NBTKEY_INVENTORY, this.chocoboInventory.serializeNBT());
-
-        if (this.nestPos != null)
-            compound.put(NBTKEY_NEST_POSITION, NbtUtils.writeBlockPos(this.nestPos));
-
-
+        if (!getSaddle().isEmpty()) { compound.put(NBTKEY_INVENTORY, this.chocoboInventory.serializeNBT()); }
+        if (this.nestPos != null) { compound.put(NBTKEY_NEST_POSITION, NbtUtils.writeBlockPos(this.nestPos)); }
         compound.putInt(NBTKEY_CHOCOBO_GENERATION, this.getGeneration());
         compound.putFloat(NBTKEY_CHOCOBO_STAMINA, this.getStamina());
-
-        compound.putBoolean(NBTKEY_CHOCOBO_CAN_FLY, this.canFly());
-        compound.putBoolean(NBTKEY_CHOCOBO_CAN_GLIDE, this.canGlide());
-        compound.putBoolean(NBTKEY_CHOCOBO_CAN_SPRINT, this.canSprint());
-        compound.putBoolean(NBTKEY_CHOCOBO_CAN_DIVE, this.canDive());
+        compound.putBoolean(NBTKEY_CHOCOBO_FLAME_BLOOD, this.isFlame());
     }
 
-    public ChocoboColor getChocoboColor() {
-        return this.entityData.get(PARAM_COLOR);
-    }
-
+    public ChocoboColor getChocoboColor() { return this.entityData.get(PARAM_COLOR); }
     public void setChocoboColor(ChocoboColor color) {
         this.entityData.set(PARAM_COLOR, color);
     }
-
     @Override
-    public boolean fireImmune() {
-        return getChocoboColor() == ChocoboColor.FLAME;
-    }
-
-    public boolean isMale() {
-        return this.entityData.get(PARAM_IS_MALE);
-    }
-
-    public void setMale(boolean isMale) {
-        this.entityData.set(PARAM_IS_MALE, isMale);
-    }
-
-    public MovementType getMovementType() {
-        return this.entityData.get(PARAM_MOVEMENT_TYPE);
-    }
-
-    public void setMovementType(MovementType type) {
-        this.entityData.set(PARAM_MOVEMENT_TYPE, type);
-    }
-
-    public boolean isSaddled() {
-        return !this.getSaddle().isEmpty();
-    }
-
-    public ItemStack getSaddle() {
-        return this.entityData.get(PARAM_SADDLE_ITEM);
-    }
-
+    public boolean fireImmune() { return this.isFlame(); }
+    public boolean isMale() { return this.entityData.get(PARAM_IS_MALE); }
+    public void setMale(boolean isMale) { this.entityData.set(PARAM_IS_MALE, isMale); }
+    public MovementType getMovementType() { return this.entityData.get(PARAM_MOVEMENT_TYPE); }
+    public void setMovementType(MovementType type) { this.entityData.set(PARAM_MOVEMENT_TYPE, type); }
+    public boolean isSaddled() { return !this.getSaddle().isEmpty(); }
+    public ItemStack getSaddle() { return this.entityData.get(PARAM_SADDLE_ITEM); }
     private void setSaddleType(ItemStack saddleStack) {
         ItemStack newStack = saddleStack;
         ItemStack oldStack = getSaddle();
@@ -311,26 +241,11 @@ public class ChocoboEntity extends TamableAnimal {
     }
 
     //region Chocobo statistics getter/setter
-    public float getStamina() {
-        return this.entityData.get(PARAM_STAMINA);
-    }
-
-    public void setStamina(float value) {
-        this.entityData.set(PARAM_STAMINA, value);
-    }
-
-    public float getStaminaPercentage() {
-        return (float) (this.getStamina() / this.getAttribute(ModAttributes.MAX_STAMINA.get()).getValue());
-    }
-
-    public int getGeneration() {
-        return this.entityData.get(PARAM_GENERATION);
-    }
-
-    public void setGeneration(int value) {
-        this.entityData.set(PARAM_GENERATION, value);
-    }
-
+    public float getStamina() { return this.entityData.get(PARAM_STAMINA); }
+    public void setStamina(float value) { this.entityData.set(PARAM_STAMINA, value); }
+    public float getStaminaPercentage() { return (float) (this.getStamina() / this.getAttribute(ModAttributes.MAX_STAMINA.get()).getValue()); }
+    public int getGeneration() { return this.entityData.get(PARAM_GENERATION); }
+    public void setGeneration(int value) { this.entityData.set(PARAM_GENERATION, value); }
     private boolean useStamina(float value) {
         if (value == 0) return true;
         float curStamina = this.entityData.get(PARAM_STAMINA);
@@ -341,39 +256,8 @@ public class ChocoboEntity extends TamableAnimal {
         this.entityData.set(PARAM_STAMINA, newStamina);
         return true;
     }
-
-    public boolean canFly() {
-        return (this.entityData.get(PARAM_ABILITY_MASK) & CAN_FLY_BIT) > 0;
-    }
-
-    public void setCanFly(boolean state) {
-        this.setAbilityMaskBit(CAN_FLY_BIT, state);
-    }
-
-    public boolean canGlide() {
-        return (this.entityData.get(PARAM_ABILITY_MASK) & CAN_GLIDE_BIT) > 0;
-    }
-
-    public void setCanGlide(boolean state) {
-        this.setAbilityMaskBit(CAN_GLIDE_BIT, state);
-    }
-
-    public boolean canSprint() {
-        return (this.entityData.get(PARAM_ABILITY_MASK) & CAN_SPRINT_BIT) > 0;
-    }
-
-    public void setCanSprint(boolean state) {
-        this.setAbilityMaskBit(CAN_SPRINT_BIT, state);
-    }
-
-    public boolean canDive() {
-        return (this.entityData.get(PARAM_ABILITY_MASK) & CAN_DIVE_BIT) > 0;
-    }
-
-    public void setCanDive(boolean state) {
-        this.setAbilityMaskBit(CAN_DIVE_BIT, state);
-    }
-
+    public void setIsFlame(boolean state) { this.setAbilityMaskBit(IS_FLAME_BLOOD, state); }
+    public boolean isFlame() { return (this.entityData.get(PARAM_ABILITY_MASK) & IS_FLAME_BLOOD) > 0; }
     private void setAbilityMaskBit(int bit, boolean state) {
         int value = this.entityData.get(PARAM_ABILITY_MASK);
         this.entityData.set(PARAM_ABILITY_MASK, (byte) (state ? value | bit : value & ~bit));
@@ -381,19 +265,11 @@ public class ChocoboEntity extends TamableAnimal {
     //endregion
 
     @Override
-    public double getPassengersRidingOffset() {
-        return 1.65D;
-    }
-
+    public double getPassengersRidingOffset() { return 1.65D; }
     @Override
-    public boolean canBeRiddenInWater(Entity rider) {
-        return true;
-    }
-
+    public boolean canBeRiddenInWater(Entity rider) { return true; }
     @Nullable
-    public Entity getControllingPassenger() {
-        return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
-    }
+    public Entity getControllingPassenger() { return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0); }
 
     @Override
     protected boolean updateInWaterStateAndDoFluidPushing() {
@@ -441,72 +317,35 @@ public class ChocoboEntity extends TamableAnimal {
             if (this.onGround)
                 this.isChocoboJumping = false;
 
-            if ((this.canGlide() || this.canFly()) && (!rider.isInWater())) {
-                this.flyingSpeed = .07f;
-            } else {
-                if ((rider.isInWater()) || (!this.canGlide() && !this.canFly())) {
-                    this.flyingSpeed = .05f;
-                }
-            }
-
             if (this.isControlledByLocalInstance()) {
                 if (Minecraft.getInstance().options.keyJump.isDown()) {
-                    if (rider.isSprinting() && this.canFly() && !rider.isInWater() && this.useStamina(COMMON.flyStaminaCost.get().floatValue())) {
-                        // flight logic
+                    // jump logic
+                    if (!this.isChocoboJumping && this.onGround && this.useStamina(COMMON.jumpStaminaCost.get().floatValue())) {
                         Vec3 motion = getDeltaMovement();
-                        double groundValue = this.onGround ? .5F : .1F;
-                        setDeltaMovement(new Vec3(motion.x, motion.y + groundValue, motion.z));
-                        if (getDeltaMovement().y > 0.5f)
-                            setDeltaMovement(new Vec3(motion.x, 0.5f, motion.z));
-
-                        this.setSprinting(false);
-                    } else {
-                        // jump logic
-                        if (!this.isChocoboJumping && this.onGround && this.useStamina(COMMON.jumpStaminaCost.get().floatValue())) {
-                            Vec3 motion = getDeltaMovement();
-                            setDeltaMovement(new Vec3(motion.x, .6f, motion.z));
-                            this.isChocoboJumping = true;
-                        }
+                        setDeltaMovement(new Vec3(motion.x, .6f, motion.z));
+                        this.isChocoboJumping = true;
                     }
                 }
 
                 if (rider.isInWater()) {
                     Vec3 motion = getDeltaMovement();
-                    if (this.canDive()) {
-                        if (rider.isShiftKeyDown()) {
-                            setDeltaMovement(new Vec3(motion.x, motion.y - 0.05f, motion.z));
-                            if (this.getDeltaMovement().y < -0.7f)
-                                setDeltaMovement(new Vec3(motion.x, 0.7f, motion.z));
-                        }
-
-                        if (Minecraft.getInstance().options.keyJump.isDown()) {
-                            setDeltaMovement(new Vec3(motion.x, .5f, motion.z));
-                        }
-
-                        this.wasTouchingWater = false;
-                        this.setSprinting(false);
-                    } else {
-                        if (Minecraft.getInstance().options.keyJump.isDown()) {
-                            setDeltaMovement(new Vec3(motion.x, .5f, motion.z));
-                        } else if (this.getDeltaMovement().y < 0) {
-                            int distance = WorldUtils.getDistanceToSurface(this.blockPosition(), this.getCommandSenderWorld());
-                            if (distance > 0)
-                                setDeltaMovement(new Vec3(motion.x, .01f + Math.min(0.05f * distance, 0.7), motion.z));
-                        }
+                    if (Minecraft.getInstance().options.keyJump.isDown()) {
+                        setDeltaMovement(new Vec3(motion.x, .5f, motion.z));
+                    } else if (this.getDeltaMovement().y < 0) {
+                        int distance = WorldUtils.getDistanceToSurface(this.blockPosition(), this.getCommandSenderWorld());
+                        if (distance > 0)
+                            setDeltaMovement(new Vec3(motion.x, .01f + Math.min(0.05f * distance, 0.7), motion.z));
                     }
                 }
-
-                if (!this.onGround && !this.isInWater() && !rider.isShiftKeyDown() && this.getDeltaMovement().y < 0 && this.canGlide() &&
+                // Insert override for slowfall Option on Chocobo
+                if (!this.onGround && !this.isInWater() && !rider.isShiftKeyDown() && this.getDeltaMovement().y < 0 &&
                         this.useStamina(COMMON.glideStaminaCost.get().floatValue())) {
                     Vec3 motion = getDeltaMovement();
                     setDeltaMovement(new Vec3(motion.x, motion.y * 0.65F, motion.z));
                 }
 
                 if ((this.isSprinting() && !this.useStamina(COMMON.sprintStaminaCost.get().floatValue())) || (this.isSprinting() &&
-                        this.isInWater() && this.useStamina(COMMON.sprintStaminaCost.get().floatValue())) || (this.isSprinting() &&
-                        !this.canSprint() && this.useStamina(COMMON.sprintStaminaCost.get().floatValue()))) {
-                    this.setSprinting(false);
-                }
+                        this.isInWater() && this.useStamina(COMMON.sprintStaminaCost.get().floatValue()))) { this.setSprinting(false); }
 
                 this.setSpeed((float) this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
                 super.travel(newVector);
@@ -526,12 +365,10 @@ public class ChocoboEntity extends TamableAnimal {
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob mate) {
-        return null;
-    }
+    public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob mate) { return null; }
 
     @Override
-    public boolean canMate(Animal otherAnimal) {
+    public boolean canMate(@NotNull Animal otherAnimal) {
         if (otherAnimal == this || !(otherAnimal instanceof ChocoboEntity otherChocobo)) return false;
         if (!this.isInLove() || !otherAnimal.isInLove()) return false;
         return otherChocobo.isMale() != this.isMale();
@@ -546,7 +383,7 @@ public class ChocoboEntity extends TamableAnimal {
             attributeInstance.removeModifier(CHOCOBO_SPRINTING_SPEED_BOOST);
         }
 
-        if (sprinting && this.canSprint()) {
+        if (sprinting) {
             attributeInstance.addTransientModifier(CHOCOBO_SPRINTING_SPEED_BOOST);
         }
     }
@@ -593,15 +430,6 @@ public class ChocoboEntity extends TamableAnimal {
         if (!this.getCommandSenderWorld().isClientSide) {
             if (this.tickCount % 60 == 0)
             {
-                if (this.canDive()) {
-                    this.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 100, 0, true, false));
-                    if (this.isVehicle()) {
-                        Entity controller = this.getControllingPassenger();
-                        if (controller instanceof Player) {
-                            ((Player) controller).addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 100, 0, true, false));
-                        }
-                    }
-                }
                 if (this.getChocoboColor() == ChocoboColor.FLAME) {
                     this.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0, true, false));
                     if (this.isVehicle()) {
