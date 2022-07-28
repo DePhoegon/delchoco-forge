@@ -1,0 +1,52 @@
+-Failed Patchouli_books
+-- Unsure wtf is going on .
+
+Chocobo Inventory Addressed.
+- ChocoboEntity.java
+= Code cleanup
+= Made ItemStackHandler chocoboInventory a fixed size (45)
+= Created ItemStackHandler tierOneItemStackHandler as a fixed size (15)
+= Created ItemStackHandler tierTwoItemStackHandler as a fixed size (45)
+= Created ints  for above item handlers & for use of inventory sizes
+= used chocoboInventory as the backplane
+== synced the inventories on update (from any itemhandler inventory)
+== Used Slot adjusting to properly change address the correct slot from small to large
+== made chocoboInventory Explictedly call the sync to the small inventory.
+==== unexpected issues came from reassigning a slotadjust number.
+= made updates to saddleItemStackHandler
+== made return false on isItemValid
+=== prevents equipping it while the menu is open.
+~~ Intended to equip saddles & saddle bags/packs by right clicking the chocobo
+== made drop chocoboInventory as a hole on change.
+=== ensuring that no duplication & all 3 ItemStackHandlers empty out
+= Removed If (!getSaddle().isEmpty()) check for NBT save on chocoboInventory.
+== No need to not save it, as inventory size is not set
+= Removed reconfigureInventory()
+== Not needed in the slightest anymore.
+= Removed getSaddleCount()
+== Not needed anymore
+
+-ModRegistry.java
+= Changed 'Inventoryslots' in the saddlebags/pack
+== using ints in ChocoboEntity, to keep the count the same.
+
+-SaddleBagContainer.java
+= some code cleanup
+= refreshSLots() Addresed
+== enhanced switch used.
+== bindInventorySmall, now uses tierOneItemStackHandler
+== bindInventoryBig, now uses tierTwoItemStackHandler
+= Corrected bindInventorySmall() & bindInventoryBig()
+== redundant checks, now using int variable instead of coded there.
+
+- SlotChocoboSaddle.java
+= Is Slothandler for saddleslot inside the menus drawn up.
+== boolean mayPlace()
+~~~ Set to false, (prevents derpy interactions)
+~~~ Chocobos now require rightclicking with saddle/saddlebag/saddlepack in had to 'equip' them.
+
+
+Quirky Notes.
+-- If for some reason, The chocobo gets items stuck inside the inventory.
+--= Equipping it with any kind of saddle, will cause the inventory to drop.
+### Thematic reason, of it falling out of the feathers as you equip it's saddle when you click on it.

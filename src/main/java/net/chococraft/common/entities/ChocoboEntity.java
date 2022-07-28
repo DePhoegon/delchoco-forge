@@ -29,10 +29,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Containers;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -99,18 +96,67 @@ public class ChocoboEntity extends TamableAnimal {
     private static final AttributeModifier CHOCOBO_SPRINTING_SPEED_BOOST = (new AttributeModifier(CHOCOBO_SPRINTING_BOOST_ID, "Chocobo sprinting speed boost", 1, Operation.MULTIPLY_BASE));
 
     private AvoidEntityGoal chocoboAvoidPlayerGoal;
-    public final ItemStackHandler chocoboInventory = new ItemStackHandler() {
-        //Todo make it handle resizes
+    public static final int tier_one_chocobo_inv_slot_count = 15; // 3*5
+    public static final int tier_two_chocobo_inv_slot_count = 45; //5*9
+    private final int top_tier_chocobo_inv_slot_count = tier_two_chocobo_inv_slot_count;
+    public final ItemStackHandler chocoboInventory = new ItemStackHandler(top_tier_chocobo_inv_slot_count){
+        // will be treated as the backbone
+        protected void onContentsChanged(int slot) {
+            if (slot > 10 && slot <16) {
+                if (chocoboInventory.getStackInSlot(slot) != tierOneItemStackHandler.getStackInSlot(slot - 11)) {
+                    tierOneItemStackHandler.setStackInSlot(slot - 11, chocoboInventory.getStackInSlot(slot));
+                }
+            }
+            if (slot > 19 && slot <25) {
+                if (chocoboInventory.getStackInSlot(slot) != tierOneItemStackHandler.getStackInSlot(slot - 15)) {
+                    tierOneItemStackHandler.setStackInSlot(slot - 15, chocoboInventory.getStackInSlot(slot));
+                }
+            }
+            if (slot > 28 && slot <34) {
+                if (chocoboInventory.getStackInSlot(slot) != tierOneItemStackHandler.getStackInSlot(slot - 19)) {
+                    tierOneItemStackHandler.setStackInSlot(slot - 19, chocoboInventory.getStackInSlot(slot));
+                }
+            }
+            if (chocoboInventory.getStackInSlot(slot) != tierTwoItemStackHandler.getStackInSlot(slot)) {
+                tierTwoItemStackHandler.setStackInSlot(slot, chocoboInventory.getStackInSlot(slot));
+            }
+        }
+    };
+    public final ItemStackHandler tierOneItemStackHandler = new ItemStackHandler(tier_one_chocobo_inv_slot_count) {
+        protected void onContentsChanged(int slot) {
+            int slotAdjust;
+            if (slot < 5) { slotAdjust = slot + 11; }
+            else if(slot < 10) { slotAdjust = slot + 15; }
+            else { slotAdjust = slot + 19; }
+            if (tierOneItemStackHandler.getStackInSlot(slot) != chocoboInventory.getStackInSlot(slotAdjust)) {
+                chocoboInventory.setStackInSlot(slotAdjust, tierOneItemStackHandler.getStackInSlot(slot));
+            }
+        }
+    };
+    public final ItemStackHandler tierTwoItemStackHandler = new ItemStackHandler(tier_two_chocobo_inv_slot_count){
+        protected void onContentsChanged(int slot) {
+            if (tierTwoItemStackHandler.getStackInSlot(slot) != chocoboInventory.getStackInSlot(slot)) {
+                chocoboInventory.setStackInSlot(slot, tierTwoItemStackHandler.getStackInSlot(slot));
+            }
+        }
     };
 
     public final SaddleItemStackHandler saddleItemStackHandler = new SaddleItemStackHandler() {
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-            return stack.isEmpty() || stack.getItem() instanceof ChocoboSaddleItem;
+            return false;
+            //return stack.isEmpty() || stack.getItem() instanceof ChocoboSaddleItem;
         }
 
         @Override
         protected void onStackChanged() {
+            SimpleContainer dropper = new SimpleContainer(chocoboInventory.getSlots());
+            for (int i = 0; i < chocoboInventory.getSlots(); i++) {
+                if (!(chocoboInventory.getStackInSlot(i).isEmpty())) {
+                    dropper.setItem(i, chocoboInventory.getStackInSlot(i));
+                    Containers.dropContents(level, ChocoboEntity.this.getOnPos(), dropper);
+                }
+            }
             ChocoboEntity.this.setSaddleType(this.itemStack);
         }
     };
@@ -181,7 +227,7 @@ public class ChocoboEntity extends TamableAnimal {
         this.setMale(compound.getBoolean(NBTKEY_CHOCOBO_IS_MALE));
         this.setMovementType(MovementType.values()[compound.getByte(NBTKEY_MOVEMENTTYPE)]);
         this.saddleItemStackHandler.deserializeNBT(compound.getCompound(NBTKEY_SADDLE_ITEM));
-        if (!getSaddle().isEmpty()) { this.chocoboInventory.deserializeNBT(compound.getCompound(NBTKEY_INVENTORY)); }
+        this.chocoboInventory.deserializeNBT(compound.getCompound(NBTKEY_INVENTORY));
         if (compound.contains(NBTKEY_NEST_POSITION)) { this.nestPos = NbtUtils.readBlockPos(compound.getCompound(NBTKEY_NEST_POSITION)); }
         this.setGeneration(compound.getInt(NBTKEY_CHOCOBO_GENERATION));
         this.setStamina(compound.getFloat(NBTKEY_CHOCOBO_STAMINA));
@@ -196,7 +242,7 @@ public class ChocoboEntity extends TamableAnimal {
         compound.putBoolean(NBTKEY_CHOCOBO_IS_MALE, this.isMale());
         compound.putByte(NBTKEY_MOVEMENTTYPE, (byte) this.getMovementType().ordinal());
         compound.put(NBTKEY_SADDLE_ITEM, this.saddleItemStackHandler.serializeNBT());
-        if (!getSaddle().isEmpty()) { compound.put(NBTKEY_INVENTORY, this.chocoboInventory.serializeNBT()); }
+        compound.put(NBTKEY_INVENTORY, this.chocoboInventory.serializeNBT());
         if (this.nestPos != null) { compound.put(NBTKEY_NEST_POSITION, NbtUtils.writeBlockPos(this.nestPos)); }
         compound.putInt(NBTKEY_CHOCOBO_GENERATION, this.getGeneration());
         compound.putFloat(NBTKEY_CHOCOBO_STAMINA, this.getStamina());
@@ -204,9 +250,7 @@ public class ChocoboEntity extends TamableAnimal {
     }
 
     public ChocoboColor getChocoboColor() { return this.entityData.get(PARAM_COLOR); }
-    public void setChocoboColor(ChocoboColor color) {
-        this.entityData.set(PARAM_COLOR, color);
-    }
+    public void setChocoboColor(ChocoboColor color) { this.entityData.set(PARAM_COLOR, color); }
     @Override
     public boolean fireImmune() { return this.isFlame(); }
     public boolean isMale() { return this.entityData.get(PARAM_IS_MALE); }
@@ -220,25 +264,13 @@ public class ChocoboEntity extends TamableAnimal {
         ItemStack oldStack = getSaddle();
         if (oldStack.getItem() != newStack.getItem()) {
             this.entityData.set(PARAM_SADDLE_ITEM, newStack.copy());
-            this.reconfigureInventory(oldStack, newStack);
         }
-    }
-
-    private int getSaddleCount(ItemStack stack) {
-        if(stack.getItem() instanceof ChocoboSaddleItem saddle) {
-            return saddle.getInventorySize();
-        }
-        return 0;
     }
 
     @Nullable
-    public BlockPos getNestPosition() {
-        return this.nestPos;
-    }
+    public BlockPos getNestPosition() { return this.nestPos; }
 
-    public void setNestPosition(@Nullable BlockPos nestPos) {
-        this.nestPos = nestPos;
-    }
+    public void setNestPosition(@Nullable BlockPos nestPos) { this.nestPos = nestPos; }
 
     //region Chocobo statistics getter/setter
     public float getStamina() { return this.entityData.get(PARAM_STAMINA); }
@@ -270,7 +302,6 @@ public class ChocoboEntity extends TamableAnimal {
     public boolean canBeRiddenInWater(Entity rider) { return true; }
     @Nullable
     public Entity getControllingPassenger() { return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0); }
-
     @Override
     protected boolean updateInWaterStateAndDoFluidPushing() {
         this.fluidHeight.clear();
@@ -279,7 +310,6 @@ public class ChocoboEntity extends TamableAnimal {
         boolean flag = this.updateFluidHeightAndDoFluidPushing(FluidTags.LAVA, d0);
         return this.isInWater() || flag;
     }
-
     private void updateInWaterStateAndDoWaterCurrentPushing() {
         if (this.getVehicle() instanceof ChocoboEntity) {
             this.wasTouchingWater = false;
@@ -295,7 +325,6 @@ public class ChocoboEntity extends TamableAnimal {
             this.wasTouchingWater = false;
         }
     }
-
     @Override
     public void travel(Vec3 travelVector) {
         Vec3 newVector = travelVector;
@@ -354,7 +383,6 @@ public class ChocoboEntity extends TamableAnimal {
             super.travel(newVector);
         }
     }
-
     @Override
     public void positionRider(Entity passenger) {
         super.positionRider(passenger);
@@ -362,18 +390,15 @@ public class ChocoboEntity extends TamableAnimal {
             this.yBodyRot = ((LivingEntity) passenger).yBodyRot;
         }
     }
-
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob mate) { return null; }
-
     @Override
     public boolean canMate(@NotNull Animal otherAnimal) {
         if (otherAnimal == this || !(otherAnimal instanceof ChocoboEntity otherChocobo)) return false;
         if (!this.isInLove() || !otherAnimal.isInLove()) return false;
         return otherChocobo.isMale() != this.isMale();
     }
-
     @Override
     public void setSprinting(boolean sprinting) {
         this.setSharedFlag(3, sprinting);
@@ -387,7 +412,6 @@ public class ChocoboEntity extends TamableAnimal {
             attributeInstance.addTransientModifier(CHOCOBO_SPRINTING_SPEED_BOOST);
         }
     }
-
     public void dropFeather() {
         if (this.getCommandSenderWorld().isClientSide)
             return;
@@ -397,14 +421,9 @@ public class ChocoboEntity extends TamableAnimal {
 
         this.spawnAtLocation(new ItemStack(CHOCOBO_FEATHER.get(), 1), 0.0F);
     }
-
     public int TimeSinceFeatherChance = 0;
-
     @Override
-    protected boolean canRide(Entity entityIn) {
-        return !this.getSaddle().isEmpty() && super.canRide(entityIn);
-    }
-
+    protected boolean canRide(Entity entityIn) { return !this.getSaddle().isEmpty() && super.canRide(entityIn); }
     @Override
     public void aiStep() {
         super.aiStep();
@@ -470,7 +489,6 @@ public class ChocoboEntity extends TamableAnimal {
             }
         }
     }
-
     private void regenerateStamina() {
         // ... yes, we also allow regeneration while in lava :P
         // this effectivly limits regeneration to only work while on the ground
@@ -487,14 +505,10 @@ public class ChocoboEntity extends TamableAnimal {
         // TODO: implement regen bonus (another IAttribute?)
         this.useStamina(-regen);
     }
-
     @Override
-    public boolean isFood(ItemStack stack) {
-        return false;
-    }
-
+    public boolean isFood(ItemStack stack) { return false; }
     @Override
-    public InteractionResult interactAt(Player player, Vec3 vec, InteractionHand hand) {
+    public InteractionResult interactAt(@NotNull Player player, Vec3 vec, InteractionHand hand) {
         ItemStack heldItemStack = player.getItemInHand(hand);
 
         if (heldItemStack.getItem() == GYSAHL_CAKE.get()) {
@@ -613,36 +627,14 @@ public class ChocoboEntity extends TamableAnimal {
         return super.interactAt(player, vec, hand);
     }
 
-    private void displayChocoboInventory(ServerPlayer player) {
-        if (player.containerMenu != player.inventoryMenu) {
-            player.closeContainer();
-        }
+    private void displayChocoboInventory(@NotNull ServerPlayer player) {
+        if (player.containerMenu != player.inventoryMenu) { player.closeContainer(); }
 
         player.nextContainerCounter();
         PacketManager.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new OpenChocoboGuiMessage(this, player.containerCounter));
         player.containerMenu = new SaddleBagContainer(player.containerCounter, player.getInventory(), this);
         player.initMenu(player.containerMenu);
         EVENT_BUS.post(new PlayerContainerEvent.Open(player, player.containerMenu));
-    }
-
-    private void reconfigureInventory(ItemStack oldSaddle, ItemStack newSaddle) {
-        if (!this.getCommandSenderWorld().isClientSide) {
-            // TODO: Handle resizing. ItemStackHandler#setSize() clears the internal inventory!
-            for (int i = 0; i < this.chocoboInventory.getSlots(); i++) {
-                if (this.isAlive()) {
-                    ItemStack stack = this.chocoboInventory.extractItem(i, Integer.MAX_VALUE, false);
-                    Containers.dropItemStack(this.getCommandSenderWorld(), this.getX(), this.getY() + .5, this.getZ(), stack);
-                }
-            }
-        }
-
-        this.chocoboInventory.setSize(getSaddleCount(newSaddle));
-
-        for (Player player : level.players()) {
-            if (player.containerMenu instanceof SaddleBagContainer bagContainer) {
-                bagContainer.refreshSlots(bagContainer.getChocobo(), player.getInventory());
-            }
-        }
     }
 
     @Override
@@ -656,37 +648,19 @@ public class ChocoboEntity extends TamableAnimal {
             }
         }
     }
-
-    protected SoundEvent getAmbientSound() {
-        return AMBIENT_SOUND.get();
-    }
-
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMBIENT_SOUND.get();
-    }
-
-    protected SoundEvent getDeathSound() {
-        return AMBIENT_SOUND.get();
-    }
-
+    protected SoundEvent getAmbientSound() { return AMBIENT_SOUND.get(); }
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) { return AMBIENT_SOUND.get(); }
+    protected SoundEvent getDeathSound() { return AMBIENT_SOUND.get(); }
     @Override
-    protected float getSoundVolume() {
-        return .6f;
-    }
-
+    protected float getSoundVolume() { return .6f; }
     @Override
-    public int getAmbientSoundInterval() {
-        return (24 * (int) (Math.random() * 100));
-    }
-
+    public int getAmbientSoundInterval() { return (24 * (int) (Math.random() * 100)); }
+    @SuppressWarnings("SuspiciousMethodCalls")
     @Override
-    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
-        if (BiomeDictionary.getBiomes(BiomeDictionary.Type.NETHER).contains(this.level.getBiome((new BlockPos(blockPosition())).below())))
-            return true;
-
+    public boolean checkSpawnRules(@NotNull LevelAccessor worldIn, @NotNull MobSpawnType spawnReasonIn) {
+        if (BiomeDictionary.getBiomes(BiomeDictionary.Type.NETHER).contains(this.level.getBiome((new BlockPos(blockPosition())).below()))) { return true; }
         return super.checkSpawnRules(worldIn, spawnReasonIn);
     }
-
     @Override
     protected void reassessTameGoals() {
         super.reassessTameGoals();

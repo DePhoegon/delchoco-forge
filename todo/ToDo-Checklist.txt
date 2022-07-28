@@ -1,8 +1,5 @@
 Added 7-21
 
-net.chococraft.common.entities.breeding.BreedingHelper.java
-- Implement The other three colors with other alters, using Base math systems.
-
 Implement Patchouli Guide Book
 -- Intending to Functionally replace Chocopedia, except for Seeing the stats of the chocobo.
 
@@ -12,8 +9,6 @@ Find/Remove Useless code (In Progress)
 
 Lookinto updating nest on chocobo hatching
 -visual bleh
-
-Add parent check to some colors as alternates, breeding colors directly
 
 Added 7-23
 
@@ -35,7 +30,7 @@ net.chococraft.client.gui.ChocoboInfoScreen.java
 = Work this into something other than 'That Chocopedia'
 == Book still shows abilities, but no overlay/interaction with ability buttons (A+)
 
-Added 7-25/7-26
-Critical -
-Address Chocobo Iventory
---reDesign.
+Added 7-27
+
+Figure Out why patchouli_books is not functional in chococraft
+-- folders moved to 'to do' to keep it out of the builds.

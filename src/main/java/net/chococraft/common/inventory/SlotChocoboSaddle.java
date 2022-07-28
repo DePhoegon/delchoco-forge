@@ -14,7 +14,7 @@ public class SlotChocoboSaddle extends SlotItemHandler {
 
     @Override
     public boolean mayPlace(@Nonnull ItemStack stack) {
-        return stack.isEmpty() || stack.getItem() instanceof ChocoboSaddleItem;
+        return false;
     }
 
     @Override

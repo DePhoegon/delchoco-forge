@@ -6,12 +6,12 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 
 public abstract class SaddleItemStackHandler implements IItemHandler, IItemHandlerModifiable, INBTSerializable<CompoundTag> {
     protected ItemStack itemStack = ItemStack.EMPTY;
-
     @Override
     public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
         ItemStack oldStack = this.itemStack;
