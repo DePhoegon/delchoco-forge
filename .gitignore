@@ -19,7 +19,19 @@ build
 
 # other
 eclipse
-run
+
+#include screenshots as backup
+run/config
+run/defaultconfigs
+run/world/
+run/logs
+run/mods
+run/patchouli_books
+run/resourcepacks
+run/saves
+run/*.txt
+run/*.json
+
 
 # Files from Forge MDK
 forge*changelog.txt
