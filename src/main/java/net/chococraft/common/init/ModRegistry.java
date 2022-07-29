@@ -7,12 +7,7 @@ import net.chococraft.common.blocks.ChocoboEggBlock;
 import net.chococraft.common.blocks.GysahlGreenBlock;
 import net.chococraft.common.blocks.StrawNestBlock;
 import net.chococraft.common.entities.properties.ChocoboColor;
-import net.chococraft.common.items.ChocoDisguiseItem;
-import net.chococraft.common.items.ChocoboEggBlockItem;
-import net.chococraft.common.items.ChocoboSaddleItem;
-import net.chococraft.common.items.ChocoboSpawnEggItem;
-import net.chococraft.common.items.ChocopediaItem;
-import net.chococraft.common.items.CustomBlockNamedItem;
+import net.chococraft.common.items.*;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -21,9 +16,9 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import static net.chococraft.Chococraft.creativeTab;
 import static net.chococraft.common.entities.ChocoboEntity.tier_one_chocobo_inv_slot_count;
@@ -71,7 +66,7 @@ public class ModRegistry {
 
     public static final RegistryObject<Item> GYSAHL_GREEN_ITEM = ITEMS.register("gysahl_green", () -> new Item(itemBuilder().food(ModFoods.GYSAHL_GREEN)));
     public static final RegistryObject<Item> CHOCOBO_WHISTLE = ITEMS.register("chocobo_whistle", () -> new Item(itemBuilder()));
-    public static final RegistryObject<Item> CHOCOBO_FEATHER = ITEMS.register("chocobo_feather", () -> new Item(itemBuilder()));
+    public static final RegistryObject<Item> CHOCOBO_FEATHER = ITEMS.register("chocobo_feather", () -> new ChocoboSpawnerItemHelper(itemBuilder()));
     public static final RegistryObject<Item> LOVELY_GYSAHL_GREEN = ITEMS.register("lovely_gysahl_green", () -> new Item(itemBuilder()));
 
     public static final RegistryObject<Item> CHOCOBO_DRUMSTICK_RAW = ITEMS.register("chocobo_drumstick_raw", () -> new Item(itemBuilder().food(ModFoods.CHOCOBO_DRUMSTICK_RAW)));

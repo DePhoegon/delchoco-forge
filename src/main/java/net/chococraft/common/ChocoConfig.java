@@ -20,6 +20,7 @@ public class ChocoConfig {
         public final BooleanValue gysahlGreensSpawnOnlyInOverworld;
 
         public final IntValue chocoboSpawnWeight;
+        public final IntValue chocoboSpawnWeightMushroom;
         public final IntValue chocoboPackSizeMin;
         public final IntValue chocoboPackSizeMax;
 
@@ -99,6 +100,10 @@ public class ChocoConfig {
             chocoboSpawnWeight = builder
                     .comment("Controls Chocobo Spawn Weight [Default: 10]")
                     .defineInRange("chocoboSpawnWeight", 10, 0, Integer.MAX_VALUE);
+
+            chocoboSpawnWeightMushroom = builder
+                    .comment("Controls Chocobo Spawn Weight in Mushroom Fields [Default: 1]\nMooshrooms are easily pushed out (spawn wise)")
+                    .defineInRange("chocoboSpawnWeightMushrooms", 2, 0, 4);
 
             chocoboPackSizeMin = builder
                     .comment("Controls Chocobo Pack Size Min [Default: 1]")

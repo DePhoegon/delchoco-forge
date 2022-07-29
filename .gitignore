@@ -31,7 +31,9 @@ run/resourcepacks
 run/saves
 run/*.txt
 run/*.json
-
+run/crash-reports
+run/server.*
+run/servers.*
 
 # Files from Forge MDK
 forge*changelog.txt

@@ -28,6 +28,7 @@ import org.apache.logging.log4j.Logger;
 public class Chococraft {
     public static final String MOD_ID = "chococraft";
     public final static Logger log = LogManager.getLogger(MOD_ID);
+    public final static Logger LOGGER = LogManager.getLogger();
 
     public static final CreativeModeTab creativeTab = new CreativeModeTab(MOD_ID) {
           @Override

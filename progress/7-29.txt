@@ -1,0 +1,44 @@
+Spawning & Secret Spawning
+
+ChocoboEntity.java && ModEntities.java
+-Added in Spawning of
+=========
+yellow - Hill Biomes & Plains Biomes
+green - Swamps
+blue -  [No Natural Spawns]
+white - Snowy Biomes
+black - Places that are both (hot & dry) Excluding Mesa's & The Nether
+pink - Mushroom Biomes
+red - Mesa Biomes
+purple - [No Natural Spawns]
+flame -  The Nether
+==============
+Blue & Purple are breedable.
+
+ChocoboSpawnEggItem.java
+-Code cleanup
+
+ModRegistry.java
+-Code Cleanup
+-Adjusted 'ChocoboFeather' uses ChocoboSpawnerItemHelper
+
+ChocoboSpawnerItemHelper.java
+-Created to had in InWorld Summoning of Chocobos.
+=============
+yellow - Hill Biomes & Plains Biomes
+green - Swamps
+blue -  Oceans
+white - Snowy Biomes
+black - Places that are both (hot & dry) Excluding Mesa's & The Nether
+pink - Mushroom Biomes
+red - Mesa Biomes
+purple - The End Biomes
+flame -  The Nether
+===============
+--Using a Chocobo Feather, on a Chocobo Egg, in those biomes
+--not Needed, but there for fun.
+
+ChocoConfig.java
+-Added new Spawnweight for Mushroom biomes.
+-- Mooshrooms get pushed out of spawning if value is what's acceptable/needed for others.
+

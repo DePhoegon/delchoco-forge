@@ -24,6 +24,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -49,8 +50,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.items.IItemHandler;
@@ -68,6 +71,7 @@ import static net.chococraft.common.ChocoConfig.COMMON;
 import static net.chococraft.common.init.ModRegistry.*;
 import static net.chococraft.common.init.ModSounds.AMBIENT_SOUND;
 import static net.minecraft.world.level.biome.Biome.getBiomeCategory;
+import static net.minecraftforge.common.BiomeDictionary.hasType;
 import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 
 public class ChocoboEntity extends TamableAnimal {
@@ -207,11 +211,20 @@ public class ChocoboEntity extends TamableAnimal {
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor worldIn, @NotNull DifficultyInstance difficultyIn, @NotNull MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setMale(this.level.random.nextBoolean());
+
         final Holder<Biome> currentBiome = this.level.getBiome(blockPosition().below());
-        if (getBiomeCategory(currentBiome) == Biome.BiomeCategory.NETHER) {
+        Biome.BiomeCategory biomeCategory = getBiomeCategory(currentBiome);
+        final ResourceKey<Biome> biomeKey = currentBiome.unwrapKey().get();
+        if (biomeCategory == Biome.BiomeCategory.NETHER) {
             this.setChocoboColor(ChocoboColor.FLAME);
             this.setIsFlame(true);
         }
+        if (biomeCategory == Biome.BiomeCategory.MESA) { this.setChocoboColor(ChocoboColor.RED); }
+        if (biomeCategory == Biome.BiomeCategory.MUSHROOM) { this.setChocoboColor(ChocoboColor.PINK); }
+        if (hasType(biomeKey, Type.HOT) && hasType(biomeKey, Type.DRY) &&
+                !(hasType(biomeKey, Type.MESA)) && !(hasType(biomeKey, Type.NETHER))) { this.setChocoboColor(ChocoboColor.BLACK); }
+        if (hasType(biomeKey, Type.SNOWY)) { this.setChocoboColor(ChocoboColor.WHITE); }
+        if (biomeCategory == Biome.BiomeCategory.SWAMP) { this.setChocoboColor(ChocoboColor.GREEN); }
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
@@ -658,7 +671,7 @@ public class ChocoboEntity extends TamableAnimal {
     @SuppressWarnings("SuspiciousMethodCalls")
     @Override
     public boolean checkSpawnRules(@NotNull LevelAccessor worldIn, @NotNull MobSpawnType spawnReasonIn) {
-        if (BiomeDictionary.getBiomes(BiomeDictionary.Type.NETHER).contains(this.level.getBiome((new BlockPos(blockPosition())).below()))) { return true; }
+        if (BiomeDictionary.getBiomes(Type.NETHER).contains(this.level.getBiome((new BlockPos(blockPosition())).below()))) { return true; }
         return super.checkSpawnRules(worldIn, spawnReasonIn);
     }
     @Override
