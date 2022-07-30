@@ -29,5 +29,5 @@ side="BOTH"
 modId="delbase"
 mandatory=true
 versionRange="[1,)"
-ordering="AFTER"
+ordering="NONE"
 side="BOTH"

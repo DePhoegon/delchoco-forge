@@ -1,0 +1,17 @@
+{
+  "name": "Chocobos Ahoy",
+  "icon": "chococraft:chocobo_feather",
+  "category": "chococraft:chocobos_ent",
+  "pages": [
+    {
+      "title": "Chocobo Test Page",
+      "type": "patchouli:image",
+      "images": [ "delbase:textures/screens/sands.png" ]
+    },
+    {
+      "title": "Picture of Chocobos",
+      "type": "patchouli:image",
+      "images": ["delbase:textures/screens/sandstone.png"]
+    }
+  ]
+}

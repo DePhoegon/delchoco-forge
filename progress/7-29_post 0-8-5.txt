@@ -1,0 +1,11 @@
+Plumage
+
+LayerPlumage.java
+- Changed up logic & Resource location to properly switch based on chocobo color.
+
+plumage_green & Plumage_pink
+-  pixelart work sucks X{
+
+Identified zones of plumage, saved xcf file
+
+Still not sure why patchouli isn't functional for one mod while it is for the other.
