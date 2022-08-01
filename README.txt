@@ -22,7 +22,7 @@ Some future updates to be hand.
 
 https://www.curseforge.com/minecraft/mc-mods/dephoegons-chocobos
 https://www.curseforge.com/minecraft/mc-mods/dephoegons-reclaim
-https://www.curseforge.com/minecraft/modpacks/dephoegons-isles   - Waiting on approval
+https://www.curseforge.com/minecraft/modpacks/dephoegons-isles
 -- Is a modpack meant around chocobos, exploration, Horses, & Llamas, and decoration around larger animal stall style building.
 -This is the main mod it will 'require', future plans will call for blocks that exist within this mod.
 
