@@ -1,6 +1,5 @@
 package com.dephoegon.chococraft.common.entities.breeding;
 
-import com.dephoegon.chococraft.common.ChocoConfig;
 import com.dephoegon.chococraft.common.entities.ChocoboEntity;
 import com.dephoegon.chococraft.common.entities.properties.ChocoboColor;
 import com.dephoegon.chococraft.common.init.ModAttributes;
@@ -8,7 +7,6 @@ import com.dephoegon.chococraft.common.init.ModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,7 +14,6 @@ import java.util.Objects;
 
 import static java.lang.Math.*;
 import static com.dephoegon.chococraft.common.ChocoConfig.COMMON;
-import static net.minecraft.world.level.block.Blocks.*;
 
 public class BreedingHelper {
 
@@ -83,9 +80,9 @@ public class BreedingHelper {
 
         baby.setMale(.50f > (float) random());
         baby.setChocoboColor(bColor);
-        if (mother.flameBlood || father.flameBlood) { baby.setIsFlame(true); }
+        if (mother.flameBlood > 0 || father.flameBlood > 0) { baby.setFlame(1); }
 
-        baby.setAge(-2000);
+        baby.setAge(-7500);
 
         return baby;
     }

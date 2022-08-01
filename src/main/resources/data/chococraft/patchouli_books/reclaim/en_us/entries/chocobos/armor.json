@@ -1,0 +1,31 @@
+{
+  "name": "05 - Armor of Chocobos",
+  "icon": "chococraft:chocobo_feather",
+  "category": "chococraft:chocobo_ent",
+  "pages": [
+    {
+      "title": "Chocobo Disguise",
+      "type": "patchouli:crafting",
+      "recipe": "chococraft:choco_disguise_helmet",
+      "text": "Helmet"
+    },
+    {
+      "title": "Chocobo Disguise",
+      "type": "patchouli:crafting",
+      "recipe": "chococraft:choco_disguise_chestplate",
+      "text": "Chestplate"
+    },
+    {
+      "title": "Chocobo Disguise",
+      "type": "patchouli:crafting",
+      "recipe": "chococraft:choco_disguise_leggings",
+      "text": "Leggings"
+    },
+    {
+      "title": "Chocobo Disguise",
+      "type": "patchouli:crafting",
+      "recipe": "chococraft:choco_disguise_boots",
+      "text": "Boots"
+    }
+  ]
+}

@@ -18,14 +18,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.AirBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 
 import static net.minecraft.world.level.biome.Biome.getBiomeCategory;
 import static net.minecraft.world.level.block.Blocks.AIR;
-import static net.minecraft.world.level.block.Blocks.END_STONE;
 import static net.minecraftforge.common.BiomeDictionary.hasType;
 
 public class ChocoboSpawnerItemHelper extends Item {
@@ -52,7 +49,7 @@ public class ChocoboSpawnerItemHelper extends Item {
             if (biomeCategory == Biome.BiomeCategory.NETHER) { 
                 color = ChocoboColor.FLAME;
                 assert chocobo != null;
-                chocobo.setIsFlame(true);
+                chocobo.setFlame(1);
             }
             if (biomeCategory == Biome.BiomeCategory.MESA) { color = ChocoboColor.RED; }
             if (biomeCategory == Biome.BiomeCategory.MUSHROOM) { color = ChocoboColor.PINK; }

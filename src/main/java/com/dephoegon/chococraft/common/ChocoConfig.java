@@ -21,6 +21,7 @@ public class ChocoConfig {
 
         public final IntValue chocoboSpawnWeight;
         public final IntValue chocoboSpawnWeightMushroom;
+        public final IntValue chocoboSpawnWeightNether;
         public final IntValue chocoboPackSizeMin;
         public final IntValue chocoboPackSizeMax;
 
@@ -104,6 +105,10 @@ public class ChocoConfig {
             chocoboSpawnWeightMushroom = builder
                     .comment("Controls Chocobo Spawn Weight in Mushroom Fields [Default: 1]\nMooshrooms are easily pushed out (spawn wise)")
                     .defineInRange("chocoboSpawnWeightMushrooms", 2, 0, 4);
+
+            chocoboSpawnWeightNether = builder
+                    .comment("Controls Chocobo Spawn Weight in the Nether. [Default: 80]\nThe Nether seems to be a bit more aggressive & requires a higher number.")
+                    .defineInRange("chocoboSpawnWeightNether", 80, 50, Integer.MAX_VALUE);
 
             chocoboPackSizeMin = builder
                     .comment("Controls Chocobo Pack Size Min [Default: 1]")
@@ -239,7 +244,7 @@ public class ChocoConfig {
 
             eggHatchTimeTicks = builder
                     .comment("Controls the amount of ticks / time till an egg hatches. This value isn't super accurate [Default: 10000]")
-                    .defineInRange("eggHatchTimeTicks", 10000, 0, Integer.MAX_VALUE);
+                    .defineInRange("eggHatchTimeTicks", 5000, 0, Integer.MAX_VALUE);
 
             builder.pop();
         }

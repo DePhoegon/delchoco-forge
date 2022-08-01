@@ -18,6 +18,7 @@ import com.dephoegon.chococraft.utils.WorldUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -50,7 +51,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
@@ -60,6 +60,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.system.CallbackI;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -85,10 +86,9 @@ public class ChocoboEntity extends TamableAnimal {
     private static final String NBTKEY_CHOCOBO_STAMINA = "Stamina";
     private static final String NBTKEY_CHOCOBO_FLAME_BLOOD = "FlameBlood";
 
-    private static final byte IS_FLAME_BLOOD = 0b1001;
-
     private static final EntityDataAccessor<ChocoboColor> PARAM_COLOR = SynchedEntityData.defineId(ChocoboEntity.class, ModDataSerializers.CHOCOBO_COLOR);
     private static final EntityDataAccessor<Boolean> PARAM_IS_MALE = SynchedEntityData.defineId(ChocoboEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> PARAM_IS_FLAME_BLOOD = SynchedEntityData.defineId(ChocoboEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<MovementType> PARAM_MOVEMENT_TYPE = SynchedEntityData.defineId(ChocoboEntity.class, ModDataSerializers.MOVEMENT_TYPE);
     private static final EntityDataAccessor<ItemStack> PARAM_SADDLE_ITEM = SynchedEntityData.defineId(ChocoboEntity.class, EntityDataSerializers.ITEM_STACK);
 
@@ -199,6 +199,7 @@ public class ChocoboEntity extends TamableAnimal {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
+        this.entityData.define(PARAM_IS_FLAME_BLOOD, 0);
         this.entityData.define(PARAM_COLOR, ChocoboColor.YELLOW);
         this.entityData.define(PARAM_IS_MALE, false);
         this.entityData.define(PARAM_MOVEMENT_TYPE, MovementType.WANDER);
@@ -217,14 +218,28 @@ public class ChocoboEntity extends TamableAnimal {
         final ResourceKey<Biome> biomeKey = currentBiome.unwrapKey().get();
         if (biomeCategory == Biome.BiomeCategory.NETHER) {
             this.setChocoboColor(ChocoboColor.FLAME);
-            this.setIsFlame(true);
+            this.setFlame(1);
         }
-        if (biomeCategory == Biome.BiomeCategory.MESA) { this.setChocoboColor(ChocoboColor.RED); }
-        if (biomeCategory == Biome.BiomeCategory.MUSHROOM) { this.setChocoboColor(ChocoboColor.PINK); }
+        if (biomeCategory == Biome.BiomeCategory.MESA) {
+            this.setChocoboColor(ChocoboColor.RED);
+            this.setFlame(0);
+        }
+        if (biomeCategory == Biome.BiomeCategory.MUSHROOM) {
+            this.setChocoboColor(ChocoboColor.PINK);
+            this.setFlame(0);
+        }
         if (hasType(biomeKey, Type.HOT) && hasType(biomeKey, Type.DRY) &&
-                !(hasType(biomeKey, Type.MESA)) && !(hasType(biomeKey, Type.NETHER))) { this.setChocoboColor(ChocoboColor.BLACK); }
-        if (hasType(biomeKey, Type.SNOWY)) { this.setChocoboColor(ChocoboColor.WHITE); }
-        if (biomeCategory == Biome.BiomeCategory.SWAMP) { this.setChocoboColor(ChocoboColor.GREEN); }
+                !(hasType(biomeKey, Type.MESA)) && !(hasType(biomeKey, Type.NETHER))) {
+            this.setChocoboColor(ChocoboColor.BLACK);
+            this.setFlame(0);
+        }
+        if (hasType(biomeKey, Type.SNOWY)) {
+            this.setChocoboColor(ChocoboColor.WHITE);
+            this.setFlame(0);
+        }
+        if (biomeCategory == Biome.BiomeCategory.SWAMP) {
+            this.setChocoboColor(ChocoboColor.GREEN);
+            this.setFlame(0);}
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
@@ -244,7 +259,7 @@ public class ChocoboEntity extends TamableAnimal {
         if (compound.contains(NBTKEY_NEST_POSITION)) { this.nestPos = NbtUtils.readBlockPos(compound.getCompound(NBTKEY_NEST_POSITION)); }
         this.setGeneration(compound.getInt(NBTKEY_CHOCOBO_GENERATION));
         this.setStamina(compound.getFloat(NBTKEY_CHOCOBO_STAMINA));
-        this.setIsFlame(compound.contains(NBTKEY_CHOCOBO_FLAME_BLOOD));
+        this.setFlame(compound.getInt(NBTKEY_CHOCOBO_FLAME_BLOOD));
 
     }
 
@@ -258,14 +273,17 @@ public class ChocoboEntity extends TamableAnimal {
         compound.put(NBTKEY_INVENTORY, this.chocoboInventory.serializeNBT());
         if (this.nestPos != null) { compound.put(NBTKEY_NEST_POSITION, NbtUtils.writeBlockPos(this.nestPos)); }
         compound.putInt(NBTKEY_CHOCOBO_GENERATION, this.getGeneration());
+        compound.putInt(NBTKEY_CHOCOBO_FLAME_BLOOD, this.isFlame());
         compound.putFloat(NBTKEY_CHOCOBO_STAMINA, this.getStamina());
-        compound.putBoolean(NBTKEY_CHOCOBO_FLAME_BLOOD, this.isFlame());
+        ;
     }
 
     public ChocoboColor getChocoboColor() { return this.entityData.get(PARAM_COLOR); }
     public void setChocoboColor(ChocoboColor color) { this.entityData.set(PARAM_COLOR, color); }
     @Override
-    public boolean fireImmune() { return this.isFlame(); }
+    public boolean fireImmune() { return isFlame()>0; }
+    public void setFlame(int state) { this.entityData.set(PARAM_IS_FLAME_BLOOD, state); }
+    public int isFlame() { return this.entityData.get(PARAM_IS_FLAME_BLOOD); }
     public boolean isMale() { return this.entityData.get(PARAM_IS_MALE); }
     public void setMale(boolean isMale) { this.entityData.set(PARAM_IS_MALE, isMale); }
     public MovementType getMovementType() { return this.entityData.get(PARAM_MOVEMENT_TYPE); }
@@ -300,12 +318,6 @@ public class ChocoboEntity extends TamableAnimal {
         float newStamina = Mth.clamp(curStamina - value, 0, maxStamina);
         this.entityData.set(PARAM_STAMINA, newStamina);
         return true;
-    }
-    public void setIsFlame(boolean state) { this.setAbilityMaskBit(IS_FLAME_BLOOD, state); }
-    public boolean isFlame() { return (this.entityData.get(PARAM_ABILITY_MASK) & IS_FLAME_BLOOD) > 0; }
-    private void setAbilityMaskBit(int bit, boolean state) {
-        int value = this.entityData.get(PARAM_ABILITY_MASK);
-        this.entityData.set(PARAM_ABILITY_MASK, (byte) (state ? value | bit : value & ~bit));
     }
     //endregion
 
@@ -671,7 +683,10 @@ public class ChocoboEntity extends TamableAnimal {
     @SuppressWarnings("SuspiciousMethodCalls")
     @Override
     public boolean checkSpawnRules(@NotNull LevelAccessor worldIn, @NotNull MobSpawnType spawnReasonIn) {
-        if (BiomeDictionary.getBiomes(Type.NETHER).contains(this.level.getBiome((new BlockPos(blockPosition())).below()))) { return true; }
+        final Holder<Biome> currentBiome = this.level.getBiome(blockPosition().below());
+        Biome.BiomeCategory biomeCategory = getBiomeCategory(currentBiome);
+        final ResourceKey<Biome> biomeKey = currentBiome.unwrapKey().get();
+        if (BiomeDictionary.hasType(biomeKey, Type.NETHER)) { return true; }
         return super.checkSpawnRules(worldIn, spawnReasonIn);
     }
     @Override

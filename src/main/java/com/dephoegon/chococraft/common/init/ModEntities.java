@@ -34,9 +34,14 @@ public class ModEntities {
         if (event.getName() == null) { return; }
 
         // Biome Spawning area
+        // Overrides Spawn Eggs
         ResourceKey<Biome> biomeKey = ResourceKey.create(Registry.BIOME_REGISTRY, event.getName());
+        if (BiomeDictionary.hasType(biomeKey, Type.NETHER)) {
+            event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(),
+                    COMMON.chocoboSpawnWeightNether.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get()));
+        }
         if(BiomeDictionary.hasType(biomeKey, Type.PLAINS) || BiomeDictionary.hasType(biomeKey, Type.HILLS) ||
-                (BiomeDictionary.hasType(biomeKey, Type.HOT) && BiomeDictionary.hasType(biomeKey, Type.DRY)) ||
+                (BiomeDictionary.hasType(biomeKey, Type.HOT) && BiomeDictionary.hasType(biomeKey, Type.DRY) && !(BiomeDictionary.hasType(biomeKey, Type.NETHER))) ||
                 BiomeDictionary.hasType(biomeKey, Type.SNOWY) || BiomeDictionary.hasType(biomeKey, Type.SWAMP) ||
                 BiomeDictionary.hasType(biomeKey, Type.MESA)) {
 

@@ -80,7 +80,7 @@ public class ModDatagenerator {
 		private static class ModBlockTables extends BlockLoot {
 			@Override
 			protected void addTables() {
-				this.add(CHOCOBO_EGG.get(), noDrop());
+				this.dropSelf(CHOCOBO_EGG.get());
 				this.dropSelf(STRAW_NEST.get());
 				LootItemCondition.Builder condition = LootItemBlockStatePropertyCondition.hasBlockStateProperties(GYSAHL_GREEN.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(GysahlGreenBlock.AGE, GysahlGreenBlock.MAX_AGE));
 				this.add(GYSAHL_GREEN.get(), applyExplosionDecay(GYSAHL_GREEN.get(), LootTable.lootTable().withPool(LootPool.lootPool()

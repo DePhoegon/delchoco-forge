@@ -1,0 +1,29 @@
+All Goals Completed.
+
+Completed the Major Potion of the guide book
+- Extended it from the core book
+
+Fixed Spiralling fire/lava immunity issue.
+-  Possibly Breaking from prior versions.
+-  Revamped How FireBlood is stored on the chocobo
+
+changed Chocobo Egg to drop it self
+
+ChocoboEntity.java
+Explicitly stated 'false' to fire immunity to all spawns of chcobobo that aren't flame.
+- Fixed passing on 'fire immunity'
+
+Adjusted Age of Egg & baby
+- 7500 ticks for babies to grow
+- 5000 default for egg to grow
+
+Adjusted Chocobo Nether Spawn weight
+- Increased so they actually spawn more than rare riders
+- Set Ajustable variable in config
+
+Spawn Egg(choco) do not spawn the right choco when used in biomes that spawn chocobos.
+- it will spawn in the color of chocobos that spawn in that biome.
+
+Fixed Nether Spawns, adjusting spawn rules.
+
+Loads of pictures & screenshots. X}

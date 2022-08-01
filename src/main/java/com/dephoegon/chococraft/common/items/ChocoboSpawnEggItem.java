@@ -49,7 +49,7 @@ public class ChocoboSpawnEggItem extends Item {
             final Player player = context.getPlayer();
             if (player != null) {
                 if (player.isCrouching()) {
-                    chocobo.setAge(-2000);
+                    chocobo.setAge(-7500);
                 }
             }
 
