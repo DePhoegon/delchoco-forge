@@ -1,0 +1,6 @@
+{
+  "name": "Blank Name",
+  "landing_text": "",
+  "version": 1,
+  "extend": "delbase:reclaim"
+}
