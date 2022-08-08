@@ -20,9 +20,7 @@ public class SaddleBagContainer extends AbstractContainerMenu {
         this.refreshSlots(chocobo, player);
     }
 
-    public ChocoboEntity getChocobo() {
-        return chocobo;
-    }
+    public ChocoboEntity getChocobo() { return chocobo; }
     public void refreshSlots(@NotNull ChocoboEntity chocobo, Inventory player) {
         this.slots.clear();
         bindPlayerInventory(player);
@@ -31,15 +29,15 @@ public class SaddleBagContainer extends AbstractContainerMenu {
             int saddleSize = saddleItem.getInventorySize();
 
             switch (saddleSize) {
-                case 15 -> bindInventorySmall(chocobo.tierOneItemStackHandler);
-                case 45 -> bindInventoryBig(chocobo.tierTwoItemStackHandler);
+                case 15 -> bindInventorySmall(saddleStack, chocobo.tierOneItemStackHandler);
+                case 45 -> bindInventoryBig(saddleStack, chocobo.tierTwoItemStackHandler);
             }
         }
         this.addSlot(new SlotChocoboSaddle(chocobo.saddleItemStackHandler, 0, -16, 18));
     }
 
-    private void bindInventorySmall(IItemHandler inventory) {
-                if(inventory != null && inventory.getSlots() == ChocoboEntity.tier_one_chocobo_inv_slot_count) {
+    private void bindInventorySmall(@NotNull ItemStack saddle, IItemHandler inventory) {
+        if (!(saddle.isEmpty())) {
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 5; col++) {
                     this.addSlot(new SlotItemHandler(inventory, row * 5 + col, 44 + col * 18, 36 + row * 18));
@@ -48,8 +46,8 @@ public class SaddleBagContainer extends AbstractContainerMenu {
         }
     }
 
-    private void bindInventoryBig(IItemHandler inventory) {
-        if(inventory != null && inventory.getSlots() == ChocoboEntity.tier_two_chocobo_inv_slot_count) {
+    private void bindInventoryBig(@NotNull ItemStack saddle, IItemHandler inventory) {
+        if (!(saddle.isEmpty())) {
             for (int row = 0; row < 5; row++) {
                 for (int col = 0; col < 9; col++) {
                     this.addSlot(new SlotItemHandler(inventory, row * 9 + col, 8 + col * 18, 18 + row * 18));
@@ -71,8 +69,40 @@ public class SaddleBagContainer extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player playerIn) { return this.chocobo.isAlive() && this.chocobo.distanceTo(playerIn) < 8.0F; }
+    public boolean stillValid(@NotNull Player playerIn) { return this.chocobo.isAlive() && this.chocobo.distanceTo(playerIn) < 8.0F; }
 
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int index) { return ItemStack.EMPTY; }
+    public @NotNull ItemStack quickMoveStack(@NotNull Player playerIn, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(index);
+        ItemStack saddleStack = chocobo.getSaddle();
+        boolean notEmpty;
+        int slotSize;
+        if (!saddleStack.isEmpty() && saddleStack.getItem() instanceof ChocoboSaddleItem saddleItem) {
+            slotSize = saddleItem.getInventorySize();
+        } else { slotSize = 0; }
+        notEmpty = !(slot instanceof SlotChocoboSaddle);
+        if (notEmpty){
+            if (slot != null && slot.hasItem()) {
+                ItemStack itemstack1 = slot.getItem();
+                itemstack = itemstack1.copy();
+
+                if (index < slotSize) {
+                    if (!this.moveItemStackTo(itemstack1, slotSize, this.slots.size(), true)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (!this.moveItemStackTo(itemstack1, 0, slotSize, false)) {
+                    return ItemStack.EMPTY;
+                }
+
+                if (itemstack1.isEmpty()) {
+                    slot.set(ItemStack.EMPTY);
+                } else {
+                    slot.setChanged();
+                }
+            }
+        }
+
+        if (notEmpty) { return itemstack; } else { return ItemStack.EMPTY; }
+    }
 }

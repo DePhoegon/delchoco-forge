@@ -1,0 +1,14 @@
+Under the Hood Changes
+- Adjusted 'stay command'
+--  removed wondering (allowing it to look around, and seem alive)
+
+- Added avoidance of llamas
+== Llamas have done some evil things in the past, & world has spread
+
+- Touched the chocobo saddle inventory up.
+== Still can't figure out the rendering layer order.
+== added in Capabilty handling on the off chance it gets used.
+== Added quickMoveStack
+==~~ blacklisted the saddle slot, because things happen.
+
+~Should be fine on chocobos

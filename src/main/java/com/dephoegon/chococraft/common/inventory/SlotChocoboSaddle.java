@@ -1,9 +1,11 @@
 package com.dephoegon.chococraft.common.inventory;
 
 import com.dephoegon.chococraft.common.items.ChocoboSaddleItem;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 
@@ -13,9 +15,7 @@ public class SlotChocoboSaddle extends SlotItemHandler {
     }
 
     @Override
-    public boolean mayPlace(@Nonnull ItemStack stack) {
-        return false;
-    }
+    public boolean mayPlace(@Nonnull ItemStack stack) { return false; }
 
     @Override
     public int getMaxStackSize(@Nonnull ItemStack stack) {
