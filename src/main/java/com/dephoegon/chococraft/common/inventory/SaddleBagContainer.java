@@ -27,13 +27,13 @@ public class SaddleBagContainer extends AbstractContainerMenu {
         ItemStack saddleStack = chocobo.getSaddle();
         if(!saddleStack.isEmpty() && saddleStack.getItem() instanceof ChocoboSaddleItem saddleItem) {
             int saddleSize = saddleItem.getInventorySize();
-
+            this.addSlot(new SlotChocoboSaddle(chocobo.saddleItemStackHandler, 0, -16, 18));
             switch (saddleSize) {
                 case 15 -> bindInventorySmall(saddleStack, chocobo.tierOneItemStackHandler);
                 case 45 -> bindInventoryBig(saddleStack, chocobo.tierTwoItemStackHandler);
             }
         }
-        this.addSlot(new SlotChocoboSaddle(chocobo.saddleItemStackHandler, 0, -16, 18));
+
     }
 
     private void bindInventorySmall(@NotNull ItemStack saddle, IItemHandler inventory) {
@@ -41,6 +41,15 @@ public class SaddleBagContainer extends AbstractContainerMenu {
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 5; col++) {
                     this.addSlot(new SlotItemHandler(inventory, row * 5 + col, 44 + col * 18, 36 + row * 18));
+                    if (row * 5 + col < 5) {
+                        this.chocobo.tierOneItemStackHandler.setStackInSlot(row * 5 + col, this.chocobo.chocoboInventory.getStackInSlot(row * 5 + col+11));
+                    }
+                    if (row * 5 + col > 4 && row * 5 + col < 10) {
+                        this.chocobo.tierOneItemStackHandler.setStackInSlot(row * 5 + col, this.chocobo.chocoboInventory.getStackInSlot(row * 5 + col+15));
+                    }
+                    if (row * 5 + col > 9) {
+                        this.chocobo.tierOneItemStackHandler.setStackInSlot(row * 5 + col, this.chocobo.chocoboInventory.getStackInSlot(row * 5 + col+19));
+                    }
                 }
             }
         }
@@ -51,6 +60,7 @@ public class SaddleBagContainer extends AbstractContainerMenu {
             for (int row = 0; row < 5; row++) {
                 for (int col = 0; col < 9; col++) {
                     this.addSlot(new SlotItemHandler(inventory, row * 9 + col, 8 + col * 18, 18 + row * 18));
+                    this.chocobo.tierTwoItemStackHandler.setStackInSlot(row * 9 + col, this.chocobo.chocoboInventory.getStackInSlot(row * 9 + col));
                 }
             }
         }

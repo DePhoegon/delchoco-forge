@@ -1,0 +1,4 @@
+solved Chocobo Inventory Issues
+- Now works as intended.
+- stores & displays correctly,
+== fresh dropped items,  re-opened in the same session,  Re-open in new session
