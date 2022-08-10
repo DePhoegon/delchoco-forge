@@ -1,0 +1,55 @@
+{
+  "name": "01 - Where to Get Looking",
+  "icon": "minecraft:map",
+  "category": "delchoco:chocobo_ent",
+  "pages": [
+    {
+      "title": "Locations & Locations",
+      "type": "patchouli:spotlight",
+      "item": "minecraft:filled_map",
+      "text": "Locations That Chocobos Can be found in.$(br)- Hills & Plains$(br)- Swamps$(br)- Snowy Locations$(br)- Hot & Dry Locations$(br)- Mushroom Fields$(br)- Mesas'$(br) The Nether"
+    },
+    {
+      "title": "Black Chocobo",
+      "type": "patchouli:image",
+      "images": ["delchoco:textures/screens/chocobos/black_spawn.png"],
+      "text": "Hot & Dry Like a Desert"
+    },
+    {
+      "title": "Flame Chocobo",
+      "type": "patchouli:image",
+      "images": ["delchoco:textures/screens/chocobos/flame_spawn.png"],
+      "text": "Nether Realm"
+    },
+    {
+      "title": "Green Chocobo",
+      "type": "patchouli:image",
+      "images": ["delchoco:textures/screens/chocobos/green_spawn.png"],
+      "text": "Swampy lands"
+    },
+    {
+      "title": "Pink Chocobo",
+      "type": "patchouli:image",
+      "images": ["delchoco:textures/screens/chocobos/pink_spawn.png"],
+      "text": "Mushrooms for Space"
+    },
+    {
+      "title": "Red Chocobo",
+      "type": "patchouli:image",
+      "images": ["delchoco:textures/screens/chocobos/red_spawn.png"],
+      "text": "Mesa Places"
+    },
+    {
+      "title": "White Chocobo",
+      "type": "patchouli:image",
+      "images": ["delchoco:textures/screens/chocobos/white_spawn.png"],
+      "text": "Snowy Lands"
+    },
+    {
+      "title": "Yellow Chocobo",
+      "type": "patchouli:image",
+      "images": ["delchoco:textures/screens/chocobos/yellow_spawn.png"],
+      "text": "Plains & Hills, Most common"
+    }
+  ]
+}

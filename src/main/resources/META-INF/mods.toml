@@ -4,28 +4,28 @@ issueTrackerURL=""
 license="MIT"
 
 [[mods]]
-modId="chococraft"
+modId="delchoco"
 version="${file.jarVersion}"
-displayName="Chococraft Delbase Patch"
+displayName="Chococraft Delbase Fork"
 displayURL=""
 authors="Mrbysco, Xalcon, Slayer5934, balika011, DePhoegon"
 credits="Thanks to EddieV for the original Chococraft, ArnoSaxena(Torojimas) and clienthax for maintaining it"
 description='''
 Chocobos in Minecraft
 '''
-[[dependencies.chococraft]]
+[[dependencies.delchoco]]
 modId="minecraft"
 mandatory=true
 versionRange="[1.18.2,1.19)"
 ordering="NONE"
 side="BOTH"
-[[dependencies.chococraft]]
+[[dependencies.delchoco]]
 modId="forge"
 mandatory=true
 versionRange="[39,)"
 ordering="NONE"
 side="BOTH"
-[[dependencies.chococraft]]
+[[dependencies.delchoco]]
 modId="delbase"
 mandatory=true
 versionRange="[1,)"

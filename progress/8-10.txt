@@ -1,0 +1,17 @@
+Reworked Chocobo Models
+------------------------
+-- Making Chicobo models textures from scratch*  recolors
+== 'borrowed' the code model data from chococraft X.x
+
+- Going to remake the textures for adult chocobo, to the pallets chosen for the chicobos.
+
+Goal theming chocobos to native blocks/items in games pallet wise.
+-Intend to keep as many color palettes as possible from the base game
+== Will pull pallets from expected mods to be used with it.
+~~ Biomes o Plenty, etc.  (might expand on chocobos, with modpacks & bridge mods, though way down the list & only for theme'd areas.)
+
+
+Purposefully diverging from chococraft4, & shifted the namespace for compatability sake of entities (for w/e reason you'd have both)
+
+Adjustments to come to move the mod into my design more.
+
