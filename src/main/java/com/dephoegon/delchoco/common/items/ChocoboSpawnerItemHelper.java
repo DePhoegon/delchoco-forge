@@ -49,7 +49,7 @@ public class ChocoboSpawnerItemHelper extends Item {
             if (biomeCategory == Biome.BiomeCategory.NETHER) { 
                 color = ChocoboColor.FLAME;
                 assert chocobo != null;
-                chocobo.setFlame(1);
+                chocobo.setFlame(true);
             }
             if (biomeCategory == Biome.BiomeCategory.MESA) { color = ChocoboColor.RED; }
             if (biomeCategory == Biome.BiomeCategory.MUSHROOM) { color = ChocoboColor.PINK; }

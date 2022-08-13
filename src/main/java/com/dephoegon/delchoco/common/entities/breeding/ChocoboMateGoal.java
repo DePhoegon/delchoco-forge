@@ -10,6 +10,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -33,7 +34,7 @@ public class ChocoboMateGoal extends Goal {
     private Chocobo targetMate;
     private int spawnBabyDelay;
 
-    public ChocoboMateGoal(Chocobo chocobo, double moveSpeed) {
+    public ChocoboMateGoal(@NotNull Chocobo chocobo, double moveSpeed) {
         this.chocobo = chocobo;
         this.world = chocobo.level;
         this.moveSpeed = moveSpeed;

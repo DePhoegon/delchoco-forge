@@ -9,15 +9,17 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
+import static com.dephoegon.delchoco.DelChoco.LOGGER;
 import static java.lang.Math.*;
 import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 
 public class BreedingHelper {
 
-    public static Chocobo createChild(ChocoboBreedInfo breedInfo, Level world) {
+    public static @Nullable Chocobo createChild(ChocoboBreedInfo breedInfo, Level world) {
         final Chocobo baby = ModEntities.CHOCOBO.get().create(world);
         if (baby == null) { return null; }
 
@@ -25,6 +27,7 @@ public class BreedingHelper {
         final ChocoboStatSnapshot father = breedInfo.getFather();
 
         baby.setGeneration(((mother.generation + father.generation) / 2) + 1);
+        baby.setFlame(mother.flameBlood || father.flameBlood);
 
         float health = round(((mother.health + father.health) / 2) * (COMMON.poslossHealth.get().floatValue() + ((float) random() * COMMON.posgainHealth.get().floatValue())));
         Objects.requireNonNull(baby.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(min(health, COMMON.maxHealth.get().floatValue()));
@@ -51,6 +54,7 @@ public class BreedingHelper {
         ChocoboColor mColor = mother.color;
         ChocoboColor fColor = father.color;
         ChocoboColor bColor = eggColor(mColor, fColor, yellow, .03f);
+        LOGGER.info(mother.flameBlood + " <- Mother Flameblood\n"+ father.flameBlood + "<- Father Flameblood");
 
         if (mColor == yellow) {
             if (fColor == yellow) {
@@ -80,7 +84,7 @@ public class BreedingHelper {
 
         baby.setMale(.50f > (float) random());
         baby.setChocoboColor(bColor);
-        if (mother.flameBlood > 0 || father.flameBlood > 0) { baby.setFlame(1); }
+
 
         baby.setAge(-7500);
 

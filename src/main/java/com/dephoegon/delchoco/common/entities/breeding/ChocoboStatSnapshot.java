@@ -23,7 +23,7 @@ public class ChocoboStatSnapshot {
     public float health;
     public float speed;
     public float stamina;
-    public int flameBlood;
+    public boolean flameBlood;
     public ChocoboColor color;
 
     static {
@@ -32,7 +32,7 @@ public class ChocoboStatSnapshot {
         DEFAULT.health = ChocoConfig.COMMON.defaultHealth.get();
         DEFAULT.stamina = ChocoConfig.COMMON.defaultStamina.get();
         DEFAULT.speed = ChocoConfig.COMMON.defaultSpeed.get() / 100f;
-        DEFAULT.flameBlood = 0;
+        DEFAULT.flameBlood = false;
         DEFAULT.color = ChocoboColor.YELLOW;
     }
 
@@ -53,7 +53,7 @@ public class ChocoboStatSnapshot {
         this.health = nbt.getFloat(NBTKEY_HEALTH);
         this.speed = nbt.getFloat(NBTKEY_SPEED);
         this.stamina = nbt.getFloat(NBTKEY_STAMINA);
-        this.flameBlood = nbt.getInt(NBTKEY_FLAME_BLOOD);
+        this.flameBlood = nbt.getBoolean(NBTKEY_FLAME_BLOOD);
         this.color = ChocoboColor.values()[nbt.getByte(NBTKEY_COLOR)];
     }
 
@@ -63,7 +63,7 @@ public class ChocoboStatSnapshot {
         nbt.putFloat(NBTKEY_HEALTH, this.health);
         nbt.putFloat(NBTKEY_SPEED, this.speed);
         nbt.putFloat(NBTKEY_STAMINA, this.stamina);
-        nbt.putInt(NBTKEY_FLAME_BLOOD, this.flameBlood);
+        nbt.putBoolean(NBTKEY_FLAME_BLOOD, this.flameBlood);
         nbt.putByte(NBTKEY_COLOR, (byte) this.color.ordinal());
         return nbt;
     }

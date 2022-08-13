@@ -26,7 +26,7 @@ public class LayerPlumage extends RenderLayer<Chocobo, EntityModel<Chocobo>> {
 				case BLUE -> "textures/entities/chocobos/plumage_blue.png";
 				case WHITE -> "textures/entities/chocobos/plumage_white.png";
 				case BLACK -> "textures/entities/chocobos/plumage_black.png";
-				case GOLD -> "textures/entities/chocobos/plumage.png";
+				case GOLD -> "textures/entities/chocobos/plumage_gold.png";
 				case PINK -> "textures/entities/chocobos/plumage_pink.png";
 				case RED -> "textures/entities/chocobos/plumage_red.png";
 				case PURPLE -> "textures/entities/chocobos/plumage_purple.png";

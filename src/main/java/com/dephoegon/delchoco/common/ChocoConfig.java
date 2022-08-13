@@ -36,11 +36,6 @@ public class ChocoConfig {
         public final IntValue defaultSpeed;
         public final IntValue defaultHealth;
 
-        public final IntValue ExpCostSprint;
-        public final IntValue ExpCostGlide;
-        public final IntValue ExpCostDive;
-        public final IntValue ExpCostFly;
-
         public final IntValue maxHealth;
         public final IntValue maxSpeed;
         public final DoubleValue maxStamina;
@@ -168,25 +163,6 @@ public class ChocoConfig {
                         .defineInRange("defaultHealth", 20, 0, Integer.MAX_VALUE);
 
                 builder.pop();
-                builder.comment("Experience Costs")
-                        .push("xp_costs");
-
-                ExpCostSprint = builder
-                        .comment("Controls the experience required to unlock the Sprint Ability [Default: 1500]")
-                        .defineInRange("ExpCostSprint", 1500, 1, Integer.MAX_VALUE);
-
-                ExpCostGlide = builder
-                        .comment("Controls the experience required to unlock the Glide Ability [Default: 1500]")
-                        .defineInRange("ExpCostGlide", 1500, 1, Integer.MAX_VALUE);
-
-                ExpCostDive = builder
-                        .comment("Controls the experience required to unlock the Dive Ability [Default: 1000]")
-                        .defineInRange("ExpCostDive", 1000, 1, Integer.MAX_VALUE);
-
-                ExpCostFly = builder
-                        .comment("Controls the experience required to unlock the Fly Ability [Default: 2000]")
-                        .defineInRange("ExpCostFly", 2000, 1, Integer.MAX_VALUE);
-                builder.pop();
 
             builder.pop();
 
@@ -229,22 +205,22 @@ public class ChocoConfig {
                         .push("loss_stats");
 
                 poslossHealth = builder
-                        .comment("Controls the multiplier the Health stat loss (for example 0.95 would result in a max loss of 5% so 20 to 19) [Default: .95]")
-                        .defineInRange("poslossHealth", .95D, 0, Integer.MAX_VALUE);
+                        .comment("Controls the multiplier the Health stat loss (for example 0.95 would result in a max loss of 5% so 20 to 19) [Default: 1]")
+                        .defineInRange("poslossHealth", 1D, 0, Integer.MAX_VALUE);
 
                 poslossSpeed = builder
-                        .comment("Controls the multiplier the Speed stat gains (for example 0.95 would result in a max loss of 5% so 20 to 19) [Default: .95]")
-                        .defineInRange("poslossSpeed", .95D, 0, Integer.MAX_VALUE);
+                        .comment("Controls the multiplier the Speed stat gains (for example 0.95 would result in a max loss of 5% so 20 to 19) [Default: 1]")
+                        .defineInRange("poslossSpeed", 1D, 0, Integer.MAX_VALUE);
 
                 poslossStamina = builder
-                        .comment("Controls the multiplier the Stamina stat gains (for example 0.95 would result in a max loss of 5% so 20 to 19) [Default: .95]")
-                        .defineInRange("poslossStamina", .95D, 0, Integer.MAX_VALUE);
+                        .comment("Controls the multiplier the Stamina stat gains (for example 0.95 would result in a max loss of 5% so 20 to 19) [Default: 1]")
+                        .defineInRange("poslossStamina", 1D, 0, Integer.MAX_VALUE);
 
                 builder.pop();
 
             eggHatchTimeTicks = builder
-                    .comment("Controls the amount of ticks / time till an egg hatches. This value isn't super accurate [Default: 10000]")
-                    .defineInRange("eggHatchTimeTicks", 5000, 0, Integer.MAX_VALUE);
+                    .comment("Controls the amount of ticks / time till an egg hatches. This value isn't super accurate [Default: 500-1000]")
+                    .defineInRange("eggHatchTimeTicks", 500, 0, Integer.MAX_VALUE);
 
             builder.pop();
         }
