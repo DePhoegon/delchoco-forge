@@ -32,26 +32,27 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.Random;
 
 public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider {
-    private final static CheckOffset[] SHELTER_CHECK_OFFSETS = new CheckOffset[]
-            {
-                    new CheckOffset(new Vec3i(0, 1, 0), true),
-                    new CheckOffset(new Vec3i(0, 2, 0), true),
-                    new CheckOffset(new Vec3i(-1, 3, -1), false),
-                    new CheckOffset(new Vec3i(-1, 3, 0), false),
-                    new CheckOffset(new Vec3i(-1, 3, 1), false),
-                    new CheckOffset(new Vec3i(0, 3, -1), false),
-                    new CheckOffset(new Vec3i(0, 3, 0), false),
-                    new CheckOffset(new Vec3i(0, 3, 1), false),
-                    new CheckOffset(new Vec3i(1, 3, -1), false),
-                    new CheckOffset(new Vec3i(1, 3, 0), false),
-                    new CheckOffset(new Vec3i(1, 3, 1), false),
-            };
+    private final static CheckOffset[] SHELTER_CHECK_OFFSETS = new CheckOffset[] {
+            new CheckOffset(new Vec3i(0, 1, 0), true),
+            new CheckOffset(new Vec3i(0, 2, 0), true),
+            new CheckOffset(new Vec3i(-1, 3, -1), false),
+            new CheckOffset(new Vec3i(-1, 3, 0), false),
+            new CheckOffset(new Vec3i(-1, 3, 1), false),
+            new CheckOffset(new Vec3i(0, 3, -1), false),
+            new CheckOffset(new Vec3i(0, 3, 0), false),
+            new CheckOffset(new Vec3i(0, 3, 1), false),
+            new CheckOffset(new Vec3i(1, 3, -1), false),
+            new CheckOffset(new Vec3i(1, 3, 0), false),
+            new CheckOffset(new Vec3i(1, 3, 1), false),
+    };
 
     @SuppressWarnings("WeakerAccess")
     public static final String NBTKEY_IS_SHELTERED = "IsSheltered";
@@ -81,7 +82,7 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
             ChocoboNestBlockEntity.this.onInventoryChanged();
         }
     };
-    private LazyOptional<IItemHandler> inventoryHolder = LazyOptional.of(() -> inventory);
+    private final LazyOptional<IItemHandler> inventoryHolder = LazyOptional.of(() -> inventory);
 
     private boolean isSheltered;
     private int ticks = 0;
@@ -90,7 +91,7 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
         super(ModRegistry.STRAW_NEST_TILE.get(), pos, state);
     }
 
-    public static void serverTick(Level level, BlockPos pos, BlockState state, ChocoboNestBlockEntity nestBlockEntity) {
+    public static void serverTick(Level ignoredLevel, BlockPos pos, BlockState state, ChocoboNestBlockEntity nestBlockEntity) {
         nestBlockEntity.ticks++;
         if (nestBlockEntity.ticks > 1_000_000)
             nestBlockEntity.ticks = 0;
@@ -100,13 +101,18 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
         if (nestBlockEntity.ticks % 5 == 0 && !nestBlockEntity.getEggItemStack().isEmpty()) {
             changed = nestBlockEntity.updateEgg();
         }
+        if (nestBlockEntity.ticks % 5 == 0 && nestBlockEntity.getEggItemStack().isEmpty() && nestBlockEntity.getBlockState().getValue(StrawNestBlock.HAS_EGG)) {
+                nestBlockEntity.onInventoryChanged();
+        }
 
         if (nestBlockEntity.ticks % 200 == 100) {
             changed |= nestBlockEntity.updateSheltered();
         }
 
-        if (changed)
+        if (changed) {
+            assert nestBlockEntity.level != null;
             nestBlockEntity.level.setBlockAndUpdate(pos, state);
+        }
     }
 
     private boolean updateEgg() {
@@ -134,6 +140,7 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
         }
 
         baby.moveTo(this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.2, this.worldPosition.getZ() + 0.5, 0.0F, 0.0F);
+        assert this.level != null;
         this.level.addFreshEntity(baby);
 
         Random random = baby.getRandom();
@@ -187,7 +194,7 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
     //region Data Synchronization/Persistence
 
     @Override
-    public void load(CompoundTag nbt) {
+    public void load(@NotNull CompoundTag nbt) {
         super.load(nbt);
         this.isSheltered = nbt.getBoolean(NBTKEY_IS_SHELTERED);
         this.ticks = nbt.getInt(NBTKEY_TICKS);
@@ -195,7 +202,7 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt) {
+    public void saveAdditional(@NotNull CompoundTag nbt) {
         super.saveAdditional(nbt);
         nbt.putBoolean(NBTKEY_IS_SHELTERED, this.isSheltered);
         nbt.putInt(NBTKEY_TICKS, this.ticks);
@@ -212,11 +219,11 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.inventory.deserializeNBT(pkt.getTag().getCompound(NBTKEY_NEST_INVENTORY));
+        this.inventory.deserializeNBT(Objects.requireNonNull(pkt.getTag()).getCompound(NBTKEY_NEST_INVENTORY));
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
+    public @NotNull CompoundTag getUpdateTag() {
         CompoundTag nbt = super.getUpdateTag();
         this.saveAdditional(nbt);
         return nbt;
@@ -229,7 +236,7 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player player) {
+    public AbstractContainerMenu createMenu(int id, @NotNull Inventory playerInventory, @NotNull Player player) {
         return new NestContainer(id, playerInventory, this);
     }
     //endregion
@@ -253,12 +260,13 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
     public void onInventoryChanged() {
         this.setChanged();
         BlockState newState = ModRegistry.STRAW_NEST.get().defaultBlockState().setValue(StrawNestBlock.HAS_EGG, !this.getEggItemStack().isEmpty());
-        this.getLevel().setBlockAndUpdate(this.getBlockPos(), newState);
+        Objects.requireNonNull(this.getLevel()).setBlockAndUpdate(this.getBlockPos(), newState);
     }
 
     public boolean isSheltered() {
         boolean sheltered = true;
         for (CheckOffset checkOffset : SHELTER_CHECK_OFFSETS) {
+            assert level != null;
             if (level.isEmptyBlock(this.getBlockPos().offset(checkOffset.offset)) != checkOffset.shouldBeAir) {
                 sheltered = false;
                 break;

@@ -54,7 +54,6 @@ public class BreedingHelper {
         ChocoboColor mColor = mother.color;
         ChocoboColor fColor = father.color;
         ChocoboColor bColor = eggColor(mColor, fColor, yellow, .03f);
-        LOGGER.info(mother.flameBlood + " <- Mother Flameblood\n"+ father.flameBlood + "<- Father Flameblood");
 
         if (mColor == yellow) {
             if (fColor == yellow) {

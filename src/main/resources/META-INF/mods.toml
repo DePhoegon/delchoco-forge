@@ -6,7 +6,7 @@ license="MIT"
 [[mods]]
 modId="delchoco"
 version="${file.jarVersion}"
-displayName="Chococraft Delbase Fork"
+displayName="Delbase Chocobo Fork"
 displayURL=""
 authors="Mrbysco, Xalcon, Slayer5934, balika011, DePhoegon"
 credits="Thanks to EddieV for the original Chococraft, ArnoSaxena(Torojimas) and clienthax for maintaining it"

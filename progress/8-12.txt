@@ -7,3 +7,11 @@ Flame Blood passes on through the eyes.
 -Fire immunity
 
 Minor Reworks.
+
+Ensured spawning still works
+
+Ensured Breeding works & passes on details
+
+Fixed Flame spawn egg, actually giving the chocobo flameblood.
+
+Fixed Egg in Nest issue (of it staying rendered)
