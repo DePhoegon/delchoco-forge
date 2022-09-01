@@ -182,7 +182,7 @@ dependencies {
     // DePhoegons' Reclaim - Version 1.0 [fileID] 3887911
     // 1.0.5 - 3895451
     // Same Dependencies in DePhoegons' Reclaim are used here as well.
-    implementation fg.deobf("curse.maven:delbase-648173:3895451")
+    implementation fg.deobf("curse.maven:delbase-648173:${delbase_reclaim}")
 
 
 
