@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.entities.Chocobo.*;
+import static net.minecraftforge.common.BiomeDictionary.hasType;
 
 public class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, DelChoco.MOD_ID);
@@ -35,14 +36,14 @@ public class ModEntities {
         // Biome Spawning area
         // Overrides Spawn Eggs
         ResourceKey<Biome> biomeKey = ResourceKey.create(Registry.BIOME_REGISTRY, event.getName());
+
+        String bob = biomeKey.toString();
+        // Name Strings to extend towards BOP support
         if (BiomeDictionary.hasType(biomeKey, Type.NETHER)) {
             event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(),
                     COMMON.chocoboSpawnWeightNether.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get()));
         }
-        if(BiomeDictionary.hasType(biomeKey, Type.PLAINS) || BiomeDictionary.hasType(biomeKey, Type.HILLS) ||
-                (BiomeDictionary.hasType(biomeKey, Type.HOT) && BiomeDictionary.hasType(biomeKey, Type.DRY) && !(BiomeDictionary.hasType(biomeKey, Type.NETHER))) ||
-                BiomeDictionary.hasType(biomeKey, Type.SNOWY) || BiomeDictionary.hasType(biomeKey, Type.SWAMP) ||
-                BiomeDictionary.hasType(biomeKey, Type.MESA)) {
+        if(BiomeDictionary.hasType(biomeKey, Type.PLAINS) || BiomeDictionary.hasType(biomeKey, Type.HILLS) || (BiomeDictionary.hasType(biomeKey, Type.HOT) && BiomeDictionary.hasType(biomeKey, Type.DRY) && !(BiomeDictionary.hasType(biomeKey, Type.NETHER))) || BiomeDictionary.hasType(biomeKey, Type.SNOWY) || BiomeDictionary.hasType(biomeKey, Type.SWAMP) || BiomeDictionary.hasType(biomeKey, Type.MESA) || bob.contains("mystic") || bob.contains("blossom") || bob.contains("lavender") || bob.contains("tropics") || hasType(biomeKey, Type.FOREST)) {
 
             event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(),
                     COMMON.chocoboSpawnWeight.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get()));

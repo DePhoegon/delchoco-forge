@@ -1,0 +1,2 @@
+Biomes O Plenty Spawn support w/o breaking it.
+- Fairly Easy considering BOP mostly uses Native tags.

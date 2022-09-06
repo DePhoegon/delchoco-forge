@@ -195,14 +195,15 @@ public class Chocobo extends TamableAnimal {
     }
     @Override
     protected void registerGoals() {
+        // togglable Goal 0, - Follow owner (whistle [tamed])
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new ChocoboMateGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.2D, Ingredient.of(GYSAHL_GREEN.get()), false));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(6, new AvoidEntityGoal<>(this, Llama.class, 15F, 1.3F, 1.5F));
-        // this.goalSelector.addGoal(7, new FollowOwnerGoal(this, 0.8D, 5.0F, 7.0F, false));
-        // this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 0.6D));
-        this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Llama.class, 15F, 1.3F, 1.5F));
+        // togglable Goal 5, - Avoid Player Goal (non-tamed goal)
+        // togglable Goal 6, - Roam Around Goal (whistle toggle [tamed/non-tamed])
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this)); // moved after Roam, alittle too stationary
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
 
 
     }
@@ -238,31 +239,28 @@ public class Chocobo extends TamableAnimal {
         Biome.BiomeCategory biomeCategory = getBiomeCategory(currentBiome);
         //noinspection OptionalGetWithoutIsPresent
         final ResourceKey<Biome> biomeKey = currentBiome.unwrapKey().get();
-        if (biomeCategory == Biome.BiomeCategory.NETHER) {
-            this.setChocoboColor(ChocoboColor.FLAME);
-            this.setFlame(true);
+        if (biomeCategory == Biome.BiomeCategory.NETHER) { setChocobo(ChocoboColor.FLAME, true); }
+        else {
+            if (biomeCategory == Biome.BiomeCategory.FOREST && !(nameCheck(currentBiome, "mystic") || nameCheck(currentBiome, "blossom")  || nameCheck(currentBiome, "tropics") || nameCheck(currentBiome, "lavender"))) { setChocobo(ChocoboColor.RED, false); }
+            else if (biomeCategory == Biome.BiomeCategory.MESA) { setChocobo(ChocoboColor.RED, false); }
+            else if (hasType(biomeKey, Type.HOT) && hasType(biomeKey, Type.DRY)) { setChocobo(ChocoboColor.BLACK, false); }
+            if (biomeCategory == Biome.BiomeCategory.MUSHROOM) { setChocobo(ChocoboColor.PINK, false); }
+            if (hasType(biomeKey, Type.SNOWY)) { setChocobo(ChocoboColor.WHITE, false); }
+            if (biomeCategory == Biome.BiomeCategory.SWAMP) { setChocobo(ChocoboColor.GREEN, false); }
+            if (nameCheck(currentBiome, "mystic")) { setChocobo(ChocoboColor.BLUE, false); }
+            if (nameCheck(currentBiome, "blossom")) { setChocobo(ChocoboColor.PINK, false); }
+            if (nameCheck(currentBiome, "lavender")) { setChocobo(ChocoboColor.PURPLE, false); }
+            if (nameCheck(currentBiome, "tropics")) { setChocobo(ChocoboColor.GOLD, false); }
         }
-        if (biomeCategory == Biome.BiomeCategory.MESA) {
-            this.setChocoboColor(ChocoboColor.RED);
-            this.setFlame(false);
-        }
-        if (biomeCategory == Biome.BiomeCategory.MUSHROOM) {
-            this.setChocoboColor(ChocoboColor.PINK);
-            this.setFlame(false);
-        }
-        if (hasType(biomeKey, Type.HOT) && hasType(biomeKey, Type.DRY) &&
-                !(hasType(biomeKey, Type.MESA)) && !(hasType(biomeKey, Type.NETHER))) {
-            this.setChocoboColor(ChocoboColor.BLACK);
-            this.setFlame(false);
-        }
-        if (hasType(biomeKey, Type.SNOWY)) {
-            this.setChocoboColor(ChocoboColor.WHITE);
-            this.setFlame(false);
-        }
-        if (biomeCategory == Biome.BiomeCategory.SWAMP) {
-            this.setChocoboColor(ChocoboColor.GREEN);
-            this.setFlame(false);}
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    }
+    private boolean nameCheck(@NotNull Holder<Biome> biomeHolder, String name) {
+        String tName = biomeHolder.toString();
+        return tName.contains(name);
+    }
+    private void setChocobo(ChocoboColor color, boolean flame) {
+        this.setFlame(false);
+        this.setChocoboColor(color);
     }
 
     @Override
@@ -473,11 +471,8 @@ public class Chocobo extends TamableAnimal {
     @Override
     public void aiStep() {
         super.aiStep();
-
         this.setRot(this.getYRot(), this.getXRot());
-
         this.regenerateStamina();
-
         this.maxUpStep = 1f;
         this.fallDistance = 0f;
 
@@ -487,9 +482,7 @@ public class Chocobo extends TamableAnimal {
             if ((float) Math.random() < .25) {
                 this.dropFeather();
             }
-        } else {
-            this.TimeSinceFeatherChance++;
-        }
+        } else { this.TimeSinceFeatherChance++; }
 
         //Change effects to chocobo colors
         if (!this.getCommandSenderWorld().isClientSide) {
@@ -611,7 +604,7 @@ public class Chocobo extends TamableAnimal {
                     this.playSound(ModSounds.WHISTLE_SOUND_FOLLOW.get(), 1.0F, 1.0F);
                     this.setNoAi(false);
                     if (noroam) {
-                        this.goalSelector.addGoal(8, this.roamAround);
+                        this.goalSelector.addGoal(6, this.roamAround);
                         noroam = false;
                     }
                     this.goalSelector.addGoal(0, this.follow);
@@ -712,8 +705,8 @@ public class Chocobo extends TamableAnimal {
     @Override
     public boolean checkSpawnRules(@NotNull LevelAccessor worldIn, @NotNull MobSpawnType spawnReasonIn) {
         final Holder<Biome> currentBiome = this.level.getBiome(blockPosition().below());
-        @SuppressWarnings("OptionalGetWithoutIsPresent") final ResourceKey<Biome> biomeKey = currentBiome.unwrapKey().get();
-        if (BiomeDictionary.hasType(biomeKey, Type.NETHER)) { return true; }
+        @SuppressWarnings("OptionalGetWithoutIsPresent") final ResourceKey<Biome> key = currentBiome.unwrapKey().get();
+        if (BiomeDictionary.hasType(key, Type.NETHER)) { return true; }
         return super.checkSpawnRules(worldIn, spawnReasonIn);
     }
     @Override
@@ -737,23 +730,14 @@ public class Chocobo extends TamableAnimal {
             }, 10.0F, 1.0D, 1.2D, EntitySelector.NO_CREATIVE_OR_SPECTATOR);
         }
         if (roamAround == null) {
-            roamAround = new WaterAvoidingRandomStrollGoal(this, 0.6D);
+            roamAround = new WaterAvoidingRandomStrollGoal(this, 0.8D);
         }
         if(isTame()) {
             goalSelector.removeGoal(chocoboAvoidPlayerGoal);
         } else {
             goalSelector.addGoal(5, chocoboAvoidPlayerGoal);
         }
-        goalSelector.addGoal(8, roamAround);
+        goalSelector.addGoal(6, roamAround);
         noroam = false;
     }
-    /*
-    @Override
-    public EntityDimensions getDimensions(Pose pose) {
-        if (isBaby()) {
-            return super.getDimensions(pose).scale(0.5F);
-        }
-        return super.getDimensions(pose);
-    }
-    */
 }

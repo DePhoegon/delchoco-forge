@@ -35,10 +35,7 @@ public class ChocoboStatSnapshot {
         DEFAULT.flameBlood = false;
         DEFAULT.color = ChocoboColor.YELLOW;
     }
-
-    private ChocoboStatSnapshot() {
-    }
-
+    private ChocoboStatSnapshot() { }
     public ChocoboStatSnapshot(@NotNull Chocobo chocobo) {
         this.generation = chocobo.getGeneration();
         this.health = (float) Objects.requireNonNull(chocobo.getAttribute(Attributes.MAX_HEALTH)).getBaseValue();
@@ -47,7 +44,6 @@ public class ChocoboStatSnapshot {
         this.flameBlood = chocobo.isFlame();
         this.color = chocobo.getChocoboColor();
     }
-
     public ChocoboStatSnapshot(@NotNull CompoundTag nbt) {
         this.generation = nbt.getInt(NBTKEY_GENERATION);
         this.health = nbt.getFloat(NBTKEY_HEALTH);
@@ -56,7 +52,6 @@ public class ChocoboStatSnapshot {
         this.flameBlood = nbt.getBoolean(NBTKEY_FLAME_BLOOD);
         this.color = ChocoboColor.values()[nbt.getByte(NBTKEY_COLOR)];
     }
-
     public CompoundTag serialize() {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt(NBTKEY_GENERATION, this.generation);
