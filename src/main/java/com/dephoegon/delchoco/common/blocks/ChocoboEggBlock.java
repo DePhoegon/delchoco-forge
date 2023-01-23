@@ -26,10 +26,13 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.Stream;
+
+import static com.dephoegon.delchoco.common.entities.breeding.ChocoboBreedInfo.getFromNbtOrDefault;
 
 public class ChocoboEggBlock extends BaseEntityBlock {
     public final static String NBTKEY_HATCHINGSTATE_TIME = "Time";
@@ -76,7 +79,7 @@ public class ChocoboEggBlock extends BaseEntityBlock {
                 return;
             }
 
-            ChocoboBreedInfo breedInfo = ChocoboBreedInfo.getFromNbtOrDefault(stack.getTagElement(NBTKEY_BREEDINFO));
+            ChocoboBreedInfo breedInfo = getFromNbtOrDefault(stack.getTagElement(NBTKEY_BREEDINFO));
 
             ((ChocoboEggBlockEntity) tile).setBreedInfo(breedInfo);
         }
@@ -84,7 +87,7 @@ public class ChocoboEggBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void playerDestroy(Level worldIn, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity te, ItemStack stack) {
+    public void playerDestroy(@NotNull Level worldIn, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity te, ItemStack stack) {
         if (worldIn.isClientSide) {
             return;
         }

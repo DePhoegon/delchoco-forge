@@ -98,7 +98,7 @@ public class ChocoboMateGoal extends Goal {
             BlockState state = this.world.getBlockState(offsetPos);
             if (state.getMaterial().isReplaceable() && !state.getMaterial().isLiquid() && ModRegistry.CHOCOBO_EGG.get().canSurvive(state, this.world, offsetPos)) {
                 if (!this.world.setBlockAndUpdate(offsetPos, ModRegistry.CHOCOBO_EGG.get().defaultBlockState())) {
-                    DelChoco.log.error("Unable to place egg @ {}, setBlockState() returned false!", offsetPos);
+                    // DelChoco.log.error("Unable to place egg @ {}, setBlockState() returned false!", offsetPos);
                     return;
                 }
 
@@ -106,7 +106,7 @@ public class ChocoboMateGoal extends Goal {
                 if(tile instanceof ChocoboEggBlockEntity eggTile) {
                     eggTile.setBreedInfo(new ChocoboBreedInfo(new ChocoboStatSnapshot(this.chocobo), new ChocoboStatSnapshot(this.targetMate)));
                 } else {
-                    DelChoco.log.error("Unable to place egg @ {}, no tile entity was found at the given position!", offsetPos);
+                    // DelChoco.log.error("Unable to place egg @ {}, no tile entity was found at the given position!", offsetPos);
                     return;
                 }
 

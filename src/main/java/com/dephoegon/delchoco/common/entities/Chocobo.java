@@ -1,5 +1,6 @@
 package com.dephoegon.delchoco.common.entities;
 
+import com.dephoegon.delbase.aid.util.kb;
 import com.dephoegon.delchoco.DelChoco;
 import com.dephoegon.delchoco.common.entities.breeding.ChocoboMateGoal;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
@@ -15,6 +16,7 @@ import com.dephoegon.delchoco.common.network.PacketManager;
 import com.dephoegon.delchoco.common.network.packets.OpenChocoboGuiMessage;
 import com.dephoegon.delchoco.utils.RandomHelper;
 import com.dephoegon.delchoco.utils.WorldUtils;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -62,6 +64,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.PacketDistributor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
@@ -69,10 +73,12 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.dephoegon.delchoco.aid.chocoKB.isAltDown;
 import static com.dephoegon.delchoco.client.gui.ChocoboInfoScreen.openScreen;
 import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 import static com.dephoegon.delchoco.common.init.ModSounds.AMBIENT_SOUND;
+import static net.minecraft.client.gui.screens.Screen.hasAltDown;
 import static net.minecraft.world.level.biome.Biome.getBiomeCategory;
 import static net.minecraftforge.common.BiomeDictionary.hasType;
 import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
@@ -88,10 +94,12 @@ public class Chocobo extends TamableAnimal {
     private static final String NBTKEY_CHOCOBO_GENERATION = "Generation";
     private static final String NBTKEY_CHOCOBO_STAMINA = "Stamina";
     private static final String NBTKEY_CHOCOBO_FLAME_BLOOD = "FlameBlood";
+    private static final String NBTKEY_CHOCOBO_WATER_BREATH = "WaterBreath";
 
     private static final EntityDataAccessor<ChocoboColor> PARAM_COLOR = SynchedEntityData.defineId(Chocobo.class, ModDataSerializers.CHOCOBO_COLOR);
     private static final EntityDataAccessor<Boolean> PARAM_IS_MALE = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> PARAM_IS_FLAME_BLOOD = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> PARAM_IS_WATER_BREATH = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<MovementType> PARAM_MOVEMENT_TYPE = SynchedEntityData.defineId(Chocobo.class, ModDataSerializers.MOVEMENT_TYPE);
     private static final EntityDataAccessor<ItemStack> PARAM_SADDLE_ITEM = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.ITEM_STACK);
 
@@ -222,6 +230,7 @@ public class Chocobo extends TamableAnimal {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(PARAM_IS_FLAME_BLOOD, false);
+        this.entityData.define(PARAM_IS_WATER_BREATH, false);
         this.entityData.define(PARAM_COLOR, ChocoboColor.YELLOW);
         this.entityData.define(PARAM_IS_MALE, false);
         this.entityData.define(PARAM_MOVEMENT_TYPE, MovementType.WANDER);
@@ -239,18 +248,18 @@ public class Chocobo extends TamableAnimal {
         Biome.BiomeCategory biomeCategory = getBiomeCategory(currentBiome);
         //noinspection OptionalGetWithoutIsPresent
         final ResourceKey<Biome> biomeKey = currentBiome.unwrapKey().get();
-        if (biomeCategory == Biome.BiomeCategory.NETHER) { setChocobo(ChocoboColor.FLAME, true); }
+        if (biomeCategory == Biome.BiomeCategory.NETHER) { setChocobo(ChocoboColor.FLAME, true, false); }
         else {
-            if (biomeCategory == Biome.BiomeCategory.FOREST && !(nameCheck(currentBiome, "mystic") || nameCheck(currentBiome, "blossom")  || nameCheck(currentBiome, "tropics") || nameCheck(currentBiome, "lavender"))) { setChocobo(ChocoboColor.RED, false); }
-            else if (biomeCategory == Biome.BiomeCategory.MESA) { setChocobo(ChocoboColor.RED, false); }
-            else if (hasType(biomeKey, Type.HOT) && hasType(biomeKey, Type.DRY)) { setChocobo(ChocoboColor.BLACK, false); }
-            if (biomeCategory == Biome.BiomeCategory.MUSHROOM) { setChocobo(ChocoboColor.PINK, false); }
-            if (hasType(biomeKey, Type.SNOWY)) { setChocobo(ChocoboColor.WHITE, false); }
-            if (biomeCategory == Biome.BiomeCategory.SWAMP) { setChocobo(ChocoboColor.GREEN, false); }
-            if (nameCheck(currentBiome, "mystic")) { setChocobo(ChocoboColor.BLUE, false); }
-            if (nameCheck(currentBiome, "blossom")) { setChocobo(ChocoboColor.PINK, false); }
-            if (nameCheck(currentBiome, "lavender")) { setChocobo(ChocoboColor.PURPLE, false); }
-            if (nameCheck(currentBiome, "tropics")) { setChocobo(ChocoboColor.GOLD, false); }
+            if (biomeCategory == Biome.BiomeCategory.FOREST && !(nameCheck(currentBiome, "mystic") || nameCheck(currentBiome, "blossom")  || nameCheck(currentBiome, "tropics") || nameCheck(currentBiome, "lavender"))) { setChocobo(ChocoboColor.RED, false, false); }
+            else if (biomeCategory == Biome.BiomeCategory.MESA) { setChocobo(ChocoboColor.RED, false, false); }
+            else if (hasType(biomeKey, Type.HOT) && hasType(biomeKey, Type.DRY)) { setChocobo(ChocoboColor.BLACK, false, true); }
+            if (biomeCategory == Biome.BiomeCategory.MUSHROOM) { setChocobo(ChocoboColor.PINK, false, false); }
+            if (hasType(biomeKey, Type.SNOWY)) { setChocobo(ChocoboColor.WHITE, false, false); }
+            if (biomeCategory == Biome.BiomeCategory.SWAMP) { setChocobo(ChocoboColor.GREEN, false, false); }
+            if (nameCheck(currentBiome, "mystic")) { setChocobo(ChocoboColor.BLUE, false, true); }
+            if (nameCheck(currentBiome, "blossom")) { setChocobo(ChocoboColor.PINK, false, false); }
+            if (nameCheck(currentBiome, "lavender")) { setChocobo(ChocoboColor.PURPLE, false, true); }
+            if (nameCheck(currentBiome, "tropics")) { setChocobo(ChocoboColor.GOLD, false, true); }
         }
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
@@ -258,8 +267,9 @@ public class Chocobo extends TamableAnimal {
         String tName = biomeHolder.toString();
         return tName.contains(name);
     }
-    private void setChocobo(ChocoboColor color, boolean flame) {
-        this.setFlame(false);
+    private void setChocobo(ChocoboColor color, boolean flame, boolean water) {
+        this.setFlame(flame);
+        this.setWaterBreath(water);
         this.setChocoboColor(color);
     }
 
@@ -280,6 +290,7 @@ public class Chocobo extends TamableAnimal {
         this.setGeneration(compound.getInt(NBTKEY_CHOCOBO_GENERATION));
         this.setStamina(compound.getFloat(NBTKEY_CHOCOBO_STAMINA));
         this.setFlame(compound.getBoolean(NBTKEY_CHOCOBO_FLAME_BLOOD));
+        this.setWaterBreath(compound.getBoolean(NBTKEY_CHOCOBO_WATER_BREATH));
 
     }
 
@@ -294,6 +305,7 @@ public class Chocobo extends TamableAnimal {
         if (this.nestPos != null) { compound.put(NBTKEY_NEST_POSITION, NbtUtils.writeBlockPos(this.nestPos)); }
         compound.putInt(NBTKEY_CHOCOBO_GENERATION, this.getGeneration());
         compound.putBoolean(NBTKEY_CHOCOBO_FLAME_BLOOD, this.isFlame());
+        compound.putBoolean(NBTKEY_CHOCOBO_WATER_BREATH, this.isWBreather());
         compound.putFloat(NBTKEY_CHOCOBO_STAMINA, this.getStamina());
     }
 
@@ -302,7 +314,9 @@ public class Chocobo extends TamableAnimal {
     @Override
     public boolean fireImmune() { return isFlame(); }
     public void setFlame(boolean flame) { this.entityData.set(PARAM_IS_FLAME_BLOOD, flame); }
+    public void setWaterBreath(boolean waterBreath) { this.entityData.set(PARAM_IS_WATER_BREATH, waterBreath); }
     public boolean isFlame() { return this.entityData.get(PARAM_IS_FLAME_BLOOD); }
+    public boolean isWBreather() { return this.entityData.get(PARAM_IS_WATER_BREATH); }
     public boolean isMale() { return this.entityData.get(PARAM_IS_MALE); }
     public void setMale(boolean isMale) { this.entityData.set(PARAM_IS_MALE, isMale); }
     public MovementType getMovementType() { return this.entityData.get(PARAM_MOVEMENT_TYPE); }
@@ -314,6 +328,12 @@ public class Chocobo extends TamableAnimal {
         if (oldStack.getItem() != saddleStack.getItem()) {
             this.entityData.set(PARAM_SADDLE_ITEM, saddleStack.copy());
         }
+    }
+    public boolean rideableUnderWater() {
+        return canBreatheUnderwater();
+    }
+    public boolean canBreatheUnderwater() {
+        return this.isWBreather();
     }
 
     @Nullable
@@ -348,25 +368,38 @@ public class Chocobo extends TamableAnimal {
     public Entity getControllingPassenger() { return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0); }
     @Override
     protected boolean updateInWaterStateAndDoFluidPushing() {
-        this.fluidHeight.clear();
-        this.updateInWaterStateAndDoWaterCurrentPushing();
-        double d0 = this.level.dimensionType().ultraWarm() ? 0.007D : 0.0023333333333333335D;
-        boolean flag = this.updateFluidHeightAndDoFluidPushing(FluidTags.LAVA, d0);
-        return this.isInWater() || flag;
+            this.fluidHeight.clear();
+            this.updateInWaterStateAndDoWaterCurrentPushing();
+            double d0 = this.level.dimensionType().ultraWarm() ? 0.007D : 0.0023333333333333335D;
+            boolean flag = this.updateFluidHeightAndDoFluidPushing(FluidTags.LAVA, d0);
+            return this.isInWater() || flag;
     }
     private void updateInWaterStateAndDoWaterCurrentPushing() {
-        if (this.getVehicle() instanceof Chocobo) {
-            this.wasTouchingWater = false;
-        } else if (this.updateFluidHeightAndDoFluidPushing(FluidTags.WATER, 0.014D)) {
-            if (!this.wasTouchingWater && !this.firstTick) {
-                this.doWaterSplashEffect();
-            }
+        if (!this.isWBreather())
+        {
+            if (this.getVehicle() instanceof Chocobo) {
+                this.wasTouchingWater = false;
+            } else if (this.updateFluidHeightAndDoFluidPushing(FluidTags.WATER, 0.014D)) {
+                if (!this.wasTouchingWater && !this.firstTick) {
+                    this.doWaterSplashEffect();
+                }
 
-            this.fallDistance = 0.0F;
-            this.wasTouchingWater = true;
-            this.clearFire();
+                this.fallDistance = 0.0F;
+                this.wasTouchingWater = true;
+                this.clearFire();
+            } else {
+                this.wasTouchingWater = false;
+            }
         } else {
-            this.wasTouchingWater = false;
+            if (this.isInWater()) {
+                this.wasTouchingWater = false;
+                this.clearFire();
+                if (this.getVehicle() instanceof Chocobo) {
+                    if (this.getControllingPassenger() instanceof Player rider) {
+                        rider.clearFire();
+                    }
+                }
+            }
         }
     }
     @Override
@@ -399,22 +432,27 @@ public class Chocobo extends TamableAnimal {
                         this.isChocoboJumping = true;
                     }
                 }
-
                 if (rider.isInWater()) {
                     Vec3 motion = getDeltaMovement();
                     if (Minecraft.getInstance().options.keyJump.isDown()) {
                         setDeltaMovement(new Vec3(motion.x, .5f, motion.z));
-                    } else if (this.getDeltaMovement().y < 0) {
+                    } else if (this.getDeltaMovement().y < 0 && !this.isWBreather()) {
                         int distance = WorldUtils.getDistanceToSurface(this.blockPosition(), this.getCommandSenderWorld());
                         if (distance > 0)
-                            setDeltaMovement(new Vec3(motion.x, .01f + Math.min(0.05f * distance, 0.7), motion.z));
+                            setDeltaMovement(new Vec3(motion.x, .05f, motion.z));
+                    } else if (this.isWBreather() && isAltDown()) {
+                        Vec3 waterMotion = getDeltaMovement();
+                        setDeltaMovement(new Vec3(waterMotion.x, waterMotion.y * 0.65F, waterMotion.z));
                     }
                 }
                 // Insert override for slowfall Option on Chocobo
                 if (!this.onGround && !this.isInWater() && !rider.isShiftKeyDown() && this.getDeltaMovement().y < 0 &&
-                        this.useStamina(COMMON.glideStaminaCost.get().floatValue())) {
-                    Vec3 motion = getDeltaMovement();
-                    setDeltaMovement(new Vec3(motion.x, motion.y * 0.65F, motion.z));
+                    this.useStamina(COMMON.glideStaminaCost.get().floatValue())) {
+                    if (Minecraft.getInstance().options.keyJump.isDown())
+                    {
+                        Vec3 motion = getDeltaMovement();
+                        setDeltaMovement(new Vec3(motion.x, motion.y * 0.65F, motion.z));
+                    }
                 }
 
                 if ((this.isSprinting() && !this.useStamina(COMMON.sprintStaminaCost.get().floatValue())) || (this.isSprinting() &&
@@ -424,7 +462,15 @@ public class Chocobo extends TamableAnimal {
                 super.travel(newVector);
             }
         } else {
-            super.travel(newVector);
+            if (!this.onGround && !this.isInWater() && this.getDeltaMovement().y < 0 &&
+                    this.useStamina(COMMON.glideStaminaCost.get().floatValue())) {
+                Vec3 motion = getDeltaMovement();
+                setDeltaMovement(new Vec3(motion.x, motion.y * 0.65F, motion.z));
+            }
+            double y = newVector.y;
+            if (y > 0) y = y * -1;
+            Vec3 cappedNewVector = new Vec3(newVector.x, y, newVector.z);
+            super.travel(cappedNewVector);
         }
     }
     @Override
@@ -488,12 +534,21 @@ public class Chocobo extends TamableAnimal {
         if (!this.getCommandSenderWorld().isClientSide) {
             if (this.tickCount % 60 == 0)
             {
-                if (this.getChocoboColor() == ChocoboColor.FLAME) {
+                if (this.isFlame()) {
                     this.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0, true, false));
                     if (this.isVehicle()) {
                         Entity controller = this.getControllingPassenger();
                         if (controller instanceof Player) {
                             ((Player) controller).addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0, true, false));
+                        }
+                    }
+                }
+                if (this.isWBreather()) {
+                    this.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 100, 0, true, false));
+                    if (this.isVehicle()) {
+                        Entity controller = this.getControllingPassenger();
+                        if (controller instanceof Player) {
+                            ((Player) controller).addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 100, 0, true, false));
                         }
                     }
                 }
@@ -530,7 +585,7 @@ public class Chocobo extends TamableAnimal {
     }
     private void regenerateStamina() {
         // ... yes, we also allow regeneration while in lava :P
-        // this effectivly limits regeneration to only work while on the ground
+        // this effectively limits regeneration to only work while on the ground
         if (!this.onGround && !this.isInWater() && !this.isInLava() && !this.isSprinting())
             return;
 
@@ -706,7 +761,9 @@ public class Chocobo extends TamableAnimal {
     public boolean checkSpawnRules(@NotNull LevelAccessor worldIn, @NotNull MobSpawnType spawnReasonIn) {
         final Holder<Biome> currentBiome = this.level.getBiome(blockPosition().below());
         @SuppressWarnings("OptionalGetWithoutIsPresent") final ResourceKey<Biome> key = currentBiome.unwrapKey().get();
-        if (BiomeDictionary.hasType(key, Type.NETHER)) { return true; }
+        if (BiomeDictionary.hasType(key, Type.NETHER)) {
+            return true;
+        }
         return super.checkSpawnRules(worldIn, spawnReasonIn);
     }
     @Override

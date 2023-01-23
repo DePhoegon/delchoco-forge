@@ -54,9 +54,15 @@ public class ChocoboSpawnerItemHelper extends Item {
             if (biomeCategory == Biome.BiomeCategory.MESA) { color = ChocoboColor.RED; }
             if (biomeCategory == Biome.BiomeCategory.MUSHROOM) { color = ChocoboColor.PINK; }
             if (hasType(biomeKey, Type.HOT) && hasType(biomeKey, Type.DRY) &&
-                    !(hasType(biomeKey, Type.MESA)) && !(hasType(biomeKey, Type.NETHER))) { color = ChocoboColor.BLACK; }
+                    !(hasType(biomeKey, Type.MESA)) && !(hasType(biomeKey, Type.NETHER))) {
+                color = ChocoboColor.BLACK;
+                chocobo.setWaterBreath(true);
+            }
             if (hasType(biomeKey, Type.SNOWY)) { color = ChocoboColor.WHITE; }
-            if (hasType(biomeKey, Type.OCEAN)) { color = ChocoboColor.BLUE; }
+            if (hasType(biomeKey, Type.OCEAN)) {
+                color = ChocoboColor.BLUE;
+                chocobo.setWaterBreath(true);
+            }
             if (biomeCategory == Biome.BiomeCategory.SWAMP) { color = ChocoboColor.GREEN; }
             if (color != null) {
                 chocobo.moveTo(pos.getX() + .5, pos.getY() + 0.5F, pos.getZ() + .5, Mth.wrapDegrees(worldIn.random.nextFloat() * 360.0F), 0.0F);

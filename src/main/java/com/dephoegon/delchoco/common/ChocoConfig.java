@@ -50,23 +50,6 @@ public class ChocoConfig {
         Common(ForgeConfigSpec.Builder builder) {
             builder.comment("World generation related configuration")
                     .push("World");
-            // Commenting out for future use & removed ability fruits  mentioning (Planned removal of them)
-            /*
-                builder.comment("_blank_")
-                    .push("_blank_");
-
-                add_blank_ToDungeonLoot = builder
-                        .worldRestart()
-                        .comment("Add _blank_ to dungeon loot [Default: true]")
-                        .define("add_blank_ToDungeonLoot", true);
-
-                _blank_DungeonLootWeight = builder
-                        .worldRestart()
-                        .comment("This number controls the weight ability fruit has compared to other items in a loot table. [Default: 1]")
-                        .defineInRange("_blank_DungeonLootWeight", 1, 0, Integer.MAX_VALUE);
-
-                builder.pop();
-             */
 
             gysahlGreenSpawnWeight = builder
                     .worldRestart()
@@ -108,11 +91,9 @@ public class ChocoConfig {
             chocoboPackSizeMin = builder
                     .comment("Controls Chocobo Pack Size Min [Default: 1]")
                     .defineInRange("chocoboPackSizeMin", 1, 0, Integer.MAX_VALUE);
-
             chocoboPackSizeMax = builder
                     .comment("Controls Chocobo Pack Size Max [Default: 3]")
                     .defineInRange("chocoboPackSizeMax", 3, 0, Integer.MAX_VALUE);
-
             builder.pop();
 
             builder.comment("Chocobo configuration")

@@ -5,23 +5,14 @@ Implement Patchouli Guide Book
 
 Find/Remove Useless code (In Progress)
 
-Lookinto updating nest on chocobo hatching
+Look into updating nest on chocobo hatching
 -visual bleh
 
 Added 7-23
 
 Investigate
 
-net.chococraft.common.entities.ChocoboEntity.java
-
-- Line 558 [ public void aiStep() ]
-= Can apply effects on conditions
-== is currently using remainder of (this.tickCount % 60 == 0)
-==~ every 60 ticks (~3 seconds)
-= Can test for other abilities, and give effects to player as well
-==Test if MobEffectInsantce(mobEffects.xx) can be applied to player
-
-net.chococraft.client.gui.ChocoboInfoScreen.java
+com.dephoegon.delchoco.client.gui.ChocoboInfoScreen.java
 - Line 144 [ public void render() ]
 = Display section for Chocobo Information.
 = Work this into something other than 'That Chocopedia'
@@ -34,3 +25,25 @@ Examine Chocobo Logic carefully.
 Re-Examine The remains of the ability system
 
 Prune excess resources/code.
+
+Added 1-23-23
+
+-Verify Chocobo Movements
+= 'Swimming'
+= Falling
+= Gliding
+
+Finalize Glide/Fall speeds for chocobos not being ridden.
+- Use saddles for variables
+- Use Color for variables
+
+Consider
+- Add Item to 'remove' water-breathing from Select Chocobo (except Blue)
+-- Such vastly different movement, swapping Water breathing on & off of those chocobo would be an option
+- Add item to 'remove' FlameBlood (Visual of Eyes might be enough
+-- Unsure
+
+Double Check
+- Whistle functions on underwater chocobo
+- Prior TODOs
+-- Validate if they are or are not done.

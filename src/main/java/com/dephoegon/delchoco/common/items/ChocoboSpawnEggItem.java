@@ -46,6 +46,7 @@ public class ChocoboSpawnEggItem extends Item {
             chocobo.yBodyRot = chocobo.getYRot();
             chocobo.setChocoboColor(color);
             chocobo.setFlame(color == ChocoboColor.FLAME);
+            chocobo.setWaterBreath(color == ChocoboColor.BLUE || color == ChocoboColor.PURPLE || color == ChocoboColor.BLACK || color == ChocoboColor.GOLD);
             chocobo.finalizeSpawn((ServerLevel)worldIn, worldIn.getCurrentDifficultyAt(chocobo.blockPosition()), MobSpawnType.SPAWN_EGG, (SpawnGroupData)null, (CompoundTag)null);
             worldIn.addFreshEntity(chocobo);
             chocobo.playAmbientSound();

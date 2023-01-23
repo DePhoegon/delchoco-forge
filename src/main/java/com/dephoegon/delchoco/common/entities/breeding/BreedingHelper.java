@@ -28,6 +28,7 @@ public class BreedingHelper {
 
         baby.setGeneration(((mother.generation + father.generation) / 2) + 1);
         baby.setFlame(mother.flameBlood || father.flameBlood);
+        baby.setWaterBreath(mother.waterBreath || father.waterBreath);
 
         float health = round(((mother.health + father.health) / 2) * (COMMON.poslossHealth.get().floatValue() + ((float) random() * COMMON.posgainHealth.get().floatValue())));
         Objects.requireNonNull(baby.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(min(health, COMMON.maxHealth.get().floatValue()));

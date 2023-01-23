@@ -18,12 +18,14 @@ public class ChocoboStatSnapshot {
     public static final String NBTKEY_STAMINA = "Stamina";
     public static final String NBTKEY_COLOR = "Color";
     public static final String NBTKEY_FLAME_BLOOD = "FlameBlood";
+    public static final String NBTKEY_WATER_BREATH = "WaterBreath";
 
     public int generation;
     public float health;
     public float speed;
     public float stamina;
     public boolean flameBlood;
+    public boolean waterBreath;
     public ChocoboColor color;
 
     static {
@@ -42,6 +44,7 @@ public class ChocoboStatSnapshot {
         this.speed = (float) Objects.requireNonNull(chocobo.getAttribute(Attributes.MOVEMENT_SPEED)).getBaseValue();
         this.stamina = (float) Objects.requireNonNull(chocobo.getAttribute(ModAttributes.MAX_STAMINA.get())).getBaseValue();
         this.flameBlood = chocobo.isFlame();
+        this.waterBreath = chocobo.isWBreather();
         this.color = chocobo.getChocoboColor();
     }
     public ChocoboStatSnapshot(@NotNull CompoundTag nbt) {
@@ -50,6 +53,7 @@ public class ChocoboStatSnapshot {
         this.speed = nbt.getFloat(NBTKEY_SPEED);
         this.stamina = nbt.getFloat(NBTKEY_STAMINA);
         this.flameBlood = nbt.getBoolean(NBTKEY_FLAME_BLOOD);
+        this.waterBreath = nbt.getBoolean(NBTKEY_WATER_BREATH);
         this.color = ChocoboColor.values()[nbt.getByte(NBTKEY_COLOR)];
     }
     public CompoundTag serialize() {
@@ -59,6 +63,7 @@ public class ChocoboStatSnapshot {
         nbt.putFloat(NBTKEY_SPEED, this.speed);
         nbt.putFloat(NBTKEY_STAMINA, this.stamina);
         nbt.putBoolean(NBTKEY_FLAME_BLOOD, this.flameBlood);
+        nbt.putBoolean(NBTKEY_WATER_BREATH, this.waterBreath);
         nbt.putByte(NBTKEY_COLOR, (byte) this.color.ordinal());
         return nbt;
     }

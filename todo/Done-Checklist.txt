@@ -1,0 +1,36 @@
+1-23-23
+Finishing Quirks
+---------
+- Added Water Breathing Chocobo(s)
+-- Used NBT tag to allow breeding to pass the trait on the kiddos
+-- Added setWaterbreathing to the egg spawns
+-- Updated Snapshot
+
+- Modified movement of Chocobos in regards to water
+-- Capped Y values to not sky rocket
+-- allowed blue, purple, black, gold,  to breath underwater & give water breathing to the rider
+--= Logic of breeding lines.
+-- Water breathing chocobos will go to the bottom of the water.
+-- Space will swim up
+-- Sprint works faster
+
+- Modified Falling while riding chocobos
+-- Requires Jump being pressed (Out of water) or an Alt key being pressed (in Water)
+--= will slow fall when pressed.
+--= Will fall at normal speeds not pressed
+
+- Fixed setChocobo in \common\entities\Chocobo.java ~Line 270
+-- Now sets Chocobo Flame & water-breathing information.
+--= Allows minor spawning to work properly.
+
+- Removal of some Config Code not in use.
+
+- Abandoned Spawn Block Restriction by type for Chocobos
+-- Massive lag caused by checking the blocks. (World gen got stuck)
+
+- Added Fun bubbles for Underwater chocobo.
+
+- Stabilized Riding on Chocobos Over/Through Water.
+
+- Fixed Oversight on Fire-Resistance not being passed to player from FlameBlood Chocobos
+-- Was based on Chocobo Color - Flame.

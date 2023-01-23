@@ -12,12 +12,6 @@ Actual Jar files will be start to  archived here when they are near release date
 
 There are many changes coming, and some visual rework on other things.
 
-I can provide an updated version of it, if requested.  It is 'stable' with 1 known (to me) bug around taking packs/bags off the chocobos without emptying their items inventory first.  This will take time to figure out & may not be sorted easily (still learning my way around all the forge, java, & MC silliness.
-
-Future plans around chocobos
-- Reworking what each chocobo has
-- Reworking where they can spawn
-
 Some future updates to be hand.
 
 https://www.curseforge.com/minecraft/mc-mods/dephoegons-chocobos
@@ -29,6 +23,8 @@ https://www.curseforge.com/minecraft/modpacks/dephoegons-isles
 I can produce a depenancy free version (from my mod), but it will still require
 -JEI (for now, just bad book in it atm)
 -Configured (just highly suggested)
--Patchouli (Guide Book)  - Not yet put in.
+-Patchouli (Guide Book)
 
 Naming Now works Correctly, and  So does the stat screen
+
+Better ToDo & Done Checklists
