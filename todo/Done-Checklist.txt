@@ -34,3 +34,22 @@ Finishing Quirks
 
 - Fixed Oversight on Fire-Resistance not being passed to player from FlameBlood Chocobos
 -- Was based on Chocobo Color - Flame.
+
+1-25-23
+Cleanup & Tweaks
+----------
+- Removal of Chocopedia
+-- com.dephoegon.delchoco.client.gui.ChocoboInfoScreen.java
+=== Removed
+=== chocobo_stats.png - Also removed
+-- com.dephoegon.delchoco.client.gui.ChocoboBookScreen.java
+=== Removed
+=== Chocobo_book.png - Also removed
+-- com.dephoegon.delchoco.common.items.ChocopediaItem.java
+=== Removed
+-- com.dephoegon.delchoco.common.entities.chocobo.java
+=== Removal of Chocopedia Interaction Event.
+-- Language files trimmed
+-- Removed Registry of Chocopedia
+- Cleaned ToDo checklist
+== removed done bits & bobs

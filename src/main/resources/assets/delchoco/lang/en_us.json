@@ -13,9 +13,6 @@
     "item.delchoco.pickled_gysahl_raw": "Raw Pickled Gysahl Green",
     "item.delchoco.pickled_gysahl_cooked": "Baked Pickled Gysahl Green",
 
-    "item.delchoco.chocopedia": "Chocopedia",
-    "item.delchoco.chocopedia.tooltip": "Use on a chocobo to view its stats",
-
     "item.delchoco.chocobo_feather": "Chocobo Feather",
     "item.delchoco.chocobo_whistle": "Chocobo Whistle",
 
@@ -23,10 +20,10 @@
     "item.delchoco.chocobo_saddle_bags": "Chocobo Saddle Bags",
     "item.delchoco.chocobo_saddle_pack": "Chocobo Saddle Pack",
 
-    "item.delchoco.choco_disguise_helmet": "Chocodisguise Helmet",
-    "item.delchoco.choco_disguise_chestplate": "Chocodisguise Body",
-    "item.delchoco.choco_disguise_leggings": "Chocodisguise Legs",
-    "item.delchoco.choco_disguise_boots": "Chocodisguise Boots",
+    "item.delchoco.choco_disguise_helmet": "Choco Disguise Helmet",
+    "item.delchoco.choco_disguise_chestplate": "Choco Disguise Body",
+    "item.delchoco.choco_disguise_leggings": "Choco Disguise Legs",
+    "item.delchoco.choco_disguise_boots": "Choco Disguise Boots",
 
     "item.delchoco.gysahl_cake": "Gysahl Cake",
 
@@ -74,19 +71,9 @@
     "command.delchoco.chocobo.not_riding_chocobo": "You should ride the Chocobo to use this command!",
 
     "command.delchoco.chocobo.get_health": "Health: %s",
-    "command.delchoco.chocobo.get_resistance": "Resitance: %s",
+    "command.delchoco.chocobo.get_resistance": "Resistance: %s",
     "command.delchoco.chocobo.get_speed": "Speed: %s",
     "command.delchoco.chocobo.get_stamina": "Stamina: %s",
-
-    "gui.chocoinfo.texture.gender": "Gender",
-    "gui.chocoinfo.texture.male": "Male",
-    "gui.chocoinfo.texture.female": "Female",
-    "gui.chocoinfo.texture.health": "Health",
-    "gui.chocoinfo.texture.speed": "Speed",
-    "gui.chocoinfo.texture.stamina": "Stamina",
-    "gui.chocoinfo.text.not_tamed": "Not tamed",
-    "gui.chocoinfo.text.unknown_owner": "Unknown owner",
-    "gui.chocoinfo.text.owner_format": "Owner: %s",
 
     "delchoco.container.nest": "Chocobo Nest"
 }

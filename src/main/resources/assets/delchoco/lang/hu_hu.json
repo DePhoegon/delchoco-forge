@@ -13,9 +13,6 @@
     "item.delchoco.pickled_gysahl_raw": "Nyers Pácolt Gysahl Zöld",
     "item.delchoco.pickled_gysahl_cooked": "Sült Pácolt Gysahl Zöld",
 
-    "item.delchoco.chocopedia": "Chocopédia",
-    "item.delchoco.chocopedia.tooltip": "Használd egy chocobon a statisztikái megtekintéséhez",
-
     "item.delchoco.chocobo_feather": "Chocobo Toll",
     "item.delchoco.chocobo_whistle": "Chocobo Síp",
 
@@ -71,15 +68,10 @@
     "command.delchoco.chocobo.get_speed": "Sebesség: %s",
     "command.delchoco.chocobo.get_stamina": "Állóképesség: %s",
 
-    "gui.chocoinfo.texture.gender": "Nem",
-    "gui.chocoinfo.texture.male": "Férfi",
-    "gui.chocoinfo.texture.female": "Nő",
-    "gui.chocoinfo.texture.health": "Életerő",
-    "gui.chocoinfo.texture.speed": "Sebesség",
-    "gui.chocoinfo.texture.stamina": "Állóképesség",
-    "gui.chocoinfo.text.not_tamed": "Nincs megszelidítve",
-    "gui.chocoinfo.text.unknown_owner": "Ismeretlen tulajdonos",
-    "gui.chocoinfo.text.owner_format": "Tulajdonos: %s",
-
-    "delchoco.container.nest": "Chocobo Nest"
+    "delchoco.container.nest": "Chocobo Nest",
+    "item.delchoco.choco_disguise_helmet": "Choco Álcázó sisak",
+    "item.delchoco.choco_disguise_chestplate": "Choco Álcázott test",
+    "item.delchoco.choco_disguise_leggings": "Choco Álcázza a lábakat",
+    "item.delchoco.choco_disguise_boots": "Choco Álcázott csizma",
+    "item.delchoco.gysahl_cake": "Gysahl torta"
 }

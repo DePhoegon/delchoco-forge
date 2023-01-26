@@ -1,6 +1,5 @@
 package com.dephoegon.delchoco.common.entities;
 
-import com.dephoegon.delbase.aid.util.kb;
 import com.dephoegon.delchoco.DelChoco;
 import com.dephoegon.delchoco.common.entities.breeding.ChocoboMateGoal;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
@@ -16,7 +15,6 @@ import com.dephoegon.delchoco.common.network.PacketManager;
 import com.dephoegon.delchoco.common.network.packets.OpenChocoboGuiMessage;
 import com.dephoegon.delchoco.utils.RandomHelper;
 import com.dephoegon.delchoco.utils.WorldUtils;
-import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -64,8 +62,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.PacketDistributor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
@@ -74,11 +70,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.dephoegon.delchoco.aid.chocoKB.isAltDown;
-import static com.dephoegon.delchoco.client.gui.ChocoboInfoScreen.openScreen;
 import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 import static com.dephoegon.delchoco.common.init.ModSounds.AMBIENT_SOUND;
-import static net.minecraft.client.gui.screens.Screen.hasAltDown;
 import static net.minecraft.world.level.biome.Biome.getBiomeCategory;
 import static net.minecraftforge.common.BiomeDictionary.hasType;
 import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
@@ -608,13 +602,6 @@ public class Chocobo extends TamableAnimal {
         if (heldItemStack.getItem() == GYSAHL_CAKE.get()) {
             this.usePlayerItem(player, hand, heldItemStack);
             ageBoundaryReached();
-            return InteractionResult.SUCCESS;
-        }
-
-        if (heldItemStack.getItem() == CHOCOPEDIA.get()) {
-            if(level.isClientSide) {
-                openScreen(this, player);
-            }
             return InteractionResult.SUCCESS;
         }
 

@@ -13,9 +13,6 @@
     "item.delchoco.pickled_gysahl_raw": "Rohes eingelegtes Gizarkraut",
     "item.delchoco.pickled_gysahl_cooked": "Gebackenes eingelegtes Gizarkraut",
 
-    "item.delchoco.chocopedia": "Chocopedia",
-    "item.delchoco.chocopedia.tooltip": "Zeigt Statistiken zu einem Chocobo",
-
     "item.delchoco.chocobo_feather": "Chocobo Feder",
     "item.delchoco.chocobo_whistle": "Chocobo Pfeifton",
 
@@ -58,5 +55,22 @@
     "command.delchoco.chocobo.get_speed": "Geschwindigkeit: %s",
     "command.delchoco.chocobo.get_stamina": "Ausdauer: %s",
 
-    "delchoco.container.nest": "Chocobo Nest"
+    "delchoco.container.nest": "Chocobo Nest",
+    "item.delchoco.choco_disguise_helmet": "Choco Verkleidungshelm",
+    "item.delchoco.choco_disguise_chestplate": "Choco Körper verkleiden",
+    "item.delchoco.choco_disguise_leggings": "Choco Verkleidungsbeine",
+    "item.delchoco.choco_disguise_boots": "Choco Verkleidungsstiefel",
+    "item.delchoco.gysahl_cake": "Gysahl Kuchen",
+    "item.delchoco.chocobo_egg.tooltip.yellow": "Gelb",
+    "item.delchoco.chocobo_egg.tooltip.green": "Grün",
+    "item.delchoco.chocobo_egg.tooltip.blue": "Blau",
+    "item.delchoco.chocobo_egg.tooltip.white": "Weiß",
+    "item.delchoco.chocobo_egg.tooltip.black": "Schwarz",
+    "item.delchoco.chocobo_egg.tooltip.gold": "Golden",
+    "item.delchoco.chocobo_egg.tooltip.pink": "Rosa",
+    "item.delchoco.chocobo_egg.tooltip.red": "Rot",
+    "item.delchoco.chocobo_egg.tooltip.purple": "Lila",
+    "item.delchoco.chocobo_egg.tooltip.flame": "Flamme",
+    "delchoco.entity_chocobo.not_owner": "§cSie sind nicht der Besitzer dieses Chocobo!",
+    "command.delchoco.chocobo.not_riding_chocobo": "Sie sollten den Chocobo reiten, um diesen Befehl zu verwenden!"
 }
