@@ -1,5 +1,6 @@
 package com.dephoegon.delchoco;
 
+import com.dephoegon.delchoco.aid.dyeList;
 import com.dephoegon.delchoco.client.ClientHandler;
 import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.commands.ChocoboCommand;
@@ -26,6 +27,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 @Mod(DelChoco.MOD_ID)
@@ -36,9 +39,7 @@ public class DelChoco {
 
     public static final CreativeModeTab creativeTab = new CreativeModeTab(MOD_ID) {
           @Override
-        public ItemStack makeIcon() {
-            return new ItemStack(ModRegistry.GYSAHL_GREEN.get());
-        }
+        public @NotNull ItemStack makeIcon() { return new ItemStack(ModRegistry.GYSAHL_GREEN.get()); }
     };
 
     public DelChoco() {

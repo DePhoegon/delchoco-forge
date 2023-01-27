@@ -16,12 +16,6 @@
       "text": "Only Visually bugged when placed on ground after the first chicbo is born$(br)safe to break 'after' the chicbo is born$(br)Shift Right click to view it's inventory & if it actually has an egg"
     },
     {
-      "title": "Chocopedia",
-      "type": "patchouli:crafting",
-      "recipe": "delchoco:chocopedia",
-      "text": "This is only useful for Seeing the 'stats' & gender of the chocobos"
-    },
-    {
       "title": "Saddle",
       "type": "patchouli:crafting",
       "recipe": "delchoco:chocobo_saddle",

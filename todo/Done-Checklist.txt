@@ -53,3 +53,15 @@ Cleanup & Tweaks
 -- Removed Registry of Chocopedia
 - Cleaned ToDo checklist
 == removed done bits & bobs
+
+1-26-23
+Progress
+--------------
+- Colored Collars
+-- Resource Locations
+-- Change via Dyes
+-- Removed dyes from chocobo color enum (changed color of chocobo)
+- Added in via Int number as NBT
+-- Smart Switch used (1-15, + default)
+-- Dye list class used to allow wrapping of all dyes easily.
+-- Default red

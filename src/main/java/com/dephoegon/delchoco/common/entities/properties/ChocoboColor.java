@@ -11,15 +11,15 @@ import java.util.Optional;
 import java.util.Random;
 
 public enum ChocoboColor {
-    YELLOW(Items.DYES_YELLOW),
-    GREEN(Items.DYES_LIME),
-    BLUE(Items.DYES_BLUE),
-    WHITE(Items.DYES_WHITE),
-    BLACK(Items.DYES_BLACK),
-    GOLD(Items.INGOTS_GOLD),
-    PINK(Items.DYES_PINK),
-    RED(Items.DYES_RED),
-    PURPLE(Items.DYES_PURPLE),
+    YELLOW(null),
+    GREEN(null),
+    BLUE(null),
+    WHITE(null),
+    BLACK(null),
+    GOLD(null),
+    PINK(null),
+    RED(null),
+    PURPLE(null),
     FLAME(null);
 
     private final static Random rand = new Random();

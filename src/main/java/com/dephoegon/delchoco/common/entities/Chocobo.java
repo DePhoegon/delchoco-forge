@@ -45,6 +45,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.horse.Llama;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -69,10 +70,14 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.dephoegon.delbase.item.shiftingDyes.*;
 import static com.dephoegon.delchoco.aid.chocoKB.isAltDown;
+import static com.dephoegon.delchoco.aid.dyeList.getDyeList;
+import static com.dephoegon.delchoco.aid.dyeList.setLists;
 import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 import static com.dephoegon.delchoco.common.init.ModSounds.AMBIENT_SOUND;
+import static net.minecraft.world.item.Items.*;
 import static net.minecraft.world.level.biome.Biome.getBiomeCategory;
 import static net.minecraftforge.common.BiomeDictionary.hasType;
 import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
@@ -89,6 +94,7 @@ public class Chocobo extends TamableAnimal {
     private static final String NBTKEY_CHOCOBO_STAMINA = "Stamina";
     private static final String NBTKEY_CHOCOBO_FLAME_BLOOD = "FlameBlood";
     private static final String NBTKEY_CHOCOBO_WATER_BREATH = "WaterBreath";
+    private static final String NBTKEY_CHOCOBO_COLLAR = "Collar";
 
     private static final EntityDataAccessor<ChocoboColor> PARAM_COLOR = SynchedEntityData.defineId(Chocobo.class, ModDataSerializers.CHOCOBO_COLOR);
     private static final EntityDataAccessor<Boolean> PARAM_IS_MALE = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.BOOLEAN);
@@ -96,7 +102,7 @@ public class Chocobo extends TamableAnimal {
     private static final EntityDataAccessor<Boolean> PARAM_IS_WATER_BREATH = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<MovementType> PARAM_MOVEMENT_TYPE = SynchedEntityData.defineId(Chocobo.class, ModDataSerializers.MOVEMENT_TYPE);
     private static final EntityDataAccessor<ItemStack> PARAM_SADDLE_ITEM = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.ITEM_STACK);
-
+    private static final EntityDataAccessor<Integer> PARAM_COLLAR_COLOR = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.INT);
     private final static EntityDataAccessor<Integer> PARAM_GENERATION = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.INT);
     private final static EntityDataAccessor<Float> PARAM_STAMINA = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.FLOAT);
     private final static EntityDataAccessor<Byte> PARAM_ABILITY_MASK = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.BYTE);
@@ -213,7 +219,7 @@ public class Chocobo extends TamableAnimal {
     private boolean noroam;
     public float followingmrhuman = 2;
 
-    public static AttributeSupplier.Builder createAttributes() {
+    public static AttributeSupplier.@NotNull Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(ModAttributes.MAX_STAMINA.get(), COMMON.defaultStamina.get())
                 .add(Attributes.MOVEMENT_SPEED, COMMON.defaultSpeed.get() / 100f)
@@ -225,6 +231,7 @@ public class Chocobo extends TamableAnimal {
         super.defineSynchedData();
         this.entityData.define(PARAM_IS_FLAME_BLOOD, false);
         this.entityData.define(PARAM_IS_WATER_BREATH, false);
+        this.entityData.define(PARAM_COLLAR_COLOR, 16);
         this.entityData.define(PARAM_COLOR, ChocoboColor.YELLOW);
         this.entityData.define(PARAM_IS_MALE, false);
         this.entityData.define(PARAM_MOVEMENT_TYPE, MovementType.WANDER);
@@ -268,9 +275,7 @@ public class Chocobo extends TamableAnimal {
     }
 
     @Override
-    public boolean canBeControlledByRider() {
-        return this.isTame();
-    }
+    public boolean canBeControlledByRider() { return this.isTame(); }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag compound) {
@@ -285,7 +290,7 @@ public class Chocobo extends TamableAnimal {
         this.setStamina(compound.getFloat(NBTKEY_CHOCOBO_STAMINA));
         this.setFlame(compound.getBoolean(NBTKEY_CHOCOBO_FLAME_BLOOD));
         this.setWaterBreath(compound.getBoolean(NBTKEY_CHOCOBO_WATER_BREATH));
-
+        this.setCollarColor(compound.getInt(NBTKEY_CHOCOBO_COLLAR));
     }
 
     @Override
@@ -301,10 +306,13 @@ public class Chocobo extends TamableAnimal {
         compound.putBoolean(NBTKEY_CHOCOBO_FLAME_BLOOD, this.isFlame());
         compound.putBoolean(NBTKEY_CHOCOBO_WATER_BREATH, this.isWBreather());
         compound.putFloat(NBTKEY_CHOCOBO_STAMINA, this.getStamina());
+        compound.putInt(NBTKEY_CHOCOBO_COLLAR, this.getCollarColor());
     }
 
     public ChocoboColor getChocoboColor() { return this.entityData.get(PARAM_COLOR); }
     public void setChocoboColor(ChocoboColor color) { this.entityData.set(PARAM_COLOR, color); }
+    public void setCollarColor(Integer color) { this.entityData.set(PARAM_COLLAR_COLOR, color); }
+    public Integer getCollarColor() { return this.entityData.get(PARAM_COLLAR_COLOR); }
     @Override
     public boolean fireImmune() { return isFlame(); }
     public void setFlame(boolean flame) { this.entityData.set(PARAM_IS_FLAME_BLOOD, flame); }
@@ -317,18 +325,14 @@ public class Chocobo extends TamableAnimal {
     public void setMovementType(MovementType type) { this.entityData.set(PARAM_MOVEMENT_TYPE, type); }
     public boolean isSaddled() { return !this.getSaddle().isEmpty(); }
     public ItemStack getSaddle() { return this.entityData.get(PARAM_SADDLE_ITEM); }
-    private void setSaddleType(ItemStack saddleStack) {
+    private void setSaddleType(@NotNull ItemStack saddleStack) {
         ItemStack oldStack = getSaddle();
         if (oldStack.getItem() != saddleStack.getItem()) {
             this.entityData.set(PARAM_SADDLE_ITEM, saddleStack.copy());
         }
     }
-    public boolean rideableUnderWater() {
-        return canBreatheUnderwater();
-    }
-    public boolean canBreatheUnderwater() {
-        return this.isWBreather();
-    }
+    public boolean rideableUnderWater() { return canBreatheUnderwater(); }
+    public boolean canBreatheUnderwater() { return this.isWBreather(); }
 
     @Nullable
     public BlockPos getNestPosition() { return this.nestPos; }
@@ -598,8 +602,111 @@ public class Chocobo extends TamableAnimal {
     @Override
     public @NotNull InteractionResult interactAt(@NotNull Player player, @NotNull Vec3 vec, @NotNull InteractionHand hand) {
         ItemStack heldItemStack = player.getItemInHand(hand);
+        setLists();
+        Item defaultHand = heldItemStack.getItem();
+        if (getDyeList().contains(defaultHand)) {
+            int control = 0;
+            if (defaultHand == RED_DYE.asItem() || defaultHand == RED_SHIFT_DYE.get().asItem()
+                    || defaultHand == BLOOD_SHIFT_DYE.get().asItem()) {
+                if (this.getCollarColor() != 16) {
+                    this.setCollarColor(16);
+                    control += 1;
+                }
+            }
+            if (defaultHand == WHITE_DYE.asItem() || defaultHand == WHITE_SHIFT_DYE.get().asItem()) {
+                if (this.getCollarColor() != 15) {
+                    this.setCollarColor(15);
+                    control += 1;
+                }
+            }
+            if (defaultHand == ORANGE_DYE.asItem() || defaultHand == ORANGE_SHIFT_DYE.get().asItem()) {
+                if (this.getCollarColor() != 14) {
+                    this.setCollarColor(14);
+                    control += 1;
+                }
+            }
+            if (defaultHand == MAGENTA_DYE.asItem() || defaultHand == MAGENTA_SHIFT_DYE.get().asItem()) {
+                if (this.getCollarColor() != 13) {
+                    this.setCollarColor(13);
+                    control += 1;
+                }
+            }
+            if (defaultHand == LIGHT_BLUE_DYE.asItem() || defaultHand == LIGHT_BLUE_SHIFT_DYE.get().asItem()) {
+                if (this.getCollarColor() != 12) {
+                    this.setCollarColor(12);
+                    control += 1;
+                }
+            }
+            if (defaultHand == YELLOW_DYE.asItem() || defaultHand == YELLOW_SHIFT_DYE.get().asItem()) {
+                if (this.getCollarColor() != 11) {
+                    this.setCollarColor(11);
+                    control += 1;
+                }
+            }
+            if (defaultHand == LIME_DYE.asItem() || defaultHand == LIME_SHIFT_DYE.get().asItem()) {
+                if (this.getCollarColor() != 10) {
+                    this.setCollarColor(10);
+                    control += 1;
+                }
+            }
+            if (defaultHand == PINK_DYE.asItem() || defaultHand == PINK_SHIFT_DYE.get().asItem()) {
+                if (this.getCollarColor() != 9) {
+                    this.setCollarColor(9);
+                    control += 1;
+                }
+            }
+            if (defaultHand == GRAY_DYE.asItem() || defaultHand == GRAY_SHIFT_DYE.get().asItem()) {
+                if (this.getCollarColor() != 8) {
+                    this.setCollarColor(8);
+                    control += 1;
+                }
+            }
+            if (defaultHand == LIGHT_GRAY_DYE.asItem() || defaultHand == LIGHT_GRAY_SHIFT_DYE.get().asItem()) {
+                if (this.getCollarColor() != 7) {
+                    this.setCollarColor(7);
+                    control += 1;
+                }
+            }
+            if (defaultHand == CYAN_DYE.asItem() || defaultHand == CYAN_SHIFT_DYE.get().asItem()) {
+                if (this.getCollarColor() != 6) {
+                    this.setCollarColor(6);
+                    control += 1;
+                }
+            }
+            if (defaultHand == PURPLE_DYE.asItem() || defaultHand == PURPLE_SHIFT_DYE.get().asItem()) {
+                if (this.getCollarColor() != 5) {
+                    this.setCollarColor(5);
+                    control += 1;
+                }
+            }
+            if (defaultHand == BLUE_DYE.asItem() || defaultHand == BLUE_SHIFT_DYE.get().asItem()) {
+                if (this.getCollarColor() != 4) {
+                    this.setCollarColor(4);
+                    control += 1;
+                }
+            }
+            if (defaultHand == GREEN_DYE.asItem() || defaultHand == GREEN_SHIFT_DYE.get().asItem()) {
+                if (this.getCollarColor() != 3) {
+                    this.setCollarColor(3);
+                    control += 1;
+                }
+            }
+            if (defaultHand == BROWN_DYE.asItem() || defaultHand == BROWN_SHIFT_DYE.get().asItem()) {
+                if (this.getCollarColor() != 2) {
+                    this.setCollarColor(2);
+                    control += 1;
+                }
+            }
+            if (defaultHand == BLACK_DYE.asItem() || defaultHand == BLACK_SHIFT_DYE.get().asItem()) {
+                if (this.getCollarColor() != 1) {
+                    this.setCollarColor(1);
+                    control += 1;
+                }
+            }
+            // if (control > 0) { heldItemStack.setCount(heldItemStack.getCount()-1); }}
+        }
 
-        if (heldItemStack.getItem() == GYSAHL_CAKE.get()) {
+        if (heldItemStack.getItem() == GYSAHL_CAKE.get().asItem()) {
             this.usePlayerItem(player, hand, heldItemStack);
             ageBoundaryReached();
             return InteractionResult.SUCCESS;
@@ -611,8 +718,7 @@ public class Chocobo extends TamableAnimal {
             return InteractionResult.SUCCESS;
         }
 
-        if (this.getCommandSenderWorld().isClientSide)
-            return InteractionResult.SUCCESS;
+        if (this.getCommandSenderWorld().isClientSide) return InteractionResult.SUCCESS;
 
         if (this.isSaddled() && heldItemStack.isEmpty() && !player.isShiftKeyDown() && !this.isBaby()) {
             player.startRiding(this);
@@ -732,10 +838,12 @@ public class Chocobo extends TamableAnimal {
 
         if (this.chocoboInventory != null && this.isSaddled()) {
             for (int i = 0; i < this.chocoboInventory.getSlots(); i++) {
-                if (!this.chocoboInventory.getStackInSlot(i).isEmpty())
+                if (!this.chocoboInventory.getStackInSlot(i).isEmpty()) {
                     this.spawnAtLocation(this.chocoboInventory.getStackInSlot(i), 0.0f);
+                    this.spawnAtLocation(getSaddle());
+                }
             }
-        }
+        } else if (this.isSaddled()) { this.spawnAtLocation(getSaddle()); }
     }
     protected SoundEvent getAmbientSound() { return AMBIENT_SOUND.get(); }
     protected SoundEvent getHurtSound(@NotNull DamageSource damageSourceIn) { return AMBIENT_SOUND.get(); }
@@ -748,9 +856,7 @@ public class Chocobo extends TamableAnimal {
     public boolean checkSpawnRules(@NotNull LevelAccessor worldIn, @NotNull MobSpawnType spawnReasonIn) {
         final Holder<Biome> currentBiome = this.level.getBiome(blockPosition().below());
         @SuppressWarnings("OptionalGetWithoutIsPresent") final ResourceKey<Biome> key = currentBiome.unwrapKey().get();
-        if (BiomeDictionary.hasType(key, Type.NETHER)) {
-            return true;
-        }
+        if (BiomeDictionary.hasType(key, Type.NETHER)) { return true; }
         return super.checkSpawnRules(worldIn, spawnReasonIn);
     }
     @Override
@@ -763,8 +869,7 @@ public class Chocobo extends TamableAnimal {
                     int chance = 0;
                     for (ItemStack stack : player.getInventory().armor) {
                         if (stack != null) {
-                            if (stack.getItem() instanceof ChocoDisguiseItem)
-                                chance += 25;
+                            if (stack.getItem() instanceof ChocoDisguiseItem) { chance += 25; }
                         }
                     }
 

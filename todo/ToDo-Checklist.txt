@@ -24,9 +24,6 @@ Finalize Glide/Fall speeds for chocobos not being ridden.
 - Use saddles for variables
 - Use Color for variables
 
-Consider
--- Such vastly different movement, swapping Water breathing on & off of those chocobo would be an option
--- Unsure
 
 Double Check
 - Whistle functions on underwater chocobo
@@ -37,16 +34,6 @@ Added 1-25-23
 
 Test 'Renaming' Ability by non-taming player.
 
-Removed Chocopedia - touch ups
-- color collars 'center spot' to identify male/female on tamed
-- extend feathers on male untamed chocobo
--- possible lighter color on plumes as well
-
-Create Collar Color changes
-- com.dephoegon.delchoco.client.renderer.layers.layerCollar.java
--- New NBT on Chocobo to show collars
-=== Add in via Chocobo.java
-===-- Default current (red)
 
 Create Colored versions of Saddle Packs
 - Change Saddle registry to split into saddle, small saddle, & large saddle class files
@@ -58,3 +45,7 @@ Create Colored versions of Saddle Packs
 
 Consider
 - Random Chocobo Names (not Likely)
+
+Added 1-26-23
+
+Consider - Collar Redesigns based on testing.
