@@ -2,9 +2,6 @@ Added 7-21
 
 Find/Remove Useless code (In Progress)
 
-Look into updating nest on chocobo hatching
--visual bleh
-
 Added 8-12
 
 Examine Chocobo Logic carefully.
@@ -14,11 +11,6 @@ Re-Examine The remains of the ability system
 Prune excess resources/code.
 
 Added 1-23-23
-
--Verify Chocobo Movements
-= 'Swimming'
-= Falling
-= Gliding
 
 Finalize Glide/Fall speeds for chocobos not being ridden.
 - Use saddles for variables
@@ -34,7 +26,6 @@ Added 1-25-23
 
 Test 'Renaming' Ability by non-taming player.
 
-
 Create Colored versions of Saddle Packs
 - Change Saddle registry to split into saddle, small saddle, & large saddle class files
 --  Swap to instanceof use
@@ -49,3 +40,7 @@ Consider
 Added 1-26-23
 
 Consider - Collar Redesigns based on testing.
+
+Added 1-28-23
+
+Consider - setting up random chocobo_egg in chests with a random set of defaults (parent colors, and some wiggle room in values)

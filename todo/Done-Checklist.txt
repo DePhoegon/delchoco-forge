@@ -61,7 +61,15 @@ Progress
 -- Resource Locations
 -- Change via Dyes
 -- Removed dyes from chocobo color enum (changed color of chocobo)
-- Added in via Int number as NBT
+- Added in via Int number as an NBT
 -- Smart Switch used (1-15, + default)
 -- Dye list class used to allow wrapping of all dyes easily.
 -- Default red
+
+1-28-23
+----------
+- Fixed Saddles not dropping.
+- Assigned default 'Chocobo_egg' in tooltip before placed (summoned or pulled from creative Menu)
+-- Once hovered over, default is set
+- Tested Movements SP
+-

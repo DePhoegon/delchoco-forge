@@ -840,10 +840,10 @@ public class Chocobo extends TamableAnimal {
             for (int i = 0; i < this.chocoboInventory.getSlots(); i++) {
                 if (!this.chocoboInventory.getStackInSlot(i).isEmpty()) {
                     this.spawnAtLocation(this.chocoboInventory.getStackInSlot(i), 0.0f);
-                    this.spawnAtLocation(getSaddle());
                 }
             }
-        } else if (this.isSaddled()) { this.spawnAtLocation(getSaddle()); }
+            this.spawnAtLocation(this.saddleItemStackHandler.getStackInSlot(0));
+        } else if (this.isSaddled()) { this.spawnAtLocation(this.saddleItemStackHandler.getStackInSlot(0)); }
     }
     protected SoundEvent getAmbientSound() { return AMBIENT_SOUND.get(); }
     protected SoundEvent getHurtSound(@NotNull DamageSource damageSourceIn) { return AMBIENT_SOUND.get(); }

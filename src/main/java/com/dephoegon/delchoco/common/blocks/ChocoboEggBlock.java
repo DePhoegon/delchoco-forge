@@ -2,6 +2,7 @@ package com.dephoegon.delchoco.common.blocks;
 
 import com.dephoegon.delchoco.DelChoco;
 import com.dephoegon.delchoco.common.blockentities.ChocoboEggBlockEntity;
+import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.entities.breeding.ChocoboBreedInfo;
 import com.dephoegon.delchoco.common.entities.breeding.ChocoboStatSnapshot;
 import com.dephoegon.delchoco.common.init.ModRegistry;
@@ -17,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -112,7 +114,11 @@ public class ChocoboEggBlock extends BaseEntityBlock {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
-        final CompoundTag nbtBreedInfo = stack.getTagElement(NBTKEY_BREEDINFO);
+        CompoundTag nbtBreedInfo = stack.getTagElement(NBTKEY_BREEDINFO);
+        if (nbtBreedInfo == null) {
+            stack.addTagElement(NBTKEY_BREEDINFO, getFromNbtOrDefault(null).serialize());
+            nbtBreedInfo = stack.getTagElement(NBTKEY_BREEDINFO);
+        }
         if (nbtBreedInfo != null) {
             final ChocoboBreedInfo info = new ChocoboBreedInfo(nbtBreedInfo);
             final ChocoboStatSnapshot mother = info.getMother();
