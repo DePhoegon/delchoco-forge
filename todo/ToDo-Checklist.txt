@@ -44,3 +44,58 @@ Consider - Collar Redesigns based on testing.
 Added 1-28-23
 
 Consider - setting up random chocobo_egg in chests with a random set of defaults (parent colors, and some wiggle room in values)
+
+Added 2-9-23
+
+ChocoboInventoryScreen
+- protected void renderBg() [line 48]
+-- Modify
+== this.blit(matrixStack, i - 24, j + 10, 0, 204, 27, 33);
+~~ [27] width,
+~~= allow for 3 Slots visually,
+~~= Measure Pixels between, to use in SaddleBagContainer
+
+Modify all 3 Chocobo_inventory pngs identically
+
+-----
+
+SaddleBagContainer
+- public void refreshslots() [line 24]
+-- Modify
+== between Line 27/28
+~~ Add slots
+this.addSlot(new chocoboEquipmentSlot(chocobo.chocoboArmorHandler/chocoboWeaponHandler, 0, X#, 18))
+
+use of chocoboEquipmentSlot as the SlotItemHandler
+- Prevents Quick Move
+- Prevents Adding while in the menu
+- Keeps behavior the same between saddle, weapon, armor
+-- Only equipable via in world use on chocobo
+
+art assets for chocobo weapons/armors
+
+Work on Chocobo Render model to show 'something' for armor & weapons
+- make layer for armor & weapons 'on Chocobo'
+
+ChocoboRender.java (client.renderer.entities)
+- [line 76] ChocoboRenderer
+-- Add new Layers
+--- this.addLayer(new LayerArmor(this))
+--- this.addLayer(new LayerWeapon(this))
+
+Create Java class files (client.renderer.layers)
+- LayerArmor
+- LayerWeapon
+
+Use [ getTier() ] {TieredItem.java - source}
+-- For LayerWeapon
+
+use [ getMaterial() ] {ChocoboArmorItems.java - source}
+-- For LayerArmor
+
+Use Switch, Default to lowest Intended (Does not use all tiers/armor materials)
+
+Create layer PNGs for said Items
+
+-------
+Test out Changes to verify Functionality.

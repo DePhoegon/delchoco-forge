@@ -27,7 +27,7 @@ public class SaddleBagContainer extends AbstractContainerMenu {
         ItemStack saddleStack = chocobo.getSaddle();
         if(!saddleStack.isEmpty() && saddleStack.getItem() instanceof ChocoboSaddleItem saddleItem) {
             int saddleSize = saddleItem.getInventorySize();
-            this.addSlot(new SlotChocoboSaddle(chocobo.saddleItemStackHandler, 0, -16, 18));
+            this.addSlot(new chocoboEquipmentSlot(chocobo.saddleItemStackHandler, 0, -16, 18));
             switch (saddleSize) {
                 case 15 -> bindInventorySmall(saddleStack, chocobo.tierOneItemStackHandler);
                 case 45 -> bindInventoryBig(saddleStack, chocobo.tierTwoItemStackHandler);
@@ -91,7 +91,7 @@ public class SaddleBagContainer extends AbstractContainerMenu {
         if (!saddleStack.isEmpty() && saddleStack.getItem() instanceof ChocoboSaddleItem saddleItem) {
             slotSize = saddleItem.getInventorySize();
         } else { slotSize = 0; }
-        notEmpty = !(slot instanceof SlotChocoboSaddle);
+        notEmpty = !(slot instanceof chocoboEquipmentSlot);
         if (notEmpty){
             if (slot != null && slot.hasItem()) {
                 ItemStack itemstack1 = slot.getItem();

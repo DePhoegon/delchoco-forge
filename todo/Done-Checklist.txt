@@ -72,4 +72,57 @@ Progress
 - Assigned default 'Chocobo_egg' in tooltip before placed (summoned or pulled from creative Menu)
 -- Once hovered over, default is set
 - Tested Movements SP
--
+
+2-9-23
+--------------
+- Chocobo Armors - registered
+- Chocobo Weapons - registered
+- Chocobo base Attack Damage - Defined
+- Chocobo base Attack Speed - Used Default Attack Speed
+- Chocobo base Defense Value - Defined
+- Chocobo base Defense Toughness - Defined
+- sets & removes bonus for (attack/att spd/def/arm tough) in Chocobo.java from the equipment.
+- Armor is in the slot EquipmentSlot.Chest
+- Weapons is based off Sword
+-- Disabled interaction with Armor to equip[to self] (from the items) for chocobo armor
+- tag JSON for weapons
+-- overwrote cobweb.json (loot table) in the Minecraft space
+~~ Allow for the chocobo claw weapons to be used to get cobwebs w/o enchantments
+- Mild underhood name adjustment for logical sense
+- Chocobo Config file
+-- Added default Attack Damage
+-- Added default Defense Value
+-- Added default Defense Toughness
+-- Added boolean (default off) Ridable by Owner Only
+-- Commented out flyingStamina use for now [unused, false impressions given]
+
+- Chocobo.java -
+- Equipment Itemstack handler (backbone for both armor/weapon)
+- Armor Itemstack handler
+- Weapon Itemstack Handler
+- Onchange in Equipment itemstack handler calls setChocobo[weapon/armor]handler
+~~ This updates the bonus values for the chocobo
+- Updated Goals
+-- introduced Panic
+-- Introduced melee attack
+-- Introduced Leapattarget
+-- introduced targeting ownerhurtbytarget
+-- introduced targeting ownerhurttaget
+-- introduced targeting hurtbytarget -null alertothers
+-- introduced targeting nearestattackabletarget (player, angery at)
+-- introduced targeting resetuniversalangertarget
+- inserted bypass for flame chocobos to not be pushed by lava flow
+- Cleaned InteractionResult interactAt
+-- separated options by tame/not-tame
+-- enabled dye on use
+-- updated clunky methods
+- Chocobo Armor / Weapon Equip
+-- By using on chocobo
+-- enabled quick swap to better gear based on stats with use
+~~ drops old one on the ground
+- implements NeutralMob
+-- For targeting options
+
+Generated UUIDs for things...
+
+Currently Untested Changes

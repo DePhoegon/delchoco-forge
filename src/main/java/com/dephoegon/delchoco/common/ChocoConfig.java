@@ -28,14 +28,18 @@ public class ChocoConfig {
         public final DoubleValue tameChance;
         public final DoubleValue sprintStaminaCost;
         public final DoubleValue glideStaminaCost;
+        /* Disabled, no current use [Commented out Lines 120-124]
         public final DoubleValue flyStaminaCost;
+         */
         public final DoubleValue jumpStaminaCost;
         public final DoubleValue staminaRegenRate;
 
         public final IntValue defaultStamina;
         public final IntValue defaultSpeed;
         public final IntValue defaultHealth;
-
+        public final IntValue armor;
+        public final IntValue armorToughness;
+        public final IntValue attackStrength;
         public final IntValue maxHealth;
         public final IntValue maxSpeed;
         public final DoubleValue maxStamina;
@@ -46,6 +50,7 @@ public class ChocoConfig {
         public final DoubleValue poslossSpeed;
         public final DoubleValue poslossStamina;
         public final IntValue eggHatchTimeTicks;
+        public final BooleanValue ownerOnlyRider;
 
         Common(ForgeConfigSpec.Builder builder) {
             builder.comment("World generation related configuration")
@@ -72,8 +77,7 @@ public class ChocoConfig {
                     .define("gysahlGreensSpawnOnlyInOverworld", true);
 
             builder.pop();
-
-            builder.comment("Spawning configuration")
+            builder.comment("Chocobo Spawn Configuration")
                     .push("spawning");
 
             chocoboSpawnWeight = builder
@@ -94,64 +98,81 @@ public class ChocoConfig {
             chocoboPackSizeMax = builder
                     .comment("Controls Chocobo Pack Size Max [Default: 3]")
                     .defineInRange("chocoboPackSizeMax", 3, 0, Integer.MAX_VALUE);
-            builder.pop();
 
+            builder.pop();
             builder.comment("Chocobo configuration")
                     .push("Chocobo");
+
+            ownerOnlyRider = builder
+                    .comment("Chocobos Rideable by Owners (Player that tamed it) Only. [Default: False]")
+                    .define("ownerOnlyRider", false);
+
+            builder.comment("Stamina Costs")
+                    .push("stamina_costs");
+
+            sprintStaminaCost = builder
+                    .comment("Controls the Sprint Stamina cost [Default: 0.06]")
+                    .defineInRange("sprintStaminaCost", 0.06, 0, 1);
+
+            glideStaminaCost = builder
+                    .comment("Controls the Glide Stamina cost [Default: 0.005]")
+                    .defineInRange("glideStaminaCost", 0.005D, 0, 1);
+            /* Disabled, no current use [Commented out, lines 31-33]
+            flyStaminaCost = builder
+                    .comment("Controls the Fly Stamina cost [Default: 0.08]")
+                    .defineInRange("flyStaminaCost", 0.08D, 0, 1);
+             */
+
+            jumpStaminaCost = builder
+                    .comment("Controls the Jump Stamina cost [Default: 0.00]")
+                    .defineInRange("jumpStaminaCost", 0.00D, 0, 1);
+
+            staminaRegenRate = builder
+                    .comment("Controls the amount of Stamina recharged per tick [Default: 0.025]")
+                    .defineInRange("staminaRegenRate", 0.025, 0, 1);
+
+            builder.pop();
+            builder.comment("Defaults")
+                    .push("defaults");
+
+            defaultStamina = builder
+                    .comment("Controls the default Stamina [Default: 10]")
+                    .defineInRange("defaultStamina", 10, 0, Integer.MAX_VALUE);
+
+            defaultSpeed = builder
+                    .comment("Controls the default Speed [Default: 20]")
+                    .defineInRange("defaultSpeed", 20, 0, Integer.MAX_VALUE);
+
+            defaultHealth = builder
+                    .comment("Controls the default Health [Default: 20]")
+                    .defineInRange("defaultHealth", 20, 0, Integer.MAX_VALUE);
+
+            builder.pop();
+            builder.comment("Combat Stats")
+                    .push("stats");
+
+            armor = builder
+                    .comment("Default Amount of 'Armor' Points [Default:4]")
+                    .defineInRange("defaultArmor", 4, 0, 20);
+
+            armorToughness = builder
+                    .comment("Default Amount of 'Armor Toughness' Value [Default:1]")
+                    .defineInRange("defaultArmorToughness", 1,0, 10);
+
+            attackStrength = builder
+                    .comment("Default Attack Value [Default: 2]")
+                    .defineInRange("defaultAttackStrength", 2, 1, 10);
 
             tameChance = builder
                     .comment("This multiplier controls the tame chance per gysahl used, so .15 results in 15% chance to tame [Default: 0.15]")
                     .defineInRange("tameChance", 0.15, 0, 1);
 
-
-                builder.comment("Stamina Costs")
-                        .push("stamina_costs");
-
-                sprintStaminaCost = builder
-                        .comment("Controls the Sprint Stamina cost [Default: 0.06]")
-                        .defineInRange("sprintStaminaCost", 0.06, 0, 1);
-
-                glideStaminaCost = builder
-                        .comment("Controls the Glide Stamina cost [Default: 0.005]")
-                        .defineInRange("glideStaminaCost", 0.005D, 0, 1);
-
-                flyStaminaCost = builder
-                        .comment("Controls the Fly Stamina cost [Default: 0.08]")
-                        .defineInRange("flyStaminaCost", 0.08D, 0, 1);
-
-                jumpStaminaCost = builder
-                        .comment("Controls the Jump Stamina cost [Default: 0.00]")
-                        .defineInRange("jumpStaminaCost", 0.00D, 0, 1);
-
-                staminaRegenRate = builder
-                        .comment("Controls the amount of Stamina recharged per tick [Default: 0.025]")
-                        .defineInRange("staminaRegenRate", 0.025, 0, 1);
-
-                builder.pop();
-                builder.comment("Defaults")
-                        .push("defaults");
-
-                defaultStamina = builder
-                        .comment("Controls the default Stamina [Default: 10]")
-                        .defineInRange("defaultStamina", 10, 0, Integer.MAX_VALUE);
-
-                defaultSpeed = builder
-                        .comment("Controls the default Speed [Default: 20]")
-                        .defineInRange("defaultSpeed", 20, 0, Integer.MAX_VALUE);
-
-                defaultHealth = builder
-                        .comment("Controls the default Health [Default: 20]")
-                        .defineInRange("defaultHealth", 20, 0, Integer.MAX_VALUE);
-
-                builder.pop();
-
-            builder.pop();
-
+            builder.pop(2);
             builder.comment("Breeding configuration")
                     .push("breeding");
 
                 builder.comment("Max Stats")
-                        .push("Max");
+                        .push("max");
 
                 maxHealth = builder
                         .comment("Controls the Max Health a Chocobo can have [Default: 50]")

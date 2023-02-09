@@ -6,8 +6,8 @@ import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
-public class SlotChocoboSaddle extends SlotItemHandler {
-    public SlotChocoboSaddle(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
+public class chocoboEquipmentSlot extends SlotItemHandler {
+    public chocoboEquipmentSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
         super(itemHandler, index, xPosition, yPosition);
     }
 

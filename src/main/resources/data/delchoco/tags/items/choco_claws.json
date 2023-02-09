@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "delchoco:stone_claws",
+    "delchoco:iron_claws",
+    "delchoco:diamond_claws",
+    "delchoco:netherite_claws"
+  ]
+}
