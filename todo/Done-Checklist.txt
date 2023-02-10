@@ -126,3 +126,52 @@ Progress
 Generated UUIDs for things...
 
 Currently Untested Changes
+
+2-9-23/2-10-23
+
+Set Collar Changes to enable 'no collar'
+-Added Cleanse dye to checklist & use for no collar
+
+Changed ChocoboInventory Screens
+- Adjusted Texture Art
+- Created Armor & Weapon ItemStack Slots
+- Adjusted CHocobo Name placement
+- Used of Int for Adjusting with of UI elements
+
+ChocoConfig Adjustments
+- Created defaultHealammount
+-- For Per Greens
+- Created modifier for Armor/Weapon Stats (dam/atk spd/def/def toughness)
+- Changed ownerOnlyRider to ownerOnlyAccess
+-- Allow naming, riding, to be by owner only
+
+Chocobo.java
+- Saved Weapon & armor into NBT like Saddle is
+- Fixed Persistent Anger (Player targets only)
+- Put Inventory sync logic to inv backbone, into a method
+- used onChange in Armor / Weapon Handlers to 'setStackInSlot'
+--
+- Adjusted Goals
+-- Changed Melee, to be more consistent & to use a standard Mob Attack range.
+-- Moved tempt/avoidentitygoal below attack/leap
+-- set Alert on attack by by Chocobo.class
+- set default (untamed, spawned Chocobos) collar to clear
+- Used set Armor/weapon handler
+-- Use of UUID (unique to Chocobos) to apply & remove Modifiers
+--- use of permanent modifiers to preserve across world/chunk saves
+--- TransientModifiers failed to behave as expected.
+- Created boolean for isArmored/isArmed
+-- Will be used for layer checking
+- Alligned Chocobo Equipment slot behaviors
+- Allowed NameTaging of non-tamed Chocobos
+-- Does not Tame them
+- Added Creative Player override to chocobo Tame Logic
+-- No RNG
+- Updated Dropping Equipped armor/weapons @ Chocobo Location on Death.
+
+chocoboEquipmentSlot.java
+- used boolean & int to allow One slot type to change 'MayPlace' to check for the proper item per slot.
+
+SaddleBagContainer.java
+- uses Int variables from chocoboEquipmentSlot.java to ensure no the values are the same
+- Added slots w/ 1 space between them

@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 public class LayerCollar extends RenderLayer<Chocobo, EntityModel<Chocobo>> {
 	private final ResourceLocation COLLAR_CHOCOBO_F_BLACK = new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/f_black_collar.png");
@@ -64,10 +65,16 @@ public class LayerCollar extends RenderLayer<Chocobo, EntityModel<Chocobo>> {
 	}
 
 	@Override
-	public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, Chocobo chocoboEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void render(@NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int packedLightIn, @NotNull Chocobo chocoboEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 		ResourceLocation COLLAR_CHICOBO;
 		ResourceLocation COLLAR_CHOCOBO;
 		switch (chocoboEntity.getCollarColor()) {
+			case 16 -> {
+				COLLAR_CHICOBO = COLLAR_CHICOBO_RED;
+				if (chocoboEntity.isMale()) {
+					COLLAR_CHOCOBO = COLLAR_CHOCOBO_M_RED;
+				} else { COLLAR_CHOCOBO = COLLAR_CHOCOBO_F_RED; }
+			}
 			case 15 -> {
 				COLLAR_CHICOBO = COLLAR_CHICOBO_WHITE;
 				if (chocoboEntity.isMale()) {
@@ -159,14 +166,11 @@ public class LayerCollar extends RenderLayer<Chocobo, EntityModel<Chocobo>> {
 				} else { COLLAR_CHOCOBO = COLLAR_CHOCOBO_F_BLACK; }
 			}
 			default -> {
-				COLLAR_CHICOBO = COLLAR_CHICOBO_RED;
-				if (chocoboEntity.isMale()) {
-					COLLAR_CHOCOBO = COLLAR_CHOCOBO_M_RED;
-				} else { COLLAR_CHOCOBO = COLLAR_CHOCOBO_F_RED; }
+				COLLAR_CHICOBO = null;
+				COLLAR_CHOCOBO = null;
 			}
 		}
-
-		if (chocoboEntity.isTame() && !chocoboEntity.isInvisible()) {
+		if (chocoboEntity.isTame() && !chocoboEntity.isInvisible() && (COLLAR_CHICOBO != null)) {
 			renderColoredCutoutModel(this.getParentModel(), chocoboEntity.isBaby() ? COLLAR_CHICOBO : COLLAR_CHOCOBO, matrixStackIn, bufferIn, packedLightIn, chocoboEntity, 1.0F, 1.0F, 1.0F);
 		}
 	}

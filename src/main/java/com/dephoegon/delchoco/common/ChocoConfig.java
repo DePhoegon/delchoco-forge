@@ -33,10 +33,11 @@ public class ChocoConfig {
          */
         public final DoubleValue jumpStaminaCost;
         public final DoubleValue staminaRegenRate;
-
+        public final IntValue defaultHealAmmount;
         public final IntValue defaultStamina;
         public final IntValue defaultSpeed;
         public final IntValue defaultHealth;
+        public final IntValue modifier;
         public final IntValue armor;
         public final IntValue armorToughness;
         public final IntValue attackStrength;
@@ -50,7 +51,7 @@ public class ChocoConfig {
         public final DoubleValue poslossSpeed;
         public final DoubleValue poslossStamina;
         public final IntValue eggHatchTimeTicks;
-        public final BooleanValue ownerOnlyRider;
+        public final BooleanValue ownerOnlyAccess;
 
         Common(ForgeConfigSpec.Builder builder) {
             builder.comment("World generation related configuration")
@@ -103,9 +104,9 @@ public class ChocoConfig {
             builder.comment("Chocobo configuration")
                     .push("Chocobo");
 
-            ownerOnlyRider = builder
-                    .comment("Chocobos Rideable by Owners (Player that tamed it) Only. [Default: False]")
-                    .define("ownerOnlyRider", false);
+            ownerOnlyAccess = builder
+                    .comment("Chocobos Rideable & Custom Nameable by Owners (Player that tamed it) Only. [Default: False]")
+                    .define("ownerOnlyAccess", false);
 
             builder.comment("Stamina Costs")
                     .push("stamina_costs");
@@ -135,6 +136,10 @@ public class ChocoConfig {
             builder.comment("Defaults")
                     .push("defaults");
 
+            defaultHealAmmount = builder
+                    .comment("Ammount of HP Restored per Green { 1HP = 1/2 Heart } [Default: 5]")
+                    .defineInRange("defaultHealAmmount", 5, 2, 10);
+
             defaultStamina = builder
                     .comment("Controls the default Stamina [Default: 10]")
                     .defineInRange("defaultStamina", 10, 0, Integer.MAX_VALUE);
@@ -150,6 +155,10 @@ public class ChocoConfig {
             builder.pop();
             builder.comment("Combat Stats")
                     .push("stats");
+
+            modifier = builder
+                    .comment("Armor/Weapon Value Modifier {Weapons & Armor For Chocobo are More Effective} [Default:1]")
+                    .defineInRange("modifier", 1, 1, 5);
 
             armor = builder
                     .comment("Default Amount of 'Armor' Points [Default:4]")

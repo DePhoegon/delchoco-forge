@@ -11,6 +11,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
+import static com.dephoegon.delchoco.common.inventory.chocoboEquipmentSlot.*;
+
 public class SaddleBagContainer extends AbstractContainerMenu {
     private final Chocobo chocobo;
 
@@ -25,9 +27,13 @@ public class SaddleBagContainer extends AbstractContainerMenu {
         this.slots.clear();
         bindPlayerInventory(player);
         ItemStack saddleStack = chocobo.getSaddle();
+        int slotOneX = -16;
+        int slotOneY = 18-20;
+        this.addSlot(new chocoboEquipmentSlot(chocobo.saddleItemStackHandler, 0, slotOneX, slotOneY, saddleType));
+        this.addSlot(new chocoboEquipmentSlot(chocobo.chocoboArmorHandler, 0, 2*18+slotOneX, slotOneY, armorType));
+        this.addSlot(new chocoboEquipmentSlot(chocobo.chocoboWeaponHandler, 0, 4*18+slotOneX, slotOneY, weaponType));
         if(!saddleStack.isEmpty() && saddleStack.getItem() instanceof ChocoboSaddleItem saddleItem) {
             int saddleSize = saddleItem.getInventorySize();
-            this.addSlot(new chocoboEquipmentSlot(chocobo.saddleItemStackHandler, 0, -16, 18));
             switch (saddleSize) {
                 case 15 -> bindInventorySmall(saddleStack, chocobo.tierOneItemStackHandler);
                 case 45 -> bindInventoryBig(saddleStack, chocobo.tierTwoItemStackHandler);

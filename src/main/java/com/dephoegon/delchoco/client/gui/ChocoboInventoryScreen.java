@@ -19,7 +19,7 @@ public class ChocoboInventoryScreen extends AbstractContainerScreen<SaddleBagCon
     private static final ResourceLocation INV_TEXTURE_NULL = new ResourceLocation(DelChoco.MOD_ID, "textures/gui/chocobo_inventory_null.png");
     private static final ResourceLocation INV_TEXTURE_SMALL = new ResourceLocation(DelChoco.MOD_ID, "textures/gui/chocobo_inventory_small.png");
     private static final ResourceLocation INV_TEXTURE_LARGE = new ResourceLocation(DelChoco.MOD_ID, "textures/gui/chocobo_inventory_large.png");
-
+    private static final int xAdjust = (4*18+16)+5; // (Additional Sizes for slots) + Border buffer
     private Chocobo chocobo;
 
     public ChocoboInventoryScreen(SaddleBagContainer container, Inventory playerInventory, Chocobo chocobo) {
@@ -66,12 +66,12 @@ public class ChocoboInventoryScreen extends AbstractContainerScreen<SaddleBagCon
         int i = (this.width - this.imageWidth) / 2;
         int j = (this.height - this.imageHeight) / 2;
         this.blit(matrixStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
-        this.blit(matrixStack, i - 24, j + 10, 0, 204, 27, 33);
+        this.blit(matrixStack, i - 24, j - 10, 0, 204, 27+xAdjust, 33);
     }
 
     @Override
     protected void renderLabels(PoseStack matrixStack, int x, int y) {
-        this.font.draw(matrixStack, this.chocobo.getDisplayName().getString(), 8, 6, 0x888888);
+        this.font.draw(matrixStack, this.chocobo.getDisplayName().getString(), xAdjust-16, 6, 0x888888);
         this.font.draw(matrixStack, this.playerInventoryTitle, 8, this.imageHeight - 96 + 2, 0x888888);
     }
 }

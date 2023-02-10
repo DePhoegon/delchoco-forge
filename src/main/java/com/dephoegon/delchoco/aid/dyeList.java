@@ -35,6 +35,7 @@ public abstract class dyeList {
     }
     private static void setListOfModDyes() {
         ArrayList<Item> dyes = new ArrayList<>();
+        dyes.add(CLEANSE_SHIFT_DYE.get().asItem());
         dyes.add(RED_SHIFT_DYE.get().asItem());
         dyes.add(BLOOD_SHIFT_DYE.get().asItem());
         dyes.add(BLACK_SHIFT_DYE.get().asItem());
