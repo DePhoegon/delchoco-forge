@@ -13,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-import static com.dephoegon.delchoco.DelChoco.LOGGER;
 import static java.lang.Math.*;
 import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 

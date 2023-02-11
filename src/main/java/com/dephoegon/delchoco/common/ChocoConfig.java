@@ -17,8 +17,6 @@ public class ChocoConfig {
         public final IntValue gysahlGreenSpawnWeight;
         public final IntValue gysahlGreenPatchSize;
         public final DoubleValue gysahlGreenSpawnChance;
-        public final BooleanValue gysahlGreensSpawnOnlyInOverworld;
-
         public final IntValue chocoboSpawnWeight;
         public final IntValue chocoboSpawnWeightMushroom;
         public final IntValue chocoboSpawnWeightNether;
@@ -71,11 +69,6 @@ public class ChocoConfig {
                     .worldRestart()
                     .comment("Controls the Spawn Chance compared to other world gen [Default: 0.1]")
                     .defineInRange("gysahlGreenSpawnChance", 0.1, 0, 1);
-
-            gysahlGreensSpawnOnlyInOverworld = builder
-                    .worldRestart()
-                    .comment("Controls the weight compared to other world gen [Default: true]")
-                    .define("gysahlGreensSpawnOnlyInOverworld", true);
 
             builder.pop();
             builder.comment("Chocobo Spawn Configuration")

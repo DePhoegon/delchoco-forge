@@ -175,3 +175,15 @@ chocoboEquipmentSlot.java
 SaddleBagContainer.java
 - uses Int variables from chocoboEquipmentSlot.java to ensure no the values are the same
 - Added slots w/ 1 space between them
+
+2-10-23
+
+Composting
+- Expanding what is Compostable
+- adding gysahl_greens to crops.
+
+Gysahl_Green Expansions
+- Expanded where it can be spawned.
+-- Clay, Grass Block, Moss_block(unsure if it works), Netherrack
+
+Debugging & testing Green Spawning, & fixing checks.
