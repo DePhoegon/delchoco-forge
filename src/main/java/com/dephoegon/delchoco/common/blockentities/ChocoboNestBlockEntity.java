@@ -39,6 +39,9 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.Random;
 
+import static com.dephoegon.delchoco.common.blocks.ChocoboEggBlock.NBTKEY_BREEDINFO;
+import static com.dephoegon.delchoco.common.entities.breeding.ChocoboBreedInfo.getFromNbtOrDefault;
+
 public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider {
     private final static CheckOffset[] SHELTER_CHECK_OFFSETS = new CheckOffset[] {
             new CheckOffset(new Vec3i(0, 1, 0), true),
@@ -121,8 +124,7 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
         if (!ChocoboEggBlock.isChocoboEgg(egg))
             return false;
 
-        if (!egg.hasTag())
-            return false;
+        if (!egg.hasTag()) { egg.addTagElement(NBTKEY_BREEDINFO, getFromNbtOrDefault(null).serialize()); }
 
         CompoundTag nbt = egg.getOrCreateTagElement(ChocoboEggBlock.NBTKEY_HATCHINGSTATE);
         int time = nbt.getInt(ChocoboEggBlock.NBTKEY_HATCHINGSTATE_TIME);
@@ -133,8 +135,8 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
             return false;
 
         // egg is ready to hatch
-        ChocoboBreedInfo breedInfo = ChocoboBreedInfo.getFromNbtOrDefault(egg.getTagElement(ChocoboEggBlock.NBTKEY_BREEDINFO));
-        Chocobo baby = BreedingHelper.createChild(breedInfo, this.level);
+        ChocoboBreedInfo breedInfo = ChocoboBreedInfo.getFromNbtOrDefault(egg.getTagElement(NBTKEY_BREEDINFO));
+        Chocobo baby = BreedingHelper.createChild(breedInfo, this.level, egg);
         if (baby == null) {
             return false;
         }

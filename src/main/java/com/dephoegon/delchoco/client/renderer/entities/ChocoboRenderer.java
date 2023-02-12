@@ -4,9 +4,7 @@ import com.dephoegon.delchoco.DelChoco;
 import com.dephoegon.delchoco.client.ClientHandler;
 import com.dephoegon.delchoco.client.models.entities.AdultChocoboModel;
 import com.dephoegon.delchoco.client.models.entities.ChicoboModel;
-import com.dephoegon.delchoco.client.renderer.layers.LayerCollar;
-import com.dephoegon.delchoco.client.renderer.layers.LayerPlumage;
-import com.dephoegon.delchoco.client.renderer.layers.LayerSaddle;
+import com.dephoegon.delchoco.client.renderer.layers.*;
 import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.google.common.collect.Maps;
@@ -77,6 +75,8 @@ public class ChocoboRenderer extends MobRenderer<Chocobo, EntityModel<Chocobo>> 
         super(context, new AdultChocoboModel<>(context.bakeLayer(ClientHandler.CHOCOBO)), 1.0f);
         this.chicoboModel = new ChicoboModel<>(context.bakeLayer(ClientHandler.CHICOBO));
 
+        this.addLayer(new LayerArmor(this));
+        this.addLayer(new LayerWeapon(this));
         this.addLayer(new LayerCollar(this));
         this.addLayer(new LayerPlumage(this));
         this.addLayer(new LayerSaddle(this));

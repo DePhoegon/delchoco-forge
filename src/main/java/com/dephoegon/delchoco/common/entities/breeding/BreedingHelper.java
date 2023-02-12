@@ -6,6 +6,7 @@ import com.dephoegon.delchoco.common.init.ModAttributes;
 import com.dephoegon.delchoco.common.init.ModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +19,7 @@ import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 
 public class BreedingHelper {
 
-    public static @Nullable Chocobo createChild(ChocoboBreedInfo breedInfo, Level world) {
+    public static @Nullable Chocobo createChild(ChocoboBreedInfo breedInfo, Level world, ItemStack egg) {
         final Chocobo baby = ModEntities.CHOCOBO.get().create(world);
         if (baby == null) { return null; }
 
@@ -83,7 +84,7 @@ public class BreedingHelper {
 
         baby.setMale(.50f > (float) random());
         baby.setChocoboColor(bColor);
-
+        if (egg.hasCustomHoverName()) { baby.setCustomName(egg.getHoverName()); }
 
         baby.setAge(-7500);
 

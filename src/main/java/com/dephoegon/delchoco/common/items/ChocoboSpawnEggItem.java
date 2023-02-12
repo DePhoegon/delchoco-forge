@@ -5,6 +5,7 @@ import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.dephoegon.delchoco.common.init.ModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
@@ -23,7 +25,9 @@ public class ChocoboSpawnEggItem extends Item {
         this.color = color;
     }
 
-
+    private Component name(ItemStack egg) {
+        return egg.getHoverName();
+    }
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Level worldIn = context.getLevel();
@@ -45,6 +49,8 @@ public class ChocoboSpawnEggItem extends Item {
             chocobo.yHeadRot = chocobo.getYRot();
             chocobo.yBodyRot = chocobo.getYRot();
             chocobo.setChocoboColor(color);
+            Component nameCheck = name(context.getItemInHand());
+            if (context.getItemInHand().hasCustomHoverName()) { chocobo.setCustomName(nameCheck); }
             chocobo.setFlame(color == ChocoboColor.FLAME);
             chocobo.setWaterBreath(color == ChocoboColor.BLUE || color == ChocoboColor.PURPLE || color == ChocoboColor.BLACK || color == ChocoboColor.GOLD);
             chocobo.finalizeSpawn((ServerLevel)worldIn, worldIn.getCurrentDifficultyAt(chocobo.blockPosition()), MobSpawnType.SPAWN_EGG, (SpawnGroupData)null, (CompoundTag)null);

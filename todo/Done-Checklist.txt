@@ -162,7 +162,7 @@ Chocobo.java
 --- TransientModifiers failed to behave as expected.
 - Created boolean for isArmored/isArmed
 -- Will be used for layer checking
-- Alligned Chocobo Equipment slot behaviors
+- Aligned Chocobo Equipment slot behaviors
 - Allowed NameTaging of non-tamed Chocobos
 -- Does not Tame them
 - Added Creative Player override to chocobo Tame Logic
@@ -187,3 +187,34 @@ Gysahl_Green Expansions
 -- Clay, Grass Block, Moss_block(unsure if it works), Netherrack
 
 Debugging & testing Green Spawning, & fixing checks.
+
+2-12-23
+
+Todo Cleanup
+
+-Allowed Name tagging of untamed-Chocobo
+-Allowed Cong to toggle Owner only ride/nametag of tamed chocobos
+-Nest egg only comes in yellow.
+
+Chocobo Weapons/Armor
+- item Sprites created
+- Model sprite Created
+- Layers Created
+- Map Used
+- Stats passed directly to the chocobo from the equipment
+-- Fixed to be permanent till equipment is removed.
+-Gear Fixed to properly show when equipped, before & after & save/load
+- Tag used to give utility to chocobo weapons (to the player)
+
+ Misc
+- EN_US lang file added to
+- Fixed Chocobo Spawn Eggs, to pass the name a Name to them.
+- Fixed Chocobo Nest Eggs, to pass on the name to the chicobo
+- Flatten ModRegistry
+- Fixed Improper Armor/Weapon itemhandler for chocbo
+- Fixed Goals & targeting to not allow Chocobo to attack each other.
+-- non-Tamed will still attack the player & swarm with non tamed by player chocobo
+- Flatten & cleanup logic for Collar color change in InteractionResult InteractAt of Chocobo.java
+- Cleaned up some code in Interactionresult InteractAt elsewher
+- LayerCollar.java Cleaned up with Maps
+- Started Pruning unsued files & code from the project

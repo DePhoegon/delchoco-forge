@@ -27,42 +27,26 @@ import static com.dephoegon.delchoco.common.entities.Chocobo.tier_two_chocobo_in
 public class ModRegistry {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, DelChoco.MOD_ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, DelChoco.MOD_ID);
+
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, DelChoco.MOD_ID);
-
-    public static final RegistryObject<Block> GYSAHL_GREEN = BLOCKS.register("gysahl_green", () ->
-            new GysahlGreenBlock(Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.CROP)));
-
-    public static final RegistryObject<Block> STRAW_NEST = BLOCKS.register("straw_nest", () ->
-            new StrawNestBlock(Properties.of(Material.STONE).sound(SoundType.GRASS)));
-
-    public static final RegistryObject<Block> CHOCOBO_EGG = BLOCKS.register("chocobo_egg", () ->
-            new ChocoboEggBlock(Properties.of(Material.EGG).strength(0.5F).noOcclusion().sound(SoundType.GRASS)));
-
-
-    public static final RegistryObject<BlockEntityType<ChocoboNestBlockEntity>> STRAW_NEST_TILE = BLOCK_ENTITIES.register("chocobo_nest", () -> BlockEntityType.Builder.of(
-            ChocoboNestBlockEntity::new, STRAW_NEST.get()).build(null));
-
-    public static final RegistryObject<BlockEntityType<ChocoboEggBlockEntity>> CHOCOBO_EGG_TILE = BLOCK_ENTITIES.register("chocobo_egg", () -> BlockEntityType.Builder.of(
-            ChocoboEggBlockEntity::new, CHOCOBO_EGG.get()).build(null));
+    public static final RegistryObject<Block> GYSAHL_GREEN = BLOCKS.register("gysahl_green", () -> new GysahlGreenBlock(Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.CROP)));
+    public static final RegistryObject<Block> STRAW_NEST = BLOCKS.register("straw_nest", () -> new StrawNestBlock(Properties.of(Material.STONE).sound(SoundType.GRASS)));
+    public static final RegistryObject<Block> CHOCOBO_EGG = BLOCKS.register("chocobo_egg", () -> new ChocoboEggBlock(Properties.of(Material.EGG).strength(0.5F).noOcclusion().sound(SoundType.GRASS)));
+    public static final RegistryObject<BlockEntityType<ChocoboNestBlockEntity>> STRAW_NEST_TILE = BLOCK_ENTITIES.register("chocobo_nest", () -> BlockEntityType.Builder.of(ChocoboNestBlockEntity::new, STRAW_NEST.get()).build(null));
+    public static final RegistryObject<BlockEntityType<ChocoboEggBlockEntity>> CHOCOBO_EGG_TILE = BLOCK_ENTITIES.register("chocobo_egg", () -> BlockEntityType.Builder.of(ChocoboEggBlockEntity::new, CHOCOBO_EGG.get()).build(null));
     
     //Chocobo Items
-    public static final RegistryObject<Item> STONE_CHOCO_WEAPON = ITEMS.register("stone_claws", () -> new ChocoboWeaponItems(Tiers.STONE, 3, -2.4f, (itemBuilder(false))));
-    public static final RegistryObject<Item> IRON_CHOCO_WEAPON = ITEMS.register("iron_claws", () -> new ChocoboWeaponItems(Tiers.IRON, 3, -2.4f, (itemBuilder(false))));
-    public static final RegistryObject<Item> DIAMOND_CHOCO_WEAPON = ITEMS.register("diamond_claws", () -> new ChocoboWeaponItems(Tiers.DIAMOND, 3, -2.4f, (itemBuilder(false))));
-    public static final RegistryObject<Item> NETHERITE_CHOCO_WEAPON = ITEMS.register("netherite_claws", () -> new ChocoboWeaponItems(Tiers.NETHERITE, 3, -2.4f, (itemBuilder(true))));
-    public static final RegistryObject<Item> CHAIN_CHOCO_CHEST = ITEMS.register("chain_chest", () ->
-            new ChocoboArmorItems(ArmorMaterials.CHAIN, EquipmentSlot.CHEST, (itemBuilder(false))));
-    public static final RegistryObject<Item> IRON_CHOCO_CHEST = ITEMS.register("iron_chest", () ->
-            new ChocoboArmorItems(ArmorMaterials.IRON, EquipmentSlot.CHEST, (itemBuilder(false))));
-    public static final RegistryObject<Item> DIAMOND_CHOCO_CHEST = ITEMS.register("diamond_chest", () ->
-            new ChocoboArmorItems(ArmorMaterials.DIAMOND, EquipmentSlot.CHEST, (itemBuilder(false))));
-    public static final RegistryObject<Item> NETHERITE_CHOCO_CHEST = ITEMS.register("netherite_chest", () ->
-            new ChocoboArmorItems(ArmorMaterials.NETHERITE, EquipmentSlot.CHEST, (itemBuilder(true))));
-
+    public static final RegistryObject<Item> STONE_CHOCO_WEAPON = ITEMS.register("chocobo_weapon_stone", () -> new ChocoboWeaponItems(Tiers.STONE, 3, -2.4f, (itemBuilder(false))));
+    public static final RegistryObject<Item> IRON_CHOCO_WEAPON = ITEMS.register("chocobo_weapon_iron", () -> new ChocoboWeaponItems(Tiers.IRON, 3, -2.4f, (itemBuilder(false))));
+    public static final RegistryObject<Item> DIAMOND_CHOCO_WEAPON = ITEMS.register("chocobo_weapon_diamond", () -> new ChocoboWeaponItems(Tiers.DIAMOND, 3, -2.4f, (itemBuilder(false))));
+    public static final RegistryObject<Item> NETHERITE_CHOCO_WEAPON = ITEMS.register("chocobo_weapon_netherite", () -> new ChocoboWeaponItems(Tiers.NETHERITE, 3, -2.4f, (itemBuilder(true))));
+    public static final RegistryObject<Item> CHAIN_CHOCO_CHEST = ITEMS.register("chocobo_armor_chain", () -> new ChocoboArmorItems(ArmorMaterials.CHAIN, EquipmentSlot.CHEST, (itemBuilder(false))));
+    public static final RegistryObject<Item> IRON_CHOCO_CHEST = ITEMS.register("chocobo_armor_iron", () -> new ChocoboArmorItems(ArmorMaterials.IRON, EquipmentSlot.CHEST, (itemBuilder(false))));
+    public static final RegistryObject<Item> DIAMOND_CHOCO_CHEST = ITEMS.register("chocobo_armor_diamond", () -> new ChocoboArmorItems(ArmorMaterials.DIAMOND, EquipmentSlot.CHEST, (itemBuilder(false))));
+    public static final RegistryObject<Item> NETHERITE_CHOCO_CHEST = ITEMS.register("chocobo_armor_netherite", () -> new ChocoboArmorItems(ArmorMaterials.NETHERITE, EquipmentSlot.CHEST, (itemBuilder(true))));
     public static final RegistryObject<Item> CHOCOBO_SADDLE = ITEMS.register("chocobo_saddle", () -> new ChocoboSaddleItem(itemBuilder(false), 0));
     public static final RegistryObject<Item> CHOCOBO_SADDLE_BAGS = ITEMS.register("chocobo_saddle_bags", () -> new ChocoboSaddleItem(itemBuilder(false), tier_one_chocobo_inv_slot_count));
     public static final RegistryObject<Item> CHOCOBO_SADDLE_PACK = ITEMS.register("chocobo_saddle_pack", () -> new ChocoboSaddleItem(itemBuilder(false), tier_two_chocobo_inv_slot_count));
-
     public static final RegistryObject<Item> YELLOW_CHOCOBO_SPAWN_EGG = ITEMS.register("yellow_chocobo_spawn_egg", () -> new ChocoboSpawnEggItem(itemBuilder(false), ChocoboColor.YELLOW));
     public static final RegistryObject<Item> GREEN_CHOCOBO_SPAWN_EGG = ITEMS.register("green_chocobo_spawn_egg", () -> new ChocoboSpawnEggItem(itemBuilder(false), ChocoboColor.GREEN));
     public static final RegistryObject<Item> BLUE_CHOCOBO_SPAWN_EGG = ITEMS.register("blue_chocobo_spawn_egg", () -> new ChocoboSpawnEggItem(itemBuilder(false), ChocoboColor.BLUE));
@@ -73,20 +57,17 @@ public class ModRegistry {
     public static final RegistryObject<Item> RED_CHOCOBO_SPAWN_EGG = ITEMS.register("red_chocobo_spawn_egg", () -> new ChocoboSpawnEggItem(itemBuilder(false), ChocoboColor.RED));
     public static final RegistryObject<Item> PURPLE_CHOCOBO_SPAWN_EGG = ITEMS.register("purple_chocobo_spawn_egg", () -> new ChocoboSpawnEggItem(itemBuilder(false), ChocoboColor.PURPLE));
     public static final RegistryObject<Item> FLAME_CHOCOBO_SPAWN_EGG = ITEMS.register("flame_chocobo_spawn_egg", () -> new ChocoboSpawnEggItem(itemBuilder(true), ChocoboColor.FLAME));
-
     public static final RegistryObject<Item> GYSAHL_GREEN_SEEDS = ITEMS.register("gysahl_green_seeds", () -> new CustomBlockNamedItem(GYSAHL_GREEN, itemBuilder(false)));
-
     public static final RegistryObject<Item> GYSAHL_GREEN_ITEM = ITEMS.register("gysahl_green", () -> new Item(itemBuilder(false).food(ModFoods.GYSAHL_GREEN)));
     public static final RegistryObject<Item> CHOCOBO_WHISTLE = ITEMS.register("chocobo_whistle", () -> new Item(itemBuilder(false)));
     public static final RegistryObject<Item> CHOCOBO_FEATHER = ITEMS.register("chocobo_feather", () -> new ChocoboSpawnerItemHelper(itemBuilder(false)));
     public static final RegistryObject<Item> LOVELY_GYSAHL_GREEN = ITEMS.register("lovely_gysahl_green", () -> new Item(itemBuilder(false)));
+    public static final RegistryObject<Item> GYSAHL_CAKE = ITEMS.register("gysahl_cake", () -> new Item(itemBuilder(false).stacksTo(8)));
 
     public static final RegistryObject<Item> CHOCOBO_DRUMSTICK_RAW = ITEMS.register("chocobo_drumstick_raw", () -> new Item(itemBuilder(false).food(ModFoods.CHOCOBO_DRUMSTICK_RAW)));
     public static final RegistryObject<Item> CHOCOBO_DRUMSTICK_COOKED = ITEMS.register("chocobo_drumstick_cooked", () -> new Item(itemBuilder(false).food(ModFoods.CHOCOBO_DRUMSTICK_COOKED)));
     public static final RegistryObject<Item> PICKLED_GYSAHL_RAW = ITEMS.register("pickled_gysahl_raw", () -> new Item(itemBuilder(false).food(ModFoods.PICKLED_GYSAHL_RAW)));
     public static final RegistryObject<Item> PICKLED_GYSAHL_COOKED = ITEMS.register("pickled_gysahl_cooked", () -> new Item(itemBuilder(false).food(ModFoods.PICKLED_GYSAHL_COOKED)));
-
-    public static final RegistryObject<Item> GYSAHL_CAKE = ITEMS.register("gysahl_cake", () -> new Item(itemBuilder(false).stacksTo(8)));
 
     public static final RegistryObject<Item> CHOCO_DISGUISE_HELMET = ITEMS.register("choco_disguise_helmet", () -> new ChocoDisguiseItem(ModArmorMaterial.CHOCO_DISGUISE, EquipmentSlot.HEAD, itemBuilder(false)));
     public static final RegistryObject<Item> CHOCO_DISGUISE_CHESTPLATE = ITEMS.register("choco_disguise_chestplate", () -> new ChocoDisguiseItem(ModArmorMaterial.CHOCO_DISGUISE, EquipmentSlot.CHEST, itemBuilder(false)));
@@ -99,8 +80,6 @@ public class ModRegistry {
 
 
     private static Item.Properties itemBuilder(boolean fireImmune) {
-        if (fireImmune) {
-            return new Item.Properties().tab(CHOCO_TAB).fireResistant();
-        } else { return new Item.Properties().tab(CHOCO_TAB); }
+        if (fireImmune) { return new Item.Properties().tab(CHOCO_TAB).fireResistant();} else { return new Item.Properties().tab(CHOCO_TAB); }
     }
 }
