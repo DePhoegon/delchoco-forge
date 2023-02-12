@@ -61,3 +61,5 @@ Add in Team check (if possible) goals, (to stop accidental hitting)
 
 Recipes for Chocobo Gear
 Test Egg for functionality
+
+Trim 'Chainmail, to expose the corners slightly'
