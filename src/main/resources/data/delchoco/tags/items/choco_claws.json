@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "delchoco:chocobo_weapon_stone",
-    "delchoco:chocobo_weapon_iron",
-    "delchoco:chocobo_weapon_diamond",
-    "delchoco:chocobo_weapon_netherite"
-  ]
-}

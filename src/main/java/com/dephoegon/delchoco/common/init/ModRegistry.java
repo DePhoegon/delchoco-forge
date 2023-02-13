@@ -22,6 +22,8 @@ import net.minecraftforge.registries.RegistryObject;
 import static com.dephoegon.delchoco.DelChoco.CHOCO_TAB;
 import static com.dephoegon.delchoco.common.entities.Chocobo.tier_one_chocobo_inv_slot_count;
 import static com.dephoegon.delchoco.common.entities.Chocobo.tier_two_chocobo_inv_slot_count;
+import static com.dephoegon.delchoco.common.items.ChocoboArmorItems.CHOCOBO_ARMOR_MATERIALS;
+import static com.dephoegon.delchoco.common.items.ChocoboWeaponItems.CHOCOBO_WEAPON_TIERS;
 
 @SuppressWarnings("unused")
 public class ModRegistry {
@@ -32,18 +34,20 @@ public class ModRegistry {
     public static final RegistryObject<Block> GYSAHL_GREEN = BLOCKS.register("gysahl_green", () -> new GysahlGreenBlock(Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.CROP)));
     public static final RegistryObject<Block> STRAW_NEST = BLOCKS.register("straw_nest", () -> new StrawNestBlock(Properties.of(Material.STONE).sound(SoundType.GRASS)));
     public static final RegistryObject<Block> CHOCOBO_EGG = BLOCKS.register("chocobo_egg", () -> new ChocoboEggBlock(Properties.of(Material.EGG).strength(0.5F).noOcclusion().sound(SoundType.GRASS)));
+    @SuppressWarnings("DataFlowIssue")
     public static final RegistryObject<BlockEntityType<ChocoboNestBlockEntity>> STRAW_NEST_TILE = BLOCK_ENTITIES.register("chocobo_nest", () -> BlockEntityType.Builder.of(ChocoboNestBlockEntity::new, STRAW_NEST.get()).build(null));
+    @SuppressWarnings("DataFlowIssue")
     public static final RegistryObject<BlockEntityType<ChocoboEggBlockEntity>> CHOCOBO_EGG_TILE = BLOCK_ENTITIES.register("chocobo_egg", () -> BlockEntityType.Builder.of(ChocoboEggBlockEntity::new, CHOCOBO_EGG.get()).build(null));
     
     //Chocobo Items
-    public static final RegistryObject<Item> STONE_CHOCO_WEAPON = ITEMS.register("chocobo_weapon_stone", () -> new ChocoboWeaponItems(Tiers.STONE, 3, -2.4f, (itemBuilder(false))));
-    public static final RegistryObject<Item> IRON_CHOCO_WEAPON = ITEMS.register("chocobo_weapon_iron", () -> new ChocoboWeaponItems(Tiers.IRON, 3, -2.4f, (itemBuilder(false))));
-    public static final RegistryObject<Item> DIAMOND_CHOCO_WEAPON = ITEMS.register("chocobo_weapon_diamond", () -> new ChocoboWeaponItems(Tiers.DIAMOND, 3, -2.4f, (itemBuilder(false))));
-    public static final RegistryObject<Item> NETHERITE_CHOCO_WEAPON = ITEMS.register("chocobo_weapon_netherite", () -> new ChocoboWeaponItems(Tiers.NETHERITE, 3, -2.4f, (itemBuilder(true))));
-    public static final RegistryObject<Item> CHAIN_CHOCO_CHEST = ITEMS.register("chocobo_armor_chain", () -> new ChocoboArmorItems(ArmorMaterials.CHAIN, EquipmentSlot.CHEST, (itemBuilder(false))));
-    public static final RegistryObject<Item> IRON_CHOCO_CHEST = ITEMS.register("chocobo_armor_iron", () -> new ChocoboArmorItems(ArmorMaterials.IRON, EquipmentSlot.CHEST, (itemBuilder(false))));
-    public static final RegistryObject<Item> DIAMOND_CHOCO_CHEST = ITEMS.register("chocobo_armor_diamond", () -> new ChocoboArmorItems(ArmorMaterials.DIAMOND, EquipmentSlot.CHEST, (itemBuilder(false))));
-    public static final RegistryObject<Item> NETHERITE_CHOCO_CHEST = ITEMS.register("chocobo_armor_netherite", () -> new ChocoboArmorItems(ArmorMaterials.NETHERITE, EquipmentSlot.CHEST, (itemBuilder(true))));
+    public static final RegistryObject<Item> STONE_CHOCO_WEAPON = ITEMS.register("chocobo_weapon_stone", () -> new ChocoboWeaponItems(CHOCOBO_WEAPON_TIERS.get(1), -2.4f, (itemBuilder(false))));
+    public static final RegistryObject<Item> IRON_CHOCO_WEAPON = ITEMS.register("chocobo_weapon_iron", () -> new ChocoboWeaponItems(CHOCOBO_WEAPON_TIERS.get(2), -2.4f, (itemBuilder(false))));
+    public static final RegistryObject<Item> DIAMOND_CHOCO_WEAPON = ITEMS.register("chocobo_weapon_diamond", () -> new ChocoboWeaponItems(CHOCOBO_WEAPON_TIERS.get(3), -2.4f, (itemBuilder(false))));
+    public static final RegistryObject<Item> NETHERITE_CHOCO_WEAPON = ITEMS.register("chocobo_weapon_netherite", () -> new ChocoboWeaponItems(CHOCOBO_WEAPON_TIERS.get(4), -2.4f, (itemBuilder(true))));
+    public static final RegistryObject<Item> CHAIN_CHOCO_CHEST = ITEMS.register("chocobo_armor_chain", () -> new ChocoboArmorItems(CHOCOBO_ARMOR_MATERIALS.get(1), EquipmentSlot.CHEST, (itemBuilder(false))));
+    public static final RegistryObject<Item> IRON_CHOCO_CHEST = ITEMS.register("chocobo_armor_iron", () -> new ChocoboArmorItems(CHOCOBO_ARMOR_MATERIALS.get(2), EquipmentSlot.CHEST, (itemBuilder(false))));
+    public static final RegistryObject<Item> DIAMOND_CHOCO_CHEST = ITEMS.register("chocobo_armor_diamond", () -> new ChocoboArmorItems(CHOCOBO_ARMOR_MATERIALS.get(3), EquipmentSlot.CHEST, (itemBuilder(false))));
+    public static final RegistryObject<Item> NETHERITE_CHOCO_CHEST = ITEMS.register("chocobo_armor_netherite", () -> new ChocoboArmorItems(CHOCOBO_ARMOR_MATERIALS.get(4), EquipmentSlot.CHEST, (itemBuilder(true))));
     public static final RegistryObject<Item> CHOCOBO_SADDLE = ITEMS.register("chocobo_saddle", () -> new ChocoboSaddleItem(itemBuilder(false), 0));
     public static final RegistryObject<Item> CHOCOBO_SADDLE_BAGS = ITEMS.register("chocobo_saddle_bags", () -> new ChocoboSaddleItem(itemBuilder(false), tier_one_chocobo_inv_slot_count));
     public static final RegistryObject<Item> CHOCOBO_SADDLE_PACK = ITEMS.register("chocobo_saddle_pack", () -> new ChocoboSaddleItem(itemBuilder(false), tier_two_chocobo_inv_slot_count));

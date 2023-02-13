@@ -218,3 +218,47 @@ Chocobo Weapons/Armor
 - Cleaned up some code in Interactionresult InteractAt elsewher
 - LayerCollar.java Cleaned up with Maps
 - Started Pruning unsued files & code from the project
+
+
+----------------
+
+-clean up Chocobo.java
+-Mapped Chocobo Armor/Weapons
+-Cleaned up.
+-Enchant-able
+- armor not wearable
+-- Armor needs books, to be enchanted
+- Crafting methods for the armor in place
+-- Smithing Table & chainmail at the base
+- weapon enchant-able as a sword.
+- Chocobo uses the armor/weapons
+- No Durability loss on either (when used by the chocobo)
+-- Exception of Thorns on the armor
+- Claws do not break blocks.
+- Double-Checked weapons/armor stats in game
+-- set full bonuses stats
+
+~ Weapon costs for full netherite
+1 Leather
+9 sticks
+6 Stones
+3 iron ingots
+6 diamonds
+1 netherite ingot
+
+~ Armor cost for full netherite
+2 iron nuggets
+26 iron ingots
+16 diamonds
+1 Netherite ingot
+
+=====
+
+~ full netherite set cost (For 1 chocobo) excluding enchanting & such
+1 leather
+2 iron nuggets
+9 sticks
+6 stones
+29 iron ingots
+22 diamonds
+2 netherite ignots

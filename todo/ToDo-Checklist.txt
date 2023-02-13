@@ -4,8 +4,6 @@ Find/Remove Useless code (In Progress)
 
 Added 8-12
 
-Examine Chocobo Logic carefully.
-
 Re-Examine The remains of the ability system
 
 Prune excess resources/code.
@@ -24,14 +22,6 @@ Double Check
 
 Added 1-25-23
 
-Create Colored versions of Saddle Packs
-- Change Saddle registry to split into saddle, small saddle, & large saddle class files
---  Swap to instanceof use
-=== com.dephoegon.delchoco.client.renderer.layers.LayerSaddle.java
-===-- Will Need to split ResourceLocation for as many saddle colors that get used
-- Register new saddles to do color'd versions directly
--- Dyes will be used for collar color changes
-
 Consider
 - Random Chocobo Names (not Likely)
 
@@ -39,17 +29,6 @@ Added 1-26-23
 
 Consider - Collar Redesigns based on testing.
 
-Added 2-9-23
-
-
-Use [ getTier() ] {TieredItem.java - source}
--- For LayerWeapon
-
-use [ getMaterial() ] {ChocoboArmorItems.java - source}
--- For LayerArmor
-
--------
-Test out Changes to verify Functionality.
 
 2-10-23
 
@@ -59,7 +38,12 @@ Test MP functionality to Chocobo Pack behavior.
 
 Add in Team check (if possible) goals, (to stop accidental hitting)
 
-Recipes for Chocobo Gear
-Test Egg for functionality
+Trim 'Chocobo Chainmail, to expose the corners slightly'
 
-Trim 'Chainmail, to expose the corners slightly'
+2-13-23
+
+Update Guidebook
+Test flow & balance
+
+Consider breeding for improved strength & toughness for chocobos
+-- Not likely.

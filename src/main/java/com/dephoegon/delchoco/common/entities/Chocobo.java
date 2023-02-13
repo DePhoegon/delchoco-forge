@@ -21,7 +21,6 @@ import com.google.common.collect.Maps;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -33,7 +32,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.TimeUtil;
@@ -50,7 +48,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.horse.Llama;
 import net.minecraft.world.entity.player.Player;
@@ -58,7 +55,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -67,18 +63,17 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.EnumSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 import static com.dephoegon.delbase.item.shiftingDyes.*;
 import static com.dephoegon.delchoco.aid.chocoKB.isAltDown;
@@ -96,7 +91,7 @@ import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 public class Chocobo extends TamableAnimal implements NeutralMob {
     private static final String NBTKEY_CHOCOBO_COLOR = "Color";
     private static final String NBTKEY_CHOCOBO_IS_MALE = "Male";
-    private static final String NBTKEY_MOVEMENTTYPE = "MovementType";
+    private static final String NBTKEY_MOVEMENT_TYPE = "MovementType";
     private static final String NBTKEY_SADDLE_ITEM = "Saddle";
     private static final String NBTKEY_WEAPON_ITEM = "Weapon";
     private static final String NBTKEY_ARMOR_ITEM = "Armor";
@@ -192,12 +187,10 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             Chocobo.this.setChocoboWeaponStats(this.itemStack);
         }
     };
-
     public final SaddleItemStackHandler saddleItemStackHandler = new SaddleItemStackHandler() {
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-            return false;
-            //return stack.isEmpty() || stack.getItem() instanceof ChocoboSaddleItem;
+            return stack.isEmpty() || stack.getItem() instanceof ChocoboSaddleItem;
         }
 
         @Override
@@ -212,21 +205,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             Chocobo.this.setSaddleType(this.itemStack);
         }
     };
-    private final LazyOptional<IItemHandler> tierOneContainer = LazyOptional.of(() -> tierOneItemStackHandler);
-    private final LazyOptional<IItemHandler> tierTwoContainer = LazyOptional.of(() -> tierTwoItemStackHandler);
-    public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            if (saddleItemStackHandler.getStackInSlot(0).getItem() instanceof ChocoboSaddleItem saddleItem) {
-                int saddleSize = saddleItem.getInventorySize();
-                return switch (saddleSize) {
-                    case 15 -> tierOneContainer.cast();
-                    case 45 -> tierTwoContainer.cast();
-                    default -> super.getCapability(cap, side);
-                };
-            }
-        }
-        return super.getCapability(cap, side);
-    }
 
     private float wingRotation;
     private float destPos;
@@ -263,7 +241,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         }
         protected boolean shouldPanic() { return this.mob.isFreezing() || this.mob.isOnFire(); }
     }
-    // Three Targeting Goals meant to stop chocobo from attacking each other.  [Also to prevent wiping own army with friendly fire]
+    // Two Targeting Goals around the owner being hurt. meant to stop chocobo from attacking each other.  [Also to prevent wiping own army with friendly fire]
     static class ChocoboOwnerHurtGoal extends OwnerHurtTargetGoal {
         private final TamableAnimal tameAnimal;
 
@@ -389,7 +367,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         super.readAdditionalSaveData(compound);
         this.setChocoboColor(ChocoboColor.values()[compound.getByte(NBTKEY_CHOCOBO_COLOR)]);
         this.setMale(compound.getBoolean(NBTKEY_CHOCOBO_IS_MALE));
-        this.setMovementType(MovementType.values()[compound.getByte(NBTKEY_MOVEMENTTYPE)]);
+        this.setMovementType(MovementType.values()[compound.getByte(NBTKEY_MOVEMENT_TYPE)]);
         this.saddleItemStackHandler.deserializeNBT(compound.getCompound(NBTKEY_SADDLE_ITEM));
         this.chocoboWeaponHandler.deserializeNBT(compound.getCompound(NBTKEY_WEAPON_ITEM));
         this.chocoboArmorHandler.deserializeNBT(compound.getCompound(NBTKEY_ARMOR_ITEM));
@@ -407,7 +385,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         super.addAdditionalSaveData(compound);
         compound.putByte(NBTKEY_CHOCOBO_COLOR, (byte) this.getChocoboColor().ordinal());
         compound.putBoolean(NBTKEY_CHOCOBO_IS_MALE, this.isMale());
-        compound.putByte(NBTKEY_MOVEMENTTYPE, (byte) this.getMovementType().ordinal());
+        compound.putByte(NBTKEY_MOVEMENT_TYPE, (byte) this.getMovementType().ordinal());
         compound.put(NBTKEY_SADDLE_ITEM, this.saddleItemStackHandler.serializeNBT());
         compound.put(NBTKEY_ARMOR_ITEM, this.chocoboArmorHandler.serializeNBT());
         compound.put(NBTKEY_WEAPON_ITEM, this.chocoboWeaponHandler.serializeNBT());
@@ -424,28 +402,32 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         this.setItemSlot(EquipmentSlot.CHEST, pStack);
         this.setDropChance(EquipmentSlot.CHEST, 0.0F);
     }
-    public boolean isChocoboArmor(ItemStack pStack) {
+    private void setWeapon(ItemStack pStack) {
+        this.setItemSlot(EquipmentSlot.MAINHAND, pStack);
+        this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
+    }
+    public boolean isChocoboArmor(@NotNull ItemStack pStack) {
         return pStack.getItem() instanceof ChocoboArmorItems;
     }
-    public boolean isChocoWeapon(ItemStack pStack) {
+    public boolean isChocoWeapon(@NotNull ItemStack pStack) {
         return pStack.getItem() instanceof ChocoboWeaponItems;
     }
     public int chocoStatMod() { return COMMON.modifier.get(); }
     private void setChocoboArmorStats(ItemStack pStack) {
-        this.setArmor(pStack);
         if (!this.level.isClientSide) {
             this.getAttribute(Attributes.ARMOR).removeModifier(CHOCOBO_CHEST_ARMOR_MOD_UUID);
             this.getAttribute(Attributes.ARMOR_TOUGHNESS).removeModifier(CHOCOBO_CHEST_ARMOR_TOUGH_MOD_UUID);
             if (this.isChocoboArmor(pStack)) {
                 this.setDropChance(((ChocoboArmorItems)pStack.getItem()).getSlot(), 0.0F);
-                int p = ((ChocoboArmorItems)pStack.getItem()).getProtection()*chocoStatMod();
+                int p = ((ChocoboArmorItems)pStack.getItem()).getDefense()*chocoStatMod();
                 float t = ((ChocoboArmorItems)pStack.getItem()).getToughness()*chocoStatMod();
                 if (p != 0) {
-                    this.getAttribute(Attributes.ARMOR).addPermanentModifier(new AttributeModifier(CHOCOBO_CHEST_ARMOR_MOD_UUID, "Chocobo Armor Bonus", (double)p, Operation.ADDITION));
+                    this.getAttribute(Attributes.ARMOR).addPermanentModifier(new AttributeModifier(CHOCOBO_CHEST_ARMOR_MOD_UUID, "Chocobo Armor Bonus", p, Operation.ADDITION));
                 }
                 if (t != 0) {
-                    this.getAttribute(Attributes.ARMOR_TOUGHNESS).addPermanentModifier(new AttributeModifier(CHOCOBO_CHEST_ARMOR_TOUGH_MOD_UUID, "Chocobo Armor Toughness", (float)t, Operation.ADDITION));
+                    this.getAttribute(Attributes.ARMOR_TOUGHNESS).addPermanentModifier(new AttributeModifier(CHOCOBO_CHEST_ARMOR_TOUGH_MOD_UUID, "Chocobo Armor Toughness", t, Operation.ADDITION));
                 }
+                this.setArmor(pStack);
             }
         }
     }
@@ -462,6 +444,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                 if (s != 0) {
                     this.getAttribute(Attributes.ATTACK_SPEED).addPermanentModifier(new AttributeModifier(CHOCOBO_WEAPON_SPD_MOD_UUID, "Chocobo Attack Speed Bonus", s, Operation.ADDITION));
                 }
+                this.setWeapon(pStack);
             }
         }
     }
@@ -504,7 +487,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             this.entityData.set(PARAM_ARMOR_ITEM, armorType.copy());
         }
     }
-    public boolean rideableUnderWater() { return canBreatheUnderwater(); }
+    public boolean rideableUnderWater() { return this.canBreatheUnderwater(); }
     public boolean canBreatheUnderwater() { return this.isWBreather(); }
 
     @Nullable
@@ -543,9 +526,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             this.updateInWaterStateAndDoWaterCurrentPushing();
             double d0 = this.level.dimensionType().ultraWarm() ? 0.007D : 0.0023333333333333335D;
             boolean flag;
-            if (this.isFlame()) { flag = false; } else {
-                flag = this.updateFluidHeightAndDoFluidPushing(FluidTags.LAVA, d0);
-            }
+            if (this.isFlame()) { flag = false; } else { flag = this.updateFluidHeightAndDoFluidPushing(FluidTags.LAVA, d0); }
             return this.isInWater() || flag;
     }
     private void updateInWaterStateAndDoWaterCurrentPushing() {
@@ -773,7 +754,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     }
     @Override
     public boolean isFood(@NotNull ItemStack stack) { return false; }
-    private Map<Item, Integer> COLLAR_COLOR = Util.make(Maps.newHashMap(), (map) ->{
+    private final Map<Item, Integer> COLLAR_COLOR = Util.make(Maps.newHashMap(), (map) ->{
         map.put(CLEANSE_SHIFT_DYE.get().asItem(), 0);
         map.put(RED_SHIFT_DYE.get().asItem(), 16);
         map.put(RED_DYE.asItem(), 16);
@@ -1049,7 +1030,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     @Override
     public void setRemainingPersistentAngerTime(int pTime) { this.remainingPersistentAngerTime = pTime; }
     @Override
-    public UUID getPersistentAngerTarget() { return this.persistentAngerTarget; }
+    public @org.jetbrains.annotations.Nullable UUID getPersistentAngerTarget() { return this.persistentAngerTarget; }
     @Override
     public void setPersistentAngerTarget(@Nullable UUID pTarget) { this.persistentAngerTarget = pTarget; }
     @Override
