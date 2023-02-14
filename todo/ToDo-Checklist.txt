@@ -51,3 +51,5 @@ Create Paralyze 'item'
 - preserve through save/load
 WaterWalking for Chocobos that do not have water breathing
 - Similar to the Strider
+
+Test Render Changes in MP

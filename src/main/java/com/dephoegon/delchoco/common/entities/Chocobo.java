@@ -83,6 +83,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.dephoegon.delbase.item.shiftingDyes.*;
+import static com.dephoegon.delchoco.DelChoco.log;
 import static com.dephoegon.delchoco.aid.chocoKB.isAltDown;
 import static com.dephoegon.delchoco.aid.dyeList.getDyeList;
 import static com.dephoegon.delchoco.aid.dyeList.setLists;
@@ -121,6 +122,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     private int ticksUntilNextAlert;
     private int timeToRecalculatePath;
     private final double followSpeedModifier = 2.0D;
+    private String rider;
 
     private static final UniformInt ALERT_INTERVAL = TimeUtil.rangeOfSeconds(4, 6);
 
@@ -597,9 +599,20 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             this.yBodyRot = ((LivingEntity) passenger).yBodyRot;
         }
     }
+    private int rideTickDelay = 0;
     public void tick() {
         super.tick();
         LivingEntity owner = this.getOwner() != null ? this.getOwner() : null;
+        if (this.rideTickDelay < 0) {
+            Entity RidingPlayer = this.getControllingPassenger();
+            if (RidingPlayer != null) {
+                this.rider = RidingPlayer.getStringUUID();
+                this.rideTickDelay = 5;
+            } else {
+                this.rider = null;
+                this.rideTickDelay = 30;
+            }
+        } else { this.rideTickDelay--; }
         if (owner != null) {
             if (followingMrHuman == 1) {
                 if (--this.timeToRecalculatePath <= 0) {
@@ -612,6 +625,9 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                 }
             }
         }
+    }
+    public String getRider() {
+        return this.rider;
     }
     private boolean maybeTeleportTo(int pX, int pY, int pZ, @NotNull LivingEntity owner) {
         if (Math.abs((double)pX - owner.getX()) < 2.0D && Math.abs((double)pZ - owner.getZ()) < 2.0D) {

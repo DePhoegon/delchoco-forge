@@ -10,6 +10,7 @@ import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -85,7 +86,9 @@ public class ChocoboRenderer extends MobRenderer<Chocobo, EntityModel<Chocobo>> 
     @Override
     public void render(@NotNull Chocobo chocobo, float entityYaw, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight) {
         this.model = chocobo.isBaby() ? chicoboModel : chocoboModel;
-        super.render(chocobo, entityYaw, partialTicks, poseStack, bufferSource, packedLight);
+        if (!Minecraft.getInstance().getUser().getUuid().equals(chocobo.getRider())) {
+            super.render(chocobo, entityYaw, partialTicks, poseStack, bufferSource, packedLight);
+        }
     }
 
     @Override

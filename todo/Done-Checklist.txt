@@ -282,3 +282,10 @@ Chocobo Weapons/Armor
 - Verified Path Logic
 - Fall Speed for Chocobos is controlled by 'Float Goal'
 - Checked off some things on the To-Do list
+
+----
+
+- Used Chocobo Tick() to update rider String with UUID if being used as a mount
+-- used 5 for ones with a rider & 30 for those without riders to reduce tick processing reasonably
+- Updated to render Chocobos, that do not have their rider string match the Player UUID
+-- Minecraft.getInstance().getUser().getUuid()
