@@ -1,5 +1,5 @@
 {
-    "itemGroup.delchoco": "ChocoCraft",
+    "itemGroup.delchoco": "DePhoegons' Chocobos",
 
     "block.delchoco.gysahl_green": "Gysahl Green",
     "block.delchoco.chocobo_egg": "Chocobo Egg",
@@ -66,9 +66,9 @@
     "delchoco.entity_chocobo.heal_fail": "§cHealth full",
     "delchoco.entity_chocobo.tame_fail": "§cTame failed",
     "delchoco.entity_chocobo.tame_success": "§aTame succeeded",
-    "delchoco.entity_chocobo.chocobo_followcmd": "Follow",
-    "delchoco.entity_chocobo.chocobo_wandercmd": "Wander",
-    "delchoco.entity_chocobo.chocobo_staycmd": "Stay",
+    "delchoco.entity_chocobo.chocobo_follow_cmd": "Follow",
+    "delchoco.entity_chocobo.chocobo_wander_cmd": "Wander",
+    "delchoco.entity_chocobo.chocobo_stay_cmd": "Stay",
     "delchoco.entity_chocobo.not_owner": "§cYou are not the owner of this Chocobo!",
 
     "delchoco.general.world": "World",

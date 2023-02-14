@@ -6,8 +6,8 @@ Finishing Quirks
 -- Added setWaterbreathing to the egg spawns
 -- Updated Snapshot
 
-- Modified movement of Chocobos in regards to water
--- Capped Y values to not sky rocket
+- Modified movement of Chocobos in regard to water
+-- Capped Y values to not skyrocket
 -- allowed blue, purple, black, gold,  to breath underwater & give water breathing to the rider
 --= Logic of breeding lines.
 -- Water breathing chocobos will go to the bottom of the water.
@@ -262,3 +262,23 @@ Chocobo Weapons/Armor
 29 iron ingots
 22 diamonds
 2 netherite ignots
+
+2-14-23
+
+- Separated Chocobo Goals into their own class holder
+- Setup Egg spawn bypass to give the color expected
+- Setup Chocobo Teleport while set to follow the player
+- removed fluid checks from stamina regen
+- Follow owner moved after Melee attack goal
+-- Allows for Chocobo to attack while following Player
+- Adding Avoiding Blocks to logic, (to help avoid walls/fences/fencegates
+-- Chocobo tends to get stuck in the 'inside corner'
+- Updated Language files [Google Translate]
+- Updated ItemGroup Name
+-- Avoiding Conflicts & Confusion with other mods
+- Verified Targeting
+- Verified Spawn eggs
+- Verified Gear enchantments
+- Verified Path Logic
+- Fall Speed for Chocobos is controlled by 'Float Goal'
+- Checked off some things on the To-Do list

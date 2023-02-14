@@ -1,5 +1,5 @@
 {
-    "itemGroup.delchoco": "ChocoCraft",
+    "itemGroup.delchoco": "DePhoegons' Chocobos",
 
     "block.delchoco.gysahl_green": "Gizarkraut",
     "block.delchoco.chocobo_egg": "Chocobo Ei",
@@ -13,12 +13,28 @@
     "item.delchoco.pickled_gysahl_raw": "Rohes eingelegtes Gizarkraut",
     "item.delchoco.pickled_gysahl_cooked": "Gebackenes eingelegtes Gizarkraut",
 
+    "item.delchoco.chocobo_armor_chain": "Chocobo-Kettenrüstung",
+    "item.delchoco.chocobo_armor_iron": "Chocobo-Eisenrüstung",
+    "item.delchoco.chocobo_armor_diamond": "Chocobo-Diamant-Rüstung",
+    "item.delchoco.chocobo_armor_netherite": "Chocobo-Netherit-Rüstung",
+    "item.delchoco.chocobo_weapon_stone": "Chocobo-Steinklauen",
+    "item.delchoco.chocobo_weapon_iron": "Chocobo-Eisenklauen",
+    "item.delchoco.chocobo_weapon_diamond": "Chocobo-Diamantklauen",
+    "item.delchoco.chocobo_weapon_netherite": "Chocobo-Netheritenkrallen",
+
     "item.delchoco.chocobo_feather": "Chocobo Feder",
     "item.delchoco.chocobo_whistle": "Chocobo Pfeifton",
 
     "item.delchoco.chocobo_saddle": "Chocobo Sattel",
     "item.delchoco.chocobo_saddle_bags": "Chocobo Satteltaschen",
     "item.delchoco.chocobo_saddle_pack": "Chocobo Sattelpackung",
+
+    "item.delchoco.choco_disguise_helmet": "Choco Verkleidungshelm",
+    "item.delchoco.choco_disguise_chestplate": "Choco Körper verkleiden",
+    "item.delchoco.choco_disguise_leggings": "Choco Verkleidungsbeine",
+    "item.delchoco.choco_disguise_boots": "Choco Verkleidungsstiefel",
+
+    "item.delchoco.gysahl_cake": "Gysahl Kuchen",
 
     "item.delchoco.chocobo_drumstick_raw": "Roher Chocoboschenkel",
     "item.delchoco.chocobo_drumstick_cooked": "Gebratener Chocoboschenkel",
@@ -36,31 +52,6 @@
     "item.delchoco.chocobo_egg.tooltip.invalid_egg": "Â§cFehlerhaftes Ei",
     "item.delchoco.chocobo_egg.tooltip.mother_info": "Mutter: %s / %s / %s",
     "item.delchoco.chocobo_egg.tooltip.father_info": "Vater: %s / %s / %s",
-
-    "delchoco.entity_chocobo.heal_fail": "Â§cGesundheit voll",
-    "delchoco.entity_chocobo.tame_fail": "Â§cZÃ¤hmung fehlgeschlagen",
-    "delchoco.entity_chocobo.tame_success": "Â§aZÃ¤hmung erfolgreich",
-    "delchoco.entity_chocobo.chocobo_followcmd": "Folgen",
-    "delchoco.entity_chocobo.chocobo_wandercmd": "Schlendern",
-    "delchoco.entity_chocobo.chocobo_staycmd": "Bleibe",
-
-    "delchoco.general.world": "Welt",
-    "delchoco.general.world.gysahlgreenspawnweight": "Gizarkraut Spawnanteil",
-    "delchoco.general.gysahlgreenpatchsize": "Gizarkraut PflanzengrÃ¶ÃŸe",
-
-    "command.delchoco.chocobo.invalid_set_parameters": "Parameter ungÃ¼ltig",
-    "command.delchoco.chocobo.successfuly_set_parameters": "Parameter %s wurde auf %s gesetzt",
-    "command.delchoco.chocobo.get_health": "Leben: %s",
-    "command.delchoco.chocobo.get_resistance": "Resistenz: %s",
-    "command.delchoco.chocobo.get_speed": "Geschwindigkeit: %s",
-    "command.delchoco.chocobo.get_stamina": "Ausdauer: %s",
-
-    "delchoco.container.nest": "Chocobo Nest",
-    "item.delchoco.choco_disguise_helmet": "Choco Verkleidungshelm",
-    "item.delchoco.choco_disguise_chestplate": "Choco Körper verkleiden",
-    "item.delchoco.choco_disguise_leggings": "Choco Verkleidungsbeine",
-    "item.delchoco.choco_disguise_boots": "Choco Verkleidungsstiefel",
-    "item.delchoco.gysahl_cake": "Gysahl Kuchen",
     "item.delchoco.chocobo_egg.tooltip.yellow": "Gelb",
     "item.delchoco.chocobo_egg.tooltip.green": "Grün",
     "item.delchoco.chocobo_egg.tooltip.blue": "Blau",
@@ -71,6 +62,27 @@
     "item.delchoco.chocobo_egg.tooltip.red": "Rot",
     "item.delchoco.chocobo_egg.tooltip.purple": "Lila",
     "item.delchoco.chocobo_egg.tooltip.flame": "Flamme",
+
+    "delchoco.entity_chocobo.heal_fail": "Â§cGesundheit voll",
+    "delchoco.entity_chocobo.tame_fail": "Â§cZÃ¤hmung fehlgeschlagen",
+    "delchoco.entity_chocobo.tame_success": "Â§aZÃ¤hmung erfolgreich",
+    "delchoco.entity_chocobo.chocobo_follow_cmd": "Folgen",
+    "delchoco.entity_chocobo.chocobo_wander_cmd": "Schlendern",
+    "delchoco.entity_chocobo.chocobo_stay_cmd": "Bleibe",
     "delchoco.entity_chocobo.not_owner": "§cSie sind nicht der Besitzer dieses Chocobo!",
-    "command.delchoco.chocobo.not_riding_chocobo": "Sie sollten den Chocobo reiten, um diesen Befehl zu verwenden!"
+
+    "delchoco.general.world": "Welt",
+    "delchoco.general.world.gysahlgreenspawnweight": "Gizarkraut Spawnanteil",
+    "delchoco.general.gysahlgreenpatchsize": "Gizarkraut PflanzengrÃ¶ÃŸe",
+
+    "command.delchoco.chocobo.invalid_set_parameters": "Parameter ungÃ¼ltig",
+    "command.delchoco.chocobo.successfuly_set_parameters": "Parameter %s wurde auf %s gesetzt",
+    "command.delchoco.chocobo.not_riding_chocobo": "Sie sollten den Chocobo reiten, um diesen Befehl zu verwenden!",
+
+    "command.delchoco.chocobo.get_health": "Leben: %s",
+    "command.delchoco.chocobo.get_resistance": "Resistenz: %s",
+    "command.delchoco.chocobo.get_speed": "Geschwindigkeit: %s",
+    "command.delchoco.chocobo.get_stamina": "Ausdauer: %s",
+
+    "delchoco.container.nest": "Chocobo Nest"
 }

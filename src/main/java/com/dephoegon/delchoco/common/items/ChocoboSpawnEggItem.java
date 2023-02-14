@@ -52,7 +52,8 @@ public class ChocoboSpawnEggItem extends Item {
             Component nameCheck = name(context.getItemInHand());
             if (context.getItemInHand().hasCustomHoverName()) { chocobo.setCustomName(nameCheck); }
             chocobo.setFlame(color == ChocoboColor.FLAME);
-            chocobo.setWaterBreath(color == ChocoboColor.BLUE || color == ChocoboColor.PURPLE || color == ChocoboColor.BLACK || color == ChocoboColor.GOLD);
+            chocobo.setWaterBreath(color == ChocoboColor.BLUE);
+            chocobo.setFromEgg(true);
             chocobo.finalizeSpawn((ServerLevel)worldIn, worldIn.getCurrentDifficultyAt(chocobo.blockPosition()), MobSpawnType.SPAWN_EGG, (SpawnGroupData)null, (CompoundTag)null);
             worldIn.addFreshEntity(chocobo);
             chocobo.playAmbientSound();

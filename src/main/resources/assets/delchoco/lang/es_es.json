@@ -1,7 +1,5 @@
 {
-    "_comment": "####Translation into Spanish by OdinsRagnarok#####",
-
-    "itemGroup.delchoco": "ChocoCraft",
+    "itemGroup.delchoco": "DePhoegons' Chocobos",
 
     "block.delchoco.gysahl_green": "Gisal Verde",
     "block.delchoco.chocobo_egg": "Huevo de Chocobo",
@@ -15,12 +13,28 @@
     "item.delchoco.pickled_gysahl_raw": "Gisal Verde crudo en escabeche",
     "item.delchoco.pickled_gysahl_cooked": "Gisal Verde en escabeche al horno",
 
+    "item.delchoco.chocobo_armor_chain": "Armadura de cadena de Chocobo",
+    "item.delchoco.chocobo_armor_iron": "Armadura de hierro Chocobo",
+    "item.delchoco.chocobo_armor_diamond": "Armadura de diamante Chocobo",
+    "item.delchoco.chocobo_armor_netherite": "Armadura de Chocobo Netherite",
+    "item.delchoco.chocobo_weapon_stone": "Garras de piedra de chocobo",
+    "item.delchoco.chocobo_weapon_iron": "Garras de hierro Chocobo",
+    "item.delchoco.chocobo_weapon_diamond": "Garras de diamante Chocobo",
+    "item.delchoco.chocobo_weapon_netherite": "Garras de Chocobo Netherite",
+
     "item.delchoco.chocobo_feather": "Pluma de Chocobo",
     "item.delchoco.chocobo_whistle": "Silbato de Chocobo",
 
     "item.delchoco.chocobo_saddle": "Montura de Chocobo",
     "item.delchoco.chocobo_saddle_bags": "Alforjas de Chocobo",
     "item.delchoco.chocobo_saddle_pack": "Estuche de Chocobo",
+
+    "item.delchoco.choco_disguise_helmet": "Choco Disfrazar casco",
+    "item.delchoco.choco_disguise_chestplate": "Choco Disfrazar cuerpo",
+    "item.delchoco.choco_disguise_leggings": "Choco Disfrazar piernas",
+    "item.delchoco.choco_disguise_boots": "Choco Botas de disfraz",
+
+    "item.delchoco.gysahl_cake": "Pastel Gysahl",
 
     "item.delchoco.chocobo_drumstick_raw": "Pata Cruda de Chocobo",
     "item.delchoco.chocobo_drumstick_cooked": "Pata Cocinada de Chocobo",
@@ -34,35 +48,10 @@
     "item.delchoco.red_chocobo_spawn_egg": "Huevo de Prole de Chocobo Rojo",
     "item.delchoco.purple_chocobo_spawn_egg": "Huevo de Prole de Chocobo Púrpura",
     "item.delchoco.flame_chocobo_spawn_egg": "Huevo de Prole de Chocobo de Llamas",
+
     "item.delchoco.chocobo_egg.tooltip.invalid_egg": "§cHuevo Invalido",
     "item.delchoco.chocobo_egg.tooltip.mother_info": "Madre: %s / %s / %s / %s",
     "item.delchoco.chocobo_egg.tooltip.father_info": "Padre: %s / %s / %s / %s",
-
-    "delchoco.entity_chocobo.heal_fail": "§cSalud completa",
-    "delchoco.entity_chocobo.tame_fail": "§cDoma fallida",
-    "delchoco.entity_chocobo.tame_success": "§aDoma exitosa",
-    "delchoco.entity_chocobo.chocobo_followcmd": "Seguir",
-    "delchoco.entity_chocobo.chocobo_wandercmd": "Deambular",
-    "delchoco.entity_chocobo.chocobo_staycmd": "Permanecer",
-
-    "delchoco.general.world": "Mundo",
-    "delchoco.general.world.gysahlgreenspawnweight": "Fuerza de Generación de Gisal Verde",
-    "delchoco.general.gysahlgreenpatchsize": "Tamaño de Parcela de Gisal Verde",
-
-    "command.delchoco.chocobo.invalid_set_parameters": "Parámetros inválidos",
-    "command.delchoco.chocobo.successfuly_set_parameters": "Fijar %s a %s",
-
-    "command.delchoco.chocobo.get_health": "Salud: %s",
-    "command.delchoco.chocobo.get_resistance": "Resitencia: %s",
-    "command.delchoco.chocobo.get_speed": "Velocidad: %s",
-    "command.delchoco.chocobo.get_stamina": "Aguante: %s",
-
-    "delchoco.container.nest": "Nido de Chocobo",
-    "item.delchoco.choco_disguise_helmet": "Choco Disfrazar casco",
-    "item.delchoco.choco_disguise_chestplate": "Choco Disfrazar cuerpo",
-    "item.delchoco.choco_disguise_leggings": "Choco Disfrazar piernas",
-    "item.delchoco.choco_disguise_boots": "Choco Botas de disfraz",
-    "item.delchoco.gysahl_cake": "Pastel Gysahl",
     "item.delchoco.chocobo_egg.tooltip.yellow": "Amarillo",
     "item.delchoco.chocobo_egg.tooltip.green": "Verde",
     "item.delchoco.chocobo_egg.tooltip.blue": "Azul",
@@ -73,6 +62,28 @@
     "item.delchoco.chocobo_egg.tooltip.red": "Rojo",
     "item.delchoco.chocobo_egg.tooltip.purple": "Morado",
     "item.delchoco.chocobo_egg.tooltip.flame": "Flama",
+
+    "delchoco.entity_chocobo.heal_fail": "§cSalud completa",
+    "delchoco.entity_chocobo.tame_fail": "§cDoma fallida",
+    "delchoco.entity_chocobo.tame_success": "§aDoma exitosa",
+    "delchoco.entity_chocobo.chocobo_follow_cmd": "Seguir",
+    "delchoco.entity_chocobo.chocobo_wander_cmd": "Deambular",
+    "delchoco.entity_chocobo.chocobo_stay_cmd": "Permanecer",
     "delchoco.entity_chocobo.not_owner": "§c¡No eres el dueño de este Chocobo!",
-    "command.delchoco.chocobo.not_riding_chocobo": "¡Deberías montar el Chocobo para usar este comando!"
+
+    "delchoco.general.world": "Mundo",
+    "delchoco.general.world.gysahlgreenspawnweight": "Fuerza de Generación de Gisal Verde",
+    "delchoco.general.gysahlgreenpatchsize": "Tamaño de Parcela de Gisal Verde",
+
+    "command.delchoco.chocobo.invalid_set_parameters": "Parámetros inválidos",
+    "command.delchoco.chocobo.successfuly_set_parameters": "Fijar %s a %s",
+    "command.delchoco.chocobo.not_riding_chocobo": "¡Deberías montar el Chocobo para usar este comando!",
+
+    "command.delchoco.chocobo.get_health": "Salud: %s",
+    "command.delchoco.chocobo.get_resistance": "Resitencia: %s",
+    "command.delchoco.chocobo.get_speed": "Velocidad: %s",
+    "command.delchoco.chocobo.get_stamina": "Aguante: %s",
+
+    "delchoco.container.nest": "Nido de Chocobo",
+    "_comment": "####Translation into Spanish by OdinsRagnarok#####"
 }

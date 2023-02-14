@@ -1,5 +1,5 @@
 {
-    "itemGroup.delchoco": "ChocoCraft",
+    "itemGroup.delchoco": "DePhoegons' Chocobos",
 
     "block.delchoco.gysahl_green": "Gysahl Zöld",
     "block.delchoco.chocobo_egg": "Chocobo Tojás",
@@ -13,12 +13,28 @@
     "item.delchoco.pickled_gysahl_raw": "Nyers Pácolt Gysahl Zöld",
     "item.delchoco.pickled_gysahl_cooked": "Sült Pácolt Gysahl Zöld",
 
+    "item.delchoco.chocobo_armor_chain": "Chocobo láncpáncél",
+    "item.delchoco.chocobo_armor_iron": "Chocobo vaspáncél",
+    "item.delchoco.chocobo_armor_diamond": "Chocobo gyémánt páncél",
+    "item.delchoco.chocobo_armor_netherite": "Chocobo Netherite Armor",
+    "item.delchoco.chocobo_weapon_stone": "Chocobo Stone Claws",
+    "item.delchoco.chocobo_weapon_iron": "Chocobo Iron Claws",
+    "item.delchoco.chocobo_weapon_diamond": "Chocobo gyémánt karmok",
+    "item.delchoco.chocobo_weapon_netherite": "Chocobo Netherite Claws",
+
     "item.delchoco.chocobo_feather": "Chocobo Toll",
     "item.delchoco.chocobo_whistle": "Chocobo Síp",
 
     "item.delchoco.chocobo_saddle": "Chocobo Nyereg",
     "item.delchoco.chocobo_saddle_bags": "Chocobo Nyereg Táska",
     "item.delchoco.chocobo_saddle_pack": "Chocobo Nyereg Csomag",
+
+    "item.delchoco.choco_disguise_helmet": "Choco Álcázó sisak",
+    "item.delchoco.choco_disguise_chestplate": "Choco Álcázott test",
+    "item.delchoco.choco_disguise_leggings": "Choco Álcázza a lábakat",
+    "item.delchoco.choco_disguise_boots": "Choco Álcázott csizma",
+
+    "item.delchoco.gysahl_cake": "Gysahl torta",
 
     "item.delchoco.chocobo_drumstick_raw": "Nyers Chocobo Comb",
     "item.delchoco.chocobo_drumstick_cooked": "Sült Chocobo Comb",
@@ -50,9 +66,9 @@
     "delchoco.entity_chocobo.heal_fail": "§cÉleterő teli",
     "delchoco.entity_chocobo.tame_fail": "§cMegszelidítés sikertelen",
     "delchoco.entity_chocobo.tame_success": "§aMegszelidítés sikeres",
-    "delchoco.entity_chocobo.chocobo_followcmd": "Követ",
-    "delchoco.entity_chocobo.chocobo_wandercmd": "Vándorol",
-    "delchoco.entity_chocobo.chocobo_staycmd": "Marad",
+    "delchoco.entity_chocobo.chocobo_follow_cmd": "Követ",
+    "delchoco.entity_chocobo.chocobo_wander_cmd": "Vándorol",
+    "delchoco.entity_chocobo.chocobo_stay_cmd": "Marad",
     "delchoco.entity_chocobo.not_owner": "§cNem te vagy a Chocobo tulajdonosa!",
 
     "delchoco.general.world": "Világ",
@@ -68,10 +84,5 @@
     "command.delchoco.chocobo.get_speed": "Sebesség: %s",
     "command.delchoco.chocobo.get_stamina": "Állóképesség: %s",
 
-    "delchoco.container.nest": "Chocobo Nest",
-    "item.delchoco.choco_disguise_helmet": "Choco Álcázó sisak",
-    "item.delchoco.choco_disguise_chestplate": "Choco Álcázott test",
-    "item.delchoco.choco_disguise_leggings": "Choco Álcázza a lábakat",
-    "item.delchoco.choco_disguise_boots": "Choco Álcázott csizma",
-    "item.delchoco.gysahl_cake": "Gysahl torta"
+    "delchoco.container.nest": "Chocobo Nest"
 }

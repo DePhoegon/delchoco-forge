@@ -43,7 +43,5 @@ public enum ChocoboColor {
         return Optional.empty();
     }
 
-    public TranslatableComponent getEggText() {
-        return eggText;
-    }
+    public TranslatableComponent getEggText() { return eggText; }
 }

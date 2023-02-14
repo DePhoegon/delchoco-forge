@@ -10,13 +10,7 @@ Prune excess resources/code.
 
 Added 1-23-23
 
-Finalize Glide/Fall speeds for chocobos not being ridden.
-- Use saddles for variables
-- Use Color for variables
-
-
 Double Check
-- Whistle functions on underwater chocobo
 - Prior TODOs
 -- Validate if they are or are not done.
 
@@ -29,7 +23,6 @@ Added 1-26-23
 
 Consider - Collar Redesigns based on testing.
 
-
 2-10-23
 
 Test MP functionality to Chocobo Pack behavior.
@@ -38,8 +31,6 @@ Test MP functionality to Chocobo Pack behavior.
 
 Add in Team check (if possible) goals, (to stop accidental hitting)
 
-Trim 'Chocobo Chainmail, to expose the corners slightly'
-
 2-13-23
 
 Update Guidebook
@@ -47,3 +38,16 @@ Test flow & balance
 
 Consider breeding for improved strength & toughness for chocobos
 -- Not likely.
+
+2-14-23
+
+Update Spawn eggs to match (shape-wise) to the other 'spawn eggs'
+Update Guide Book
+- Indicate inside corner of walls/fences issues with pathing
+- List crafting Recipes for gear
+Create Paralyze 'item'
+- Use NoAI flag
+- Account for removable/adding goals that gets toggled with the whistle
+- preserve through save/load
+WaterWalking for Chocobos that do not have water breathing
+- Similar to the Strider
