@@ -3,7 +3,7 @@ Finishing Quirks
 ---------
 - Added Water Breathing Chocobo(s)
 -- Used NBT tag to allow breeding to pass the trait on the kiddos
--- Added setWaterbreathing to the egg spawns
+-- Added setWaterBreathing to the egg spawns
 -- Updated Snapshot
 
 - Modified movement of Chocobos in regard to water
@@ -88,12 +88,12 @@ Progress
 - tag JSON for weapons
 -- overwrote cobweb.json (loot table) in the Minecraft space
 ~~ Allow for the chocobo claw weapons to be used to get cobwebs w/o enchantments
-- Mild underhood name adjustment for logical sense
+- Mild under hood name adjustment for logical sense
 - Chocobo Config file
 -- Added default Attack Damage
 -- Added default Defense Value
 -- Added default Defense Toughness
--- Added boolean (default off) Ridable by Owner Only
+-- Added boolean (default off) Rideable by Owner Only
 -- Commented out flyingStamina use for now [unused, false impressions given]
 
 - Chocobo.java -
@@ -153,8 +153,8 @@ Chocobo.java
 --
 - Adjusted Goals
 -- Changed Melee, to be more consistent & to use a standard Mob Attack range.
--- Moved tempt/avoidentitygoal below attack/leap
--- set Alert on attack by by Chocobo.class
+-- Moved tempt/avoid entity-goal below attack/leap
+-- set Alert on attack by Chocobo.class
 - set default (untamed, spawned Chocobos) collar to clear
 - Used set Armor/weapon handler
 -- Use of UUID (unique to Chocobos) to apply & remove Modifiers
@@ -193,7 +193,7 @@ Debugging & testing Green Spawning, & fixing checks.
 Todo Cleanup
 
 -Allowed Name tagging of untamed-Chocobo
--Allowed Cong to toggle Owner only ride/nametag of tamed chocobos
+-Allowed Cong to toggle Owner only ride/name-tag of tamed chocobos
 -Nest egg only comes in yellow.
 
 Chocobo Weapons/Armor
@@ -211,13 +211,13 @@ Chocobo Weapons/Armor
 - Fixed Chocobo Spawn Eggs, to pass the name a Name to them.
 - Fixed Chocobo Nest Eggs, to pass on the name to the chicobo
 - Flatten ModRegistry
-- Fixed Improper Armor/Weapon itemhandler for chocbo
+- Fixed Improper Armor/Weapon item-handler for chocobo
 - Fixed Goals & targeting to not allow Chocobo to attack each other.
--- non-Tamed will still attack the player & swarm with non tamed by player chocobo
+-- non-Tamed will still attack the player & swarm with non-tamed by player chocobo
 - Flatten & cleanup logic for Collar color change in InteractionResult InteractAt of Chocobo.java
-- Cleaned up some code in Interactionresult InteractAt elsewher
+- Cleaned up some code in Interactionresult InteractAt elsewhere
 - LayerCollar.java Cleaned up with Maps
-- Started Pruning unsued files & code from the project
+- Started Pruning unused files & code from the project
 
 
 ----------------
@@ -289,3 +289,8 @@ Chocobo Weapons/Armor
 -- used 5 for ones with a rider & 30 for those without riders to reduce tick processing reasonably
 - Updated to render Chocobos, that do not have their rider string match the Player UUID
 -- Minecraft.getInstance().getUser().getUuid()
+
+---------
+
+Updated Chocobo render to not show the chocobo to the rider, while in first person
+- Shows the chocobo while either f5 modes.

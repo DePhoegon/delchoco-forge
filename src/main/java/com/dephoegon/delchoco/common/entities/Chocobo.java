@@ -83,7 +83,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.dephoegon.delbase.item.shiftingDyes.*;
-import static com.dephoegon.delchoco.DelChoco.log;
 import static com.dephoegon.delchoco.aid.chocoKB.isAltDown;
 import static com.dephoegon.delchoco.aid.dyeList.getDyeList;
 import static com.dephoegon.delchoco.aid.dyeList.setLists;
@@ -626,7 +625,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             }
         }
     }
-    public String getRider() {
+    public String getRiderUuid() {
         return this.rider;
     }
     private boolean maybeTeleportTo(int pX, int pY, int pZ, @NotNull LivingEntity owner) {
