@@ -294,3 +294,8 @@ Chocobo Weapons/Armor
 
 Updated Chocobo render to not show the chocobo to the rider, while in first person
 - Shows the chocobo while either f5 modes.
+
+2-14-23
+
+Found & fixed Critical flaw in method.
+Tested Chocobo riding in MP enviroment

@@ -19,8 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-import static com.dephoegon.delchoco.aid.chocoKB.isClientPlayerRider;
-import static com.dephoegon.delchoco.aid.chocoKB.isFirstPerson;
+import static com.dephoegon.delchoco.aid.chocoKB.hideChocoboMountInFirstPerson;
 
 public class ChocoboRenderer extends MobRenderer<Chocobo, EntityModel<Chocobo>> {
     private static final Map<ChocoboColor, ResourceLocation> CHOCOBO_PER_COLOR = Util.make(Maps.newHashMap(), (map) -> {
@@ -87,9 +86,8 @@ public class ChocoboRenderer extends MobRenderer<Chocobo, EntityModel<Chocobo>> 
 
     @Override
     public void render(@NotNull Chocobo chocobo, float entityYaw, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight) {
-        boolean hideChocoboFromRider = isClientPlayerRider(chocobo.getRiderUuid()) && isFirstPerson();
         this.model = chocobo.isBaby() ? chicoboModel : chocoboModel;
-        if (hideChocoboFromRider) { return; }
+        if (hideChocoboMountInFirstPerson(chocobo)) { return; }
         super.render(chocobo, entityYaw, partialTicks, poseStack, bufferSource, packedLight);
     }
 

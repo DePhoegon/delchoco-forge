@@ -1,0 +1,9 @@
+Fixed Critical Flaw with getting Uuid
+-- it works in dev environment, Crashes live environment
+Used isControlledByLocalInstance() to correct.
+--isLocalPlayer() (which is nested down in that method) misleadingly annotated.
+Checking for Detached Camera works on live account.
+
+Chocobo now disappears (visually) for player riding, in first person, & not other players of the server.
+
+setup a Dev & Live client testing.
