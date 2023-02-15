@@ -49,8 +49,3 @@ Create Paralyze 'item'
 - Use NoAI flag
 - Account for removable/adding goals that gets toggled with the whistle
 - preserve through save/load
-WaterWalking for Chocobos that do not have water breathing
-- Similar to the Strider
-
-Test Render Changes in MP
-- Tested on Dev Server, now to test on Live Server

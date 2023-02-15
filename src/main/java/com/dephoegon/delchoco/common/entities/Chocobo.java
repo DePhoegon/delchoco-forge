@@ -60,14 +60,17 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
@@ -121,7 +124,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     private int ticksUntilNextAlert;
     private int timeToRecalculatePath;
     private final double followSpeedModifier = 2.0D;
-    private String rider;
 
     private static final UniformInt ALERT_INTERVAL = TimeUtil.rangeOfSeconds(4, 6);
 
@@ -234,7 +236,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         this.goalSelector.addGoal(1, new ChocoPanicGoal(this,1.5D));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this,2F, true));
         // toggleable Goal 3, - Follow owner (whistle [tamed])
-        // goal 4 unused
+        this.goalSelector.addGoal(4, new ChocoboLavaEscape(this));
         // toggleable Goal 5, - Avoid Player Goal (non-tamed goal)
         this.goalSelector.addGoal(6, new TemptGoal(this, 1.2D, Ingredient.of(GYSAHL_GREEN.get()), false));
         this.goalSelector.addGoal(7, new AvoidEntityGoal<>(this, Llama.class, 15F, 1.3F, 1.5F));
@@ -488,9 +490,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     protected boolean updateInWaterStateAndDoFluidPushing() {
             this.fluidHeight.clear();
             this.updateInWaterStateAndDoWaterCurrentPushing();
-            double d0 = this.level.dimensionType().ultraWarm() ? 0.007D : 0.0023333333333333335D;
-            boolean flag;
-            if (this.isFlame()) { flag = false; } else { flag = this.updateFluidHeightAndDoFluidPushing(FluidTags.LAVA, d0); }
+            boolean flag = this.updateFluidHeightAndDoFluidPushing(FluidTags.LAVA, 0.085D);
             return this.isInWater() || flag;
     }
     private void updateInWaterStateAndDoWaterCurrentPushing() {
@@ -563,8 +563,18 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                         setDeltaMovement(new Vec3(waterMotion.x, waterMotion.y * 0.65F, waterMotion.z));
                     }
                 }
+                if (rider.isInLava()) {
+                    Vec3 motion = getDeltaMovement();
+                    if (Minecraft.getInstance().options.keyJump.isDown()) {
+                        setDeltaMovement(new Vec3(motion.x, .5f, motion.z));
+                    } else if (this.isFlame() && this.getDeltaMovement().y < 0) {
+                        int distance = WorldUtils.getDistanceToSurface(this.blockPosition(), this.getCommandSenderWorld());
+                        if (distance > 0)
+                            setDeltaMovement(new Vec3(motion.x, .05f, motion.z));
+                    }
+                }
                 // Insert override for slow-fall Option on Chocobo
-                if (!this.onGround && !this.isInWater() && !rider.isShiftKeyDown() && this.getDeltaMovement().y < 0 &&
+                if (!this.onGround && !this.isInWater() && !this.isInLava() && !rider.isShiftKeyDown() && this.getDeltaMovement().y < 0 &&
                     this.useStamina(COMMON.glideStaminaCost.get().floatValue())) {
                     if (Minecraft.getInstance().options.keyJump.isDown())
                     {
@@ -580,7 +590,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                 super.travel(newVector);
             }
         } else {
-            if (!this.onGround && !this.isInWater() && this.getDeltaMovement().y < 0 &&
+            if (!this.onGround && !this.isInWater() && !this.isInLava() && this.getDeltaMovement().y < 0 &&
                     this.useStamina(COMMON.glideStaminaCost.get().floatValue())) {
                 Vec3 motion = getDeltaMovement();
                 setDeltaMovement(new Vec3(motion.x, motion.y * 0.65F, motion.z));
@@ -601,14 +611,13 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     private int rideTickDelay = 0;
     public void tick() {
         super.tick();
+        floatChocobo();
         LivingEntity owner = this.getOwner() != null ? this.getOwner() : null;
         if (this.rideTickDelay < 0) {
             Entity RidingPlayer = this.getControllingPassenger();
             if (RidingPlayer != null) {
-                this.rider = RidingPlayer.getStringUUID();
                 this.rideTickDelay = 5;
             } else {
-                this.rider = null;
                 this.rideTickDelay = 30;
             }
         } else { this.rideTickDelay--; }
@@ -625,8 +634,31 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             }
         }
     }
-    public String getRiderUuid() {
-        return this.rider;
+    private void floatChocobo() {
+        if (this.isInLava()) {
+            CollisionContext collisioncontext = CollisionContext.of(this);
+            if (collisioncontext.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition(), true) && !this.level.getFluidState(this.blockPosition().above()).is(FluidTags.LAVA)) {
+                this.onGround = true;
+            } else {
+                this.setDeltaMovement(this.getDeltaMovement().scale(.003D).add(0.0D, 0.05D, 0.0D));
+            }
+        }
+        if (this.isInWater() && !this.isWBreather()) {
+            CollisionContext collisioncontext = CollisionContext.of(this);
+            if (collisioncontext.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition(), true) && !this.level.getFluidState(this.blockPosition().above()).is(FluidTags.WATER)) {
+                this.onGround = true;
+            } else {
+                this.setDeltaMovement(this.getDeltaMovement().scale(.003D).add(0.0D, 0.05D, 0.0D));
+            }
+        }
+    }
+    public float getWalkTargetValue(BlockPos pPos, LevelReader pLevel) {
+        if (pLevel.getBlockState(pPos).getFluidState().is(FluidTags.LAVA)) {
+            return 10.0F;
+        } else if (pLevel.getBlockState(pPos).getFluidState().is(FluidTags.WATER)) {
+            return 10.0F;
+        }
+        return this.getSpeed();
     }
     private boolean maybeTeleportTo(int pX, int pY, int pZ, @NotNull LivingEntity owner) {
         if (Math.abs((double)pX - owner.getX()) < 2.0D && Math.abs((double)pZ - owner.getZ()) < 2.0D) {

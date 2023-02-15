@@ -299,3 +299,6 @@ Updated Chocobo render to not show the chocobo to the rider, while in first pers
 
 Found & fixed Critical flaw in method.
 Tested Chocobo riding in MP enviroment
+Chocobo Movements over Liquids
+Fixed Bug in logic to not render chocobo
+-Bug was on a live client

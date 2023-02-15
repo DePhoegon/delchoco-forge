@@ -4,6 +4,7 @@ import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.items.ChocoDisguiseItem;
 import com.dephoegon.delchoco.utils.RandomHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
@@ -20,11 +21,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 
 import static net.minecraft.world.level.pathfinder.PathComputationType.LAND;
+import static net.minecraft.world.level.pathfinder.PathComputationType.WATER;
 
 public class ChocoboGoals {
     @SuppressWarnings("rawtypes")
@@ -49,6 +54,44 @@ public class ChocoboGoals {
         return !out.contains(target);
     }
 
+    public static class ChocoboLavaEscape extends Goal {
+        private final PathfinderMob mob;
+        public ChocoboLavaEscape(PathfinderMob pathfinderMob) {
+            this.mob = pathfinderMob;
+        }
+        private boolean canTeleportTo(@NotNull BlockPos pPos) {
+            BlockPathTypes blockpathtypes = WalkNodeEvaluator.getBlockPathTypeStatic(mob.level, pPos.mutable());
+            if (blockpathtypes != BlockPathTypes.WALKABLE) {
+                return false;
+            } else {
+                BlockPos blockpos = pPos.subtract(mob.blockPosition());
+                return mob.level.noCollision(mob, mob.getBoundingBox().move(blockpos));
+            }
+        }
+
+        public void start() {
+            BlockPos block = null;
+            BlockState newBlock = null;
+            double mobX = mob.getX();
+            double mobY = mob.getY();
+            double mobZ = mob.getZ();
+
+            for(BlockPos blockpos1 : BlockPos.betweenClosed(Mth.floor(mobX - 10.0D), Mth.floor(mobY - 10.0D), Mth.floor(mobZ - 10.0D), Mth.floor(mobX + 10.0D), Mth.floor(mobY + 10D), Mth.floor(mobZ + 10.0D))) {
+                if (!this.mob.level.getFluidState(blockpos1).is(FluidTags.LAVA)) {
+                    block = blockpos1;
+                    newBlock = mob.level.getBlockState(blockpos1);
+                    break;
+                }
+            }
+
+            if (newBlock != null) {
+                canTeleportTo(block);
+            }
+        }
+
+        @Override
+        public boolean canUse() { return mob.isInLava(); }
+    }
     public static class ChocoboAvoidBlockGoal extends Goal {
         // Example used from 'TryFindWaterGoal', except it avoids
         private final PathfinderMob mob;

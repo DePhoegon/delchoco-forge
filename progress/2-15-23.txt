@@ -7,3 +7,12 @@ Checking for Detached Camera works on live account.
 Chocobo now disappears (visually) for player riding, in first person, & not other players of the server.
 
 setup a Dev & Live client testing.
+
+--------
+
+Finalized Chocobos Movement over/through water.
+- All Chocobos 'walk' on lava, but only those which have isFlame can survive.
+-- Will attempt to navigate or TP out of lava
+- Evened out the walking over lava & water
+- All Chocobos 'walk' on water, except for Those with water breathing
+-- water breathing sinks to the ground.
