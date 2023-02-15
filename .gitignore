@@ -29,10 +29,9 @@ run/mods
 run/patchouli_books
 run/resourcepacks
 run/saves
-run/*.txt
+run/options.txt
 run/*.json
 run/crash-reports
-run/server.*
 run/servers.*
 
 # Files from Forge MDK

@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[39,)"
+loaderVersion="[40,)"
 issueTrackerURL=""
 license="MIT"
 
@@ -16,13 +16,13 @@ Chocobos in Minecraft
 [[dependencies.delchoco]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.18.2,1.19)"
+versionRange="[1.18.2,1.18.3)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.delchoco]]
 modId="forge"
 mandatory=true
-versionRange="[39,)"
+versionRange="[40,)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.delchoco]]
