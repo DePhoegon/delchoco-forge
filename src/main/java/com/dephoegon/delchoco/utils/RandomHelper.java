@@ -15,8 +15,4 @@ public class RandomHelper {
 		else
 			throw new InputMismatchException("getChanceResult passed " + percentageForSuccess + " but expected range of 0-100");
 	}
-
-	public static int getRandomInt(int maxValue) {
-		return random.nextInt(maxValue);
-	}
 }

@@ -14,11 +14,6 @@ Double Check
 - Prior TODOs
 -- Validate if they are or are not done.
 
-Added 1-25-23
-
-Consider
-- Random Chocobo Names (not Likely)
-
 Added 1-26-23
 
 Consider - Collar Redesigns based on testing.
@@ -35,9 +30,6 @@ Add in Team check (if possible) goals, (to stop accidental hitting)
 
 Update Guidebook
 Test flow & balance
-
-Consider breeding for improved strength & toughness for chocobos
--- Not likely.
 
 2-14-23
 

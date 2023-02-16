@@ -36,12 +36,15 @@ public class ChocoConfig {
         public final IntValue defaultSpeed;
         public final IntValue defaultHealth;
         public final IntValue modifier;
-        public final IntValue armor;
-        public final IntValue armorToughness;
-        public final IntValue attackStrength;
+        public final IntValue defaultArmor;
+        public final IntValue defaultArmorToughness;
+        public final IntValue defaultAttackStrength;
         public final IntValue maxHealth;
         public final IntValue maxSpeed;
         public final DoubleValue maxStamina;
+        public final DoubleValue maxStrength;
+        public final DoubleValue maxArmor;
+        public final DoubleValue maxToughness;
         public final DoubleValue posgainHealth;
         public final DoubleValue posgainSpeed;
         public final DoubleValue posgainStamina;
@@ -151,17 +154,17 @@ public class ChocoConfig {
 
             modifier = builder
                     .comment("Armor/Weapon Value Modifier {Weapons & Armor For Chocobo are More Effective} [Default:1]")
-                    .defineInRange("modifier", 1, 1, 5);
+                    .defineInRange("modifier", 1, 1, 3);
 
-            armor = builder
+            defaultArmor = builder
                     .comment("Default Amount of 'Armor' Points [Default:4]")
                     .defineInRange("defaultArmor", 4, 0, 20);
 
-            armorToughness = builder
+            defaultArmorToughness = builder
                     .comment("Default Amount of 'Armor Toughness' Value [Default:1]")
                     .defineInRange("defaultArmorToughness", 1,0, 10);
 
-            attackStrength = builder
+            defaultAttackStrength = builder
                     .comment("Default Attack Value [Default: 2]")
                     .defineInRange("defaultAttackStrength", 2, 1, 10);
 
@@ -178,15 +181,27 @@ public class ChocoConfig {
 
                 maxHealth = builder
                         .comment("Controls the Max Health a Chocobo can have [Default: 50]")
-                        .defineInRange("maxHealth", 50, 0, Integer.MAX_VALUE);
+                        .defineInRange("maxHealth", 60, 25, 400);
 
                 maxSpeed = builder
                         .comment("Controls the Max Speed a Chocobo can have [Default: 40]")
-                        .defineInRange("maxSpeed", 40, 0, Integer.MAX_VALUE);
+                        .defineInRange("maxSpeed", 40, 30, 160);
 
                 maxStamina = builder
                         .comment("Controls the Max Stamina a Chocobo can have [Default: 25]")
-                        .defineInRange("maxStamina", 25D, 0, Integer.MAX_VALUE);
+                        .defineInRange("maxStamina", 25D, 20D, 80D);
+
+                maxArmor = builder
+                        .comment("Controls the max Natural Armor of a Chocobo")
+                        .defineInRange("maxArmor", 20D, 10D, 30D);
+
+                maxStrength = builder
+                        .comment("Controls the Max amount of damage a Chocobo can do without weapons")
+                        .defineInRange("maxStrength", 10D, 8D, 30D);
+
+                maxToughness = builder
+                        .comment("Controls The Max amount 'Armor Toughness' a Chocobo can have naturally")
+                        .defineInRange("maxToughness", 10D, 8D, 30D);
 
                 builder.pop();
                 builder.comment("Gain Stats")

@@ -18,6 +18,9 @@ import static java.lang.Math.*;
 import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 
 public class BreedingHelper {
+    private static double minCheck(double one, double two) {
+        return round((one + two) / 2) < 11 ? round((one+two)/2+1) : round((one + two) / 2);
+    }
 
     public static @Nullable Chocobo createChild(ChocoboBreedInfo breedInfo, Level world, ItemStack egg) {
         final Chocobo baby = ModEntities.CHOCOBO.get().create(world);
@@ -26,18 +29,19 @@ public class BreedingHelper {
         final ChocoboStatSnapshot mother = breedInfo.getMother();
         final ChocoboStatSnapshot father = breedInfo.getFather();
 
-        baby.setGeneration(((mother.generation + father.generation) / 2) + 1);
-        baby.setFlame(mother.flameBlood || father.flameBlood);
-        baby.setWaterBreath(mother.waterBreath || father.waterBreath);
-
+        baby.setGeneration(mother.generation > father.generation ? mother.generation+1 : father.generation+1);
         float health = round(((mother.health + father.health) / 2) * (COMMON.poslossHealth.get().floatValue() + ((float) random() * COMMON.posgainHealth.get().floatValue())));
         Objects.requireNonNull(baby.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(min(health, COMMON.maxHealth.get().floatValue()));
-
         float speed = ((mother.speed + father.speed) / 2f) * (COMMON.poslossSpeed.get().floatValue() + ((float) random() * COMMON.posgainSpeed.get().floatValue()));
         Objects.requireNonNull(baby.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(min(speed, (COMMON.maxSpeed.get().floatValue() / 100f)));
-
         float stamina = round((mother.stamina + father.stamina) / 2) * (COMMON.poslossStamina.get().floatValue() + ((float) random() * COMMON.posgainStamina.get().floatValue()));
-        Objects.requireNonNull(baby.getAttribute(ModAttributes.MAX_STAMINA.get())).setBaseValue(min(stamina, COMMON.maxStamina.get().floatValue()));
+        Objects.requireNonNull(baby.getAttribute(ModAttributes.MAX_STAMINA.get())).setBaseValue(min(stamina, COMMON.maxStamina.get()));
+        double attack = minCheck(mother.attack, father.attack) *(1D + ((float) random()* .25D));
+        Objects.requireNonNull(baby.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(min(attack, COMMON.maxStrength.get()));
+        double defence = minCheck(mother.defense, father.defense) *(1D + ((float) random()* .25D));
+        Objects.requireNonNull(baby.getAttribute(Attributes.ARMOR)).setBaseValue(min(defence, COMMON.maxArmor.get()));
+        double toughness = minCheck(mother.toughness, father.toughness) *(1D + ((float) random()* .25D));
+        Objects.requireNonNull(baby.getAttribute(Attributes.ARMOR_TOUGHNESS)).setBaseValue(min(toughness, COMMON.maxToughness.get()));
 
         BlockPos centerBlock = null;
         if (baby.getNestPosition() != null) { centerBlock = baby.getNestPosition().below(); }
@@ -84,6 +88,9 @@ public class BreedingHelper {
 
         baby.setMale(.50f > (float) random());
         baby.setChocoboColor(bColor);
+        baby.setWaterBreath(mother.waterBreath || father.waterBreath);
+        baby.setFlame(mother.flameBlood || father.flameBlood);
+        baby.setFromEgg(true);
         if (egg.hasCustomHoverName()) { baby.setCustomName(egg.getHoverName()); }
 
         baby.setAge(-7500);

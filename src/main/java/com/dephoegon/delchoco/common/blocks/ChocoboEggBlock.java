@@ -101,8 +101,7 @@ public class ChocoboEggBlock extends BaseEntityBlock {
             ItemStack itemStack = new ItemStack(ModRegistry.CHOCOBO_EGG.get());
             ChocoboBreedInfo breedInfo = ((ChocoboEggBlockEntity) te).getBreedInfo();
             if (breedInfo == null) {
-                DelChoco.log.error("Unable to create ItemStack for egg @ {}, the eggy has no breeding info attached");
-                return;
+                breedInfo = getFromNbtOrDefault(null);
             }
             itemStack.addTagElement(NBTKEY_BREEDINFO, breedInfo.serialize());
             popResource(worldIn, pos, itemStack);
@@ -115,10 +114,6 @@ public class ChocoboEggBlock extends BaseEntityBlock {
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
         CompoundTag nbtBreedInfo = stack.getTagElement(NBTKEY_BREEDINFO);
-        if (nbtBreedInfo == null) {
-            stack.addTagElement(NBTKEY_BREEDINFO, getFromNbtOrDefault(null).serialize());
-            nbtBreedInfo = stack.getTagElement(NBTKEY_BREEDINFO);
-        }
         if (nbtBreedInfo != null) {
             final ChocoboBreedInfo info = new ChocoboBreedInfo(nbtBreedInfo);
             final ChocoboStatSnapshot mother = info.getMother();

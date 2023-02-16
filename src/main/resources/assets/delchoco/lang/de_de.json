@@ -49,7 +49,7 @@
     "item.delchoco.purple_chocobo_spawn_egg": "Lila Chocobo Spawn-Ei",
     "item.delchoco.flame_chocobo_spawn_egg": "Flamme Chocobo Spawn-Ei",
 
-    "item.delchoco.chocobo_egg.tooltip.invalid_egg": "Â§cFehlerhaftes Ei",
+    "item.delchoco.chocobo_egg.tooltip.invalid_egg": "§cInstabiles Ei. Zur Stabilisierung auf den Boden stellen.",
     "item.delchoco.chocobo_egg.tooltip.mother_info": "Mutter: %s / %s / %s",
     "item.delchoco.chocobo_egg.tooltip.father_info": "Vater: %s / %s / %s",
     "item.delchoco.chocobo_egg.tooltip.yellow": "Gelb",

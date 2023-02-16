@@ -49,7 +49,7 @@
     "item.delchoco.purple_chocobo_spawn_egg": "Purple Chocobo Spawn Egg",
     "item.delchoco.flame_chocobo_spawn_egg": "Flame Chocobo Spawn Egg",
 
-    "item.delchoco.chocobo_egg.tooltip.invalid_egg": "§cInvalid Egg",
+    "item.delchoco.chocobo_egg.tooltip.invalid_egg": "§cUnstable Egg. Set on Ground to stabilize",
     "item.delchoco.chocobo_egg.tooltip.mother_info": "Mother: %s / %s / %s / %s",
     "item.delchoco.chocobo_egg.tooltip.father_info": "Father: %s / %s / %s / %s",
     "item.delchoco.chocobo_egg.tooltip.yellow": "Yellow",

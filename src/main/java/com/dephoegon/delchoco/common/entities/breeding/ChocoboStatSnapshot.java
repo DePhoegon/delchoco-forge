@@ -19,6 +19,9 @@ public class ChocoboStatSnapshot {
     public static final String NBTKEY_COLOR = "Color";
     public static final String NBTKEY_FLAME_BLOOD = "FlameBlood";
     public static final String NBTKEY_WATER_BREATH = "WaterBreath";
+    public static final String NBTKEY_ATTACK = "Damage";
+    public static final String NBTKEY_ARMOR = "Armor";
+    public static final String NBTKEY_ARMOR_TOUGHNESS = "Toughness";
 
     public int generation;
     public float health;
@@ -27,6 +30,9 @@ public class ChocoboStatSnapshot {
     public boolean flameBlood;
     public boolean waterBreath;
     public ChocoboColor color;
+    public double attack;
+    public double defense;
+    public double toughness;
 
     static {
         DEFAULT = new ChocoboStatSnapshot();
@@ -34,7 +40,11 @@ public class ChocoboStatSnapshot {
         DEFAULT.health = ChocoConfig.COMMON.defaultHealth.get();
         DEFAULT.stamina = ChocoConfig.COMMON.defaultStamina.get();
         DEFAULT.speed = ChocoConfig.COMMON.defaultSpeed.get() / 100f;
+        DEFAULT.attack = ChocoConfig.COMMON.defaultAttackStrength.get();
+        DEFAULT.defense = ChocoConfig.COMMON.defaultArmor.get();
+        DEFAULT.toughness = ChocoConfig.COMMON.defaultArmorToughness.get();
         DEFAULT.flameBlood = false;
+        DEFAULT.waterBreath = false;
         DEFAULT.color = ChocoboColor.YELLOW;
     }
     private ChocoboStatSnapshot() { }
@@ -43,6 +53,9 @@ public class ChocoboStatSnapshot {
         this.health = (float) Objects.requireNonNull(chocobo.getAttribute(Attributes.MAX_HEALTH)).getBaseValue();
         this.speed = (float) Objects.requireNonNull(chocobo.getAttribute(Attributes.MOVEMENT_SPEED)).getBaseValue();
         this.stamina = (float) Objects.requireNonNull(chocobo.getAttribute(ModAttributes.MAX_STAMINA.get())).getBaseValue();
+        this.attack = Objects.requireNonNull(chocobo.getAttribute(Attributes.ATTACK_DAMAGE)).getBaseValue();
+        this.defense = Objects.requireNonNull(chocobo.getAttribute(Attributes.ARMOR)).getBaseValue();
+        this.toughness = Objects.requireNonNull(chocobo.getAttribute(Attributes.ARMOR_TOUGHNESS)).getBaseValue();
         this.flameBlood = chocobo.isFlame();
         this.waterBreath = chocobo.isWBreather();
         this.color = chocobo.getChocoboColor();
@@ -52,6 +65,9 @@ public class ChocoboStatSnapshot {
         this.health = nbt.getFloat(NBTKEY_HEALTH);
         this.speed = nbt.getFloat(NBTKEY_SPEED);
         this.stamina = nbt.getFloat(NBTKEY_STAMINA);
+        this.attack = nbt.getDouble(NBTKEY_ATTACK);
+        this.attack = nbt.getDouble(NBTKEY_ARMOR);
+        this.attack = nbt.getDouble(NBTKEY_ARMOR_TOUGHNESS);
         this.flameBlood = nbt.getBoolean(NBTKEY_FLAME_BLOOD);
         this.waterBreath = nbt.getBoolean(NBTKEY_WATER_BREATH);
         this.color = ChocoboColor.values()[nbt.getByte(NBTKEY_COLOR)];
@@ -62,6 +78,9 @@ public class ChocoboStatSnapshot {
         nbt.putFloat(NBTKEY_HEALTH, this.health);
         nbt.putFloat(NBTKEY_SPEED, this.speed);
         nbt.putFloat(NBTKEY_STAMINA, this.stamina);
+        nbt.putDouble(NBTKEY_ATTACK, this.attack);
+        nbt.putDouble(NBTKEY_ARMOR, this.defense);
+        nbt.putDouble(NBTKEY_ARMOR_TOUGHNESS, this.toughness);
         nbt.putBoolean(NBTKEY_FLAME_BLOOD, this.flameBlood);
         nbt.putBoolean(NBTKEY_WATER_BREATH, this.waterBreath);
         nbt.putByte(NBTKEY_COLOR, (byte) this.color.ordinal());

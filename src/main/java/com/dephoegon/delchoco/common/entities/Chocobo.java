@@ -1,6 +1,7 @@
 package com.dephoegon.delchoco.common.entities;
 
 import com.dephoegon.delchoco.DelChoco;
+import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.entities.breeding.ChocoboMateGoal;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboGoals.*;
@@ -259,13 +260,13 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
 
     public static AttributeSupplier.@NotNull Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(ModAttributes.MAX_STAMINA.get(), COMMON.defaultStamina.get())
+                .add(ModAttributes.MAX_STAMINA.get(),  ChocoConfig.COMMON.defaultStamina.get())
                 .add(Attributes.MOVEMENT_SPEED, COMMON.defaultSpeed.get() / 100f)
-                .add(Attributes.MAX_HEALTH, COMMON.defaultHealth.get())
-                .add(Attributes.ARMOR, COMMON.armor.get())
-                .add(Attributes.ARMOR_TOUGHNESS, COMMON.armorToughness.get())
+                .add(Attributes.MAX_HEALTH, ChocoConfig.COMMON.defaultHealth.get())
+                .add(Attributes.ARMOR, COMMON.defaultArmor.get())
+                .add(Attributes.ARMOR_TOUGHNESS, COMMON.defaultArmorToughness.get())
                 .add(Attributes.ATTACK_SPEED)
-                .add(Attributes.ATTACK_DAMAGE, COMMON.attackStrength.get())
+                .add(Attributes.ATTACK_DAMAGE, COMMON.defaultAttackStrength.get())
                 .add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()*3);
     }
 
@@ -333,6 +334,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         //noinspection OptionalGetWithoutIsPresent
         final ResourceKey<Biome> BiomesKey = currentBiomes.unwrapKey().get();
         if (!fromEgg()) {
+            setChocobo(ChocoboColor.YELLOW, false, false);
             if (biomeCategory == Biome.BiomeCategory.NETHER) { setChocobo(ChocoboColor.FLAME, true, false); }
             if (biomeCategory == Biome.BiomeCategory.FOREST && !(nameCheck(currentBiomes, "mystic") || nameCheck(currentBiomes, "blossom")  || nameCheck(currentBiomes, "tropics") || nameCheck(currentBiomes, "lavender"))) { setChocobo(ChocoboColor.RED, false, false); }
             else if (biomeCategory == Biome.BiomeCategory.MESA) { setChocobo(ChocoboColor.RED, false, false); }
@@ -359,9 +361,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
 
     @Override
     public boolean canBeControlledByRider() { return this.isTame(); }
-
-
-
     private void setArmor(ItemStack pStack) {
         this.setItemSlot(EquipmentSlot.CHEST, pStack);
         this.setDropChance(EquipmentSlot.CHEST, 0.0F);
@@ -590,8 +589,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                 super.travel(newVector);
             }
         } else {
-            if (!this.onGround && !this.isInWater() && !this.isInLava() && this.getDeltaMovement().y < 0 &&
-                    this.useStamina(COMMON.glideStaminaCost.get().floatValue())) {
+            if (!this.onGround && !this.isInWater() && !this.isInLava() && this.getDeltaMovement().y < 0 && this.useStamina(COMMON.glideStaminaCost.get().floatValue())) {
                 Vec3 motion = getDeltaMovement();
                 setDeltaMovement(new Vec3(motion.x, motion.y * 0.65F, motion.z));
             }
@@ -604,9 +602,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     @Override
     public void positionRider(@NotNull Entity passenger) {
         super.positionRider(passenger);
-        if (passenger instanceof Mob && this.getControllingPassenger() == passenger) {
-            this.yBodyRot = ((LivingEntity) passenger).yBodyRot;
-        }
+        if (passenger instanceof Mob && this.getControllingPassenger() == passenger) { this.yBodyRot = ((LivingEntity) passenger).yBodyRot; }
     }
     private int rideTickDelay = 0;
     public void tick() {
@@ -617,7 +613,15 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             Entity RidingPlayer = this.getControllingPassenger();
             if (RidingPlayer != null) {
                 this.rideTickDelay = 5;
+                if (RidingPlayer instanceof Player player) {
+                    this.setInvulnerable(player.isCreative());
+                    if (this.getHealth() != this.getMaxHealth() && player.getOffhandItem().getItem() == GYSAHL_GREEN_ITEM.get()) {
+                        player.getOffhandItem().shrink(1);
+                        heal(COMMON.defaultHealAmmount.get());
+                    }
+                } else { this.setInvulnerable(false); }
             } else {
+                this.setInvulnerable(false);
                 this.rideTickDelay = 30;
             }
         } else { this.rideTickDelay--; }
@@ -628,12 +632,11 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                     if (--this.timeToRecalculatePath <= 0) {
                         this.timeToRecalculatePath = this.randomIntInclusive(10, 40);
                         if (this.distanceToSqr(owner) >= 144.0D) { this.teleportToOwner(owner);}
-                        else { this.navigation.moveTo(owner, this.followSpeedModifier); }
-                    }
-                }
-            }
+                        else { this.navigation.moveTo(owner, this.followSpeedModifier); }}}}
         }
     }
+    public double getFollowSpeedModifier() { return this.followSpeedModifier; }
+    public int getRideTickDelay() { return this.rideTickDelay; }
     private void floatChocobo() {
         if (this.isInLava()) {
             CollisionContext collisioncontext = CollisionContext.of(this);

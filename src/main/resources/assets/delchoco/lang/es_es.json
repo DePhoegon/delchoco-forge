@@ -49,7 +49,7 @@
     "item.delchoco.purple_chocobo_spawn_egg": "Huevo de Prole de Chocobo Púrpura",
     "item.delchoco.flame_chocobo_spawn_egg": "Huevo de Prole de Chocobo de Llamas",
 
-    "item.delchoco.chocobo_egg.tooltip.invalid_egg": "§cHuevo Invalido",
+    "item.delchoco.chocobo_egg.tooltip.invalid_egg": "§cHuevo inestable. Establecer en el suelo para estabilizar.",
     "item.delchoco.chocobo_egg.tooltip.mother_info": "Madre: %s / %s / %s / %s",
     "item.delchoco.chocobo_egg.tooltip.father_info": "Padre: %s / %s / %s / %s",
     "item.delchoco.chocobo_egg.tooltip.yellow": "Amarillo",

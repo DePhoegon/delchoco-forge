@@ -49,7 +49,7 @@
     "item.delchoco.purple_chocobo_spawn_egg": "Lila Chocobo Idéző Tojás",
     "item.delchoco.flame_chocobo_spawn_egg": "Láng Chocobo Idéző Tojás",
 
-    "item.delchoco.chocobo_egg.tooltip.invalid_egg": "§cHibás tojás",
+    "item.delchoco.chocobo_egg.tooltip.invalid_egg": "§cInstabil tojás. Állítsa a földre a stabilizáláshoz.",
     "item.delchoco.chocobo_egg.tooltip.mother_info": "Anya: %s / %s / %s / %s",
     "item.delchoco.chocobo_egg.tooltip.father_info": "Apa: %s / %s / %s / %s",
     "item.delchoco.chocobo_egg.tooltip.yellow": "Sárga",

@@ -81,8 +81,8 @@ public class StrawNestBlock extends BaseEntityBlock {
         if (ChocoboEggBlock.isChocoboEgg(heldItem)) {
             if (!nest.getEggItemStack().isEmpty()) return InteractionResult.FAIL;
             if (worldIn.isClientSide) return InteractionResult.SUCCESS;
-            nest.setEggItemStack(playerIn.getItemInHand(handIn).copy());
-            playerIn.getItemInHand(handIn).shrink(1);
+            nest.setEggItemStack(playerIn.getItemInHand(handIn).copy().split(1));
+            if (!playerIn.isCreative()) { playerIn.getItemInHand(handIn).shrink(1); }
             return InteractionResult.SUCCESS;
         } else {
             if(!worldIn.isClientSide) {

@@ -1,0 +1,46 @@
+StrawNestBlock
+Fixed unseen issue where it'd copy an entire stack of eggs into the inventory, bypassing the limit of the nest otherwise
+
+ChocoConfig
+-Added int values
+-- maxarmor
+-- maxstrength
+-- maxtoughness
+- capped other maxes to reasonable levels (for extremes)
+
+BreedingHelper
+- Added in the following to be improved with breeding
+-- attack
+-- defense
+-- armor toughness
+
+ChocoboStatSnapshot
+- Updated Default Snapshot
+-- Attack
+-- Armor
+-- Armor Toughness
+- Default snapshot used for Chocobo Eggs that are not obtained via breeding
+-- Matches the default chocobo stats.
+
+Chocobo
+- Updated Default Attributes for spawned Chocobos & Chocobos spawned with 'Spawn Eggs'
+- Added in SpawnEgg override to bypass Biomechecks for spawning
+- Enabled Chocobo to be Invincible if being ridden by a Creative Mode player
+- Enabled Automatic healing of the Chocobo from the offhand
+-- gysahl Greens must be in the offhand.
+- made public methods to be used in ChocoboGoals
+-- getFollowspeedmodifier
+-- getridetickdelay
+- created lavaescapegoal
+
+ChocoboGoals
+- Added goal to help get out of lava
+
+Cleaned up ChocoboSpawnerItemHelper
+- Worthless code w/ no function
+- Only Item of it, Chocobo Feather
+-- Had hidden functions, now non-functional/disabled before removed
+
+Language files
+- Changed invalid egg text
+-- Placing it & picking it back up will solve give it the correct tag/nbt data.

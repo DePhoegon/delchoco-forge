@@ -5,7 +5,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.Tags.Items;
 
 import java.util.Optional;
 import java.util.Random;

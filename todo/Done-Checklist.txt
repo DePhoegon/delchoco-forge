@@ -302,3 +302,10 @@ Tested Chocobo riding in MP enviroment
 Chocobo Movements over Liquids
 Fixed Bug in logic to not render chocobo
 -Bug was on a live client
+
+2-15-23
+Updated Chocobo Stats
+Updated Chocobo Breeding
+Updated Chocobo Riding
+Added LavaEscapeGoal
+Cleaned up Code
