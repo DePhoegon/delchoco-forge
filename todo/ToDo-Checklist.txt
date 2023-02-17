@@ -41,3 +41,7 @@ Create Paralyze 'item'
 - Use NoAI flag
 - Account for removable/adding goals that gets toggled with the whistle
 - preserve through save/load
+
+2-17-23
+
+Seperate untamed plumes from chocobo Layers for their own rendering layer.

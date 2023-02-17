@@ -1,0 +1,13 @@
+Layer Transparency
+- Got a method to set a layer to some level of transparency
+-- Plumes are 'see-through' ish
+-- armor is just transparent enough to look sorta buried in feathers
+- Scale doesn't work as intended.
+-- Would need to make a new model, &/or rework the model body in unique ways.
+---- Not worth doing.
+------ using transparency
+
+ToDos'
+- Remake layer
+-- Create layer for untamed plumes to stack & get it's own transparency
+---- It's worth, just time-consuming

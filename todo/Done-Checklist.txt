@@ -340,3 +340,7 @@ Goals
 
 Screenshots
 - Started grabbing screenshots of natural spawns
+
+Render Layers
+- Translucent-ish Armor
+- Translucent-ish Plumes
