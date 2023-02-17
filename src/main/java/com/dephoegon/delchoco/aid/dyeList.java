@@ -1,7 +1,6 @@
 package com.dephoegon.delchoco.aid;
 
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -10,10 +9,7 @@ import static com.dephoegon.delbase.item.shiftingDyes.*;
 import static net.minecraft.world.item.Items.*;
 
 public abstract class dyeList {
-    private static ArrayList<Item> ListOfDyes = new ArrayList<>();
-    private static ArrayList<Item> ListOfModDyes = new ArrayList<>();
-
-    private static void setListOfDyes() {
+    private static @NotNull ArrayList<Item> setListOfDyes() {
         ArrayList<Item> dyes = new ArrayList<>();
         dyes.add(RED_DYE.asItem());
         dyes.add(BLACK_DYE.asItem());
@@ -31,9 +27,9 @@ public abstract class dyeList {
         dyes.add(MAGENTA_DYE.asItem());
         dyes.add(ORANGE_DYE.asItem());
         dyes.add(WHITE_DYE.asItem());
-        ListOfDyes = dyes;
+        return dyes;
     }
-    private static void setListOfModDyes() {
+    private static @NotNull ArrayList<Item> setListOfModDyes() {
         ArrayList<Item> dyes = new ArrayList<>();
         dyes.add(CLEANSE_SHIFT_DYE.get().asItem());
         dyes.add(RED_SHIFT_DYE.get().asItem());
@@ -53,16 +49,12 @@ public abstract class dyeList {
         dyes.add(MAGENTA_SHIFT_DYE.get().asItem());
         dyes.add(ORANGE_SHIFT_DYE.get().asItem());
         dyes.add(WHITE_SHIFT_DYE.get().asItem());
-        ListOfModDyes = dyes;
+        return dyes;
     }
     public static @NotNull ArrayList<Item> getDyeList() {
         ArrayList<Item> out = new ArrayList<>();
-        out.addAll(ListOfDyes);
-        out.addAll(ListOfModDyes);
+        out.addAll(setListOfDyes());
+        out.addAll(setListOfModDyes());
         return out;
-    }
-    public static void setLists() {
-        setListOfDyes();
-        setListOfModDyes();
     }
 }

@@ -75,6 +75,8 @@ public class GysahlGreenBlock extends CropBlock {
         block_set.add(9, Blocks.WARPED_NYLIUM.defaultBlockState());
         block_set.add(10, Blocks.CLAY.defaultBlockState());
         block_set.add(11, Blocks.MOSS_BLOCK.defaultBlockState());
+        block_set.add(12, Blocks.DRIPSTONE_BLOCK.defaultBlockState());
+        block_set.add(13, Blocks.TUFF.defaultBlockState());
         return block_set;
     }
 }

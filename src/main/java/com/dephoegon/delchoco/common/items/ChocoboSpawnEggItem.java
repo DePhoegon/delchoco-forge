@@ -16,6 +16,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 public class ChocoboSpawnEggItem extends Item {
     private final ChocoboColor color;
@@ -52,7 +55,7 @@ public class ChocoboSpawnEggItem extends Item {
             Component nameCheck = name(context.getItemInHand());
             if (context.getItemInHand().hasCustomHoverName()) { chocobo.setCustomName(nameCheck); }
             chocobo.setFlame(color == ChocoboColor.FLAME);
-            chocobo.setWaterBreath(color == ChocoboColor.BLUE);
+            chocobo.setWaterBreath(wbChocobos().contains(color));
             chocobo.setFromEgg(true);
             chocobo.finalizeSpawn((ServerLevel)worldIn, worldIn.getCurrentDifficultyAt(chocobo.blockPosition()), MobSpawnType.SPAWN_EGG, (SpawnGroupData)null, (CompoundTag)null);
             worldIn.addFreshEntity(chocobo);
@@ -61,5 +64,13 @@ public class ChocoboSpawnEggItem extends Item {
         }
 
         return InteractionResult.CONSUME;
+    }
+    public static @NotNull ArrayList<ChocoboColor> wbChocobos() {
+        ArrayList<ChocoboColor> out = new ArrayList<>();
+        out.add(ChocoboColor.BLUE);
+        out.add(ChocoboColor.GOLD);
+        out.add(ChocoboColor.BLACK);
+        out.add(ChocoboColor.PURPLE);
+        return out;
     }
 }

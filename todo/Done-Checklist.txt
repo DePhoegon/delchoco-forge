@@ -309,3 +309,34 @@ Updated Chocobo Breeding
 Updated Chocobo Riding
 Added LavaEscapeGoal
 Cleaned up Code
+
+2-16_17-23
+
+Spawning Expansion
+- Chocobos
+-- Loot
+--- Leather, was added (supposedly)
+-- End
+--- Added Floor Check
+--- added, Strengthened to be common levels
+--- Purple Chocobos
+----- Random Chance for ender pearls when saddled/killed
+-- Nether
+--- Strengthened to be reasonably found.
+- Gysahl Greens
+-- Allowed on dripstone & tuff blocks
+- Weights adjusted
+- Stats are varied between chocobos within a range
+-- HP
+-- Strength
+-- Natural armor
+-- Natural armor toughness
+-- all spawned (natural & egg)
+-- From illegally obtained 'chocobo_egg' w/o being gotten through breeding
+- Backend logic trimming
+
+Goals
+- Shuffled about to allow more wondering while not tamed
+
+Screenshots
+- Started grabbing screenshots of natural spawns

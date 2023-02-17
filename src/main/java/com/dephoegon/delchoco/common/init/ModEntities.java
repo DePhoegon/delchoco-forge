@@ -9,7 +9,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings.SpawnerData;
-import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
@@ -19,7 +18,8 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
 import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
-import static com.dephoegon.delchoco.common.entities.Chocobo.*;
+import static com.dephoegon.delchoco.common.entities.Chocobo.createAttributes;
+import static net.minecraft.world.level.biome.Biomes.WARM_OCEAN;
 import static net.minecraftforge.common.BiomeDictionary.hasType;
 
 public class ModEntities {
@@ -35,22 +35,27 @@ public class ModEntities {
 
         // Biome Spawning area
         // Overrides Spawn Eggs
-        ResourceKey<Biome> biomeKey = ResourceKey.create(Registry.BIOME_REGISTRY, event.getName());
+        ResourceKey<Biome> biomesKey = ResourceKey.create(Registry.BIOME_REGISTRY, event.getName());
 
-        String bob = biomeKey.toString();
+        String bob = biomesKey.toString();
         // Name Strings to extend towards BOP support
-        if (BiomeDictionary.hasType(biomeKey, Type.NETHER)) {
-            event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(),
-                    COMMON.chocoboSpawnWeightNether.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get()));
-        }
-        if(BiomeDictionary.hasType(biomeKey, Type.PLAINS) || BiomeDictionary.hasType(biomeKey, Type.HILLS) || (BiomeDictionary.hasType(biomeKey, Type.HOT) && BiomeDictionary.hasType(biomeKey, Type.DRY) && !(BiomeDictionary.hasType(biomeKey, Type.NETHER))) || BiomeDictionary.hasType(biomeKey, Type.SNOWY) || BiomeDictionary.hasType(biomeKey, Type.SWAMP) || BiomeDictionary.hasType(biomeKey, Type.MESA) || bob.contains("mystic") || bob.contains("blossom") || bob.contains("lavender") || bob.contains("tropics") || hasType(biomeKey, Type.FOREST)) {
+        if (!hasType(biomesKey, Type.OCEAN) || biomesKey == WARM_OCEAN){
+            if (hasType(biomesKey, Type.NETHER)) {
+                event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(),
+                        COMMON.chocoboSpawnWeightNether.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get()));
+            }
+            if (hasType(biomesKey, Type.MUSHROOM)) {
+                event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(),
+                        COMMON.chocoboSpawnWeightMushroom.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get()));
+            } else if (hasType(biomesKey, Type.OVERWORLD)) {
+                event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(),
+                        COMMON.chocoboSpawnWeight.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get()));
+            }
+            if (hasType(biomesKey, Type.END)) {
+                event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(),
+                        COMMON.chocoboSpawnWeightEnd.get(), COMMON.chocoboPackSizeMin.get()+1, COMMON.chocoboPackSizeMax.get()+2));
 
-            event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(),
-                    COMMON.chocoboSpawnWeight.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get()));
-        }
-        if (BiomeDictionary.hasType(biomeKey, Type.MUSHROOM)) {
-            event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(),
-                    COMMON.chocoboSpawnWeightMushroom.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get()));
+            }
         }
     }
 

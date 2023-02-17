@@ -7,8 +7,14 @@ import com.dephoegon.delchoco.common.init.ModAttributes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.system.CallbackI;
 
 import java.util.Objects;
+
+import static com.dephoegon.delchoco.common.entities.properties.ChocoboColor.FLAME;
+import static com.dephoegon.delchoco.common.entities.properties.ChocoboColor.getRandomColor;
+import static com.dephoegon.delchoco.common.items.ChocoboSpawnEggItem.wbChocobos;
+import static com.dephoegon.delchoco.utils.RandomHelper.random;
 
 public class ChocoboStatSnapshot {
     public static final ChocoboStatSnapshot DEFAULT;
@@ -47,7 +53,7 @@ public class ChocoboStatSnapshot {
         DEFAULT.waterBreath = false;
         DEFAULT.color = ChocoboColor.YELLOW;
     }
-    private ChocoboStatSnapshot() { }
+    public ChocoboStatSnapshot() { }
     public ChocoboStatSnapshot(@NotNull Chocobo chocobo) {
         this.generation = chocobo.getGeneration();
         this.health = (float) Objects.requireNonNull(chocobo.getAttribute(Attributes.MAX_HEALTH)).getBaseValue();

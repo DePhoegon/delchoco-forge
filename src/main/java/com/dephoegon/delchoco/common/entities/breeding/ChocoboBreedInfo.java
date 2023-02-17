@@ -37,6 +37,7 @@ public class ChocoboBreedInfo {
     }
 
     public static @NotNull ChocoboBreedInfo getFromNbtOrDefault(@Nullable CompoundTag nbt) {
-        return nbt != null ? new ChocoboBreedInfo(nbt) : new ChocoboBreedInfo(ChocoboStatSnapshot.DEFAULT, ChocoboStatSnapshot.DEFAULT);
+        return nbt != null ? new ChocoboBreedInfo(nbt) : new ChocoboBreedInfo(new ChocoboSnap().TWEAKED_DEFAULT, new ChocoboSnap().TWEAKED_DEFAULT);
     }
+
 }

@@ -41,11 +41,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -64,6 +61,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biome.BiomeCategory;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -72,8 +70,6 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.PacketDistributor;
@@ -89,14 +85,15 @@ import java.util.UUID;
 import static com.dephoegon.delbase.item.shiftingDyes.*;
 import static com.dephoegon.delchoco.aid.chocoKB.isAltDown;
 import static com.dephoegon.delchoco.aid.dyeList.getDyeList;
-import static com.dephoegon.delchoco.aid.dyeList.setLists;
 import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 import static com.dephoegon.delchoco.common.init.ModSounds.AMBIENT_SOUND;
+import static net.minecraft.world.entity.ai.attributes.Attributes.*;
 import static net.minecraft.world.item.Items.*;
 import static net.minecraft.world.level.biome.Biome.getBiomeCategory;
-import static net.minecraftforge.common.BiomeDictionary.hasType;
+import static net.minecraft.world.level.biome.Biomes.*;
 import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
+import static net.minecraftforge.common.Tags.Biomes.*;
 
 @SuppressWarnings({"rawtypes", "ConstantConditions"})
 public class Chocobo extends TamableAnimal implements NeutralMob {
@@ -126,7 +123,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     private int timeToRecalculatePath;
     private final double followSpeedModifier = 2.0D;
 
-    private static final UniformInt ALERT_INTERVAL = TimeUtil.rangeOfSeconds(4, 6);
+    private final UniformInt ALERT_INTERVAL = TimeUtil.rangeOfSeconds(4, 6);
 
     private static final EntityDataAccessor<ChocoboColor> PARAM_COLOR = SynchedEntityData.defineId(Chocobo.class, ModDataSerializers.CHOCOBO_COLOR);
     private static final EntityDataAccessor<Boolean> PARAM_IS_MALE = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.BOOLEAN);
@@ -154,24 +151,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     public final ItemStackHandler chocoboInventory = new ItemStackHandler(top_tier_chocobo_inv_slot_count){
         // will be treated as the backbone
         protected void onContentsChanged(int slot) {
-            if (slot > 10 && slot <16) {
-                if (chocoboInventory.getStackInSlot(slot) != tierOneItemStackHandler.getStackInSlot(slot - 11)) {
-                    tierOneItemStackHandler.setStackInSlot(slot - 11, chocoboInventory.getStackInSlot(slot));
-                }
-            }
-            if (slot > 19 && slot <25) {
-                if (chocoboInventory.getStackInSlot(slot) != tierOneItemStackHandler.getStackInSlot(slot - 15)) {
-                    tierOneItemStackHandler.setStackInSlot(slot - 15, chocoboInventory.getStackInSlot(slot));
-                }
-            }
-            if (slot > 28 && slot <34) {
-                if (chocoboInventory.getStackInSlot(slot) != tierOneItemStackHandler.getStackInSlot(slot - 19)) {
-                    tierOneItemStackHandler.setStackInSlot(slot - 19, chocoboInventory.getStackInSlot(slot));
-                }
-            }
-            if (chocoboInventory.getStackInSlot(slot) != tierTwoItemStackHandler.getStackInSlot(slot)) {
-                tierTwoItemStackHandler.setStackInSlot(slot, chocoboInventory.getStackInSlot(slot));
-            }
+            chocoboFeatherPick(chocoboInventory, tierOneItemStackHandler, slot);
+            chocoboFeatherPick(chocoboInventory, tierTwoItemStackHandler, slot);
         }
     };
     public final ItemStackHandler tierOneItemStackHandler = new ItemStackHandler(tier_one_chocobo_inv_slot_count) {
@@ -228,9 +209,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     private float wingRotDelta;
     private BlockPos nestPos;
 
-    public Chocobo(EntityType<? extends Chocobo> type, Level world) {
-        super(type, world);
-    }
+    public Chocobo(EntityType<? extends Chocobo> type, Level world) { super(type, world); }
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
@@ -239,10 +218,10 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         // toggleable Goal 3, - Follow owner (whistle [tamed])
         this.goalSelector.addGoal(4, new ChocoboLavaEscape(this));
         // toggleable Goal 5, - Avoid Player Goal (non-tamed goal)
-        this.goalSelector.addGoal(6, new TemptGoal(this, 1.2D, Ingredient.of(GYSAHL_GREEN.get()), false));
-        this.goalSelector.addGoal(7, new AvoidEntityGoal<>(this, Llama.class, 15F, 1.3F, 1.5F));
-        this.goalSelector.addGoal(8, new ChocoboMateGoal(this, 1.0D));
-        // toggleable Goal 9, - Roam Around Goal (whistle toggle [tamed/non-tamed])
+        // toggleable Goal 6, - Roam Around Goal (whistle toggle [tamed/non-tamed])
+        this.goalSelector.addGoal(7, new TemptGoal(this, 1.2D, Ingredient.of(GYSAHL_GREEN.get()), false));
+        this.goalSelector.addGoal(8, new AvoidEntityGoal<>(this, Llama.class, 15F, 1.3F, 1.5F));
+        this.goalSelector.addGoal(9, new ChocoboMateGoal(this, 1.0D));
         // toggleable Goal 10, - Avoid Blocks by Class<? extends Block>
         this.goalSelector.addGoal(11, new RandomLookAroundGoal(this)); // moved after Roam, a little too stationary
         this.goalSelector.addGoal(12, new LookAtPlayerGoal(this, Player.class, 6.0F));
@@ -252,7 +231,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, true));
         this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, Endermite.class, false));
-        this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, Silverfish.class, false));
+        this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, Silverfish.class, false));
     }
     private final FollowOwnerGoal follow = new FollowOwnerGoal(this, followSpeedModifier, 4.0F, 30.0F, false);
     private boolean noRoam;
@@ -262,14 +241,13 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         return Mob.createMobAttributes()
                 .add(ModAttributes.MAX_STAMINA.get(),  ChocoConfig.COMMON.defaultStamina.get())
                 .add(Attributes.MOVEMENT_SPEED, COMMON.defaultSpeed.get() / 100f)
-                .add(Attributes.MAX_HEALTH, ChocoConfig.COMMON.defaultHealth.get())
+                .add(MAX_HEALTH, ChocoConfig.COMMON.defaultHealth.get())
                 .add(Attributes.ARMOR, COMMON.defaultArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, COMMON.defaultArmorToughness.get())
                 .add(Attributes.ATTACK_SPEED)
                 .add(Attributes.ATTACK_DAMAGE, COMMON.defaultAttackStrength.get())
                 .add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()*3);
     }
-
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
@@ -324,28 +302,77 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         compound.putFloat(NBTKEY_CHOCOBO_STAMINA, this.getStamina());
         compound.putInt(NBTKEY_CHOCOBO_COLLAR, this.getCollarColor());
     }
-
+    private @NotNull ArrayList<ResourceKey<Biome>> whiteChocobo() {
+        ArrayList<ResourceKey<Biome>> out = new ArrayList<>();
+        out.add(OLD_GROWTH_BIRCH_FOREST);
+        out.add(BIRCH_FOREST);
+        return out;
+    }
+    private @NotNull ArrayList<ResourceKey<Biome>> blueChocobo() {
+        ArrayList<ResourceKey<Biome>> out = new ArrayList<>();
+        out.add(WARM_OCEAN);
+        out.add(RIVER);
+        return out;
+    }
+    private @NotNull ArrayList<ResourceKey<Biome>> greenChocobo() {
+        ArrayList<ResourceKey<Biome>> out = new ArrayList<>();
+        out.add(JUNGLE);
+        out.add(BAMBOO_JUNGLE);
+        out.add(SWAMP);
+        out.add(LUSH_CAVES);
+        out.add(DRIPSTONE_CAVES);
+        return out;
+    }
+    public int ChocoboShaker(@NotNull String stat) {
+        return switch (stat) {
+            case "health" -> boundedRangeModifier(5, 10);
+            case "attack", "toughness" -> boundedRangeModifier(1, 3);
+            case "defense" -> boundedRangeModifier(2, 4);
+            default -> 0;
+        };
+    }
+    private void chocoboStatShake(Attribute attribute, String text) {
+        int aValue = ChocoboShaker(text);
+        this.getAttribute(attribute).addPermanentModifier(new AttributeModifier(text+" variance", aValue, Operation.ADDITION));
+    }
+    private int boundedRangeModifier(int lower, int upper) {
+        int range = lower+upper;
+        return random.nextInt(range)-lower;
+    }
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor worldIn, @NotNull DifficultyInstance difficultyIn, @NotNull MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setMale(this.level.random.nextBoolean());
 
         final Holder<Biome> currentBiomes = this.level.getBiome(blockPosition().below());
-        Biome.BiomeCategory biomeCategory = getBiomeCategory(currentBiomes);
+        BiomeCategory biomeCategory = getBiomeCategory(currentBiomes);
         //noinspection OptionalGetWithoutIsPresent
         final ResourceKey<Biome> BiomesKey = currentBiomes.unwrapKey().get();
         if (!fromEgg()) {
             setChocobo(ChocoboColor.YELLOW, false, false);
-            if (biomeCategory == Biome.BiomeCategory.NETHER) { setChocobo(ChocoboColor.FLAME, true, false); }
-            if (biomeCategory == Biome.BiomeCategory.FOREST && !(nameCheck(currentBiomes, "mystic") || nameCheck(currentBiomes, "blossom")  || nameCheck(currentBiomes, "tropics") || nameCheck(currentBiomes, "lavender"))) { setChocobo(ChocoboColor.RED, false, false); }
-            else if (biomeCategory == Biome.BiomeCategory.MESA) { setChocobo(ChocoboColor.RED, false, false); }
-            else if (hasType(BiomesKey, Type.HOT) && hasType(BiomesKey, Type.DRY)) { setChocobo(ChocoboColor.BLACK, false, true); }
-            if (biomeCategory == Biome.BiomeCategory.MUSHROOM) { setChocobo(ChocoboColor.PINK, false, false); }
-            if (hasType(BiomesKey, Type.SNOWY)) { setChocobo(ChocoboColor.WHITE, false, false); }
-            if (biomeCategory == Biome.BiomeCategory.SWAMP) { setChocobo(ChocoboColor.GREEN, false, false); }
-            if (nameCheck(currentBiomes, "mystic")) { setChocobo(ChocoboColor.BLUE, false, true); }
-            if (nameCheck(currentBiomes, "blossom")) { setChocobo(ChocoboColor.PINK, false, false); }
-            if (nameCheck(currentBiomes, "lavender")) { setChocobo(ChocoboColor.PURPLE, false, true); }
-            if (nameCheck(currentBiomes, "tropics")) { setChocobo(ChocoboColor.GOLD, false, true); }
+            if (!currentBiomes.containsTag(IS_END) && !currentBiomes.containsTag(IS_OVERWORLD)) { setChocoboSpawnCheck(ChocoboColor.FLAME, true, false); }
+            if (currentBiomes.containsTag(IS_END)) { setChocoboSpawnCheck(ChocoboColor.PURPLE, false, true); }
+            if (BiomesKey == MUSHROOM_FIELDS) { setChocoboSpawnCheck(ChocoboColor.PINK, false, false); }
+            if (currentBiomes.containsTag(IS_SNOWY) || whiteChocobo().contains(BiomesKey)) { setChocoboSpawnCheck(ChocoboColor.WHITE, false, false); }
+            if (blueChocobo().contains(BiomesKey)) { setChocoboSpawnCheck(ChocoboColor.BLUE, false, true); }
+            if (biomeCategory == BiomeCategory.FOREST || biomeCategory == BiomeCategory.MESA) { setChocoboSpawnCheck(ChocoboColor.RED, false, false); }
+            if (greenChocobo().contains(BiomesKey)) { setChocoboSpawnCheck(ChocoboColor.GREEN, false, false); }
+            if (currentBiomes.containsTag(IS_HOT_OVERWORLD) && !currentBiomes.containsTag(IS_SAVANNA)) { setChocoboSpawnCheck(ChocoboColor.BLACK, false, true); }
+        }
+        chocoboStatShake(MAX_HEALTH, "health");
+        chocoboStatShake(ATTACK_DAMAGE, "attack");
+        chocoboStatShake(ARMOR, "defense");
+        chocoboStatShake(ARMOR_TOUGHNESS, "toughness");
+        if (getChocoboColor() == ChocoboColor.PURPLE) {
+            int chance = currentBiomes.containsTag(IS_END) ? 60 : 15;
+            if (random.nextInt(100)+1 < chance) {
+                this.chocoboInventory.setStackInSlot(random.nextInt(18), new ItemStack(ENDER_PEARL.getDefaultInstance().split(random.nextInt(3) + 1).getItem()));
+            }
+            if (random.nextInt(100)+1 < chance) {
+                this.chocoboInventory.setStackInSlot(random.nextInt(9)+18, new ItemStack(ENDER_PEARL.getDefaultInstance().split(random.nextInt(3) + 1).getItem()));
+            }
+            if (random.nextInt(100)+1 < chance) {
+                this.chocoboInventory.setStackInSlot(random.nextInt(18)+27, new ItemStack(ENDER_PEARL.getDefaultInstance().split(random.nextInt(3) + 1).getItem()));
+            }
         }
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
@@ -357,6 +384,10 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         this.setFlame(flame);
         this.setWaterBreath(water);
         this.setChocoboColor(color);
+    }
+    private void setChocoboSpawnCheck(ChocoboColor color, boolean flame, boolean water) {
+        ChocoboColor chocobo = this.getChocoboColor();
+        if (chocobo == ChocoboColor.YELLOW && chocobo != color) { setChocobo(color, flame, water); }
     }
 
     @Override
@@ -655,13 +686,13 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             }
         }
     }
-    public float getWalkTargetValue(BlockPos pPos, LevelReader pLevel) {
+    public float getWalkTargetValue(@NotNull BlockPos pPos, @NotNull LevelReader pLevel) {
         if (pLevel.getBlockState(pPos).getFluidState().is(FluidTags.LAVA)) {
             return 10.0F;
         } else if (pLevel.getBlockState(pPos).getFluidState().is(FluidTags.WATER)) {
             return 10.0F;
         }
-        return this.getSpeed();
+        return (float) this.getAttribute(Attributes.MOVEMENT_SPEED).getValue();
     }
     private boolean maybeTeleportTo(int pX, int pY, int pZ, @NotNull LivingEntity owner) {
         if (Math.abs((double)pX - owner.getX()) < 2.0D && Math.abs((double)pZ - owner.getZ()) < 2.0D) {
@@ -850,7 +881,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     @Override
     public @NotNull InteractionResult interactAt(@NotNull Player player, @NotNull Vec3 vec, @NotNull InteractionHand hand) {
         ItemStack heldItemStack = player.getItemInHand(hand);
-        setLists();
         Item defaultHand = heldItemStack.getItem();
         if (this.isTame()) {
             if (getDyeList().contains(defaultHand)) {
@@ -889,7 +919,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                         this.playSound(ModSounds.WHISTLE_SOUND_FOLLOW.get(), 1.0F, 1.0F);
                         this.setNoAi(false);
                         if (noRoam) {
-                            this.goalSelector.addGoal(9, this.roamAround);
+                            this.goalSelector.addGoal(6, this.roamAround);
                             this.goalSelector.addGoal(10, this.avoidBlocks);
                             noRoam = false;
                         }
@@ -992,21 +1022,27 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         player.initMenu(player.containerMenu);
         EVENT_BUS.post(new PlayerContainerEvent.Open(player, player.containerMenu));
     }
-    private void chocoboFeatherPick(@NotNull ItemStackHandler inv, @NotNull ItemStackHandler backbone, int slot) {
-        boolean isTierOne = inv.getSlots() < backbone.getSlots();
-        int slotAdjust;
+    private void chocoboFeatherPick(@NotNull ItemStackHandler sendingInv, @NotNull ItemStackHandler receivingInv, int slot) {
+        boolean isReverseTierOne = sendingInv.getSlots() > receivingInv.getSlots();
+        boolean isTierOne = sendingInv.getSlots() < receivingInv.getSlots();
+        boolean pick = true;
+        int slotAdjust = slot;
         if (isTierOne) {
-            if (slot < 5) {
-                slotAdjust = slot + 11;
-            } else if (slot < 10) {
-                slotAdjust = slot + 15;
-            } else {
-                slotAdjust = slot + 19;
-            }
-        } else {
-            slotAdjust = slot;
+            if (slot < 5) { slotAdjust = slot + 11; }
+            if (slot > 4 && slot < 10) { slotAdjust = slot + 15; }
+            if (slot > 9) { slotAdjust = slot + 19; }
         }
-        backbone.setStackInSlot(slotAdjust, inv.getStackInSlot(slot));
+        if (isReverseTierOne) {
+            if (slot > 10 && slot < 16) { slotAdjust = slot-11; }
+            if (slot > 19 && slot < 25) { slotAdjust = slot-15; }
+            if (slot > 28 && slot < 34) { slotAdjust = slot-19; }
+            pick = slotAdjust != slot;
+        }
+        if (pick) {
+            if (receivingInv.getStackInSlot(slotAdjust) != sendingInv.getStackInSlot(slot)) {
+                receivingInv.setStackInSlot(slotAdjust, sendingInv.getStackInSlot(slot));
+            }
+        }
     }
     @Override
     protected void dropFromLootTable(@NotNull DamageSource damageSourceIn, boolean attackedRecently) {
@@ -1032,19 +1068,22 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     @Override
     public boolean checkSpawnRules(@NotNull LevelAccessor worldIn, @NotNull MobSpawnType spawnReasonIn) {
         final Holder<Biome> currentBiome = this.level.getBiome(blockPosition().below());
-        @SuppressWarnings("OptionalGetWithoutIsPresent") final ResourceKey<Biome> key = currentBiome.unwrapKey().get();
-        if (BiomeDictionary.hasType(key, Type.NETHER)) { return true; }
+        if (!currentBiome.containsTag(IS_OVERWORLD)) {
+            if (currentBiome.containsTag(IS_END)) {
+                return !this.level.getBlockState(blockPosition().below()).isAir();
+            } else { return true; }
+        }
         return super.checkSpawnRules(worldIn, spawnReasonIn);
     }
     @Override
     protected void reassessTameGoals() {
         super.reassessTameGoals();
         if(chocoboAvoidPlayerGoal == null) { chocoboAvoidPlayerGoal = new ChocoboAvoidPlayer(this); }
-        if (roamAround == null) { roamAround = new WaterAvoidingRandomStrollGoal(this, 0.8D); }
+        if (roamAround == null) { roamAround = new WaterAvoidingRandomStrollGoal(this, 1D); }
         if (avoidBlocks == null) { avoidBlocks = new ChocoboAvoidBlockGoal(this,  avoidBlocks()); }
         if(isTame()) { goalSelector.removeGoal(chocoboAvoidPlayerGoal);}
         else { goalSelector.addGoal(5, chocoboAvoidPlayerGoal); }
-        goalSelector.addGoal(9, roamAround);
+        goalSelector.addGoal(6, roamAround);
         goalSelector.addGoal(10, avoidBlocks);
         noRoam = false;
     }

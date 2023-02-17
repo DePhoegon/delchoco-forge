@@ -20,6 +20,7 @@ public class ChocoConfig {
         public final IntValue chocoboSpawnWeight;
         public final IntValue chocoboSpawnWeightMushroom;
         public final IntValue chocoboSpawnWeightNether;
+        public final IntValue chocoboSpawnWeightEnd;
         public final IntValue chocoboPackSizeMin;
         public final IntValue chocoboPackSizeMax;
 
@@ -78,20 +79,25 @@ public class ChocoConfig {
                     .push("spawning");
 
             chocoboSpawnWeight = builder
-                    .comment("Controls Chocobo Spawn Weight [Default: 10]")
-                    .defineInRange("chocoboSpawnWeight", 10, 0, Integer.MAX_VALUE);
+                    .comment("Controls Chocobo Spawn Weight [Default: 8]")
+                    .defineInRange("chocoboSpawnWeight", 8, 0, Integer.MAX_VALUE);
 
             chocoboSpawnWeightMushroom = builder
                     .comment("Controls Chocobo Spawn Weight in Mushroom Fields [Default: 1]\nMooshrooms are easily pushed out (spawn wise)")
                     .defineInRange("chocoboSpawnWeightMushrooms", 2, 0, 4);
 
             chocoboSpawnWeightNether = builder
-                    .comment("Controls Chocobo Spawn Weight in the Nether. [Default: 80]\nThe Nether seems to be a bit more aggressive & requires a higher number.")
-                    .defineInRange("chocoboSpawnWeightNether", 80, 50, Integer.MAX_VALUE);
+                    .comment("Controls Chocobo Spawn Weight in the Nether. [Default: 250]\nThe Nether seems to be a bit more aggressive & requires a higher number.")
+                    .defineInRange("chocoboSpawnWeightNether", 250, 100, Integer.MAX_VALUE);
+
+            chocoboSpawnWeightEnd = builder
+                    .comment("Controls Chocobo Spawn Weight in the End. [Default: 250]\nEnderman Spawns are super aggressive.\nTested at old default spawn weight (10)*25 to be reasonable")
+                    .defineInRange("chocoboSpawnWeightEnd", 250, 100, Integer.MAX_VALUE);
 
             chocoboPackSizeMin = builder
                     .comment("Controls Chocobo Pack Size Min [Default: 1]")
                     .defineInRange("chocoboPackSizeMin", 1, 0, Integer.MAX_VALUE);
+
             chocoboPackSizeMax = builder
                     .comment("Controls Chocobo Pack Size Max [Default: 3]")
                     .defineInRange("chocoboPackSizeMax", 3, 0, Integer.MAX_VALUE);

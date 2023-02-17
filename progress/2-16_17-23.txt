@@ -1,0 +1,53 @@
+Gysahl Greens
+- Added Tuff Blocks & Dripstone Blocks as viable supporting blocks & Spawning blocks
+
+Chocobo Spawning
+- Added a 'Blacklist Filter'
+-- Oceans (excluding warm Oceans)
+-- Overworld is blanket spawn for chocobos outside that filter
+- Added Underground
+-- Lush Caves & Dripstone Caverns
+--- Lush Caves - Green Chocobo
+--- Dripstone Caverns - Green Chocobo
+- Changed Spawning to support Base Game only
+-- Will create mods to support world gen as needed
+- Set Black, Purple, Gold, Blue to have waterbreathing
+-- black, is gotten with blue breed,
+--- gold, is gotten with black
+-- purple, is gotten with blue breed,
+- Adjusted default numbers
+-- Nether - 250
+-- End - 250
+-- Overworld - 8
+-- Mushroom Biome - 2
+- Created a Variance Snapshot for Eggs
+-- Only used with eggs not obtained via breeding
+---- creative/OP give access only
+- Created Variance in Natually spawned & Those spawned with (spawning eggs)
+- added arraylists to support spawnfinalization
+-- White
+-- Blue
+-- Green
+- Gave Purple Chocobos (spawned) a chance to have some enderpearls in their inventory
+-- Will drop if saddled (aka, checked features)  or killed.
+--- Ones spawned in the end will have a greater chance at them
+- Added spawn support method for color checking
+-- Makes easier logic
+--- allows for exclusion based on priority of being ordered
+- Added Floor check to spawns in the end
+-- No checks for in the Nether are possible (It locks up to much, though it seems to be fine without it)
+- aligned egg spawned chocobos waterbreathing with spawned ones.
+
+Chocobo Loot
+- Added Leather as a Drop
+-- Supposedly.. Roll testing >>.>>
+
+Random Touchings
+- Dye List changed up
+- Chocobo Inventory uses Method now
+-- all
+- Adjusted Chocobo Goals around
+- Fixed wondering speed
+
+Guide Book
+- Started to get updated Screenshots
