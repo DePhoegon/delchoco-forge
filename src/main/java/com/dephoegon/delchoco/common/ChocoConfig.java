@@ -1,6 +1,7 @@
 package com.dephoegon.delchoco.common;
 
 import com.dephoegon.delchoco.DelChoco;
+import com.sun.jdi.FloatValue;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
@@ -8,6 +9,8 @@ import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.tuple.Pair;
+
+import static com.dephoegon.delchoco.client.renderer.entities.ChocoboRenderer.*;
 
 public class ChocoConfig {
 
@@ -54,6 +57,10 @@ public class ChocoConfig {
         public final DoubleValue poslossStamina;
         public final IntValue eggHatchTimeTicks;
         public final BooleanValue ownerOnlyAccess;
+        public final DoubleValue collarInvisibility;
+        public final DoubleValue armorInvisibility;
+        public final DoubleValue saddleInvisibility;
+        public final DoubleValue weaponInvisibility;
 
         Common(ForgeConfigSpec.Builder builder) {
             builder.comment("World generation related configuration")
@@ -153,6 +160,26 @@ public class ChocoConfig {
             defaultHealth = builder
                     .comment("Controls the default Health [Default: 20]")
                     .defineInRange("defaultHealth", 20, 0, Integer.MAX_VALUE);
+
+            builder.pop();
+            builder.comment("Chocobo Transparencies - 0 is invisible\nControls how visible the Chocobo Part is when the Chocobo is invisible")
+                            .push("visibility");
+
+            collarInvisibility = builder
+                    .comment("Collar - Default [0.2]")
+                            .defineInRange("collarInvisibility", 0.2, 0, collarAlpha);
+
+            armorInvisibility = builder
+                    .comment("Armor - Default [0.1]")
+                            .defineInRange("armorInvisibility", 0.1, 0, armorAlpha);
+
+            weaponInvisibility = builder
+                    .comment("Weapon - Default [0.1]")
+                            .defineInRange("weaponInvisibility", 0.1, 0, weaponAlpha);
+
+            saddleInvisibility = builder
+                    .comment("Saddles - Default [0.1]")
+                            .defineInRange("saddleInvisibility", 0.1, 0, saddleAlpha);
 
             builder.pop();
             builder.comment("Combat Stats")

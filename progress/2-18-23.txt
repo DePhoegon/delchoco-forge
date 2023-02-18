@@ -1,0 +1,11 @@
+Chocobo Layer Alpha
+
+- Extracted Rendering to directly call and control the types & effects.
+- Variables used to ensure no mismatched numbers.
+- ChocoConfig Expanded
+- Will Not render if set to 0
+
+Failed attempts at giving the armor layer swell.
+
+- Would require revamping the models.
+-- Not a priority

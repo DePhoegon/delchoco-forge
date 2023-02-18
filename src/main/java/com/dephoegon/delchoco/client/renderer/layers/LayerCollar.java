@@ -4,9 +4,12 @@ import com.dephoegon.delchoco.DelChoco;
 import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.Util;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +20,8 @@ import java.util.Map;
 import static com.dephoegon.delchoco.common.init.ModRegistry.STONE_CHOCO_WEAPON;
 
 public class LayerCollar extends RenderLayer<Chocobo, EntityModel<Chocobo>> {
+	private float hide;
+	private float show;
 	private static final Map<Integer, ResourceLocation> FEMALE_CHOCOBOS = Util.make(Maps.newHashMap(), (map) ->{
 		map.put(1, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/f_black_collar.png"));
 		map.put(2, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/f_brown_collar.png"));
@@ -72,8 +77,10 @@ public class LayerCollar extends RenderLayer<Chocobo, EntityModel<Chocobo>> {
 		map.put(16, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/red_collar.png"));
 	});
 
-	public LayerCollar(RenderLayerParent<Chocobo, EntityModel<Chocobo>> rendererIn) {
+	public LayerCollar(RenderLayerParent<Chocobo, EntityModel<Chocobo>> rendererIn, float visibleAlpha, float invisibleAlpha) {
 		super(rendererIn);
+		this.hide = invisibleAlpha;
+		this.show = visibleAlpha;
 	}
 
 	@Override
@@ -81,14 +88,10 @@ public class LayerCollar extends RenderLayer<Chocobo, EntityModel<Chocobo>> {
 
 		int color = chocoboEntity.getCollarColor();
 		ResourceLocation COLLAR = color != 0 ? chocoboEntity.isBaby() ? CHICOBOS.get(color) : chocoboEntity.isMale() ? MALE_CHOCOBOS.get(color) : FEMALE_CHOCOBOS.get(color) : null;
-		/*
-		if (color != 0) {
-			if (chocoboEntity.isBaby()) { COLLAR = CHICOBOS.get(color); }
-			else if (chocoboEntity.isMale()) { COLLAR = MALE_CHOCOBOS.get(color); }
-			else { COLLAR = FEMALE_CHOCOBOS.get(color); }
-		} else COLLAR = null; */
-		if (chocoboEntity.isTame() && !chocoboEntity.isInvisible() && (COLLAR != null)) {
-			renderColoredCutoutModel(this.getParentModel(), COLLAR, matrixStackIn, bufferIn, packedLightIn, chocoboEntity, 1.0F, 1.0F, 1.0F);
+		float alpha = chocoboEntity.isInvisible() ? hide : show;
+		if (chocoboEntity.isTame() && (COLLAR != null) && alpha != 0F) {
+			VertexConsumer vertexconsumer = bufferIn.getBuffer(RenderType.entityTranslucent(COLLAR, false));
+			this.getParentModel().renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, LivingEntityRenderer.getOverlayCoords(chocoboEntity, 0F), 1F, 1F, 1F, alpha);
 		}
 	}
 }

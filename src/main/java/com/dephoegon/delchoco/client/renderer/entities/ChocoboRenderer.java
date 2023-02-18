@@ -5,6 +5,7 @@ import com.dephoegon.delchoco.client.ClientHandler;
 import com.dephoegon.delchoco.client.models.entities.AdultChocoboModel;
 import com.dephoegon.delchoco.client.models.entities.ChicoboModel;
 import com.dephoegon.delchoco.client.renderer.layers.*;
+import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.google.common.collect.Maps;
@@ -72,16 +73,20 @@ public class ChocoboRenderer extends MobRenderer<Chocobo, EntityModel<Chocobo>> 
     });
     private final EntityModel<Chocobo> chicoboModel;
     private final EntityModel<Chocobo> chocoboModel = this.getModel();
+    public static final float armorAlpha = 0.75F;
+    public static final float weaponAlpha = 1;
+    public static final float collarAlpha = 1;
+    public static final float saddleAlpha = 1;
 
     public ChocoboRenderer(EntityRendererProvider.Context context) {
         super(context, new AdultChocoboModel<>(context.bakeLayer(ClientHandler.CHOCOBO)), 1.0f);
         this.chicoboModel = new ChicoboModel<>(context.bakeLayer(ClientHandler.CHICOBO));
 
-        this.addLayer(new LayerArmor(this));
-        this.addLayer(new LayerWeapon(this));
-        this.addLayer(new LayerCollar(this));
-        this.addLayer(new LayerPlumage(this));
-        this.addLayer(new LayerSaddle(this));
+        this.addLayer(new LayerArmor(this, armorAlpha, ChocoConfig.COMMON.armorInvisibility.get().floatValue()));
+        this.addLayer(new LayerWeapon(this, weaponAlpha, ChocoConfig.COMMON.weaponInvisibility.get().floatValue()));
+        this.addLayer(new LayerCollar(this, collarAlpha, ChocoConfig.COMMON.collarInvisibility.get().floatValue()));
+        this.addLayer(new LayerPlumage(this, .65F));
+        this.addLayer(new LayerSaddle(this, saddleAlpha, ChocoConfig.COMMON.saddleInvisibility.get().floatValue()));
     }
 
     @Override

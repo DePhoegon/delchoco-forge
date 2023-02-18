@@ -344,3 +344,8 @@ Screenshots
 Render Layers
 - Translucent-ish Armor
 - Translucent-ish Plumes
+
+2-18-23
+
+Chocobo Layer Rendering Alpha
+- Includes Configs to be adjusted by player.

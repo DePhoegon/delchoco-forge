@@ -21,6 +21,7 @@ import java.util.Map;
 import static com.dephoegon.delchoco.common.init.ModRegistry.STONE_CHOCO_WEAPON;
 
 public class LayerPlumage extends RenderLayer<Chocobo, EntityModel<Chocobo>> {
+	private float show;
 	private static final Map<ChocoboColor, ResourceLocation> CHOCOBO_PLUMES = Util.make(Maps.newHashMap(), (map) -> {
 		map.put(ChocoboColor.YELLOW, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/plumage_yellow.png"));
 		map.put(ChocoboColor.GREEN, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/plumage_green.png"));
@@ -33,16 +34,19 @@ public class LayerPlumage extends RenderLayer<Chocobo, EntityModel<Chocobo>> {
 		map.put(ChocoboColor.PURPLE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/plumage_purple.png"));
 		map.put(ChocoboColor.FLAME, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/plumage_flame.png"));
 	});
-	public LayerPlumage(RenderLayerParent<Chocobo, EntityModel<Chocobo>> rendererIn) { super(rendererIn); }
+	public LayerPlumage(RenderLayerParent<Chocobo, EntityModel<Chocobo>> rendererIn, float visibleAlpha) {
+		super(rendererIn);
+		this.show = visibleAlpha;
+	}
 
-	// Use logic to use different Plumage on tames opf different Colors
+	// Use logic to use different Plumage on tames of different Colors
 	@Override
 	public void render(@NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int packedLightIn, @NotNull Chocobo chocobo, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-		if (chocobo.isTame() && !chocobo.isInvisible() && !chocobo.isBaby()) {
+		if (chocobo.isTame() && !chocobo.isBaby() && !chocobo.isInvisible()) {
 			ChocoboColor color = chocobo.getChocoboColor();
+			float alpha = show;
 			VertexConsumer vertexconsumer = bufferIn.getBuffer(RenderType.entityTranslucent(CHOCOBO_PLUMES.get(color), true));
-			this.getParentModel().renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, LivingEntityRenderer.getOverlayCoords(chocobo, 0F), 1F, 1F, 1F, .65F);
-			// renderColoredCutoutModel(this.getParentModel(), CHOCOBO_PLUMES.get(color), matrixStackIn, bufferIn, packedLightIn, chocobo, 1.0F, 1.0F, 1.0F);
+			this.getParentModel().renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, LivingEntityRenderer.getOverlayCoords(chocobo, 0F), 1F, 1F, 1F, alpha);
 		}
 	}
 }
