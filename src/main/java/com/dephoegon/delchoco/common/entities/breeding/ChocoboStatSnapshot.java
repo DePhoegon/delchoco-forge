@@ -7,14 +7,8 @@ import com.dephoegon.delchoco.common.init.ModAttributes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.jetbrains.annotations.NotNull;
-import org.lwjgl.system.CallbackI;
 
 import java.util.Objects;
-
-import static com.dephoegon.delchoco.common.entities.properties.ChocoboColor.FLAME;
-import static com.dephoegon.delchoco.common.entities.properties.ChocoboColor.getRandomColor;
-import static com.dephoegon.delchoco.common.items.ChocoboSpawnEggItem.wbChocobos;
-import static com.dephoegon.delchoco.utils.RandomHelper.random;
 
 public class ChocoboStatSnapshot {
     public static final ChocoboStatSnapshot DEFAULT;
@@ -62,8 +56,8 @@ public class ChocoboStatSnapshot {
         this.attack = Objects.requireNonNull(chocobo.getAttribute(Attributes.ATTACK_DAMAGE)).getBaseValue();
         this.defense = Objects.requireNonNull(chocobo.getAttribute(Attributes.ARMOR)).getBaseValue();
         this.toughness = Objects.requireNonNull(chocobo.getAttribute(Attributes.ARMOR_TOUGHNESS)).getBaseValue();
-        this.flameBlood = chocobo.isFlame();
-        this.waterBreath = chocobo.isWBreather();
+        this.flameBlood = chocobo.fireImmune();
+        this.waterBreath = chocobo.isWaterBreather();
         this.color = chocobo.getChocoboColor();
     }
     public ChocoboStatSnapshot(@NotNull CompoundTag nbt) {

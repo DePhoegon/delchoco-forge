@@ -20,8 +20,8 @@ import java.util.Map;
 import static com.dephoegon.delchoco.common.init.ModRegistry.STONE_CHOCO_WEAPON;
 
 public class LayerCollar extends RenderLayer<Chocobo, EntityModel<Chocobo>> {
-	private float hide;
-	private float show;
+	private final float hide;
+	private final float show;
 	private static final Map<Integer, ResourceLocation> FEMALE_CHOCOBOS = Util.make(Maps.newHashMap(), (map) ->{
 		map.put(1, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/collars/f_black_collar.png"));
 		map.put(2, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/collars/f_brown_collar.png"));
@@ -59,22 +59,22 @@ public class LayerCollar extends RenderLayer<Chocobo, EntityModel<Chocobo>> {
 		map.put(16, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/collars/m_red_collar.png"));
 	});
 	private static final Map<Integer, ResourceLocation> CHICOBOS = Util.make(Maps.newHashMap(), (map) ->{
-		map.put(1, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/black_collar.png"));
-		map.put(2, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/brown_collar.png"));
-		map.put(3, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/green_collar.png"));
-		map.put(4, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/blue_collar.png"));
-		map.put(5, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/purple_collar.png"));
-		map.put(6, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/cyan_collar.png"));
-		map.put(7, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/light_gray_collar.png"));
-		map.put(8, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/gray_collar.png"));
-		map.put(9, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/pink_collar.png"));
-		map.put(10, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/lime_collar.png"));
-		map.put(11, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/yellow_collar.png"));
-		map.put(12, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/light_blue_collar.png"));
-		map.put(13, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/magenta_collar.png"));
-		map.put(14, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/orange_collar.png"));
-		map.put(15, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/white_collar.png"));
-		map.put(16, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/red_collar.png"));
+		map.put(1, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/collars/black_collar.png"));
+		map.put(2, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/collars/brown_collar.png"));
+		map.put(3, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/collars/green_collar.png"));
+		map.put(4, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/collars/blue_collar.png"));
+		map.put(5, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/collars/purple_collar.png"));
+		map.put(6, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/collars/cyan_collar.png"));
+		map.put(7, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/collars/light_gray_collar.png"));
+		map.put(8, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/collars/gray_collar.png"));
+		map.put(9, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/collars/pink_collar.png"));
+		map.put(10, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/collars/lime_collar.png"));
+		map.put(11, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/collars/yellow_collar.png"));
+		map.put(12, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/collars/light_blue_collar.png"));
+		map.put(13, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/collars/magenta_collar.png"));
+		map.put(14, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/collars/orange_collar.png"));
+		map.put(15, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/collars/white_collar.png"));
+		map.put(16, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/collars/red_collar.png"));
 	});
 
 	public LayerCollar(RenderLayerParent<Chocobo, EntityModel<Chocobo>> rendererIn, float visibleAlpha, float invisibleAlpha) {
@@ -85,13 +85,14 @@ public class LayerCollar extends RenderLayer<Chocobo, EntityModel<Chocobo>> {
 
 	@Override
 	public void render(@NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int packedLightIn, @NotNull Chocobo chocoboEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-
-		int color = chocoboEntity.getCollarColor();
-		ResourceLocation COLLAR = color != 0 ? chocoboEntity.isBaby() ? CHICOBOS.get(color) : chocoboEntity.isMale() ? MALE_CHOCOBOS.get(color) : FEMALE_CHOCOBOS.get(color) : null;
-		float alpha = chocoboEntity.isInvisible() ? hide : show;
-		if (chocoboEntity.isTame() && (COLLAR != null) && alpha != 0F) {
-			VertexConsumer vertexconsumer = bufferIn.getBuffer(RenderType.entityTranslucent(COLLAR, false));
-			this.getParentModel().renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, LivingEntityRenderer.getOverlayCoords(chocoboEntity, 0F), 1F, 1F, 1F, alpha);
+		if (chocoboEntity.isTame()) {
+			int color = chocoboEntity.getCollarColor();
+			ResourceLocation COLLAR = color != 0 ? chocoboEntity.isBaby() ? CHICOBOS.get(color) : chocoboEntity.isMale() ? MALE_CHOCOBOS.get(color) : FEMALE_CHOCOBOS.get(color) : null;
+			float alpha = chocoboEntity.isInvisible() ? hide : show;
+			if (COLLAR != null && alpha != 0F) {
+				VertexConsumer vertexconsumer = bufferIn.getBuffer(RenderType.entityTranslucent(COLLAR, false));
+				this.getParentModel().renderToBuffer(matrixStackIn, vertexconsumer, packedLightIn, LivingEntityRenderer.getOverlayCoords(chocoboEntity, 0F), 1F, 1F, 1F, alpha);
+			}
 		}
 	}
 }

@@ -48,9 +48,9 @@ public class ModRegistry {
     public static final RegistryObject<Item> IRON_CHOCO_CHEST = ITEMS.register("chocobo_armor_iron", () -> new ChocoboArmorItems(CHOCOBO_ARMOR_MATERIALS.get(2), EquipmentSlot.CHEST, (itemBuilder(false))));
     public static final RegistryObject<Item> DIAMOND_CHOCO_CHEST = ITEMS.register("chocobo_armor_diamond", () -> new ChocoboArmorItems(CHOCOBO_ARMOR_MATERIALS.get(3), EquipmentSlot.CHEST, (itemBuilder(false))));
     public static final RegistryObject<Item> NETHERITE_CHOCO_CHEST = ITEMS.register("chocobo_armor_netherite", () -> new ChocoboArmorItems(CHOCOBO_ARMOR_MATERIALS.get(4), EquipmentSlot.CHEST, (itemBuilder(true))));
-    public static final RegistryObject<Item> CHOCOBO_SADDLE = ITEMS.register("chocobo_saddle", () -> new ChocoboSaddleItem(itemBuilder(false), 0));
-    public static final RegistryObject<Item> CHOCOBO_SADDLE_BAGS = ITEMS.register("chocobo_saddle_bags", () -> new ChocoboSaddleItem(itemBuilder(false), tier_one_chocobo_inv_slot_count));
-    public static final RegistryObject<Item> CHOCOBO_SADDLE_PACK = ITEMS.register("chocobo_saddle_pack", () -> new ChocoboSaddleItem(itemBuilder(false), tier_two_chocobo_inv_slot_count));
+    public static final RegistryObject<Item> CHOCOBO_SADDLE = ITEMS.register("chocobo_saddle", () -> new ChocoboSaddleItem(itemBuilder(false), 0, false));
+    public static final RegistryObject<Item> CHOCOBO_SADDLE_BAGS = ITEMS.register("chocobo_saddle_bags", () -> new ChocoboSaddleItem(itemBuilder(false), tier_one_chocobo_inv_slot_count, false));
+    public static final RegistryObject<Item> CHOCOBO_SADDLE_PACK = ITEMS.register("chocobo_saddle_pack", () -> new ChocoboSaddleItem(itemBuilder(false), tier_two_chocobo_inv_slot_count, true));
     public static final RegistryObject<Item> YELLOW_CHOCOBO_SPAWN_EGG = ITEMS.register("yellow_chocobo_spawn_egg", () -> new ChocoboSpawnEggItem(itemBuilder(false), ChocoboColor.YELLOW));
     public static final RegistryObject<Item> GREEN_CHOCOBO_SPAWN_EGG = ITEMS.register("green_chocobo_spawn_egg", () -> new ChocoboSpawnEggItem(itemBuilder(false), ChocoboColor.GREEN));
     public static final RegistryObject<Item> BLUE_CHOCOBO_SPAWN_EGG = ITEMS.register("blue_chocobo_spawn_egg", () -> new ChocoboSpawnEggItem(itemBuilder(false), ChocoboColor.BLUE));

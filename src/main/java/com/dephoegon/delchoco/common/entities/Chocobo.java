@@ -297,8 +297,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         compound.put(NBTKEY_INVENTORY, this.chocoboInventory.serializeNBT());
         if (this.nestPos != null) { compound.put(NBTKEY_NEST_POSITION, NbtUtils.writeBlockPos(this.nestPos)); }
         compound.putInt(NBTKEY_CHOCOBO_GENERATION, this.getGeneration());
-        compound.putBoolean(NBTKEY_CHOCOBO_FLAME_BLOOD, this.isFlame());
-        compound.putBoolean(NBTKEY_CHOCOBO_WATER_BREATH, this.isWBreather());
+        compound.putBoolean(NBTKEY_CHOCOBO_FLAME_BLOOD, this.fireImmune());
+        compound.putBoolean(NBTKEY_CHOCOBO_WATER_BREATH, this.isWaterBreather());
         compound.putFloat(NBTKEY_CHOCOBO_STAMINA, this.getStamina());
         compound.putInt(NBTKEY_CHOCOBO_COLLAR, this.getCollarColor());
     }
@@ -448,11 +448,11 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     public void setCollarColor(Integer color) { this.entityData.set(PARAM_COLLAR_COLOR, color); }
     public Integer getCollarColor() { return this.entityData.get(PARAM_COLLAR_COLOR); }
     @Override
-    public boolean fireImmune() { return isFlame(); }
+    public boolean fireImmune() { return this.entityData.get(PARAM_IS_FLAME_BLOOD); }
     public void setFlame(boolean flame) { this.entityData.set(PARAM_IS_FLAME_BLOOD, flame); }
     public void setWaterBreath(boolean waterBreath) { this.entityData.set(PARAM_IS_WATER_BREATH, waterBreath); }
-    public boolean isFlame() { return this.entityData.get(PARAM_IS_FLAME_BLOOD); }
-    public boolean isWBreather() { return this.entityData.get(PARAM_IS_WATER_BREATH); }
+    public boolean nonFlameFireImmune() { return fireImmune() && ChocoboColor.FLAME != getChocoboColor(); }
+    public boolean isWaterBreather() { return this.entityData.get(PARAM_IS_WATER_BREATH); }
     public boolean isMale() { return this.entityData.get(PARAM_IS_MALE); }
     public boolean fromEgg() { return this.entityData.get(PARAM_FROM_EGG); }
     public void setMale(boolean isMale) { this.entityData.set(PARAM_IS_MALE, isMale); }
@@ -484,7 +484,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         }
     }
     public boolean rideableUnderWater() { return this.canBreatheUnderwater(); }
-    public boolean canBreatheUnderwater() { return this.isWBreather(); }
+    public boolean canBreatheUnderwater() { return this.isWaterBreather(); }
 
     @Nullable
     public BlockPos getNestPosition() { return this.nestPos; }
@@ -524,7 +524,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             return this.isInWater() || flag;
     }
     private void updateInWaterStateAndDoWaterCurrentPushing() {
-        if (!this.isWBreather()) {
+        if (!this.isWaterBreather()) {
             if (this.getVehicle() instanceof Chocobo) {
                 this.wasTouchingWater = false;
             } else if (this.updateFluidHeightAndDoFluidPushing(FluidTags.WATER, 0.014D)) {
@@ -584,11 +584,11 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                     Vec3 motion = getDeltaMovement();
                     if (Minecraft.getInstance().options.keyJump.isDown()) {
                         setDeltaMovement(new Vec3(motion.x, .5f, motion.z));
-                    } else if (this.getDeltaMovement().y < 0 && !this.isWBreather()) {
+                    } else if (this.getDeltaMovement().y < 0 && !this.isWaterBreather()) {
                         int distance = WorldUtils.getDistanceToSurface(this.blockPosition(), this.getCommandSenderWorld());
                         if (distance > 0)
                             setDeltaMovement(new Vec3(motion.x, .05f, motion.z));
-                    } else if (this.isWBreather() && isAltDown()) {
+                    } else if (this.isWaterBreather() && isAltDown()) {
                         Vec3 waterMotion = getDeltaMovement();
                         setDeltaMovement(new Vec3(waterMotion.x, waterMotion.y * 0.65F, waterMotion.z));
                     }
@@ -597,7 +597,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                     Vec3 motion = getDeltaMovement();
                     if (Minecraft.getInstance().options.keyJump.isDown()) {
                         setDeltaMovement(new Vec3(motion.x, .5f, motion.z));
-                    } else if (this.isFlame() && this.getDeltaMovement().y < 0) {
+                    } else if (this.fireImmune() && this.getDeltaMovement().y < 0) {
                         int distance = WorldUtils.getDistanceToSurface(this.blockPosition(), this.getCommandSenderWorld());
                         if (distance > 0)
                             setDeltaMovement(new Vec3(motion.x, .05f, motion.z));
@@ -677,7 +677,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                 this.setDeltaMovement(this.getDeltaMovement().scale(.003D).add(0.0D, 0.05D, 0.0D));
             }
         }
-        if (this.isInWater() && !this.isWBreather()) {
+        if (this.isInWater() && !this.isWaterBreather()) {
             CollisionContext collisioncontext = CollisionContext.of(this);
             if (collisioncontext.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition(), true) && !this.level.getFluidState(this.blockPosition().above()).is(FluidTags.WATER)) {
                 this.onGround = true;
@@ -780,7 +780,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         //Change effects to chocobo colors
         if (!this.getCommandSenderWorld().isClientSide) {
             if (this.tickCount % 60 == 0) {
-                if (this.isFlame()) {
+                if (this.fireImmune()) {
                     this.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0, true, false));
                     if (this.isVehicle()) {
                         Entity controller = this.getControllingPassenger();
@@ -789,7 +789,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                         }
                     }
                 }
-                if (this.isWBreather()) {
+                if (this.isWaterBreather()) {
                     this.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 100, 0, true, false));
                     if (this.isVehicle()) {
                         Entity controller = this.getControllingPassenger();

@@ -349,3 +349,9 @@ Render Layers
 
 Chocobo Layer Rendering Alpha
 - Includes Configs to be adjusted by player.
+
+2-19-23
+
+Texture Cleanup
+
+Layer Rendering Adjustments

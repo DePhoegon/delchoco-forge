@@ -58,13 +58,11 @@ public class ChocoboRenderer extends MobRenderer<Chocobo, EntityModel<Chocobo>> 
         super(context, new AdultChocoboModel<>(context.bakeLayer(ClientHandler.CHOCOBO)), 1.0f);
         this.chicoboModel = new ChicoboModel<>(context.bakeLayer(ClientHandler.CHICOBO));
 
-        this.addLayer(new LayerFlames(this));
         this.addLayer(new LayerArmor(this, armorAlpha, ChocoConfig.COMMON.armorInvisibility.get().floatValue()));
         this.addLayer(new LayerWeapon(this, weaponAlpha, ChocoConfig.COMMON.weaponInvisibility.get().floatValue()));
         this.addLayer(new LayerCollar(this, collarAlpha, ChocoConfig.COMMON.collarInvisibility.get().floatValue()));
-        this.addLayer(new LayerPlumage(this, .65F));
-        this.addLayer(new LayerUntamedPlumage(this, .75F));
         this.addLayer(new LayerSaddle(this, saddleAlpha, ChocoConfig.COMMON.saddleInvisibility.get().floatValue()));
+        this.addLayer(new LayerChocoboTrims(this, .65F, .75F));
     }
 
     @Override
