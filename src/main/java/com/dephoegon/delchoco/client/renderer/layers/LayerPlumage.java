@@ -23,16 +23,16 @@ import static com.dephoegon.delchoco.common.init.ModRegistry.STONE_CHOCO_WEAPON;
 public class LayerPlumage extends RenderLayer<Chocobo, EntityModel<Chocobo>> {
 	private float show;
 	private static final Map<ChocoboColor, ResourceLocation> CHOCOBO_PLUMES = Util.make(Maps.newHashMap(), (map) -> {
-		map.put(ChocoboColor.YELLOW, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/plumage_yellow.png"));
-		map.put(ChocoboColor.GREEN, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/plumage_green.png"));
-		map.put(ChocoboColor.BLUE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/plumage_blue.png"));
-		map.put(ChocoboColor.BLACK, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/plumage_black.png"));
-		map.put(ChocoboColor.WHITE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/plumage_white.png"));
-		map.put(ChocoboColor.GOLD, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/plumage_gold.png"));
-		map.put(ChocoboColor.PINK, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/plumage_pink.png"));
-		map.put(ChocoboColor.RED, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/plumage_red.png"));
-		map.put(ChocoboColor.PURPLE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/plumage_purple.png"));
-		map.put(ChocoboColor.FLAME, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/plumage_flame.png"));
+		map.put(ChocoboColor.YELLOW, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/plumage_yellow.png"));
+		map.put(ChocoboColor.GREEN, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/plumage_green.png"));
+		map.put(ChocoboColor.BLUE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/plumage_blue.png"));
+		map.put(ChocoboColor.BLACK, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/plumage_black.png"));
+		map.put(ChocoboColor.WHITE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/plumage_white.png"));
+		map.put(ChocoboColor.GOLD, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/plumage_gold.png"));
+		map.put(ChocoboColor.PINK, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/plumage_pink.png"));
+		map.put(ChocoboColor.RED, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/plumage_red.png"));
+		map.put(ChocoboColor.PURPLE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/plumage_purple.png"));
+		map.put(ChocoboColor.FLAME, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/plumage_flame.png"));
 	});
 	public LayerPlumage(RenderLayerParent<Chocobo, EntityModel<Chocobo>> rendererIn, float visibleAlpha) {
 		super(rendererIn);
