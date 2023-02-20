@@ -28,7 +28,7 @@ public class ChocoboSpawnEggItem extends Item {
         this.color = color;
     }
 
-    private Component name(ItemStack egg) {
+    private @NotNull Component name(@NotNull ItemStack egg) {
         return egg.getHoverName();
     }
     @Override

@@ -61,6 +61,10 @@ public class ChocoConfig {
         public final DoubleValue armorInvisibility;
         public final DoubleValue saddleInvisibility;
         public final DoubleValue weaponInvisibility;
+        public final BooleanValue overworldSpawns;
+        public final BooleanValue netherSpawns;
+        public final BooleanValue endSpawns;
+        public final BooleanValue summonSpawns;
 
         Common(ForgeConfigSpec.Builder builder) {
             builder.comment("World generation related configuration")
@@ -84,22 +88,37 @@ public class ChocoConfig {
             builder.pop();
             builder.comment("Chocobo Spawn Configuration")
                     .push("spawning");
+            overworldSpawns = builder
+                    .comment("Allows Chocobo to spawn in the OverWorld [Default: true]")
+                    .define("overworldSpawns", true);
+
+            netherSpawns = builder
+                    .comment("Allows Chocobo to spawn in the Nether [Default: true]")
+                    .define("netherSpawns", true);
+
+            endSpawns = builder
+                    .comment("Allows Chocobo to spawn in the End [Default: true]")
+                    .define("endSpawns", true);
+
+            summonSpawns = builder
+                    .comment("Allows Chocobo to spawned in by the player with spawning [Default: true]\nSpawn weights lowered, if summonSpawns is disabled raise weights to commented Defaults")
+                    .define("summonSpawns", true);
 
             chocoboSpawnWeight = builder
-                    .comment("Controls Chocobo Spawn Weight [Default: 8]")
-                    .defineInRange("chocoboSpawnWeight", 8, 0, Integer.MAX_VALUE);
+                    .comment("Controls Chocobo Spawn Weight [Default: 2]\nSpawn weight Lowered to allow for natural spawns & Chocobo Alters Usage [ Defaults for normal spawns w/o alter usage : 4]")
+                    .defineInRange("chocoboSpawnWeight", 2, 0, Integer.MAX_VALUE);
 
             chocoboSpawnWeightMushroom = builder
-                    .comment("Controls Chocobo Spawn Weight in Mushroom Fields [Default: 1]\nMooshrooms are easily pushed out (spawn wise)")
-                    .defineInRange("chocoboSpawnWeightMushrooms", 2, 0, 4);
+                    .comment("Controls Chocobo Spawn Weight in Mushroom Fields [Default: 1]\nMooshrooms are easily pushed out (spawn wise)\nSpawn weight Lowered to allow for natural spawns & Chocobo Alters Usage [ Defaults for normal spawns w/o alter usage : 1]")
+                    .defineInRange("chocoboSpawnWeightMushrooms", 1, 0, 4);
 
             chocoboSpawnWeightNether = builder
-                    .comment("Controls Chocobo Spawn Weight in the Nether. [Default: 250]\nThe Nether seems to be a bit more aggressive & requires a higher number.")
-                    .defineInRange("chocoboSpawnWeightNether", 250, 100, Integer.MAX_VALUE);
+                    .comment("Controls Chocobo Spawn Weight in the Nether. [Default: 100]\nThe Nether seems to be a bit more aggressive & requires a higher number.\nSpawn weight Lowered to allow for natural spawns & Chocobo Alters Usage [ Defaults for normal spawns w/o alter usage : 250]")
+                    .defineInRange("chocoboSpawnWeightNether", 100, 75, Integer.MAX_VALUE);
 
             chocoboSpawnWeightEnd = builder
-                    .comment("Controls Chocobo Spawn Weight in the End. [Default: 250]\nEnderman Spawns are super aggressive.\nTested at old default spawn weight (10)*25 to be reasonable")
-                    .defineInRange("chocoboSpawnWeightEnd", 250, 100, Integer.MAX_VALUE);
+                    .comment("Controls Chocobo Spawn Weight in the End. [Default: 100]\nEnderman Spawns are super aggressive.\nTested at old default spawn weight (10)*25 to be reasonable\nSpawn weight Lowered to allow for natural spawns & Chocobo Alters Usage [ Defaults for normal spawns w/o alter usage : 250]")
+                    .defineInRange("chocoboSpawnWeightEnd", 100, 75, Integer.MAX_VALUE);
 
             chocoboPackSizeMin = builder
                     .comment("Controls Chocobo Pack Size Min [Default: 1]")

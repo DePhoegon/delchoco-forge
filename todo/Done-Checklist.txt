@@ -355,3 +355,8 @@ Chocobo Layer Rendering Alpha
 Texture Cleanup
 
 Layer Rendering Adjustments
+- Separated Plume layers
+
+Chocobo Summoning Setup
+
+Chocobo Spawning & Summoning booleans used

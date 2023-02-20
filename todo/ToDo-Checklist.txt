@@ -42,6 +42,10 @@ Create Paralyze 'item'
 - Account for removable/adding goals that gets toggled with the whistle
 - preserve through save/load
 
-2-17-23
+2-19-23
 
-Seperate untamed plumes from chocobo Layers for their own rendering layer.
+Finish up Summoning
+- setup eat alter or damage choco armor worn
+- Expand 'random alters'
+- Flushout Alter Blocks
+- Flushout Targeted Alters.

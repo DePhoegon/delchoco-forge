@@ -10,3 +10,14 @@ Minor Method tweaks
 - Chocobo.java
 -- WaterBreathing / FireImmune
 --- Tweaked by name for logic aid
+
+===============
+
+Chocobo Summoning
+-ChocoConfig updated
+-- added in booleans to allow spawning naturally in all 3 dimensions
+-- added in boolean to allow summoning of Chocobos
+- Chocobo feature used to summon on alter
+-- Unfinished (consider eating alter block if no chocobo armor is worn, & damaging chocobo armor if full set is worn)
+-- Summoning finished
+-- Alter blocks & Blocks to build the alter are in Arrays

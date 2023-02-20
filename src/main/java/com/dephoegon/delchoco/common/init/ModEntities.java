@@ -1,6 +1,7 @@
 package com.dephoegon.delchoco.common.init;
 
 import com.dephoegon.delchoco.DelChoco;
+import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.entities.Chocobo;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -40,18 +41,18 @@ public class ModEntities {
         String bob = biomesKey.toString();
         // Name Strings to extend towards BOP support
         if (!hasType(biomesKey, Type.OCEAN) || biomesKey == WARM_OCEAN){
-            if (hasType(biomesKey, Type.NETHER)) {
+            if (hasType(biomesKey, Type.NETHER) && COMMON.netherSpawns.get()) {
                 event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(),
                         COMMON.chocoboSpawnWeightNether.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get()));
             }
-            if (hasType(biomesKey, Type.MUSHROOM)) {
+            if (hasType(biomesKey, Type.MUSHROOM) && COMMON.overworldSpawns.get()) {
                 event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(),
                         COMMON.chocoboSpawnWeightMushroom.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get()));
-            } else if (hasType(biomesKey, Type.OVERWORLD)) {
+            } else if (hasType(biomesKey, Type.OVERWORLD) && COMMON.overworldSpawns.get()) {
                 event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(),
                         COMMON.chocoboSpawnWeight.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get()));
             }
-            if (hasType(biomesKey, Type.END)) {
+            if (hasType(biomesKey, Type.END) && COMMON.endSpawns.get()) {
                 event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(),
                         COMMON.chocoboSpawnWeightEnd.get(), COMMON.chocoboPackSizeMin.get()+1, COMMON.chocoboPackSizeMax.get()+2));
 
