@@ -360,3 +360,11 @@ Layer Rendering Adjustments
 Chocobo Summoning Setup
 
 Chocobo Spawning & Summoning booleans used
+
+2-20-23
+
+Chocobo Summoning Costs
+
+Basic Chocobo Combat effects
+
+De-Spawning Chocobos based on distance & tame status.

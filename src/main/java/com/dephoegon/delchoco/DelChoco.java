@@ -5,6 +5,7 @@ import com.dephoegon.delchoco.client.ClientHandler;
 import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.commands.ChocoboCommand;
 import com.dephoegon.delchoco.common.entities.properties.ModDataSerializers;
+import com.dephoegon.delchoco.common.handler.ChocoboCombatEffects;
 import com.dephoegon.delchoco.common.init.*;
 import com.dephoegon.delchoco.common.network.PacketManager;
 import com.dephoegon.delchoco.common.world.worldgen.ModWorldgen;
@@ -52,6 +53,7 @@ public class DelChoco {
         ModAttributes.ATTRIBUTES.register(eventBus);
 
         MinecraftForge.EVENT_BUS.register(new ModWorldgen());
+        MinecraftForge.EVENT_BUS.register(new ChocoboCombatEffects());
         MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommandsEvent);
         MinecraftForge.EVENT_BUS.addListener(ModEntities::addSpawns);
         MinecraftForge.EVENT_BUS.addListener(this::onWorldLoad);

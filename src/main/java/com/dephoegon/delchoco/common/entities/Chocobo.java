@@ -118,6 +118,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.INT);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     @Nullable private UUID persistentAngerTarget;
+    private LivingEntity lastHurtByMob;
     private int remainingPersistentAngerTime;
     private int ticksUntilNextAlert;
     private int timeToRecalculatePath;
@@ -1012,7 +1013,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         if (this.getCommandSenderWorld().isClientSide) return InteractionResult.SUCCESS;
         return super.interactAt(player, vec, hand);
     }
-
     private void displayChocoboInventory(@NotNull ServerPlayer player) {
         if (player.containerMenu != player.inventoryMenu) { player.closeContainer(); }
 
@@ -1128,5 +1128,41 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         }).forEach((p_34440_) -> {
             p_34440_.setTarget(this.getTarget());
         });
+    }
+    public boolean isPersistenceRequired() { return this.isTame(); }
+    public boolean requiresCustomPersistence() { return this.isPassenger(); }
+    protected boolean shouldDespawnInPeaceful() { return false; }
+    public void checkDespawn() {
+        if (this.level.getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) { this.discard(); }
+        else if (!this.isPersistenceRequired() && !this.requiresCustomPersistence()) {
+            Entity entity = this.level.getNearestPlayer(this, -1.0D);
+            net.minecraftforge.eventbus.api.Event.Result result = net.minecraftforge.event.ForgeEventFactory.canEntityDespawn(this);
+            if (result == net.minecraftforge.eventbus.api.Event.Result.DENY) {
+                noActionTime = 0;
+                entity = null;
+            } else if (result == net.minecraftforge.eventbus.api.Event.Result.ALLOW) {
+                this.discard();
+                entity = null;
+            }
+            if (entity != null) {
+                double d0 = entity.distanceToSqr(this);
+                int i = this.getType().getCategory().getDespawnDistance();
+                int j = i * i;
+                if (d0 > (double)j && this.removeWhenFarAway(d0)) {
+                    this.discard();
+                }
+
+                int k = this.getType().getCategory().getNoDespawnDistance();
+                int l = k * k;
+                if (this.noActionTime > 600 && this.random.nextInt(800) == 0 && d0 > (double)l && this.removeWhenFarAway(d0)) {
+                    this.discard();
+                } else if (d0 < (double)l) {
+                    this.noActionTime = 0;
+                }
+            }
+
+        } else {
+            this.noActionTime = 0;
+        }
     }
 }

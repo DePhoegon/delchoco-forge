@@ -44,8 +44,6 @@ Create Paralyze 'item'
 
 2-19-23
 
-Finish up Summoning
-- setup eat alter or damage choco armor worn
 - Expand 'random alters'
 - Flushout Alter Blocks
 - Flushout Targeted Alters.

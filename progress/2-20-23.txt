@@ -1,0 +1,17 @@
+Chocobo Natural De-spawning
+-ensured chocobos will naturally de-spawn if not tamed or being ridden.
+
+Chocobo Summoning
+- Added a cost to summon chocobos.
+-- Feather
+-- Alter block or choco_disguise pieces worn
+--- Alter getting eaten on a chance basis
+----- 100% w/ reduction of 25% for each piece worn
+--- armor pieces take more damage per item if less are worn when it happens.
+
+Chocobo Combat Effects
+- Sub 1% chance of spawn egg being dropped of the color of chocobo that was killed.
+- Black Chocobo can drop a wither rose on killing a target
+- Chocobos can drop feathers on being hit.
+
+Written off Lead usage for Chocobos
