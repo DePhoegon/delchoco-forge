@@ -4,27 +4,27 @@
   "category": "delchoco:chocobo_combat",
   "pages": [
     {
-      "title": "Chain Armor",
+      "title": "Stone Claws",
       "type": "patchouli:spotlight",
-      "item": "delchoco:chocobo_armor_chain",
+      "item": "delchoco:chocobo_weapon_stone",
       "text": "Breeding can bring Stats & colors.$(br)Chocobo Stats are$(br)- Stamina$(br)- Health$(br)- Speed"
     },
     {
-      "title": "Iron Armor",
+      "title": "Iron Claws",
       "type": "patchouli:spotlight",
-      "item": "delchoco:chocobo_armor_iron",
+      "item": "delchoco:chocobo_weapon_iron",
       "text": "is Useful for hatching chocobos a bit faster.$(br)$(item)Currently, These are visually bugged & do not 'remove' the egg after the chicbo hatches from it.$()$(br)- It is safe to break & replace $(item)AFTER THE CHICOBO IS HATCHED$(), just right click it & see if an egg is in the slot$(br)- $(l:delchoco:chocobos/tools)here$(/l)"
     },
     {
-      "title": "Diamond Armor",
+      "title": "Diamond Claws",
       "type": "patchouli:spotlight",
-      "item": "delchoco:chocobo_armor_diamond",
+      "item": "delchoco:chocobo_weapon_diamond",
       "text": "is Useful for hatching chocobos a bit faster.$(br)$(item)Currently, These are visually bugged & do not 'remove' the egg after the chicbo hatches from it.$()$(br)- It is safe to break & replace $(item)AFTER THE CHICOBO IS HATCHED$(), just right click it & see if an egg is in the slot$(br)- $(l:delchoco:chocobos/tools)here$(/l)"
     },
     {
-      "title": "Netherite Armor",
+      "title": "Netherite Claws",
       "type": "patchouli:spotlight",
-      "item": "delchoco:chocobo_armor_netherite",
+      "item": "delchoco:chocobo_weapon_netherite",
       "text": "is Useful for hatching chocobos a bit faster.$(br)$(item)Currently, These are visually bugged & do not 'remove' the egg after the chicbo hatches from it.$()$(br)- It is safe to break & replace $(item)AFTER THE CHICOBO IS HATCHED$(), just right click it & see if an egg is in the slot$(br)- $(l:delchoco:chocobos/tools)here$(/l)"
     }
   ]

@@ -1,0 +1,8 @@
+Chocobo Interactions Tested
+- MP environment with a live client & a dev client
+- Teams & No Teams
+- PVP combat
+
+Guide Book Structure laying out
+
+Ironing out Ideas

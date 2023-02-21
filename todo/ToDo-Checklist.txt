@@ -14,18 +14,6 @@ Double Check
 - Prior TODOs
 -- Validate if they are or are not done.
 
-Added 1-26-23
-
-Consider - Collar Redesigns based on testing.
-
-2-10-23
-
-Test MP functionality to Chocobo Pack behavior.
-
-2-12-23
-
-Add in Team check (if possible) goals, (to stop accidental hitting)
-
 2-13-23
 
 Update Guidebook
@@ -33,7 +21,6 @@ Test flow & balance
 
 2-14-23
 
-Update Spawn eggs to match (shape-wise) to the other 'spawn eggs'
 Update Guide Book
 - Indicate inside corner of walls/fences issues with pathing
 - List crafting Recipes for gear
@@ -47,3 +34,34 @@ Create Paralyze 'item'
 - Expand 'random alters'
 - Flushout Alter Blocks
 - Flushout Targeted Alters.
+
+2-21-23
+
+Guide Book Structure
+-Showcase spawns by Biomes
+-Showcase spawns by Chocobo Color
+-Showcase Alters for summons
+-showcase Choco Armor for player
+-Showcase Chocobo armor for chocobos
+-Showcase Chocobo weapons
+-Pages for the following
+-- Chocobo on hits, by color
+-- Chocobo being hit, by color
+-- Chocobo being killed, by color
+-- Chocobo killing, by color
+-- Chocobo armors
+-- Chocobo weapons
+-- Chocobo disguise armor
+-- Chocobo Summon Alters
+-- Chocobo Behavior with teams & players
+
+Consider Size variance
+- 60% range
+-- -30 to 10 for 'female' chocobo
+-- -10 to 30 for 'male' chocobos
+---- Maybe -30 to 20  & -20 to 30
+- Use some math that would use a random parents size modifier to effect the baby gender range
+- set hard limits (consider 80% range -40 to 40)
+-- use scale to set per chocobo
+
+Test new Spawn rates with lowered weights.

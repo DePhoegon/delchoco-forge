@@ -10,12 +10,6 @@
       "text": "These wonderful things can be fed to your chocobos for taming & further more prepared for your own eating."
     },
     {
-      "title": "Gyashl Cake",
-      "type": "patchouli:crafting",
-      "recipe": "delchoco:gysahl_cake",
-      "text": "Can be used to help speed up the Aging of the lil Chicbos."
-    },
-    {
       "title": "Pickled Gyashl Raw",
       "type": "patchouli:crafting",
       "recipe": "delchoco:pickled_gysahl_raw",

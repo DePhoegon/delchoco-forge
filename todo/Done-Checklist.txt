@@ -368,3 +368,10 @@ Chocobo Summoning Costs
 Basic Chocobo Combat effects
 
 De-Spawning Chocobos based on distance & tame status.
+
+
+2-21-23
+
+Verified Chocobo Behavior with players in MP, with teams & no teams.
+
+Setup Structure for Guide Book
