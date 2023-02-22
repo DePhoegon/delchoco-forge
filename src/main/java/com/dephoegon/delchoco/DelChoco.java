@@ -3,12 +3,12 @@ package com.dephoegon.delchoco;
 import com.dephoegon.delchoco.aid.composable;
 import com.dephoegon.delchoco.client.ClientHandler;
 import com.dephoegon.delchoco.common.ChocoConfig;
-import com.dephoegon.delchoco.common.commands.ChocoboCommand;
 import com.dephoegon.delchoco.common.entities.properties.ModDataSerializers;
 import com.dephoegon.delchoco.common.handler.ChocoboCombatEffects;
 import com.dephoegon.delchoco.common.init.*;
 import com.dephoegon.delchoco.common.network.PacketManager;
 import com.dephoegon.delchoco.common.world.worldgen.ModWorldgen;
+import com.dephoegon.delchoco.common.commands.chocoboTeams;
 import com.dephoegon.delchoco.utils.Log4jFilter;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -71,5 +71,5 @@ public class DelChoco {
         PacketManager.init();
         Log4jFilter.init();
     }
-    public void onRegisterCommandsEvent(@NotNull RegisterCommandsEvent event) { ChocoboCommand.initializeCommands(event.getDispatcher()); }
+    public void onRegisterCommandsEvent(@NotNull RegisterCommandsEvent event) { chocoboTeams.commands(event.getDispatcher()); }
 }

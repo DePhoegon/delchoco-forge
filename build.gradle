@@ -117,12 +117,6 @@ sourceSets {
             srcDir 'src/generated/resources'
         }
     }
-    datagen {
-        compileClasspath += main.compileClasspath
-        runtimeClasspath += main.runtimeClasspath
-        compileClasspath += main.output
-        runtimeClasspath += main.output
-    }
 }
 
 repositories {
@@ -170,6 +164,8 @@ dependencies {
 
     // DePhoegons' Reclaim
     implementation fg.deobf("curse.maven:${delbase_curseforge_project}:${delbase_curseforge_file}")
+
+
 }
 
 jar {

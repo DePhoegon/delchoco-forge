@@ -1,0 +1,16 @@
+Studied up on Custom Commands
+
+Restructured Commands used by mod.
+
+Setup Non-OP teams
+- Also setup ability to disable or enable friendly fire per team
+- 10 teams
+-- 1 per chocobo color
+
+Removed Excess commands that don't deserve to have access
+- setting stats manually is kind against the point.
+
+Removed DataGen from main src
+-not used.
+
+Fixed Summon Chocobo not getting their stats shaken.

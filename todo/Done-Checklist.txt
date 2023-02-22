@@ -375,3 +375,13 @@ De-Spawning Chocobos based on distance & tame status.
 Verified Chocobo Behavior with players in MP, with teams & no teams.
 
 Setup Structure for Guide Book
+
+2-22-23
+
+Basic Commands put in place
+
+Custom Commands Studying
+
+Trimming things
+
+Shook up Summoned Choco Stats

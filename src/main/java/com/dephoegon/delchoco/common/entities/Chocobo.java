@@ -498,6 +498,10 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     public void setStamina(float value) { this.entityData.set(PARAM_STAMINA, value); }
     public float getStaminaPercentage() { return (float) (this.getStamina() / this.getAttribute(ModAttributes.MAX_STAMINA.get()).getValue()); }
     public int getGeneration() { return this.entityData.get(PARAM_GENERATION); }
+    public String getGenerationString() {
+        int gen = this.getGeneration();
+        return Integer.toString(gen);
+    }
     public void setGeneration(int value) { this.entityData.set(PARAM_GENERATION, value); }
     private boolean useStamina(float value) {
         if (value == 0) return true;

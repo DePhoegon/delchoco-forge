@@ -83,6 +83,8 @@
     "command.delchoco.chocobo.get_resistance": "Resistance: %s",
     "command.delchoco.chocobo.get_speed": "Speed: %s",
     "command.delchoco.chocobo.get_stamina": "Stamina: %s",
+    "command.delchoco.chocobo.get_attack": "Attack Strength: %s",
+    "command.delchoco.chocobo.get_generation": "Chocobo Generation: %s",
 
     "delchoco.container.nest": "Chocobo Nest"
 }

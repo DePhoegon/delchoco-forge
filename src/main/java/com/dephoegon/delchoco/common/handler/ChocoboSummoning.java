@@ -4,22 +4,34 @@ import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.dephoegon.delchoco.common.init.ModEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 import static com.dephoegon.delchoco.common.items.ChocoboSpawnEggItem.wbChocobos;
 import static com.dephoegon.delchoco.common.items.ChocoboSpawnerItemHelper.*;
 import static com.dephoegon.delchoco.utils.RandomHelper.random;
+import static net.minecraft.world.entity.ai.attributes.Attributes.*;
+import static net.minecraft.world.entity.ai.attributes.Attributes.ARMOR_TOUGHNESS;
+import static net.minecraft.world.item.Items.ENDER_PEARL;
+import static net.minecraft.world.level.biome.Biome.getBiomeCategory;
 import static net.minecraft.world.level.block.Blocks.*;
+import static net.minecraftforge.common.Tags.Biomes.IS_END;
 
 public class ChocoboSummoning {
     public final boolean isRandomAlter;
@@ -89,6 +101,7 @@ public class ChocoboSummoning {
     private void summonChocobo(@NotNull Level worldIn, BlockPos pos, Player player) {
         if (!worldIn.isClientSide) {
             final Chocobo chocobo = ModEntities.CHOCOBO.get().create(worldIn);
+            final Holder<Biome> currentBiomes = worldIn.getBiome(pos.below());
             if (chocobo != null) {
                 if (player != null) { if (player.isCrouching()) { chocobo.setAge(-7500); } }
                 chocobo.moveTo(pos.getX() + placeRange(random.nextInt(100) + 1), pos.getY() + 1.5F, pos.getZ() + placeRange(random.nextInt(100) + 1), Mth.wrapDegrees(worldIn.random.nextFloat() * 360.0F), 0.0F);
@@ -101,12 +114,44 @@ public class ChocoboSummoning {
                     chocobo.setWaterBreath(wbChocobos().contains(color));
                 }
                 if (summonItem.hasCustomHoverName()) { chocobo.setCustomName(customName()); }
+                chocoboStatShake(MAX_HEALTH, "health", chocobo);
+                chocoboStatShake(ATTACK_DAMAGE, "attack", chocobo);
+                chocoboStatShake(ARMOR, "defense", chocobo);
+                chocoboStatShake(ARMOR_TOUGHNESS, "toughness", chocobo);
+                if (chocobo.getChocoboColor() == ChocoboColor.PURPLE) {
+                    int chance = currentBiomes.containsTag(IS_END) ? 60 : 15;
+                    if (random.nextInt(100)+1 < chance) {
+                        chocobo.chocoboInventory.setStackInSlot(random.nextInt(18), new ItemStack(ENDER_PEARL.getDefaultInstance().split(random.nextInt(3) + 1).getItem()));
+                    }
+                    if (random.nextInt(100)+1 < chance) {
+                        chocobo.chocoboInventory.setStackInSlot(random.nextInt(9)+18, new ItemStack(ENDER_PEARL.getDefaultInstance().split(random.nextInt(3) + 1).getItem()));
+                    }
+                    if (random.nextInt(100)+1 < chance) {
+                        chocobo.chocoboInventory.setStackInSlot(random.nextInt(18)+27, new ItemStack(ENDER_PEARL.getDefaultInstance().split(random.nextInt(3) + 1).getItem()));
+                    }
+                }
                 chocobo.finalizeSpawn((ServerLevel)worldIn, worldIn.getCurrentDifficultyAt(chocobo.blockPosition()), MobSpawnType.SPAWN_EGG, null, null);
                 worldIn.addFreshEntity(chocobo);
                 chocobo.playAmbientSound();
                 summonItem.shrink(1);
             }
         }
+    }
+    private void chocoboStatShake(Attribute attribute, String text, @NotNull Chocobo chocobo) {
+        int aValue = ChocoboShaker(text);
+        Objects.requireNonNull(chocobo.getAttribute(attribute)).addPermanentModifier(new AttributeModifier(text+" variance", aValue, AttributeModifier.Operation.ADDITION));
+    }
+    private int ChocoboShaker(@NotNull String stat) {
+        return switch (stat) {
+            case "health" -> boundedRangeModifier(5, 10);
+            case "attack", "toughness" -> boundedRangeModifier(1, 3);
+            case "defense" -> boundedRangeModifier(2, 4);
+            default -> 0;
+        };
+    }
+    private int boundedRangeModifier(int lower, int upper) {
+        int range = lower+upper;
+        return random.nextInt(range)-lower;
     }
     private int placeRange(int chanceOf100) {
         int negPos = chanceOf100 > 50 ? -1 : 1;
