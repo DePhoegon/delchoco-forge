@@ -7,34 +7,31 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkEvent.Context;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
 public class ChocoboSprintingMessage {
-    private boolean sprinting;
+    private final boolean sprinting;
 
-    public ChocoboSprintingMessage(boolean sprinting) {
-        this.sprinting = sprinting;
-    }
+    public ChocoboSprintingMessage(boolean sprinting) { this.sprinting = sprinting; }
 
-    public void encode(FriendlyByteBuf buf) {
-        buf.writeBoolean(sprinting);
-    }
+    public void encode(@NotNull FriendlyByteBuf buf) { buf.writeBoolean(sprinting); }
 
-    public static ChocoboSprintingMessage decode(final FriendlyByteBuf buffer) {
-        return new ChocoboSprintingMessage(buffer.readBoolean());
-    }
+    @Contract("_ -> new")
+    public static @NotNull ChocoboSprintingMessage decode(final @NotNull FriendlyByteBuf buffer) { return new ChocoboSprintingMessage(buffer.readBoolean()); }
 
-    public void handle(Supplier<Context> context) {
+    public void handle(@NotNull Supplier<Context> context) {
         NetworkEvent.Context ctx = context.get();
         ctx.enqueueWork(() -> {
             if(ctx.getDirection().getReceptionSide() == LogicalSide.SERVER) {
                 Player player = ctx.getSender();
                 if (player != null) {
-                    if (player.getVehicle() == null) return;
+                    if (player.getVehicle() == null) { return; }
 
                     Entity mount = player.getVehicle();
-                    if (!(mount instanceof Chocobo)) return;
+                    if (!(mount instanceof Chocobo)) { return; }
 
                     mount.setSprinting(sprinting);
                 }

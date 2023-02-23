@@ -11,10 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Supplier;
 
 public enum ModArmorMaterial implements ArmorMaterial {
-	CHOCO_DISGUISE("delchoco:choco_disguise", 200, new int[] { 3, 7, 6, 3 }, 10, SoundEvents.ARMOR_EQUIP_LEATHER,
-			0.0F, 0.0F, () -> {
-		return Ingredient.of(ModRegistry.CHOCOBO_FEATHER.get());
-	});
+	CHOCO_DISGUISE("delchoco:choco_disguise", 200, new int[] { 3, 7, 6, 3 }, 10, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> { return Ingredient.of(ModRegistry.CHOCOBO_FEATHER.get()); });
 
 	private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
 	private final String name;
@@ -36,36 +33,12 @@ public enum ModArmorMaterial implements ArmorMaterial {
 		this.knockbackResistance = pKnockbackResistance;
 		this.repairIngredient = new LazyLoadedValue<>(pRepairIngredient);
 	}
-
-	public int getDurabilityForSlot(EquipmentSlot p_40484_) {
-		return HEALTH_PER_SLOT[p_40484_.getIndex()] * this.durabilityMultiplier;
-	}
-
-	public int getDefenseForSlot(EquipmentSlot p_40487_) {
-		return this.slotProtections[p_40487_.getIndex()];
-	}
-
-	public int getEnchantmentValue() {
-		return this.enchantmentValue;
-	}
-
-	public @NotNull SoundEvent getEquipSound() {
-		return this.sound;
-	}
-
-	public @NotNull Ingredient getRepairIngredient() {
-		return this.repairIngredient.get();
-	}
-
-	public @NotNull String getName() {
-		return this.name;
-	}
-
-	public float getToughness() {
-		return this.toughness;
-	}
-
-	public float getKnockbackResistance() {
-		return this.knockbackResistance;
-	}
+	public int getDurabilityForSlot(@NotNull EquipmentSlot p_40484_) { return HEALTH_PER_SLOT[p_40484_.getIndex()] * this.durabilityMultiplier; }
+	public int getDefenseForSlot(@NotNull EquipmentSlot p_40487_) { return this.slotProtections[p_40487_.getIndex()]; }
+	public int getEnchantmentValue() { return this.enchantmentValue; }
+	public @NotNull SoundEvent getEquipSound() { return this.sound; }
+	public @NotNull Ingredient getRepairIngredient() { return this.repairIngredient.get(); }
+	public @NotNull String getName() { return this.name; }
+	public float getToughness() { return this.toughness; }
+	public float getKnockbackResistance() { return this.knockbackResistance; }
 }

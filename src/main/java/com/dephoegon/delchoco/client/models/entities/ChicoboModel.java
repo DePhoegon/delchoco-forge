@@ -8,6 +8,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
 
 public class ChicoboModel<T extends Chocobo> extends EntityModel<Chocobo> {
     private final ModelPart root;
@@ -16,15 +17,13 @@ public class ChicoboModel<T extends Chocobo> extends EntityModel<Chocobo> {
     private final ModelPart leg_left;
     private final ModelPart leg_right;
 
-    public ChicoboModel(ModelPart root) {
+    public ChicoboModel(@NotNull ModelPart root) {
         this.root = root.getChild("root");
-
         this.head = this.root.getChild("head");
         this.leg_left = this.root.getChild("leg_left");
         this.leg_right = this.root.getChild("leg_right");
     }
-
-    public static LayerDefinition createBodyLayer() {
+    public static @NotNull LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -102,17 +101,13 @@ public class ChicoboModel<T extends Chocobo> extends EntityModel<Chocobo> {
 
         return LayerDefinition.create(meshdefinition, 64, 32);
     }
-
     @Override
-    public void setupAnim(Chocobo entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@NotNull Chocobo entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         head.xRot = -(headPitch / 57.29578F);
         head.yRot = netHeadYaw / 57.29578F;
         leg_right.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         leg_left.yRot = Mth.cos(limbSwing * 0.6662F + 3.141593F) * 1.4F * limbSwingAmount;
     }
-
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-    }
+    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) { root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha); }
 }

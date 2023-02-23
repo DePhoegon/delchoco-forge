@@ -19,14 +19,11 @@ import static com.dephoegon.delchoco.common.items.ChocoboSpawnEggItem.wbChocobos
 import static java.lang.Math.*;
 
 public class BreedingHelper {
-    private static double minCheck(double one, double two) {
-        return round((one + two) / 2) < 11 ? round((one+two)/2+1) : round((one + two) / 2);
-    }
+    private static double minCheck(double one, double two) { return round((one + two) / 2) < 11 ? round((one+two)/2+1) : round((one + two) / 2); }
 
     public static @Nullable Chocobo createChild(ChocoboBreedInfo breedInfo, Level world, ItemStack egg) {
         final Chocobo baby = ModEntities.CHOCOBO.get().create(world);
         if (baby == null) { return null; }
-
         final ChocoboStatSnapshot mother = breedInfo.getMother();
         final ChocoboStatSnapshot father = breedInfo.getFather();
 
@@ -43,9 +40,6 @@ public class BreedingHelper {
         Objects.requireNonNull(baby.getAttribute(Attributes.ARMOR)).setBaseValue(min(defence, COMMON.maxArmor.get()));
         double toughness = minCheck(mother.toughness, father.toughness) *(1D + ((float) random()* .25D));
         Objects.requireNonNull(baby.getAttribute(Attributes.ARMOR_TOUGHNESS)).setBaseValue(min(toughness, COMMON.maxToughness.get()));
-
-        BlockPos centerBlock = null;
-        if (baby.getNestPosition() != null) { centerBlock = baby.getNestPosition().below(); }
 
         ChocoboColor yellow = ChocoboColor.YELLOW;
         ChocoboColor green = ChocoboColor.GREEN;
@@ -93,20 +87,13 @@ public class BreedingHelper {
         baby.setFlame(mother.flameBlood || father.flameBlood || bColor == flame);
         baby.setFromEgg(true);
         if (egg.hasCustomHoverName()) { baby.setCustomName(egg.getHoverName()); }
-
         baby.setAge(-7500);
-
         return baby;
     }
-
     private static ChocoboColor eggColor(ChocoboColor mother, ChocoboColor father, ChocoboColor baby, float chance) {
         boolean newColor = chance > Math.random();
         if (newColor) { return baby; }
         else return .50f > Math.random() ? mother : father;
     }
-    private static boolean alter(BlockState centerDefaultBlockstate, BlockState NEWS_blockstate, BlockPos centerPos, @NotNull Level world) {
-        if (world.getBlockState(centerPos).getBlock().defaultBlockState() == centerDefaultBlockstate && world.getBlockState(centerPos.north()).getBlock().defaultBlockState() == NEWS_blockstate && world.getBlockState(centerPos.south()).getBlock().defaultBlockState() == NEWS_blockstate && world.getBlockState(centerPos.east()).getBlock().defaultBlockState() == NEWS_blockstate && world.getBlockState(centerPos.west()).getBlock().defaultBlockState() == NEWS_blockstate) {
-            return true;
-        } else { return false; }
-    }
+    private static boolean alter(BlockState centerDefaultBlockstate, BlockState NEWS_blockstate, BlockPos centerPos, @NotNull Level world) { return world.getBlockState(centerPos).getBlock().defaultBlockState() == centerDefaultBlockstate && world.getBlockState(centerPos.north()).getBlock().defaultBlockState() == NEWS_blockstate && world.getBlockState(centerPos.south()).getBlock().defaultBlockState() == NEWS_blockstate && world.getBlockState(centerPos.east()).getBlock().defaultBlockState() == NEWS_blockstate && world.getBlockState(centerPos.west()).getBlock().defaultBlockState() == NEWS_blockstate; }
 }

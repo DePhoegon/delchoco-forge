@@ -1,6 +1,5 @@
 package com.dephoegon.delchoco.common.commands;
 
-import com.dephoegon.delchoco.DelChoco;
 import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.init.ModAttributes;
 import com.dephoegon.delchoco.common.teamColors;
@@ -23,8 +22,9 @@ import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 import static com.dephoegon.delchoco.DelChoco.MOD_ID;
-import static com.dephoegon.delchoco.common.teamColors.*;
 
 public class chocoboTeams {
     public static void commands (@NotNull CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -119,7 +119,7 @@ public class chocoboTeams {
                 source.sendSuccess(getText("get_speed", chocobo, Attributes.MOVEMENT_SPEED), false);
                 source.sendSuccess(getText("get_stamina", chocobo, ModAttributes.MAX_STAMINA.get()), false);
                 source.sendSuccess(getText("get_attack", chocobo, Attributes.ATTACK_DAMAGE), false);
-                source.sendSuccess(getText("get_generation", chocobo.getGenerationString()), false);
+                source.sendSuccess(getText(chocobo.getGenerationString()), false);
             }
         }
 
@@ -127,10 +127,10 @@ public class chocoboTeams {
     }
     @Contract("_, _, _ -> new")
     private static @NotNull TranslatableComponent getText(String key, @NotNull Chocobo chocobo, Attribute attribute) {
-        return new TranslatableComponent("command." + MOD_ID + ".chocobo." + key, chocobo.getAttribute(attribute).getBaseValue());
+        return new TranslatableComponent("command." + MOD_ID + ".chocobo." + key, Objects.requireNonNull(chocobo.getAttribute(attribute)).getBaseValue());
     }
-    @Contract(value = "_, _ -> new", pure = true)
-    private static @NotNull TranslatableComponent getText(String key, String value) {
-        return new TranslatableComponent("command." + MOD_ID + ".chocobo." + key, value);
+    @Contract(value = "_ -> new", pure = true)
+    private static @NotNull TranslatableComponent getText(String value) {
+        return new TranslatableComponent("command." + MOD_ID + ".chocobo." + "get_generation", value);
     }
 }

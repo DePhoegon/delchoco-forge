@@ -51,78 +51,48 @@ public class ChocoboEggBlock extends BaseEntityBlock {
     public ChocoboEggBlock(Properties properties) {
         super(properties);
     }
-
     @Override
-    public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL;
-    }
-
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState state) { return RenderShape.MODEL; }
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-        return SHAPE;
-    }
-
-    public static boolean isChocoboEgg(ItemStack itemStack) {
-        return itemStack.getItem() instanceof BlockItem &&
-                ((BlockItem) itemStack.getItem()).getBlock() instanceof ChocoboEggBlock;
-    }
-
-    @Nullable
+    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos, @NotNull CollisionContext context) { return SHAPE; }
+    public static boolean isChocoboEgg(@NotNull ItemStack itemStack) { return itemStack.getItem() instanceof BlockItem && ((BlockItem) itemStack.getItem()).getBlock() instanceof ChocoboEggBlock; }
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new ChocoboEggBlockEntity(pos, state);
-    }
-
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) { return new ChocoboEggBlockEntity(pos, state); }
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(@NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState state, LivingEntity placer, @NotNull ItemStack stack) {
         if (!worldIn.isClientSide) {
             BlockEntity tile = worldIn.getBlockEntity(pos);
-            if (!(tile instanceof ChocoboEggBlockEntity)) {
-                return;
-            }
-
+            if (!(tile instanceof ChocoboEggBlockEntity)) { return; }
             ChocoboBreedInfo breedInfo = getFromNbtOrDefault(stack.getTagElement(NBTKEY_BREEDINFO));
-
             ((ChocoboEggBlockEntity) tile).setBreedInfo(breedInfo);
         }
         super.setPlacedBy(worldIn, pos, state, placer, stack);
     }
-
     @Override
-    public void playerDestroy(@NotNull Level worldIn, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity te, ItemStack stack) {
-        if (worldIn.isClientSide) {
-            return;
-        }
-
+    public void playerDestroy(@NotNull Level worldIn, @NotNull Player player, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable BlockEntity te, @NotNull ItemStack stack) {
+        if (worldIn.isClientSide) { return; }
         if (te instanceof ChocoboEggBlockEntity) {
             player.awardStat(Stats.BLOCK_MINED.get(this));
             player.causeFoodExhaustion(0.005F);
-
             ItemStack itemStack = new ItemStack(ModRegistry.CHOCOBO_EGG.get());
             ChocoboBreedInfo breedInfo = ((ChocoboEggBlockEntity) te).getBreedInfo();
-            if (breedInfo == null) {
-                breedInfo = getFromNbtOrDefault(null);
-            }
+            if (breedInfo == null) { breedInfo = getFromNbtOrDefault(null); }
             itemStack.addTagElement(NBTKEY_BREEDINFO, breedInfo.serialize());
             popResource(worldIn, pos, itemStack);
             return;
         }
         super.playerDestroy(worldIn, player, pos, state, te, stack);
     }
-
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable BlockGetter worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
         CompoundTag nbtBreedInfo = stack.getTagElement(NBTKEY_BREEDINFO);
         if (nbtBreedInfo != null) {
             final ChocoboBreedInfo info = new ChocoboBreedInfo(nbtBreedInfo);
             final ChocoboStatSnapshot mother = info.getMother();
             final ChocoboStatSnapshot father = info.getFather();
-
             tooltip.add(new TranslatableComponent("item." + DelChoco.MOD_ID + ".chocobo_egg.tooltip.mother_info", (int) mother.health, (int) (mother.speed * 100), (int) mother.stamina, mother.color.getEggText()));
             tooltip.add(new TranslatableComponent("item." + DelChoco.MOD_ID + ".chocobo_egg.tooltip.father_info", (int) father.health, (int) (father.speed * 100), (int) father.stamina, father.color.getEggText()));
-        } else {
-            tooltip.add(new TranslatableComponent("item." + DelChoco.MOD_ID + ".chocobo_egg.tooltip.invalid_egg"));
-        }
+        } else { tooltip.add(new TranslatableComponent("item." + DelChoco.MOD_ID + ".chocobo_egg.tooltip.invalid_egg")); }
     }
 }

@@ -32,21 +32,15 @@ public class ChocoboSpawnEggItem extends Item {
         return egg.getHoverName();
     }
     @Override
-    public InteractionResult useOn(UseOnContext context) {
+    public @NotNull InteractionResult useOn(@NotNull UseOnContext context) {
         Level worldIn = context.getLevel();
-        if (worldIn.isClientSide) {
-            return InteractionResult.SUCCESS;
-        }
+        if (worldIn.isClientSide) { return InteractionResult.SUCCESS; }
 
         final Chocobo chocobo = ModEntities.CHOCOBO.get().create(worldIn);
         if (chocobo != null) {
             final BlockPos pos = context.getClickedPos();
             final Player player = context.getPlayer();
-            if (player != null) {
-                if (player.isCrouching()) {
-                    chocobo.setAge(-7500);
-                }
-            }
+            if (player != null) { if (player.isCrouching()) { chocobo.setAge(-7500); } }
 
             chocobo.moveTo(pos.getX() + .5, pos.getY() + 1.5F, pos.getZ() + .5, Mth.wrapDegrees(worldIn.random.nextFloat() * 360.0F), 0.0F);
             chocobo.yHeadRot = chocobo.getYRot();
@@ -62,7 +56,6 @@ public class ChocoboSpawnEggItem extends Item {
             chocobo.playAmbientSound();
             context.getItemInHand().shrink(1);
         }
-
         return InteractionResult.CONSUME;
     }
     public static @NotNull ArrayList<ChocoboColor> wbChocobos() {

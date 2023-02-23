@@ -3,31 +3,18 @@ package com.dephoegon.delchoco.utils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializer;
+import org.jetbrains.annotations.NotNull;
 
 public class GenericByteEnumSerializer<E extends Enum<E>> implements EntityDataSerializer<E> {
-    private E[] values;
+    private final E[] values;
 
-    public GenericByteEnumSerializer(E[] values) {
-        this.values = values;
-    }
-
+    public GenericByteEnumSerializer(E[] values) { this.values = values; }
     @Override
-    public void write(FriendlyByteBuf buf, E value) {
-        buf.writeByte(value.ordinal());
-    }
-
+    public void write(@NotNull FriendlyByteBuf buf, @NotNull E value) { buf.writeByte(value.ordinal()); }
     @Override
-    public E read(FriendlyByteBuf buf) {
-        return values[buf.readByte()];
-    }
-
+    public @NotNull E read(@NotNull FriendlyByteBuf buf) { return values[buf.readByte()]; }
     @Override
-    public EntityDataAccessor<E> createAccessor(int id) {
-        return new EntityDataAccessor<>(id, this);
-    }
-
+    public @NotNull EntityDataAccessor<E> createAccessor(int id) { return new EntityDataAccessor<>(id, this); }
     @Override
-    public E copy(E value) {
-        return value;
-    }
+    public @NotNull E copy(@NotNull E value) { return value; }
 }

@@ -21,7 +21,6 @@ public class SaddleBagContainer extends AbstractContainerMenu {
         this.chocobo = chocobo;
         this.refreshSlots(chocobo, player);
     }
-
     public Chocobo getChocobo() { return chocobo; }
     public void refreshSlots(@NotNull Chocobo chocobo, Inventory player) {
         this.slots.clear();
@@ -41,26 +40,18 @@ public class SaddleBagContainer extends AbstractContainerMenu {
         }
 
     }
-
     private void bindInventorySmall(@NotNull ItemStack saddle, IItemHandler inventory) {
         if (!(saddle.isEmpty())) {
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 5; col++) {
                     this.addSlot(new SlotItemHandler(inventory, row * 5 + col, 44 + col * 18, 36 + row * 18));
-                    if (row * 5 + col < 5) {
-                        this.chocobo.tierOneItemStackHandler.setStackInSlot(row * 5 + col, this.chocobo.chocoboInventory.getStackInSlot(row * 5 + col+11));
-                    }
-                    if (row * 5 + col > 4 && row * 5 + col < 10) {
-                        this.chocobo.tierOneItemStackHandler.setStackInSlot(row * 5 + col, this.chocobo.chocoboInventory.getStackInSlot(row * 5 + col+15));
-                    }
-                    if (row * 5 + col > 9) {
-                        this.chocobo.tierOneItemStackHandler.setStackInSlot(row * 5 + col, this.chocobo.chocoboInventory.getStackInSlot(row * 5 + col+19));
-                    }
+                    if (row * 5 + col < 5) { this.chocobo.tierOneItemStackHandler.setStackInSlot(row * 5 + col, this.chocobo.chocoboInventory.getStackInSlot(row * 5 + col+11)); }
+                    if (row * 5 + col > 4 && row * 5 + col < 10) { this.chocobo.tierOneItemStackHandler.setStackInSlot(row * 5 + col, this.chocobo.chocoboInventory.getStackInSlot(row * 5 + col+15)); }
+                    if (row * 5 + col > 9) { this.chocobo.tierOneItemStackHandler.setStackInSlot(row * 5 + col, this.chocobo.chocoboInventory.getStackInSlot(row * 5 + col+19)); }
                 }
             }
         }
     }
-
     private void bindInventoryBig(@NotNull ItemStack saddle, IItemHandler inventory) {
         if (!(saddle.isEmpty())) {
             for (int row = 0; row < 5; row++) {
@@ -71,22 +62,14 @@ public class SaddleBagContainer extends AbstractContainerMenu {
             }
         }
     }
-
     private void bindPlayerInventory(Inventory playerInventory) {
-        for (int row = 0; row < 3; ++row) {
-            for (int col = 0; col < 9; ++col) {
+        for (int row = 0; row < 3; ++row) { for (int col = 0; col < 9; ++col) {
                 this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 122 + row * 18));
-            }
-        }
-
-        for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 180));
-        }
+        } }
+        for (int i = 0; i < 9; ++i) { this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 180)); }
     }
-
     @Override
     public boolean stillValid(@NotNull Player playerIn) { return this.chocobo.isAlive() && this.chocobo.distanceTo(playerIn) < 8.0F; }
-
     @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
@@ -94,31 +77,20 @@ public class SaddleBagContainer extends AbstractContainerMenu {
         ItemStack saddleStack = chocobo.getSaddle();
         boolean notEmpty;
         int slotSize;
-        if (!saddleStack.isEmpty() && saddleStack.getItem() instanceof ChocoboSaddleItem saddleItem) {
-            slotSize = saddleItem.getInventorySize();
-        } else { slotSize = 0; }
+        if (!saddleStack.isEmpty() && saddleStack.getItem() instanceof ChocoboSaddleItem saddleItem) { slotSize = saddleItem.getInventorySize(); }
+        else { slotSize = 0; }
         notEmpty = !(slot instanceof chocoboEquipmentSlot);
         if (notEmpty){
-            if (slot != null && slot.hasItem()) {
+            if (slot.hasItem()) {
                 ItemStack itemstack1 = slot.getItem();
                 itemstack = itemstack1.copy();
 
                 if (index < slotSize) {
-                    if (!this.moveItemStackTo(itemstack1, slotSize, this.slots.size(), true)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (!this.moveItemStackTo(itemstack1, 0, slotSize, false)) {
-                    return ItemStack.EMPTY;
-                }
-
-                if (itemstack1.isEmpty()) {
-                    slot.set(ItemStack.EMPTY);
-                } else {
-                    slot.setChanged();
-                }
+                    if (!this.moveItemStackTo(itemstack1, slotSize, this.slots.size(), true)) { return ItemStack.EMPTY; }
+                } else if (!this.moveItemStackTo(itemstack1, 0, slotSize, false)) { return ItemStack.EMPTY; }
+                if (itemstack1.isEmpty()) { slot.set(ItemStack.EMPTY);} else { slot.setChanged(); }
             }
         }
-
         if (notEmpty) { return itemstack; } else { return ItemStack.EMPTY; }
     }
 }

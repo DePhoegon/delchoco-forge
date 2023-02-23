@@ -13,10 +13,10 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import org.jetbrains.annotations.NotNull;
 
 public class 	ChocoDisguiseModel extends HumanoidModel<LivingEntity> {
-	private EquipmentSlot slot;
-
+	private final EquipmentSlot slot;
 	private final ModelPart chocobo_head;
 	private final ModelPart chocobo_body;
 	private final ModelPart chocobo_right_arm;
@@ -29,7 +29,6 @@ public class 	ChocoDisguiseModel extends HumanoidModel<LivingEntity> {
 	public ChocoDisguiseModel(ModelPart root, EquipmentSlot slot) {
 		super(root);
 		this.slot = slot;
-
 		chocobo_head = root.getChild("chocobo_head");
 		chocobo_body = root.getChild("chocobo_body");
 		chocobo_right_arm = root.getChild("chocobo_right_arm");
@@ -39,8 +38,7 @@ public class 	ChocoDisguiseModel extends HumanoidModel<LivingEntity> {
 		chocobo_claw_right = root.getChild("chocobo_claw_right");
 		chocobo_claw_left = root.getChild("chocobo_claw_left");
 	}
-
-	public static LayerDefinition createArmorDefinition() {
+	public static @NotNull LayerDefinition createArmorDefinition() {
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 1.0F);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -149,9 +147,8 @@ public class 	ChocoDisguiseModel extends HumanoidModel<LivingEntity> {
 
 		return LayerDefinition.create(meshdefinition,  128,  128);
 	}
-
 	@Override
-	public void setupAnim(LivingEntity livingEntity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(@NotNull LivingEntity livingEntity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		if (livingEntity instanceof ArmorStand armorStand) {
 			this.chocobo_head.xRot = ((float) Math.PI / 180F) * armorStand.getHeadPose().getX();
 			this.chocobo_head.yRot = ((float) Math.PI / 180F) * armorStand.getHeadPose().getY();
@@ -175,15 +172,11 @@ public class 	ChocoDisguiseModel extends HumanoidModel<LivingEntity> {
 			this.chocobo_leg_right.zRot = ((float) Math.PI / 180F) * armorStand.getRightLegPose().getZ();
 			this.chocobo_leg_right.setPos(-1.9F, 11.0F, 0.0F);
 			this.hat.copyFrom(this.chocobo_head);
-		} else {
-			super.setupAnim(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-		}
+		} else { super.setupAnim(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch); }
 	}
-
 	@Override
-	public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
+	public void renderToBuffer(@NotNull PoseStack matrixStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
 		matrixStack.pushPose();
-
 		this.setHeadRotation();
 		this.setChestRotation();
 		this.setLegsRotation();
@@ -207,8 +200,7 @@ public class 	ChocoDisguiseModel extends HumanoidModel<LivingEntity> {
 			matrixStack.scale(1.0F / f, 1.0F / f, 1.0F / f);
 			matrixStack.translate(0.0F, 24.0F * 1, 0.0F);
 			chocobo_body.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-		}
-		else {
+		} else {
 			chocobo_head.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
 			chocobo_body.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
 			chocobo_right_arm.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
@@ -220,14 +212,12 @@ public class 	ChocoDisguiseModel extends HumanoidModel<LivingEntity> {
 		chocobo_claw_left.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
 		matrixStack.popPose();
 	}
-
 	public void setHeadRotation() {
 		chocobo_head.x = head.x;
 		chocobo_head.y = head.y;
 		chocobo_head.z = head.z;
 		setRotation(chocobo_head, head.xRot, head.yRot, head.zRot);
 	}
-
 	public void setChestRotation() {
 		/* if (e instanceof EntityPlayer){ ((EntityPlayer)e).get } */
 		chocobo_body.x = body.x;
@@ -243,7 +233,6 @@ public class 	ChocoDisguiseModel extends HumanoidModel<LivingEntity> {
 		setRotation(chocobo_right_arm, rightArm.xRot, rightArm.yRot, rightArm.zRot);
 		setRotation(chocobo_left_arm, leftArm.xRot, leftArm.yRot, leftArm.zRot);
 	}
-
 	public void setLegsRotation() {
 		chocobo_leg_right.x = rightLeg.x;
 		chocobo_leg_right.y = rightLeg.y;
@@ -254,7 +243,6 @@ public class 	ChocoDisguiseModel extends HumanoidModel<LivingEntity> {
 		setRotation(chocobo_leg_right, rightLeg.xRot, rightLeg.yRot, rightLeg.zRot);
 		setRotation(chocobo_leg_left, leftLeg.xRot, leftLeg.yRot, leftLeg.zRot);
 	}
-
 	public void setBootRotation() {
 		chocobo_claw_right.x = rightLeg.x;
 		chocobo_claw_right.y = rightLeg.y;
@@ -265,8 +253,7 @@ public class 	ChocoDisguiseModel extends HumanoidModel<LivingEntity> {
 		setRotation(chocobo_claw_right, rightLeg.xRot, rightLeg.yRot, rightLeg.zRot);
 		setRotation(chocobo_claw_left, leftLeg.xRot, leftLeg.yRot, leftLeg.zRot);
 	}
-
-	public void setRotation(ModelPart modelRenderer, float x, float y, float z) {
+	public void setRotation(@NotNull ModelPart modelRenderer, float x, float y, float z) {
 		modelRenderer.xRot = x;
 		modelRenderer.yRot = y;
 		modelRenderer.zRot = z;

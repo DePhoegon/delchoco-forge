@@ -83,7 +83,5 @@ public class ModRegistry {
     public static final RegistryObject<Item> CHOCOBO_EGG_ITEM = ITEMS.register("chocobo_egg", () -> new ChocoboEggBlockItem(CHOCOBO_EGG.get(), itemBuilder(false)));
 
 
-    private static Item.Properties itemBuilder(boolean fireImmune) {
-        if (fireImmune) { return new Item.Properties().tab(CHOCO_TAB).fireResistant();} else { return new Item.Properties().tab(CHOCO_TAB); }
-    }
+    private static Item.Properties itemBuilder(boolean fireImmune) { if (fireImmune) { return new Item.Properties().tab(CHOCO_TAB).fireResistant();} else { return new Item.Properties().tab(CHOCO_TAB); } }
 }

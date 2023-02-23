@@ -66,81 +66,46 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
 
     private final ItemStackHandler inventory = new ItemStackHandler(1) {
         @Override
-        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-            return stack.getItem() instanceof ChocoboEggBlockItem;
-        }
-
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack) { return stack.getItem() instanceof ChocoboEggBlockItem; }
         @Override
-        public int getSlotLimit(int slot) {
-            return 1;
-        }
-
+        public int getSlotLimit(int slot) { return 1; }
         @Override
-        protected int getStackLimit(int slot, @Nonnull ItemStack stack) {
-            return 1;
-        }
-
+        protected int getStackLimit(int slot, @Nonnull ItemStack stack) { return 1; }
         @Override
-        protected void onContentsChanged(int slot) {
-            ChocoboNestBlockEntity.this.onInventoryChanged();
-        }
+        protected void onContentsChanged(int slot) { ChocoboNestBlockEntity.this.onInventoryChanged(); }
     };
     private final LazyOptional<IItemHandler> inventoryHolder = LazyOptional.of(() -> inventory);
-
     private boolean isSheltered;
     private int ticks = 0;
 
-    public ChocoboNestBlockEntity(BlockPos pos, BlockState state) {
-        super(ModRegistry.STRAW_NEST_TILE.get(), pos, state);
-    }
-
-    public static void serverTick(Level ignoredLevel, BlockPos pos, BlockState state, ChocoboNestBlockEntity nestBlockEntity) {
+    public ChocoboNestBlockEntity(BlockPos pos, BlockState state) { super(ModRegistry.STRAW_NEST_TILE.get(), pos, state); }
+    public static void serverTick(Level ignoredLevel, BlockPos pos, BlockState state, @NotNull ChocoboNestBlockEntity nestBlockEntity) {
         nestBlockEntity.ticks++;
-        if (nestBlockEntity.ticks > 1_000_000)
-            nestBlockEntity.ticks = 0;
-
+        if (nestBlockEntity.ticks > 1_000_000) { nestBlockEntity.ticks = 0; }
         boolean changed = false;
 
-        if (nestBlockEntity.ticks % 5 == 0 && !nestBlockEntity.getEggItemStack().isEmpty()) {
-            changed = nestBlockEntity.updateEgg();
-        }
-        if (nestBlockEntity.ticks % 5 == 0 && nestBlockEntity.getEggItemStack().isEmpty() && nestBlockEntity.getBlockState().getValue(StrawNestBlock.HAS_EGG)) {
-                nestBlockEntity.onInventoryChanged();
-        }
-
-        if (nestBlockEntity.ticks % 200 == 100) {
-            changed |= nestBlockEntity.updateSheltered();
-        }
-
+        if (nestBlockEntity.ticks % 5 == 0 && !nestBlockEntity.getEggItemStack().isEmpty()) { changed = nestBlockEntity.updateEgg(); }
+        if (nestBlockEntity.ticks % 5 == 0 && nestBlockEntity.getEggItemStack().isEmpty() && nestBlockEntity.getBlockState().getValue(StrawNestBlock.HAS_EGG)) { nestBlockEntity.onInventoryChanged(); }
+        if (nestBlockEntity.ticks % 200 == 100) { changed |= nestBlockEntity.updateSheltered(); }
         if (changed) {
             assert nestBlockEntity.level != null;
             nestBlockEntity.level.setBlockAndUpdate(pos, state);
         }
     }
-
     private boolean updateEgg() {
         ItemStack egg = this.getEggItemStack();
-
-        if (!ChocoboEggBlock.isChocoboEgg(egg))
-            return false;
-
+        if (!ChocoboEggBlock.isChocoboEgg(egg)) { return false; }
         if (!egg.hasTag()) { egg.addTagElement(NBTKEY_BREEDINFO, getFromNbtOrDefault(null).serialize()); }
-
         CompoundTag nbt = egg.getOrCreateTagElement(ChocoboEggBlock.NBTKEY_HATCHINGSTATE);
         int time = nbt.getInt(ChocoboEggBlock.NBTKEY_HATCHINGSTATE_TIME);
         time += this.isSheltered ? 2 : 1;
         nbt.putInt(ChocoboEggBlock.NBTKEY_HATCHINGSTATE_TIME, time);
-
-        if (time < ChocoConfig.COMMON.eggHatchTimeTicks.get())
-            return false;
+        if (time < ChocoConfig.COMMON.eggHatchTimeTicks.get()) { return false; }
 
         // egg is ready to hatch
         ChocoboBreedInfo breedInfo = ChocoboBreedInfo.getFromNbtOrDefault(egg.getTagElement(NBTKEY_BREEDINFO));
         Chocobo baby = BreedingHelper.createChild(breedInfo, this.level, egg);
-        if (baby == null) {
-            return false;
-        }
-
+        if (baby == null) { return false; }
         baby.moveTo(this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.2, this.worldPosition.getZ() + 0.5, 0.0F, 0.0F);
         assert this.level != null;
         this.level.addFreshEntity(baby);
@@ -155,30 +120,21 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
             double d5 = random.nextDouble() * baby.getBbWidth() * 2.0D - baby.getBbWidth();
             this.level.addParticle(ParticleTypes.HEART, baby.getX() + d3, baby.getY() + d4, baby.getZ() + d5, d0, d1, d2);
         }
-
         this.setEggItemStack(ItemStack.EMPTY);
         return true;
     }
-
     private boolean updateSheltered() {
         // TODO: Make this better, use "can see sky" for shelter detection
         boolean sheltered = isSheltered();
-
         if (this.isSheltered != sheltered) {
             this.isSheltered = sheltered;
             return true;
         }
-
         return false;
     }
-
-    public ItemStack getEggItemStack() {
-        return this.inventory.getStackInSlot(0);
-    }
-
-    public void setEggItemStack(ItemStack itemStack) {
-        if (itemStack.isEmpty())
-            this.inventory.setStackInSlot(0, ItemStack.EMPTY);
+    public ItemStack getEggItemStack() { return this.inventory.getStackInSlot(0); }
+    public void setEggItemStack(@NotNull ItemStack itemStack) {
+        if (itemStack.isEmpty()) { this.inventory.setStackInSlot(0, ItemStack.EMPTY); }
         else if (ChocoboEggBlock.isChocoboEgg(itemStack)) {
             this.inventory.setStackInSlot(0, itemStack);
             if (itemStack.hasTag()) {
@@ -188,13 +144,7 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
             }
         }
     }
-
-    public IItemHandler getInventory() {
-        return this.inventory;
-    }
-
-    //region Data Synchronization/Persistence
-
+    public IItemHandler getInventory() { return this.inventory; }
     @Override
     public void load(@NotNull CompoundTag nbt) {
         super.load(nbt);
@@ -202,7 +152,6 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
         this.ticks = nbt.getInt(NBTKEY_TICKS);
         this.inventory.deserializeNBT(nbt.getCompound(NBTKEY_NEST_INVENTORY));
     }
-
     @Override
     public void saveAdditional(@NotNull CompoundTag nbt) {
         super.saveAdditional(nbt);
@@ -210,7 +159,6 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
         nbt.putInt(NBTKEY_TICKS, this.ticks);
         nbt.put(NBTKEY_NEST_INVENTORY, this.inventory.serializeNBT());
     }
-
     @Nullable
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
@@ -218,31 +166,19 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
         saveAdditional(nbt);
         return ClientboundBlockEntityDataPacket.create(this);
     }
-
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.inventory.deserializeNBT(Objects.requireNonNull(pkt.getTag()).getCompound(NBTKEY_NEST_INVENTORY));
-    }
-
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) { this.inventory.deserializeNBT(Objects.requireNonNull(pkt.getTag()).getCompound(NBTKEY_NEST_INVENTORY)); }
     @Override
     public @NotNull CompoundTag getUpdateTag() {
         CompoundTag nbt = super.getUpdateTag();
         this.saveAdditional(nbt);
         return nbt;
     }
-
     @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        super.handleUpdateTag(tag);
-    }
-
+    public void handleUpdateTag(CompoundTag tag) { super.handleUpdateTag(tag); }
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int id, @NotNull Inventory playerInventory, @NotNull Player player) {
-        return new NestContainer(id, playerInventory, this);
-    }
-    //endregion
-
+    public AbstractContainerMenu createMenu(int id, @NotNull Inventory playerInventory, @NotNull Player player) { return new NestContainer(id, playerInventory, this); }
     private static class CheckOffset {
         Vec3i offset;
         boolean shouldBeAir;
@@ -252,19 +188,14 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
             this.shouldBeAir = shouldBeAir;
         }
     }
-
     @Nonnull
     @Override
-    public Component getDisplayName() {
-        return new TranslatableComponent(DelChoco.MOD_ID + ".container.nest");
-    }
-
+    public Component getDisplayName() { return new TranslatableComponent(DelChoco.MOD_ID + ".container.nest"); }
     public void onInventoryChanged() {
         this.setChanged();
         BlockState newState = ModRegistry.STRAW_NEST.get().defaultBlockState().setValue(StrawNestBlock.HAS_EGG, !this.getEggItemStack().isEmpty());
         Objects.requireNonNull(this.getLevel()).setBlockAndUpdate(this.getBlockPos(), newState);
     }
-
     public boolean isSheltered() {
         boolean sheltered = true;
         for (CheckOffset checkOffset : SHELTER_CHECK_OFFSETS) {
@@ -276,16 +207,12 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
         }
         return sheltered;
     }
-
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return inventoryHolder.cast();
-        }
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) { return inventoryHolder.cast(); }
         return super.getCapability(cap, side);
     }
-
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();

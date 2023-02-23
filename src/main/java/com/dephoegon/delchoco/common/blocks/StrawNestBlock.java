@@ -39,7 +39,6 @@ public class StrawNestBlock extends BaseEntityBlock {
             Block.box(0, 1, 2, 2, 3, 14),
             Block.box(14, 1, 2, 16, 3, 14)
     ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
-
     protected static final VoxelShape SHAPE = Stream.of(
             Block.box(5, 0, 5, 11, 1, 11),
             Block.box(4, 1, 4, 12, 6, 12),
@@ -57,59 +56,33 @@ public class StrawNestBlock extends BaseEntityBlock {
         this.registerDefaultState(this.stateDefinition.any().setValue(HAS_EGG, false));
     }
     @Override
-    public @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
-        return RenderShape.MODEL;
-    }
-
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState state) { return RenderShape.MODEL; }
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos, @NotNull CollisionContext context) {
-        return state.getValue(HAS_EGG) ? SHAPE : EMPTY_SHAPE;
-    }
-
+    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos, @NotNull CollisionContext context) { return state.getValue(HAS_EGG) ? SHAPE : EMPTY_SHAPE; }
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(HAS_EGG);
-    }
-
+    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder) { builder.add(HAS_EGG); }
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull Player playerIn, @NotNull InteractionHand handIn, @NotNull BlockHitResult hit) {
         BlockEntity tile = worldIn.getBlockEntity(pos);
-        if(!(tile instanceof ChocoboNestBlockEntity nest))
-            return InteractionResult.FAIL;
+        if(!(tile instanceof ChocoboNestBlockEntity nest)) { return InteractionResult.FAIL; }
 
         ItemStack heldItem = playerIn.getItemInHand(handIn);
         if (ChocoboEggBlock.isChocoboEgg(heldItem)) {
-            if (!nest.getEggItemStack().isEmpty()) return InteractionResult.FAIL;
-            if (worldIn.isClientSide) return InteractionResult.SUCCESS;
+            if (!nest.getEggItemStack().isEmpty()) { return InteractionResult.FAIL; }
+            if (worldIn.isClientSide) { return InteractionResult.SUCCESS; }
             nest.setEggItemStack(playerIn.getItemInHand(handIn).copy().split(1));
             if (!playerIn.isCreative()) { playerIn.getItemInHand(handIn).shrink(1); }
             return InteractionResult.SUCCESS;
-        } else {
-            if(!worldIn.isClientSide) {
-                NetworkHooks.openGui((ServerPlayer) playerIn, nest, pos);
-            }
-        }
+        } else { if(!worldIn.isClientSide) { NetworkHooks.openGui((ServerPlayer) playerIn, nest, pos); } }
         return InteractionResult.FAIL;
     }
-
     @Override
-    public void onRemove(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) {
-        super.onRemove(state, worldIn, pos, newState, isMoving);
-    }
-
+    public void onRemove(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) { super.onRemove(state, worldIn, pos, newState, isMoving); }
     @Nullable
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
-        return createNestTicker(level, blockEntityType, ModRegistry.STRAW_NEST_TILE.get());
-    }
-
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) { return createNestTicker(level, blockEntityType, ModRegistry.STRAW_NEST_TILE.get()); }
     @Nullable
-    protected static <T extends BlockEntity> BlockEntityTicker<T> createNestTicker(Level level, BlockEntityType<T> blockEntityType, BlockEntityType<? extends ChocoboNestBlockEntity> nestBlockEntityType) {
-        return level.isClientSide ? null : createTickerHelper(blockEntityType, nestBlockEntityType, ChocoboNestBlockEntity::serverTick);
-    }
-
+    protected static <T extends BlockEntity> BlockEntityTicker<T> createNestTicker(@NotNull Level level, BlockEntityType<T> blockEntityType, BlockEntityType<? extends ChocoboNestBlockEntity> nestBlockEntityType) { return level.isClientSide ? null : createTickerHelper(blockEntityType, nestBlockEntityType, ChocoboNestBlockEntity::serverTick); }
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        return new ChocoboNestBlockEntity(pos, state);
-    }
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) { return new ChocoboNestBlockEntity(pos, state); }
 }

@@ -8,17 +8,16 @@ import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.jetbrains.annotations.NotNull;
 
 @Mod.EventBusSubscriber(modid = DelChoco.MOD_ID)
 public class RidingEventHandler {
     @SubscribeEvent
     public static void onMountEntity(EntityMountEvent event) {
-        if (event.isMounting()) return;
-        if (!event.getEntityBeingMounted().isAlive()) return;
-        if (!(event.getEntityBeingMounted() instanceof Chocobo)) return;
-
-        if (!event.getEntityBeingMounted().isOnGround())
-            event.setCanceled(true);
+        if (event.isMounting()) { return; }
+        if (!event.getEntityBeingMounted().isAlive()) { return; }
+        if (!(event.getEntityBeingMounted() instanceof Chocobo)) { return; }
+        if (!event.getEntityBeingMounted().isOnGround()) { event.setCanceled(true); }
     }
 
     /* This Foricbly dismounts players that log out
@@ -27,13 +26,11 @@ public class RidingEventHandler {
      */
 
     @SubscribeEvent
-    public static void onPlayerDisconnect(PlayerLoggedOutEvent event) {
+    public static void onPlayerDisconnect(@NotNull PlayerLoggedOutEvent event) {
         Player player = event.getPlayer();
         if (player.getVehicle() != null) {
             Entity entityRide = player.getVehicle();
-            if (entityRide instanceof Chocobo) {
-                player.removeVehicle();
-            }
+            if (entityRide instanceof Chocobo) { player.removeVehicle(); }
         }
     }
 }

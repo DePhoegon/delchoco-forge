@@ -36,7 +36,5 @@ public class chocoboEquipmentSlot extends SlotItemHandler {
     }
 
     @Override
-    public int getMaxStackSize(@Nonnull ItemStack stack) {
-        return 1;
-    }
+    public int getMaxStackSize(@Nonnull ItemStack stack) { return 1; }
 }

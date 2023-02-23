@@ -9,6 +9,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * ModelAdultChocobo - Kraeheart
@@ -18,26 +19,22 @@ public class AdultChocoboModel<T extends Chocobo> extends EntityModel<Chocobo> {
     private final ModelPart root;
     private final ModelPart wing_left;
     private final ModelPart wing_right;
-    private final ModelPart neck;
     private final ModelPart head;
     private final ModelPart leg_left;
     private final ModelPart leg_right;
 
-    public AdultChocoboModel(ModelPart root) {
+    public AdultChocoboModel(@NotNull ModelPart root) {
         this.root = root.getChild("root");
         ModelPart body = this.root.getChild("body");
 
-        this.neck = body.getChild("chest").getChild("neck");
-        this.head = this.neck.getChild("head");
-
+        ModelPart neck = body.getChild("chest").getChild("neck");
+        this.head = neck.getChild("head");
         this.leg_left = body.getChild("leg_left");
         this.leg_right = body.getChild("leg_right");
-
         this.wing_left = body.getChild("wing_left");
         this.wing_right = body.getChild("wing_right");
     }
-
-    public static LayerDefinition createBodyLayer() {
+    public static @NotNull LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -176,23 +173,19 @@ public class AdultChocoboModel<T extends Chocobo> extends EntityModel<Chocobo> {
 
         return LayerDefinition.create(meshdefinition, 128, 64);
     }
-
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        this.root.render(poseStack, consumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-    }
+    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer consumer, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) { this.root.render(poseStack, consumer, packedLightIn, packedOverlayIn, red, green, blue, alpha); }
 
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
-    private void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
+    private void setRotateAngle(@NotNull ModelPart modelRenderer, float x, float y, float z) {
         modelRenderer.xRot = x;
         modelRenderer.yRot = y;
         modelRenderer.zRot = z;
     }
-
     @Override
-    public void setupAnim(Chocobo entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@NotNull Chocobo entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         // ageInTicks = wing z movement (flutter)
         // netHeadYaw = head y movement
         // headPitch = head x movement
@@ -230,12 +223,6 @@ public class AdultChocoboModel<T extends Chocobo> extends EntityModel<Chocobo> {
             setRotateAngle(wing_left, 0F, 0.0174533F, 0F);
         }
     }
-
-    private void setLeftLegXRotation(float deltaX) {
-        leg_left.xRot = 0.2094395F + deltaX;
-    }
-
-    private void setRightLegXRotation(float deltaX) {
-        leg_right.xRot = 0.2094395F + deltaX;
-    }
+    private void setLeftLegXRotation(float deltaX) { leg_left.xRot = 0.2094395F + deltaX; }
+    private void setRightLegXRotation(float deltaX) { leg_right.xRot = 0.2094395F + deltaX; }
 }

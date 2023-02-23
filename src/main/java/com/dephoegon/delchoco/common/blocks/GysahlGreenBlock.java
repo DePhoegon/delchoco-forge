@@ -2,22 +2,18 @@ package com.dephoegon.delchoco.common.blocks;
 
 import com.dephoegon.delchoco.common.init.ModRegistry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.properties.SlabType;
-import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-
-import static net.minecraft.world.level.block.SlabBlock.TYPE;
 
 public class GysahlGreenBlock extends CropBlock {
     public static final int MAX_AGE = 4;
@@ -28,37 +24,22 @@ public class GysahlGreenBlock extends CropBlock {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(this.getAgeProperty(), 0));
     }
-
     @Override
-    protected ItemLike getBaseSeedId() {
+    protected @NotNull ItemLike getBaseSeedId() {
         return ModRegistry.GYSAHL_GREEN_SEEDS::get;
     }
-
     @Override
-    public boolean canSurvive(BlockState state, @NotNull LevelReader worldIn, BlockPos pos) {
-        boolean light = worldIn.getRawBrightness(pos, 0) >= 5;
-        boolean sky = worldIn.canSeeSky(pos);
+    public boolean canSurvive(@NotNull BlockState state, @NotNull LevelReader worldIn, @NotNull BlockPos pos) {
         BlockState block = worldIn.getBlockState(pos.below());
-        boolean blocks = blockPlaceableOnList().contains(block.getBlock().defaultBlockState());
-        // return (light || sky || blocks) && (state.getBlock() == this || state.getValue(AGE) == MAX_AGE);
-        if (state.getBlock() == this) {
-            return blockPlaceableOnList().contains(block.getBlock().defaultBlockState());
-        }
+        if (state.getBlock() == this) { return blockPlaceableOnList().contains(block.getBlock().defaultBlockState()); }
         return mayPlaceOn(worldIn.getBlockState(pos), worldIn, pos.below());
     }
-
     @Override
-    protected boolean mayPlaceOn(@NotNull BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos) {
-        boolean miscs = blockPlaceableOnList().contains(state.getBlock().defaultBlockState());
-        return miscs;
-    }
-
+    protected boolean mayPlaceOn(@NotNull BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos) { return blockPlaceableOnList().contains(state.getBlock().defaultBlockState()); }
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) { builder.add(AGE); }
-
+    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder) { builder.add(AGE); }
     @Override
-    public IntegerProperty getAgeProperty() { return AGE; }
-
+    public @NotNull IntegerProperty getAgeProperty() { return AGE; }
     @Override
     public int getMaxAge() { return MAX_AGE; }
     private @NotNull ArrayList<BlockState> blockPlaceableOnList() {

@@ -6,7 +6,6 @@ import com.dephoegon.delchoco.common.init.ModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -27,9 +26,7 @@ import static com.dephoegon.delchoco.common.items.ChocoboSpawnEggItem.wbChocobos
 import static com.dephoegon.delchoco.common.items.ChocoboSpawnerItemHelper.*;
 import static com.dephoegon.delchoco.utils.RandomHelper.random;
 import static net.minecraft.world.entity.ai.attributes.Attributes.*;
-import static net.minecraft.world.entity.ai.attributes.Attributes.ARMOR_TOUGHNESS;
 import static net.minecraft.world.item.Items.ENDER_PEARL;
-import static net.minecraft.world.level.biome.Biome.getBiomeCategory;
 import static net.minecraft.world.level.block.Blocks.*;
 import static net.minecraftforge.common.Tags.Biomes.IS_END;
 
@@ -162,24 +159,16 @@ public class ChocoboSummoning {
         if (eatAlter) { worldIn.setBlockAndUpdate(pos, AIR.defaultBlockState()); }
         else {
             if (player.getItemBySlot(EquipmentSlot.CHEST).getItem().equals(CHOCO_DISGUISE_CHESTPLATE.get())) {
-                player.getItemBySlot(EquipmentSlot.CHEST).hurtAndBreak(this.damage, player, (event) -> {
-                    event.broadcastBreakEvent(EquipmentSlot.CHEST);
-                });
+                player.getItemBySlot(EquipmentSlot.CHEST).hurtAndBreak(this.damage, player, (event) -> { event.broadcastBreakEvent(EquipmentSlot.CHEST); });
             }
             if (player.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(CHOCO_DISGUISE_HELMET.get())) {
-                player.getItemBySlot(EquipmentSlot.HEAD).hurtAndBreak(this.damage, player, (event) -> {
-                    event.broadcastBreakEvent(EquipmentSlot.HEAD);
-                });
+                player.getItemBySlot(EquipmentSlot.HEAD).hurtAndBreak(this.damage, player, (event) -> { event.broadcastBreakEvent(EquipmentSlot.HEAD); });
             }
             if (player.getItemBySlot(EquipmentSlot.LEGS).getItem().equals(CHOCO_DISGUISE_LEGGINGS.get())) {
-                player.getItemBySlot(EquipmentSlot.LEGS).hurtAndBreak(this.damage, player, (event) -> {
-                    event.broadcastBreakEvent(EquipmentSlot.LEGS);
-                });
+                player.getItemBySlot(EquipmentSlot.LEGS).hurtAndBreak(this.damage, player, (event) -> { event.broadcastBreakEvent(EquipmentSlot.LEGS); });
             }
             if (player.getItemBySlot(EquipmentSlot.FEET).getItem().equals(CHOCO_DISGUISE_BOOTS.get())) {
-                player.getItemBySlot(EquipmentSlot.FEET).hurtAndBreak(this.damage, player, (event) -> {
-                    event.broadcastBreakEvent(EquipmentSlot.FEET);
-                });
+                player.getItemBySlot(EquipmentSlot.FEET).hurtAndBreak(this.damage, player, (event) -> { event.broadcastBreakEvent(EquipmentSlot.FEET); });
             }
         }
     }

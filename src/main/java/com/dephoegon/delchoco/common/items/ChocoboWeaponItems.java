@@ -17,11 +17,7 @@ public class ChocoboWeaponItems extends SwordItem {
         map.put(3, Tiers.DIAMOND);
         map.put(4, Tiers.NETHERITE);
     });
-    private static final Map<Tier, Integer> CHOCOBO_WEAPON_TIER = Util.make(Maps.newHashMap(), (map) ->{
-        for (int i = 0; !(i > CHOCOBO_WEAPON_TIERS.size()); i++) {
-            map.put(CHOCOBO_WEAPON_TIERS.get(i), i);
-        }
-    });
+    private static final Map<Tier, Integer> CHOCOBO_WEAPON_TIER = Util.make(Maps.newHashMap(), (map) ->{ for (int i = 0; !(i > CHOCOBO_WEAPON_TIERS.size()); i++) { map.put(CHOCOBO_WEAPON_TIERS.get(i), i); } });
     private static int totalTierDamage(Tier tier, int additive, boolean initialTier) {
         int out = initialTier ? (int)tier.getAttackDamageBonus() + additive : (int)(tier.getAttackDamageBonus() / 2) + additive;
         int nextLowestWeaponTier = CHOCOBO_WEAPON_TIER.get(tier)-1;

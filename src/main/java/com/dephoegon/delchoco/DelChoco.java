@@ -32,10 +32,7 @@ import org.jetbrains.annotations.NotNull;
 public class DelChoco {
     public static final String MOD_ID = "delchoco";
     public final static Logger log = LogManager.getLogger(MOD_ID);
-    public static final CreativeModeTab CHOCO_TAB = new CreativeModeTab(MOD_ID) {
-          @Override
-          public @NotNull ItemStack makeIcon() { return new ItemStack(ModRegistry.GYSAHL_GREEN.get()); }
-    };
+    public static final CreativeModeTab CHOCO_TAB = new CreativeModeTab(MOD_ID) { public @NotNull ItemStack makeIcon() { return new ItemStack(ModRegistry.GYSAHL_GREEN.get()); } };
 
     public DelChoco() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();

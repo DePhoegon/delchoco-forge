@@ -24,9 +24,7 @@ public class ChocoboCombatEffects {
             /* Chance For Thing when Chocobos Attack */
         }
         if (chocoboTarget != null) {
-            if (random.nextInt(100)+1 > 35) {
-                chocoboTarget.spawnAtLocation(CHOCOBO_FEATHER.get());
-            }
+            if (random.nextInt(100)+1 > 35) { chocoboTarget.spawnAtLocation(CHOCOBO_FEATHER.get()); }
         }
     }
     @SubscribeEvent
@@ -35,9 +33,7 @@ public class ChocoboCombatEffects {
         Chocobo chocoboDie = event.getEntityLiving() instanceof  Chocobo choco ? choco : null;
         if (chocoboKill != null) {
             if (chocoboKill.getChocoboColor() == ChocoboColor.BLACK) {
-                if (random.nextInt(100)+1 < 45) {
-                    chocoboKill.spawnAtLocation(WITHER_ROSE);
-                }
+                if (random.nextInt(100)+1 < 45) { chocoboKill.spawnAtLocation(WITHER_ROSE); }
             }
         }
 
@@ -54,9 +50,7 @@ public class ChocoboCombatEffects {
                 case PINK -> new ItemStack(PINK_CHOCOBO_SPAWN_EGG.get());
                 case PURPLE -> new ItemStack(PURPLE_CHOCOBO_SPAWN_EGG.get());
             };
-            if (random.nextInt(1000)+1 < 85) {
-                chocoboDie.spawnAtLocation(egg);
-            }
+            if (random.nextInt(1000)+1 < 85) { chocoboDie.spawnAtLocation(egg); }
         }
     }
 }

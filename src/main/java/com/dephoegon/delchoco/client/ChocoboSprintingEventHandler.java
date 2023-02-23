@@ -30,8 +30,6 @@ public class ChocoboSprintingEventHandler {
                     PacketManager.CHANNEL.sendToServer(new ChocoboSprintingMessage(false));
                 }
             }
-        } else {
-            isSprinting = false;
-        }
+        } else { isSprinting = false; }
     }
 }

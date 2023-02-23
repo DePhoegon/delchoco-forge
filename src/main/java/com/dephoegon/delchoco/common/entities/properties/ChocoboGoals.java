@@ -83,14 +83,11 @@ public class ChocoboGoals {
             }
             if (newBlock != null) { this.TeleportTo(block); }
         }
-
         public void start() { canTeleport(); }
-
         @Override
         public boolean canUse() { return this.mob.isInLava() && this.chocobo.getRideTickDelay() >= 15; }
     }
     public static class ChocoboAvoidBlockGoal extends Goal {
-        // Example used from 'TryFindWaterGoal', except it avoids
         private final PathfinderMob mob;
         private final ArrayList<Class<? extends Block>> classes;
 
@@ -133,11 +130,8 @@ public class ChocoboGoals {
                     }
                 }
                 // Sets postion to wonder towards.
-                if (newBlockPos != null) {
-                    mob.getMoveControl().setWantedPosition(newBlockPos.getX(), newBlockPos.getY(), newBlockPos.getZ(), 1.0D);
-                }
+                if (newBlockPos != null) { mob.getMoveControl().setWantedPosition(newBlockPos.getX(), newBlockPos.getY(), newBlockPos.getZ(), 1.0D); }
             }
-
         }
     }
     public static class ChocoboOwnerHurtGoal extends OwnerHurtTargetGoal {
@@ -151,18 +145,14 @@ public class ChocoboGoals {
         public boolean canUse() {
             if (tameAnimal.isTame()) {
                 LivingEntity livingentity = tameAnimal.getOwner();
-                if (livingentity == null) {
-                    return false;
-                } else {
+                if (livingentity == null) { return false; }
+                else {
                     Class<? extends LivingEntity> ownerLastHurt;
-                    if (livingentity.getLastHurtMob() != null) {
-                        ownerLastHurt = livingentity.getLastHurtMob().getClass();
-                    } else { ownerLastHurt = null; }
+                    if (livingentity.getLastHurtMob() != null) { ownerLastHurt = livingentity.getLastHurtMob().getClass();}
+                    else { ownerLastHurt = null; }
                     return (doNotAttackClassCheck(ownerLastHurt)) && super.canUse();
                 }
-            } else {
-                return super.canUse();
-            }
+            } else { return super.canUse(); }
         }
     }
     public static class ChocoboOwnerHurtByGoal extends OwnerHurtByTargetGoal {
@@ -173,22 +163,17 @@ public class ChocoboGoals {
             this.tameAnimal = pTameAnimal;
             this.setFlags(EnumSet.of(Goal.Flag.TARGET));
         }
-
         public boolean canUse() {
             if (tameAnimal.isTame()) {
                 LivingEntity livingentity = tameAnimal.getOwner();
-                if (livingentity == null) {
-                    return false;
-                } else {
+                if (livingentity == null) { return false; }
+                else {
                     Class<? extends LivingEntity> ownerLastHurtBy;
-                    if (livingentity.getLastHurtMob() != null) {
-                        ownerLastHurtBy = livingentity.getLastHurtMob().getClass();
-                    } else { ownerLastHurtBy = null; }
+                    if (livingentity.getLastHurtMob() != null) { ownerLastHurtBy = livingentity.getLastHurtMob().getClass(); }
+                    else { ownerLastHurtBy = null; }
                     return (doNotAttackClassCheck(ownerLastHurtBy)) && super.canUse();
                 }
-            } else {
-                return super.canUse();
-            }
+            } else { return super.canUse(); }
         }
     }
     public static class ChocoPanicGoal extends PanicGoal {
@@ -205,11 +190,9 @@ public class ChocoboGoals {
             super(pMob, Player.class, livingEntity -> {
                 if(livingEntity instanceof Player player) {
                     int chance = 0;
-                    for (ItemStack stack : player.getInventory().armor) {
-                        if (stack != null) {
-                            if (stack.getItem() instanceof ChocoDisguiseItem) { chance += 25; }
-                        }
-                    }
+                    for (ItemStack stack : player.getInventory().armor) { if (stack != null) {
+                        if (stack.getItem() instanceof ChocoDisguiseItem) { chance += 25; }
+                    } }
                     return !RandomHelper.getChanceResult(chance);
                 }
                 return false;

@@ -11,6 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkEvent.Context;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
@@ -22,17 +24,13 @@ public class OpenChocoboGuiMessage {
 	@Nullable
 	public CompoundTag inventory;
 
-	public OpenChocoboGuiMessage(Chocobo chocobo, int windowId) {
+	public OpenChocoboGuiMessage(@NotNull Chocobo chocobo, int windowId) {
 		this.entityId = chocobo.getId();
 		this.windowId = windowId;
 
 		this.saddle = chocobo.saddleItemStackHandler.serializeNBT();
 		ItemStack saddleStack = chocobo.getSaddle();
-		if(!saddleStack.isEmpty() && saddleStack.getItem() instanceof ChocoboSaddleItem saddleItem) {
-			if(saddleItem.getInventorySize() > 0) {
-				this.inventory = chocobo.chocoboInventory.serializeNBT();
-			}
-		}
+		if(!saddleStack.isEmpty() && saddleStack.getItem() instanceof ChocoboSaddleItem saddleItem) { if(saddleItem.getInventorySize() > 0) { this.inventory = chocobo.chocoboInventory.serializeNBT(); } }
 	}
 
 	public OpenChocoboGuiMessage(int entityID, int windowId, CompoundTag saddle, CompoundTag inventory) {
@@ -43,20 +41,18 @@ public class OpenChocoboGuiMessage {
 		this.inventory = inventory;
 	}
 
-	public void encode(FriendlyByteBuf buf) {
+	public void encode(@NotNull FriendlyByteBuf buf) {
 		buf.writeInt(this.entityId);
 		buf.writeInt(this.windowId);
 		buf.writeNbt(saddle);
 		buf.writeBoolean(this.inventory != null);
-		if (this.inventory != null)
-			buf.writeNbt(inventory);
+		if (this.inventory != null) { buf.writeNbt(inventory); }
 	}
 
-	public static OpenChocoboGuiMessage decode(final FriendlyByteBuf buffer) {
-		return new OpenChocoboGuiMessage(buffer.readInt(), buffer.readInt(), buffer.readNbt(), buffer.readBoolean() ? buffer.readNbt() : null);
-	}
+	@Contract("_ -> new")
+	public static @NotNull OpenChocoboGuiMessage decode(final @NotNull FriendlyByteBuf buffer) { return new OpenChocoboGuiMessage(buffer.readInt(), buffer.readInt(), buffer.readNbt(), buffer.readBoolean() ? buffer.readNbt() : null); }
 
-	public void handle(Supplier<Context> context) {
+	public void handle(@NotNull Supplier<Context> context) {
 		NetworkEvent.Context ctx = context.get();
 		ctx.enqueueWork(() -> {
 			if(ctx.getDirection().getReceptionSide() == LogicalSide.CLIENT) {
@@ -68,10 +64,8 @@ public class OpenChocoboGuiMessage {
 				}
 
 				com.dephoegon.delchoco.client.gui.ChocoboInventoryScreen.openInventory(windowId, chocobo);
-
 				chocobo.saddleItemStackHandler.deserializeNBT(saddle);
-				if (inventory != null)
-					chocobo.chocoboInventory.deserializeNBT(inventory);
+				if (inventory != null) { chocobo.chocoboInventory.deserializeNBT(inventory); }
 			}
 		});
 		ctx.setPacketHandled(true);

@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class ClientHandler {
     public static final ModelLayerLocation CHOCOBO = new ModelLayerLocation(new ResourceLocation(DelChoco.MOD_ID, "main"), "chocobo");
@@ -24,15 +25,11 @@ public class ClientHandler {
 
     public static void onClientSetup(final FMLClientSetupEvent event) {
         ItemBlockRenderTypes.setRenderLayer(ModRegistry.GYSAHL_GREEN.get(), RenderType.cutout());
-
         MenuScreens.register(ModContainers.NEST.get(), NestScreen::new);
     }
+    public static void registerEntityRenders(EntityRenderersEvent.@NotNull RegisterRenderers event) { event.registerEntityRenderer(ModEntities.CHOCOBO.get(), ChocoboRenderer::new); }
 
-    public static void registerEntityRenders(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(ModEntities.CHOCOBO.get(), ChocoboRenderer::new);
-    }
-
-    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+    public static void registerLayerDefinitions(EntityRenderersEvent.@NotNull RegisterLayerDefinitions event) {
         event.registerLayerDefinition(CHOCOBO, AdultChocoboModel::createBodyLayer);
         event.registerLayerDefinition(CHICOBO, ChicoboModel::createBodyLayer);
         event.registerLayerDefinition(CHOCO_DISGUISE, ChocoDisguiseModel::createArmorDefinition);

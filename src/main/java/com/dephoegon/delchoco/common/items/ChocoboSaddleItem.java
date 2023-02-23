@@ -12,10 +12,6 @@ public class ChocoboSaddleItem extends Item {
         this.inventorySize = inventorySize;
         this.renderOutline = renderOutline;
     }
-    public boolean hasOutline() {
-        return this.renderOutline;
-    }
-    public int getInventorySize() {
-        return inventorySize;
-    }
+    public boolean hasOutline() { return this.renderOutline; }
+    public int getInventorySize() { return inventorySize; }
 }

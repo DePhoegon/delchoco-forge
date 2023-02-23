@@ -21,12 +21,13 @@ public class RenderChocoboOverlay {
     private static final ResourceLocation ICONS = new ResourceLocation(DelChoco.MOD_ID, "textures/gui/icons.png");
 
     @SubscribeEvent
-    public static void onGuiIngameOverlayRender(RenderGameOverlayEvent.@NotNull PostLayer event) {
-        if (event.getOverlay() != ForgeIngameGui.PLAYER_HEALTH_ELEMENT) return;
+    public static void onGuiInGameOverlayRender(RenderGameOverlayEvent.@NotNull PostLayer event) {
+        if (event.getOverlay() != ForgeIngameGui.PLAYER_HEALTH_ELEMENT) { return; }
         Minecraft minecraft = Minecraft.getInstance();
         PoseStack matrixStack = event.getMatrixStack();
+        assert minecraft.player != null;
         Entity mountedEntity = minecraft.player.getVehicle();
-        if (!(mountedEntity instanceof Chocobo chocobo)) return;
+        if (!(mountedEntity instanceof Chocobo chocobo)) { return; }
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, ICONS);

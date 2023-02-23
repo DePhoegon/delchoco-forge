@@ -10,9 +10,7 @@ public class WorldUtils {
 
         for (BlockPos pos = startPos; pos.getY() < world.getMaxBuildHeight(); pos = pos.above()) {
             BlockState state = world.getBlockState(pos);
-            if (!state.getMaterial().isLiquid())
-                break;
-
+            if (!state.getMaterial().isLiquid()) { break; }
             lastLiquidPos = pos;
         }
 

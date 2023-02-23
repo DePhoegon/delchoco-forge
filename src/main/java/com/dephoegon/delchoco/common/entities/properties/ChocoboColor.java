@@ -29,18 +29,10 @@ public enum ChocoboColor {
         this.colorTag = colorIngredient;
         this.eggText = new TranslatableComponent("item." + DelChoco.MOD_ID + ".chocobo_egg.tooltip." + this.name().toLowerCase());
     }
-
-    public static ChocoboColor getRandomColor() {
-        return values()[rand.nextInt(values().length)];
-    }
-
+    public static ChocoboColor getRandomColor() { return values()[rand.nextInt(values().length)]; }
     public static Optional<ChocoboColor> getColorForItemstack(ItemStack stack) {
-        for (ChocoboColor color : values()) {
-            if(color.colorTag != null && stack.is(color.colorTag))
-                return Optional.of(color);
-        }
+        for (ChocoboColor color : values()) { if(color.colorTag != null && stack.is(color.colorTag)) { return Optional.of(color); } }
         return Optional.empty();
     }
-
     public TranslatableComponent getEggText() { return eggText; }
 }

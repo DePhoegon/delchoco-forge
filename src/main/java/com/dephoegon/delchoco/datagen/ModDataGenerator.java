@@ -40,6 +40,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -54,29 +57,20 @@ import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 import static com.dephoegon.delchoco.common.init.ModEntities.*;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ModDatagenerator {
+public class ModDataGenerator {
 	@SubscribeEvent
-	public static void gatherData(GatherDataEvent event) {
+	public static void gatherData(@NotNull GatherDataEvent event) {
 		DataGenerator generator = event.getGenerator();
 		ExistingFileHelper helper = event.getExistingFileHelper();
 
-		if (event.includeServer()) {
-			generator.addProvider(new ModLoot(generator));
-		}
-		if (event.includeClient()) {
-//			generator.addProvider(new FarmingItemModels(generator, helper));
-		}
+		if (event.includeServer()) { generator.addProvider(new ModLoot(generator)); }
+		if (event.includeClient()) { /* generator.addProvider(new FarmingItemModels(generator, helper)); */ }
 	}
 
 	private static class ModLoot extends LootTableProvider {
-		public ModLoot(DataGenerator gen) {
-			super(gen);
-		}
-
+		public ModLoot(DataGenerator gen) { super(gen); }
 		@Override
-		protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
-			return ImmutableList.of(Pair.of(ModBlockTables::new, LootContextParamSets.BLOCK), Pair.of(ModEntityTables::new, LootContextParamSets.ENTITY));
-		}
+		protected @NotNull @Unmodifiable List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() { return ImmutableList.of(Pair.of(ModBlockTables::new, LootContextParamSets.BLOCK), Pair.of(ModEntityTables::new, LootContextParamSets.ENTITY)); }
 
 		private static class ModBlockTables extends BlockLoot {
 			@Override
@@ -92,9 +86,7 @@ public class ModDatagenerator {
 			}
 
 			@Override
-			protected Iterable<Block> getKnownBlocks() {
-				return ModRegistry.BLOCKS.getEntries().stream().map(net.minecraftforge.registries.RegistryObject::get)::iterator;
-			}
+			protected @NotNull Iterable<Block> getKnownBlocks() { return ModRegistry.BLOCKS.getEntries().stream().map(net.minecraftforge.registries.RegistryObject::get)::iterator; }
 		}
 
 		private static class ModEntityTables extends EntityLoot {
@@ -107,22 +99,18 @@ public class ModDatagenerator {
 			}
 
 			@Override
-			protected Iterable<EntityType<?>> getKnownEntities() {
+			protected @NotNull Iterable<EntityType<?>> getKnownEntities() {
 				Stream<EntityType<?>> entityTypeStream = ModEntities.ENTITIES.getEntries().stream().map(net.minecraftforge.registries.RegistryObject::get);
 				return entityTypeStream::iterator;
 			}
 		}
 
 		@Override
-		protected void validate(Map<ResourceLocation, LootTable> map, @Nonnull ValidationContext validationtracker) {
-			map.forEach((name, table) -> LootTables.validate(validationtracker, name, table));
-		}
+		protected void validate(@NotNull Map<ResourceLocation, LootTable> map, @Nonnull ValidationContext validationtracker) { map.forEach((name, table) -> LootTables.validate(validationtracker, name, table)); }
 	}
 
 	private static class FarmingItemModels extends ItemModelProvider {
-		public FarmingItemModels(DataGenerator gen, ExistingFileHelper helper) {
-			super(gen, DelChoco.MOD_ID, helper);
-		}
+		public FarmingItemModels(DataGenerator gen, ExistingFileHelper helper) { super(gen, DelChoco.MOD_ID, helper); }
 
 		@Override
 		protected void registerModels() {
@@ -130,17 +118,13 @@ public class ModDatagenerator {
 				.map(RegistryObject::get)
 				.forEach(item -> {
 					String path = Objects.requireNonNull(item.getRegistryName()).getPath();
-					if(path.equals("straw_nest") || path.equals("chocobo_egg")) {
-						this.withExistingParent(path, modLoc("block/" + path));
-					} else {
-						this.singleTexture(path, mcLoc("item/generated"), "layer0", modLoc("item/" + path));
-					}
+					if(path.equals("straw_nest") || path.equals("chocobo_egg")) { this.withExistingParent(path, modLoc("block/" + path)); }
+					else { this.singleTexture(path, mcLoc("item/generated"), "layer0", modLoc("item/" + path)); }
 				});
 		}
 
+		@Contract(pure = true)
 		@Override
-		public String getName() {
-			return "Item Models";
-		}
+		public @NotNull String getName() { return "Item Models"; }
 	}
 }

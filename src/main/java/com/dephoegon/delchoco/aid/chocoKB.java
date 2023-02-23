@@ -10,7 +10,5 @@ public class chocoKB {
     private static boolean LAlt() { return isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_ALT); }
     private static boolean RAlt() { return isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_RIGHT_ALT); }
     public static boolean isAltDown() { return (RAlt() || LAlt()); }
-    public static boolean hideChocoboMountInFirstPerson(@NotNull Chocobo chocobo) {
-        return chocobo.isControlledByLocalInstance() && !Minecraft.getInstance().gameRenderer.getMainCamera().isDetached();
-    }
+    public static boolean hideChocoboMountInFirstPerson(@NotNull Chocobo chocobo) { return chocobo.isControlledByLocalInstance() && !Minecraft.getInstance().gameRenderer.getMainCamera().isDetached(); }
 }
