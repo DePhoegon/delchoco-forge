@@ -1,0 +1,18 @@
+Screenshots
+- Example alters
+- Chocobo Gear
+- Chocobo Alter & Pillars by Color
+- Chocobo in gear
+
+Flushed out alter structure blocks
+- added AZALEA_LEAVES
+- added FLOWERING_AZALEA_LEAVES
+- added SAND
+- added RED_SAND
+- added CRIMSON_NYLIUM
+- added WARPED_NYLIUM
+
+Misc
+- Minor logic tweak in Chocobo weapon items
+-- <= used over !( > )
+==== Does not matter, but is cleaner to read overall

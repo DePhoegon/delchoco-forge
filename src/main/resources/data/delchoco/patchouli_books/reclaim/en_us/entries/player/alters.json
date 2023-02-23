@@ -1,12 +1,12 @@
 {
-  "name": "02 - Chocobo Kills",
+  "name": "Chocobo Alters by Color",
   "icon": "delchoco:chocobo_egg",
   "category": "delchoco:chocobo_sum",
   "pages": [
     {
       "title": "Black Chocobo",
       "type": "patchouli:spotlight",
-      "item": "delchoco:chocobo_weapon_stone",
+      "item": "delchoco:black_chocobo_spawn_egg",
       "text": "Breeding can bring Stats & colors.$(br)Chocobo Stats are$(br)- Stamina$(br)- Health$(br)- Speed"
     }
   ]

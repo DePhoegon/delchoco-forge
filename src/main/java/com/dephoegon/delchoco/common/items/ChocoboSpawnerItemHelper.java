@@ -96,9 +96,15 @@ public class ChocoboSpawnerItemHelper extends Item {
         approvedList.add(JUNGLE_LEAVES.defaultBlockState());
         approvedList.add(ACACIA_LEAVES.defaultBlockState());
         approvedList.add(DARK_OAK_LEAVES.defaultBlockState());
+        approvedList.add(FLOWERING_AZALEA_LEAVES.defaultBlockState());
+        approvedList.add(AZALEA_LEAVES.defaultBlockState());
         approvedList.add(CLAY.defaultBlockState());
         approvedList.add(MOSS_BLOCK.defaultBlockState());
         approvedList.add(END_STONE.defaultBlockState());
+        approvedList.add(WARPED_NYLIUM.defaultBlockState());
+        approvedList.add(CRIMSON_NYLIUM.defaultBlockState());
+        approvedList.add(SAND.defaultBlockState());
+        approvedList.add(RED_SAND.defaultBlockState());
         return approvedList.contains(blockState);
     }
     public static boolean randomAlter(BlockState blockState) {
