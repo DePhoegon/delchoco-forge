@@ -1,0 +1,25 @@
+Spawn Logic
+- Moved biomes/Dimension checks to support java class
+- Reimplemented Type checks, alongside Dimension checks.
+- general blacklist for Ocean types
+- Done to give compatibility to Mods that modify the world, add/remove biomes, as much as is feasible
+
+Chocobo Goals
+- Changed Last hurt by Target Goal
+-- Now excludes The same list the player can't make it attack.
+=== Flying, (elder dragon, phantom, Ghasts)
+=== Underwater ones (Fish, dolphins, guardians/elder guardians)
+=== Done mostly to prevent pathfinding from breaking with an impossilbe path, & to let chocobos focus on meaningful targets.
+- Adjusted Panic Goal
+-- to include last target of a 'ender dragon'
+=== Dragon Fear is a thing.
+=== Non-tamed Chocobos Only.
+=== Done to prevent them from standing in dragon spit.
+
+Guide Book
+-Recipes started
+-Chocobo Combat Section Started
+-- Weapons/Armors done
+
+Recipes
+- Adjusted Chocobo Stone Claws to use Stone Axe (Was Swords), to bring it inline with the rest.

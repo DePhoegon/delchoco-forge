@@ -395,3 +395,13 @@ Screenshots
 Testing
 
 Expand BLock set
+
+2-24-23
+
+Spawn Logic Tweaked
+
+Chocobo Goals Tweaked
+- Panic
+- LastHurtByTarget
+
+Guide Book Progressed on

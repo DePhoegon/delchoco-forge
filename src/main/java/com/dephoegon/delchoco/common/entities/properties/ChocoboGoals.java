@@ -10,8 +10,10 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.animal.horse.SkeletonHorse;
@@ -19,14 +21,19 @@ import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
+import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.List;
 
 import static net.minecraft.world.level.pathfinder.PathComputationType.LAND;
 
@@ -52,7 +59,6 @@ public class ChocoboGoals {
         out.add(SkeletonHorse.class);
         return !out.contains(target);
     }
-
     public static class ChocoboLavaEscape extends Goal {
         private final PathfinderMob mob;
         private final Chocobo chocobo;
@@ -171,18 +177,26 @@ public class ChocoboGoals {
                     Class<? extends LivingEntity> ownerLastHurtBy;
                     if (livingentity.getLastHurtMob() != null) { ownerLastHurtBy = livingentity.getLastHurtMob().getClass(); }
                     else { ownerLastHurtBy = null; }
-                    return (doNotAttackClassCheck(ownerLastHurtBy)) && super.canUse();
+                    return doNotAttackClassCheck(ownerLastHurtBy) && super.canUse();
                 }
             } else { return super.canUse(); }
         }
     }
     public static class ChocoPanicGoal extends PanicGoal {
         PathfinderMob entity;
+
         public ChocoPanicGoal(PathfinderMob mob, double pSpeed) {
             super(mob, pSpeed);
             this.entity = mob;
         }
-        protected boolean shouldPanic() { return entity.isFreezing() || entity.isOnFire(); }
+        private boolean dragonDamageCheck() {
+            LivingEntity livingentity = this.entity.getLastHurtByMob();
+            boolean tame;
+            if (this.entity instanceof Chocobo chocobo) { tame = chocobo.isTame(); } else { tame = false; }
+            if (livingentity != null && !tame) { return livingentity.getClass() == EnderDragon.class; }
+            return false;
+        }
+        protected boolean shouldPanic() { return entity.isFreezing() || entity.isOnFire() || dragonDamageCheck(); }
     }
     @SuppressWarnings("rawtypes")
     public static class ChocoboAvoidPlayer extends AvoidEntityGoal {
@@ -197,6 +211,15 @@ public class ChocoboGoals {
                 }
                 return false;
             }, 10.0F, 1.0D, 1.2D, EntitySelector.NO_CREATIVE_OR_SPECTATOR);
+        }
+    }
+    public static class ChocoboHurtByTargetGoal extends HurtByTargetGoal {
+        public ChocoboHurtByTargetGoal(PathfinderMob pMob, Class<?>... pToIgnoreDamage) { super(pMob, pToIgnoreDamage); }
+        public boolean canUse() {
+            LivingEntity livingentity = this.mob.getLastHurtByMob();
+            boolean canAttack = true;
+            if (livingentity != null) { canAttack = doNotAttackClassCheck(livingentity.getClass()); }
+            return canAttack && super.canUse();
         }
     }
 }

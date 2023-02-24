@@ -215,7 +215,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         this.goalSelector.addGoal(12, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.targetSelector.addGoal(1, new ChocoboOwnerHurtByGoal(this));
         this.targetSelector.addGoal(2, new ChocoboOwnerHurtGoal(this));
-        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this, Chocobo.class)).setAlertOthers(Chocobo.class));
+        this.targetSelector.addGoal(3, (new ChocoboHurtByTargetGoal(this, Chocobo.class)).setAlertOthers(Chocobo.class));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, true));
         this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, Endermite.class, false));

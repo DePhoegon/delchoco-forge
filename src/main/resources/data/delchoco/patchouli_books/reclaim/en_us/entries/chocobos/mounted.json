@@ -1,0 +1,17 @@
+{
+  "name": "02 - Chocobo Combat",
+  "icon": "delchoco:chocobo_saddle",
+  "category": "delchoco:chocobo_combat",
+  "pages": [
+    {
+      "title": "Invisible to You",
+      "type": "patchouli:text",
+      "text": "While Riding a Chocobo, the chocobo will not get in your field of view.$(br)-aka, The Chocobo will not render locally for you while you're mounted & in first person view$(br)$(br)Chocobos will not 'Move' on their own while Mounted, but will Melee attack a target in melee range that you are attacking, or has attacked you or it.$(br)-Exception being other Chocobos you hit or hit you.  It maybe possible to get one to attack another, but given chocobos do not have ranged attacks... don't count on it."
+    },
+    {
+      "title": "Side by Side",
+      "type": "patchouli:text",
+      "text": "The Chocobo will focus targets above following you"
+    }
+  ]
+}

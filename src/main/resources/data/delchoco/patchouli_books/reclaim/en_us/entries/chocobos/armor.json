@@ -1,31 +1,31 @@
 {
-  "name": "02 - Chocobo Armor",
-  "icon": "delchoco:chocobo_egg",
+  "name": "00 - Chocobo Armor",
+  "icon": "delchoco:chocobo_armor_chain",
   "category": "delchoco:chocobo_combat",
   "pages": [
     {
       "title": "Chain Armor",
       "type": "patchouli:spotlight",
       "item": "delchoco:chocobo_armor_chain",
-      "text": "Breeding can bring Stats & colors.$(br)Chocobo Stats are$(br)- Stamina$(br)- Health$(br)- Speed"
+      "text": "Chainmail Armor for Chocobos.$(br)$(l:delchoco:recipe/chain_armor)Recipe$(/l)"
     },
     {
       "title": "Iron Armor",
       "type": "patchouli:spotlight",
       "item": "delchoco:chocobo_armor_iron",
-      "text": "is Useful for hatching chocobos a bit faster.$(br)$(item)Currently, These are visually bugged & do not 'remove' the egg after the chicbo hatches from it.$()$(br)- It is safe to break & replace $(item)AFTER THE CHICOBO IS HATCHED$(), just right click it & see if an egg is in the slot$(br)- $(l:delchoco:chocobos/tools)here$(/l)"
+      "text": "Iron Armor for Chocobos.$(br)$(l:delchoco:recipe/iron_armor)Recipe$(/l)"
     },
     {
       "title": "Diamond Armor",
       "type": "patchouli:spotlight",
       "item": "delchoco:chocobo_armor_diamond",
-      "text": "is Useful for hatching chocobos a bit faster.$(br)$(item)Currently, These are visually bugged & do not 'remove' the egg after the chicbo hatches from it.$()$(br)- It is safe to break & replace $(item)AFTER THE CHICOBO IS HATCHED$(), just right click it & see if an egg is in the slot$(br)- $(l:delchoco:chocobos/tools)here$(/l)"
+      "text": "Diamond Armor for Chocobos.$(br)$(l:delchoco:recipe/diamond_armor)Recipe$(/l)"
     },
     {
       "title": "Netherite Armor",
       "type": "patchouli:spotlight",
       "item": "delchoco:chocobo_armor_netherite",
-      "text": "is Useful for hatching chocobos a bit faster.$(br)$(item)Currently, These are visually bugged & do not 'remove' the egg after the chicbo hatches from it.$()$(br)- It is safe to break & replace $(item)AFTER THE CHICOBO IS HATCHED$(), just right click it & see if an egg is in the slot$(br)- $(l:delchoco:chocobos/tools)here$(/l)"
+      "text": "Iron Armor for Chocobos.$(br)$(l:delchoco:recipe/netherite_armor)Recipe$(/l)"
     }
   ]
 }

@@ -2,13 +2,13 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:stone_sword"
+      "item": "minecraft:stone_axe"
     },
     {
-      "item": "minecraft:stone_sword"
+      "item": "minecraft:stone_axe"
     },
     {
-      "item": "minecraft:stone_sword"
+      "item": "minecraft:stone_axe"
     },
     {
       "item": "minecraft:leather"
