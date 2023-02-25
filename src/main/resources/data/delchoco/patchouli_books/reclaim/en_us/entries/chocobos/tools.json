@@ -13,7 +13,7 @@
       "title": "Straw Nest",
       "type": "patchouli:crafting",
       "recipe": "delchoco:chocobo_nest",
-      "text": "Only Visually bugged when placed on ground after the first chicbo is born$(br)safe to break 'after' the chicbo is born$(br)Shift Right click to view it's inventory & if it actually has an egg"
+      "text": "Shift Right click to view it's inventory & if it actually has an egg$(br)-$(l:delchoco:recipe/straw_nest)Recipe$(/l)"
     },
     {
       "title": "Saddle",

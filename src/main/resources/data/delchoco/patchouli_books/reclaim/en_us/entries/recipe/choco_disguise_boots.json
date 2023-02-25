@@ -1,0 +1,18 @@
+{
+  "name": "Chocobo Disguise Boots",
+  "icon": "delchoco:choco_disguise_boots",
+  "category": "delchoco:chocobo_rec",
+  "pages": [
+    {
+      "title": "Chocobo Disguise Boots",
+      "type": "patchouli:spotlight",
+      "item": "delchoco:choco_disguise_boots",
+      "text": "Useful for Players to wear.$(br)-Roughly equal to Iron armor, except more durable$(br)-Useful for helping to summon chocobos without eating the alter"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "delchoco:choco_disguise_boots",
+      "text": "-4x$(item)Chocobo feathers$()"
+    }
+  ]
+}

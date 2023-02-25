@@ -18,8 +18,16 @@ Chocobo Goals
 
 Guide Book
 -Recipes started
+-- Done
 -Chocobo Combat Section Started
 -- Weapons/Armors done
+-- More Combat data put in
 
 Recipes
 - Adjusted Chocobo Stone Claws to use Stone Axe (Was Swords), to bring it inline with the rest.
+- Adjusted Chocobo Pack bags
+-- Use of Minecrafts Wool tag
+- Adjusted Gysahl Greens to seeds
+-- Increased it to 2 from 1 green
+- Adjusted Pickled Gysahl raw
+-- Increased it to 5 (from 3)

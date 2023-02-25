@@ -11,7 +11,17 @@
     {
       "title": "Side by Side",
       "type": "patchouli:text",
-      "text": "The Chocobo will focus targets above following you"
+      "text": "The Chocobo will focus targets above following you. The Chocobo will Target those you hit & hit you, with some exceptions."
+    },
+    {
+      "title": "Targeting Refused",
+      "type": "patchouli:text",
+      "text": "Chocobos Will refuse to attack the following$(br)-Chocobos$(br)-Ender Dragons$(br)-Phantoms$(br)-Fishes[Pufferfish/TropicalFish/etc]$(br)-Squid/GlowSquid$(br)-Bats$(br)-Dolphins$(br)-Guardians/Elder Guardians$(br)-Striders$(br)-Ghasts$(br)-Skeleton Horses"
+    },
+    {
+      "title": "Multi-Player Friendly",
+      "type": "patchouli:text",
+      "text": "Chocobos Respect & honor The Owners team.$(br)-Players on the same team will not be targeted by each others chocobo.$(br)-- Included basic teams will be enough to enable to play with each other without accidents being turned deadly."
     }
   ]
 }

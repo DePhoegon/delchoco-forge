@@ -7,7 +7,7 @@
   ],
   "key": {
     "L": { "tag": "forge:leather" },
-    "W": { "item": "minecraft:white_wool" },
+    "W": { "tag": "minecraft:wool" },
     "F": { "item": "delchoco:chocobo_feather" },
 	"T": { "tag": "forge:string" },
 	"S": { "item": "delchoco:chocobo_saddle_bags" }

@@ -1,13 +1,13 @@
 {
   "name": "04 - Chocobo Hitting Others",
-  "icon": "delchoco:chocobo_egg",
+  "icon": "delchoco:chocobo_weapon_stone",
   "category": "delchoco:chocobo_combat",
   "pages": [
     {
-      "title": "Black Chocobo",
+      "title": "Chocobos",
       "type": "patchouli:spotlight",
       "item": "delchoco:chocobo_weapon_stone",
-      "text": "Breeding can bring Stats & colors.$(br)Chocobo Stats are$(br)- Stamina$(br)- Health$(br)- Speed"
+      "text": "Chance on dropping XYZ item on hitting targets"
     }
   ]
 }

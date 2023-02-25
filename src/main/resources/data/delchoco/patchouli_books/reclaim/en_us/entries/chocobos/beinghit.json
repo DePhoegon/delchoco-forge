@@ -1,13 +1,13 @@
 {
   "name": "03 - Chocobo Getting Hit",
-  "icon": "delchoco:chocobo_egg",
+  "icon": "delchoco:chocobo_armor_chain",
   "category": "delchoco:chocobo_combat",
   "pages": [
     {
-      "title": "Black Chocobo",
+      "title": "Chocobos in general",
       "type": "patchouli:spotlight",
-      "item": "delchoco:chocobo_weapon_stone",
-      "text": "Breeding can bring Stats & colors.$(br)Chocobo Stats are$(br)- Stamina$(br)- Health$(br)- Speed"
+      "item": "delchoco:chocobo_feather",
+      "text": "There is a Chance when a Chocobo gets hit, that it drops a feather."
     }
   ]
 }

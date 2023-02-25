@@ -1,13 +1,13 @@
 {
   "name": "05 - Chocobo Kills",
-  "icon": "delchoco:chocobo_egg",
+  "icon": "delchoco:chocobo_weapon_stone",
   "category": "delchoco:chocobo_combat",
   "pages": [
     {
       "title": "Black Chocobo",
       "type": "patchouli:spotlight",
-      "item": "delchoco:chocobo_weapon_stone",
-      "text": "Breeding can bring Stats & colors.$(br)Chocobo Stats are$(br)- Stamina$(br)- Health$(br)- Speed"
+      "item": "minecraft:wither_rose",
+      "text": "Black Chocobos have a chance of producing a Wither Rose on killing an entity"
     }
   ]
 }

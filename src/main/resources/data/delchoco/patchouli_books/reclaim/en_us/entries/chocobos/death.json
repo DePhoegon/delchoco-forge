@@ -1,13 +1,13 @@
 {
   "name": "06 - Chocobo Deaths",
-  "icon": "delchoco:chocobo_egg",
+  "icon": "minecraft:barrier",
   "category": "delchoco:chocobo_combat",
   "pages": [
     {
-      "title": "Black Chocobo",
+      "title": "Chocobos",
       "type": "patchouli:spotlight",
-      "item": "delchoco:chocobo_weapon_stone",
-      "text": "Breeding can bring Stats & colors.$(br)Chocobo Stats are$(br)- Stamina$(br)- Health$(br)- Speed"
+      "item": "delchoco:yellow_chocobo_spawn_egg",
+      "text": "Chocobos have a chance at dropping a spawn egg of their color on their death."
     }
   ]
 }

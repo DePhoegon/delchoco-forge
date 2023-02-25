@@ -1,0 +1,18 @@
+{
+  "name": "Chocobo Disguise Leggings",
+  "icon": "delchoco:choco_disguise_leggings",
+  "category": "delchoco:chocobo_rec",
+  "pages": [
+    {
+      "title": "Chocobo Disguise Leggings",
+      "type": "patchouli:spotlight",
+      "item": "delchoco:choco_disguise_leggings",
+      "text": "Useful for Players to wear.$(br)-Roughly equal to Iron armor, except more durable$(br)-Useful for helping to summon chocobos without eating the alter"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "delchoco:choco_disguise_leggings",
+      "text": "-7x$(item)Chocobo feathers$()"
+    }
+  ]
+}
