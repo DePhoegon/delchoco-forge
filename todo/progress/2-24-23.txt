@@ -3,8 +3,6 @@ Spawn Logic
 - Reimplemented Type checks, alongside Dimension checks.
 - general blacklist for Ocean types
 - Done to give compatibility to Mods that modify the world, add/remove biomes, as much as is feasible
--- *patch - Removed MushroomType from general OverWorld biomes check.
---- Avoids pushing mooshroms cows out.
 
 Chocobo Goals
 - Changed Last hurt by Target Goal

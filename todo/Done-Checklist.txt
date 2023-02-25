@@ -399,7 +399,6 @@ Expand BLock set
 2-24-23
 
 Spawn Logic Tweaked
--*patch oversight in spawnning allowances that would negate the point of lower spawn-weights on pink chocobo.
 
 Chocobo Goals Tweaked
 - Panic
