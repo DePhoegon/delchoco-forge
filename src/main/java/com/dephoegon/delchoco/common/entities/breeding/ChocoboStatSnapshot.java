@@ -22,6 +22,8 @@ public class ChocoboStatSnapshot {
     public static final String NBTKEY_ATTACK = "Damage";
     public static final String NBTKEY_ARMOR = "Armor";
     public static final String NBTKEY_ARMOR_TOUGHNESS = "Toughness";
+    private static final String NBTKEY_CHOCOBO_WITHER_IMMUNE = "WitherImmune";
+    private static final String NBTKEY_CHOCOBO_POISON_IMMUNE = "PoisonImmune";
 
     public int generation;
     public float health;
@@ -29,6 +31,8 @@ public class ChocoboStatSnapshot {
     public float stamina;
     public boolean flameBlood;
     public boolean waterBreath;
+    public boolean witherImmune;
+    public boolean poisonImmune;
     public ChocoboColor color;
     public double attack;
     public double defense;
@@ -46,6 +50,8 @@ public class ChocoboStatSnapshot {
         DEFAULT.flameBlood = false;
         DEFAULT.waterBreath = false;
         DEFAULT.color = ChocoboColor.YELLOW;
+        DEFAULT.witherImmune = false;
+        DEFAULT.poisonImmune = false;
     }
     public ChocoboStatSnapshot() { }
     public ChocoboStatSnapshot(@NotNull Chocobo chocobo) {
@@ -58,6 +64,8 @@ public class ChocoboStatSnapshot {
         this.toughness = Objects.requireNonNull(chocobo.getAttribute(Attributes.ARMOR_TOUGHNESS)).getBaseValue();
         this.flameBlood = chocobo.fireImmune();
         this.waterBreath = chocobo.isWaterBreather();
+        this.witherImmune = chocobo.isWitherImmune();
+        this.poisonImmune = chocobo.isPoisonImmune();
         this.color = chocobo.getChocoboColor();
     }
     public ChocoboStatSnapshot(@NotNull CompoundTag nbt) {
@@ -70,6 +78,8 @@ public class ChocoboStatSnapshot {
         this.attack = nbt.getDouble(NBTKEY_ARMOR_TOUGHNESS);
         this.flameBlood = nbt.getBoolean(NBTKEY_FLAME_BLOOD);
         this.waterBreath = nbt.getBoolean(NBTKEY_WATER_BREATH);
+        this.witherImmune = nbt.getBoolean(NBTKEY_CHOCOBO_WITHER_IMMUNE);
+        this.poisonImmune = nbt.getBoolean(NBTKEY_CHOCOBO_POISON_IMMUNE);
         this.color = ChocoboColor.values()[nbt.getByte(NBTKEY_COLOR)];
     }
     public CompoundTag serialize() {
@@ -83,6 +93,8 @@ public class ChocoboStatSnapshot {
         nbt.putDouble(NBTKEY_ARMOR_TOUGHNESS, this.toughness);
         nbt.putBoolean(NBTKEY_FLAME_BLOOD, this.flameBlood);
         nbt.putBoolean(NBTKEY_WATER_BREATH, this.waterBreath);
+        nbt.putBoolean(NBTKEY_CHOCOBO_WITHER_IMMUNE, this.witherImmune);
+        nbt.putBoolean(NBTKEY_CHOCOBO_POISON_IMMUNE, this.poisonImmune);
         nbt.putByte(NBTKEY_COLOR, (byte) this.color.ordinal());
         return nbt;
     }

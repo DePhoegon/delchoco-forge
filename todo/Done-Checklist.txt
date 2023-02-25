@@ -405,3 +405,9 @@ Chocobo Goals Tweaked
 - LastHurtByTarget
 
 Guide Book Progressed on
+
+2-25-23
+
+Combat Effects
+
+added poison & wither immunity

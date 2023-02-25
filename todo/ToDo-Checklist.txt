@@ -2,10 +2,6 @@ Added 7-21
 
 Find/Remove Useless code (In Progress)
 
-Added 8-12
-
-Re-Examine The remains of the ability system
-
 Added 1-23-23
 
 Double Check
@@ -26,12 +22,6 @@ Create Paralyze 'item'
 - Use NoAI flag
 - Account for removable/adding goals that gets toggled with the whistle
 - preserve through save/load
-
-2-19-23
-
-- Expand 'random alters'
-- Flushout Alter Blocks
-- Flushout Targeted Alters.
 
 2-21-23
 

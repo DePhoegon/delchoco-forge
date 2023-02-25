@@ -1,0 +1,51 @@
+Chocobo Traits
+- Wither Immune Established
+-- Able to be passed on through breeding.
+--- Starts with Black & Red
+---- is given to Purple / Pink / Gold, assumed breeding lines to get them by breeding
+- Poison Immune Established
+-- Able to be passed on through breeding
+--- Starts with Green
+---- Given to Black / Gold, assumed Breeding lines to get them by breeding
+- New traits defaults put in the eggs, templates, & default
+
+Misc
+- SpawnColorCheck logic addressed & setChocobo is now only called behind the check or very limited spots
+- set up combat effects, ready for guide book.
+
+Chocobo Combat Effects
+-on Hitting Mob
+-- Spider Chance to drop string
+-- Cave Spider chance to drop fermented spiderEye
+-- Skeleton chance to drop bone
+-- Wither Skeleton Chance to drop charcoal
+-- Iron golem Chance to drop poppy
+-- Any held Main Hand item, chance to be dropped on hit (target)
+-- Any held Off hand Item, chance to be dropped on hit (target)
+-on Chocobo being hit
+-- Chance to drop chocobo feather
+-on Death (chocobo Target)
+-- target spider
+--- Cobweb
+-- From Colored chocobos kills (not the killed entity) on death of killed entity
+--- Varying odds, not each item drops equally
+--- Black Chocobo
+---- Wither Rose / Dead bush
+--- Flame Chocobo
+---- Crimson Fungus / Warped Fungus / magma Cream
+--- Green Chocobo
+---- Spore Blossom / Small Drip leaf / Moss Block
+--- White Chocobo
+---- snowball / lilly of the valley / oxeye daisy / bone meal
+--- Gold Chocobo
+---- sunflower / gold nugget
+--- Blue Chocobo
+---- kelp / sea pickle / nautilus shell
+--- Pink Chocobo
+---- brown mushroom / red mushroom / allium
+--- Red Chocobo
+---- stick / Bamboo / Vine
+--- Purple Chocobo
+---- Chorus Flower / Ender pearl
+--- Yellow Chocobo
+---- Poppy / Dandelion / Blue orchid / allium / azure bluet / red tulip / orange tulip / white tulip / pink tulip / oxeye daisy / cornflower / lilly of the valley

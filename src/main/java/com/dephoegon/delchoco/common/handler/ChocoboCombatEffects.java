@@ -3,9 +3,15 @@ package com.dephoegon.delchoco.common.handler;
 import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.sun.jna.platform.win32.WinBase;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.monster.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TridentItem;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -13,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 import static com.dephoegon.delchoco.utils.RandomHelper.random;
-import static net.minecraft.world.item.Items.WITHER_ROSE;
+import static net.minecraft.world.item.Items.*;
 
 public class ChocoboCombatEffects {
     @SubscribeEvent
@@ -21,7 +27,24 @@ public class ChocoboCombatEffects {
         Chocobo chocoboAttacker = event.getSource().getEntity() instanceof Chocobo choco ? choco : null;
         Chocobo chocoboTarget = event.getEntityLiving() instanceof Chocobo choco ? choco : null;
         if (chocoboAttacker != null) {
-            /* Chance For Thing when Chocobos Attack */
+             LivingEntity target = event.getEntityLiving();
+            if (target instanceof Spider e) { if (onHitMobChance(10)) { e.spawnAtLocation(STRING); } }
+            if (target instanceof CaveSpider e) { if (onHitMobChance(5)) { e.spawnAtLocation(FERMENTED_SPIDER_EYE); } }
+            if (target instanceof Skeleton e) { if (onHitMobChance(10)) { e.spawnAtLocation(BONE); } }
+            if (target instanceof WitherSkeleton e) { if (onHitMobChance(10)) { e.spawnAtLocation(CHARCOAL); } }
+            if (target instanceof IronGolem e) { if (onHitMobChance(5)) { e.spawnAtLocation(POPPY); } }
+            if (target.getItemBySlot(EquipmentSlot.MAINHAND) != ItemStack.EMPTY) {
+                if (onHitMobChance(30)) {
+                    target.spawnAtLocation(target.getItemBySlot(EquipmentSlot.MAINHAND));
+                    target.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+                }
+            }
+            if (target.getItemBySlot(EquipmentSlot.OFFHAND) != ItemStack.EMPTY) {
+                if (onHitMobChance(10)) {
+                    target.spawnAtLocation(target.getItemBySlot(EquipmentSlot.OFFHAND));
+                    target.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+                }
+            }
         }
         if (chocoboTarget != null) {
             if (random.nextInt(100)+1 > 35) { chocoboTarget.spawnAtLocation(CHOCOBO_FEATHER.get()); }
@@ -32,9 +55,73 @@ public class ChocoboCombatEffects {
         Chocobo chocoboKill = event.getSource().getEntity() instanceof  Chocobo choco ? choco : null;
         Chocobo chocoboDie = event.getEntityLiving() instanceof  Chocobo choco ? choco : null;
         if (chocoboKill != null) {
-            if (chocoboKill.getChocoboColor() == ChocoboColor.BLACK) {
-                if (random.nextInt(100)+1 < 45) { chocoboKill.spawnAtLocation(WITHER_ROSE); }
+            ChocoboColor color = chocoboKill.getChocoboColor();
+            LivingEntity target = event.getEntityLiving();
+            if (target instanceof Spider) { if (.20f > (float) Math.random()) { chocoboKill.spawnAtLocation(COBWEB); } }
+            if (color == ChocoboColor.BLACK) { if (flowerChance()) {
+               if (.50f > (float) Math.random()) { chocoboKill.spawnAtLocation(WITHER_ROSE); }
+               else { chocoboKill.spawnAtLocation(DEAD_BUSH); }
+            }}
+            if (color == ChocoboColor.FLAME) {
+                if (flowerChance()) {
+                    if (.50f > (float) Math.random()) { chocoboKill.spawnAtLocation(CRIMSON_FUNGUS); }  else { chocoboKill.spawnAtLocation(WARPED_FUNGUS); }
+                } else { if (.10f > (float) Math.random()) { chocoboKill.spawnAtLocation(MAGMA_CREAM); } }
             }
+            if (color == ChocoboColor.GREEN) { if (flowerChance()) {
+                if (.34f > (float) Math.random()) { chocoboKill.spawnAtLocation(SPORE_BLOSSOM); } else {
+                    if (.51f > (float) Math.random()) { chocoboKill.spawnAtLocation(SMALL_DRIPLEAF); }
+                    else { chocoboKill.spawnAtLocation(MOSS_BLOCK); }
+                }
+            }}
+            if (color == ChocoboColor.WHITE) {
+                if (flowerChance()) {
+                    if (.34f > (float) Math.random()) { chocoboKill.spawnAtLocation(SNOWBALL); } else {
+                        if (.51f > (float) Math.random()) { chocoboKill.spawnAtLocation(LILY_OF_THE_VALLEY); }
+                        else { chocoboKill.spawnAtLocation(OXEYE_DAISY); }
+                    }
+                } else if (.41f > (float) Math.random()) { chocoboKill.spawnAtLocation(BONE_MEAL); }
+            }
+            if (color == ChocoboColor.GOLD) {
+                if (flowerChance()) { chocoboKill.spawnAtLocation(SUNFLOWER);}
+                else { if (.03f > (float) Math.random()) { chocoboKill.spawnAtLocation(GOLD_NUGGET); } }
+            }
+            if (color == ChocoboColor.BLUE) { if (flowerChance()) {
+                if (.50f > (float) Math.random()) { chocoboKill.spawnAtLocation(KELP); } else { chocoboKill.spawnAtLocation(SEA_PICKLE); }
+                if (.10f > (float) Math.random()) { chocoboKill.spawnAtLocation(NAUTILUS_SHELL); }
+            }}
+            if (color == ChocoboColor.PINK) { if (flowerChance()) {
+                if (.34f > (float) Math.random()) { chocoboKill.spawnAtLocation(BROWN_MUSHROOM); } else {
+                    if (.51f > (float) Math.random()) { chocoboKill.spawnAtLocation(RED_MUSHROOM); }
+                    else { chocoboKill.spawnAtLocation(ALLIUM); }
+                }
+            }}
+            if (color == ChocoboColor.RED) { if (flowerChance()) {
+                if (.34f > (float) Math.random()) { chocoboKill.spawnAtLocation(STICK); } else {
+                    if (.51f > (float) Math.random()) { chocoboKill.spawnAtLocation(BAMBOO); }
+                    else { chocoboKill.spawnAtLocation(VINE); }
+                }
+            }}
+            if (color == ChocoboColor.PURPLE) {
+                if (flowerChance()) { chocoboKill.spawnAtLocation(CHORUS_FLOWER); }
+                else if (.09f > (float) Math.random()) { chocoboKill.spawnAtLocation(ENDER_PEARL); }
+            }
+            if (color == ChocoboColor.YELLOW) { if (flowerChance()) {
+                Item flower = switch (random.nextInt(12)+1) {
+                    default -> DANDELION;
+                    case 2 -> POPPY;
+                    case 3 -> BLUE_ORCHID;
+                    case 4 -> ALLIUM;
+                    case 5 -> AZURE_BLUET;
+                    case 6 -> RED_TULIP;
+                    case 7 -> ORANGE_TULIP;
+                    case 8 -> WHITE_TULIP;
+                    case 9 -> PINK_TULIP;
+                    case 10 -> OXEYE_DAISY;
+                    case 11 -> CORNFLOWER;
+                    case 12 -> LILY_OF_THE_VALLEY;
+                };
+                chocoboKill.spawnAtLocation(flower);
+            }}
         }
 
         if (chocoboDie != null) {
@@ -53,4 +140,6 @@ public class ChocoboCombatEffects {
             if (random.nextInt(1000)+1 < 85) { chocoboDie.spawnAtLocation(egg); }
         }
     }
+    private static boolean flowerChance() { return random.nextInt(100)+1 < 45; }
+    private static boolean onHitMobChance(int percentChance) { return random.nextInt(100)+1 < percentChance; }
 }

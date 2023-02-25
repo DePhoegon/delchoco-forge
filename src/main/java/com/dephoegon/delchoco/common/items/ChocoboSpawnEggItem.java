@@ -50,6 +50,8 @@ public class ChocoboSpawnEggItem extends Item {
             if (context.getItemInHand().hasCustomHoverName()) { chocobo.setCustomName(nameCheck); }
             chocobo.setFlame(color == ChocoboColor.FLAME);
             chocobo.setWaterBreath(wbChocobos().contains(color));
+            chocobo.setWitherImmune(wiChocobos().contains(color));
+            chocobo.setPoisonImmune(piChocobos().contains(color));
             chocobo.setFromEgg(true);
             chocobo.finalizeSpawn((ServerLevel)worldIn, worldIn.getCurrentDifficultyAt(chocobo.blockPosition()), MobSpawnType.SPAWN_EGG, (SpawnGroupData)null, (CompoundTag)null);
             worldIn.addFreshEntity(chocobo);
@@ -64,6 +66,22 @@ public class ChocoboSpawnEggItem extends Item {
         out.add(ChocoboColor.GOLD);
         out.add(ChocoboColor.BLACK);
         out.add(ChocoboColor.PURPLE);
+        return out;
+    }
+    public static ArrayList<ChocoboColor> wiChocobos() {
+        ArrayList<ChocoboColor> out = new ArrayList<>();
+        out.add(ChocoboColor.PURPLE);
+        out.add(ChocoboColor.RED);
+        out.add(ChocoboColor.BLACK);
+        out.add(ChocoboColor.PINK);
+        out.add(ChocoboColor.GOLD);
+        return out;
+    }
+    public static ArrayList<ChocoboColor> piChocobos() {
+        ArrayList<ChocoboColor> out = new ArrayList<>();
+        out.add(ChocoboColor.GREEN);
+        out.add(ChocoboColor.BLACK);
+        out.add(ChocoboColor.GOLD);
         return out;
     }
 }

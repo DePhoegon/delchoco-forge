@@ -3,6 +3,7 @@ package com.dephoegon.delchoco.common.entities;
 import com.dephoegon.delchoco.DelChoco;
 import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.entities.breeding.ChocoboMateGoal;
+import com.dephoegon.delchoco.common.entities.breeding.ChocoboSnap;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboGoals.*;
 import com.dephoegon.delchoco.common.entities.properties.ModDataSerializers;
@@ -44,7 +45,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
@@ -70,6 +70,7 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.PacketDistributor;
@@ -88,10 +89,12 @@ import static com.dephoegon.delchoco.aid.dyeList.getDyeList;
 import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 import static com.dephoegon.delchoco.common.init.ModSounds.AMBIENT_SOUND;
+import static com.dephoegon.delchoco.common.items.ChocoboSpawnEggItem.*;
 import static net.minecraft.world.entity.ai.attributes.Attributes.*;
 import static net.minecraft.world.item.Items.*;
 import static net.minecraft.world.level.biome.Biome.getBiomeCategory;
 import static net.minecraft.world.level.biome.Biomes.*;
+import static net.minecraftforge.common.BiomeDictionary.hasType;
 import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 import static net.minecraftforge.common.Tags.Biomes.*;
 
@@ -111,6 +114,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     private static final String NBTKEY_CHOCOBO_FLAME_BLOOD = "FlameBlood";
     private static final String NBTKEY_CHOCOBO_WATER_BREATH = "WaterBreath";
     private static final String NBTKEY_CHOCOBO_COLLAR = "Collar";
+    private static final String NBTKEY_CHOCOBO_WITHER_IMMUNE = "WitherImmune";
+    private static final String NBTKEY_CHOCOBO_POISON_IMMUNE = "PoisonImmune";
     private static final UUID CHOCOBO_CHEST_ARMOR_MOD_UUID = UUID.fromString("c03d8021-8839-4377-ac23-ed723ece6454");
     private static final UUID CHOCOBO_CHEST_ARMOR_TOUGH_MOD_UUID = UUID.fromString("f7dcb185-7182-4a28-83ae-d1a2de9c022d");
     private static final UUID CHOCOBO_WEAPON_DAM_MOD_UUID = UUID.fromString("b9f0dc43-15a7-49f5-815c-915322c30402");
@@ -137,6 +142,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     private final static EntityDataAccessor<Integer> PARAM_GENERATION = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.INT);
     private final static EntityDataAccessor<Float> PARAM_STAMINA = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.FLOAT);
     private final static EntityDataAccessor<Byte> PARAM_ABILITY_MASK = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.BYTE);
+    private final static EntityDataAccessor<Boolean> PARAM_WITHER_IMMUNE = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.BOOLEAN);
+    private final static EntityDataAccessor<Boolean> PARAM_POISON_IMMUNE = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.BOOLEAN);
 
     private static final UUID CHOCOBO_SPRINTING_BOOST_ID = UUID.fromString("03ba3167-393e-4362-92b8-909841047640");
     private static final AttributeModifier CHOCOBO_SPRINTING_SPEED_BOOST = (new AttributeModifier(CHOCOBO_SPRINTING_BOOST_ID, "Chocobo sprinting speed boost", 1, Operation.MULTIPLY_BASE));
@@ -241,6 +248,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         super.defineSynchedData();
         this.entityData.define(PARAM_IS_FLAME_BLOOD, false);
         this.entityData.define(PARAM_IS_WATER_BREATH, false);
+        this.entityData.define(PARAM_WITHER_IMMUNE, false);
+        this.entityData.define(PARAM_POISON_IMMUNE, false);
         this.entityData.define(PARAM_COLLAR_COLOR, 0);
         this.entityData.define(PARAM_COLOR, ChocoboColor.YELLOW);
         this.entityData.define(PARAM_IS_MALE, false);
@@ -270,6 +279,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         this.setStamina(compound.getFloat(NBTKEY_CHOCOBO_STAMINA));
         this.setFlame(compound.getBoolean(NBTKEY_CHOCOBO_FLAME_BLOOD));
         this.setWaterBreath(compound.getBoolean(NBTKEY_CHOCOBO_WATER_BREATH));
+        this.setWitherImmune(compound.getBoolean(NBTKEY_CHOCOBO_WITHER_IMMUNE));
+        this.setPoisonImmune(compound.getBoolean(NBTKEY_CHOCOBO_POISON_IMMUNE));
         this.setCollarColor(compound.getInt(NBTKEY_CHOCOBO_COLLAR));
     }
     @Override
@@ -287,6 +298,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         compound.putInt(NBTKEY_CHOCOBO_GENERATION, this.getGeneration());
         compound.putBoolean(NBTKEY_CHOCOBO_FLAME_BLOOD, this.fireImmune());
         compound.putBoolean(NBTKEY_CHOCOBO_WATER_BREATH, this.isWaterBreather());
+        compound.putBoolean(NBTKEY_CHOCOBO_WITHER_IMMUNE, this.isWitherImmune());
+        compound.putBoolean(NBTKEY_CHOCOBO_POISON_IMMUNE, this.isPoisonImmune());
         compound.putFloat(NBTKEY_CHOCOBO_STAMINA, this.getStamina());
         compound.putInt(NBTKEY_CHOCOBO_COLLAR, this.getCollarColor());
     }
@@ -335,16 +348,17 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         BiomeCategory biomeCategory = getBiomeCategory(currentBiomes);
         //noinspection OptionalGetWithoutIsPresent
         final ResourceKey<Biome> BiomesKey = currentBiomes.unwrapKey().get();
+        ChocoboColor color;
         if (!fromEgg()) {
-            setChocobo(ChocoboColor.YELLOW, false, false);
-            if (!currentBiomes.containsTag(IS_END) && !currentBiomes.containsTag(IS_OVERWORLD)) { setChocoboSpawnCheck(ChocoboColor.FLAME, true, false); }
-            if (currentBiomes.containsTag(IS_END)) { setChocoboSpawnCheck(ChocoboColor.PURPLE, false, true); }
-            if (BiomesKey == MUSHROOM_FIELDS) { setChocoboSpawnCheck(ChocoboColor.PINK, false, false); }
-            if (currentBiomes.containsTag(IS_SNOWY) || whiteChocobo().contains(BiomesKey)) { setChocoboSpawnCheck(ChocoboColor.WHITE, false, false); }
-            if (blueChocobo().contains(BiomesKey)) { setChocoboSpawnCheck(ChocoboColor.BLUE, false, true); }
-            if (biomeCategory == BiomeCategory.FOREST || biomeCategory == BiomeCategory.MESA) { setChocoboSpawnCheck(ChocoboColor.RED, false, false); }
-            if (greenChocobo().contains(BiomesKey)) { setChocoboSpawnCheck(ChocoboColor.GREEN, false, false); }
-            if (currentBiomes.containsTag(IS_HOT_OVERWORLD) && !currentBiomes.containsTag(IS_SAVANNA)) { setChocoboSpawnCheck(ChocoboColor.BLACK, false, true); }
+            setChocoboSpawnCheck(ChocoboColor.YELLOW);
+            if (!currentBiomes.containsTag(IS_END) && !currentBiomes.containsTag(IS_OVERWORLD)) { setChocoboSpawnCheck(ChocoboColor.FLAME); }
+            if (currentBiomes.containsTag(IS_END)) { setChocoboSpawnCheck(ChocoboColor.PURPLE); }
+            if (hasType(BiomesKey, BiomeDictionary.Type.MUSHROOM)) { setChocoboSpawnCheck(ChocoboColor.PINK); }
+            if (currentBiomes.containsTag(IS_SNOWY) || whiteChocobo().contains(BiomesKey)) { setChocoboSpawnCheck(ChocoboColor.WHITE); }
+            if (blueChocobo().contains(BiomesKey)) { setChocoboSpawnCheck(ChocoboColor.BLUE); }
+            if (biomeCategory == BiomeCategory.FOREST || biomeCategory == BiomeCategory.MESA) { setChocoboSpawnCheck(ChocoboColor.RED); }
+            if (greenChocobo().contains(BiomesKey)) { setChocoboSpawnCheck(ChocoboColor.GREEN); }
+            if (currentBiomes.containsTag(IS_HOT_OVERWORLD) && !currentBiomes.containsTag(IS_SAVANNA)) { setChocoboSpawnCheck(ChocoboColor.BLACK); }
         }
         chocoboStatShake(MAX_HEALTH, "health");
         chocoboStatShake(ATTACK_DAMAGE, "attack");
@@ -364,14 +378,16 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         }
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
-    private void setChocobo(ChocoboColor color, boolean flame, boolean water) {
+    private void setChocobo(ChocoboColor color, boolean flame, boolean water, boolean wither, boolean poison) {
+        this.setChocoboColor(color);
         this.setFlame(flame);
         this.setWaterBreath(water);
-        this.setChocoboColor(color);
+        this.setWitherImmune(wither);
+        this.setPoisonImmune(poison);
     }
-    private void setChocoboSpawnCheck(ChocoboColor color, boolean flame, boolean water) {
+    private void setChocoboSpawnCheck(ChocoboColor color) {
         ChocoboColor chocobo = this.getChocoboColor();
-        if (chocobo == ChocoboColor.YELLOW && chocobo != color) { setChocobo(color, flame, water); }
+        if ((chocobo == ChocoboColor.YELLOW || color == ChocoboColor.YELLOW) && chocobo != color) { setChocobo(color, color == ChocoboColor.FLAME, wbChocobos().contains(color), wiChocobos().contains(color), piChocobos().contains(color)); }
     }
     @Override
     public boolean canBeControlledByRider() { return this.isTame(); }
@@ -421,8 +437,17 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     public boolean fireImmune() { return this.entityData.get(PARAM_IS_FLAME_BLOOD); }
     public void setFlame(boolean flame) { this.entityData.set(PARAM_IS_FLAME_BLOOD, flame); }
     public void setWaterBreath(boolean waterBreath) { this.entityData.set(PARAM_IS_WATER_BREATH, waterBreath); }
+    public void setWitherImmune(boolean witherImmune) { this.entityData.set(PARAM_WITHER_IMMUNE, witherImmune); }
+    public void setPoisonImmune(boolean poisonImmune) { this.entityData.set(PARAM_POISON_IMMUNE, poisonImmune); }
     public boolean nonFlameFireImmune() { return fireImmune() && ChocoboColor.FLAME != getChocoboColor(); }
     public boolean isWaterBreather() { return this.entityData.get(PARAM_IS_WATER_BREATH); }
+    public boolean isWitherImmune() { return this.entityData.get(PARAM_WITHER_IMMUNE); }
+    public boolean isPoisonImmune() { return this.entityData.get(PARAM_POISON_IMMUNE); }
+    public boolean canBeAffected(@NotNull MobEffectInstance potionEffect) {
+        if (potionEffect.getEffect() == MobEffects.WITHER) return !this.isWitherImmune();
+        if (potionEffect.getEffect() == MobEffects.POISON) return !this.isPoisonImmune();
+        return super.canBeAffected(potionEffect);
+    }
     public boolean isMale() { return this.entityData.get(PARAM_IS_MALE); }
     public boolean fromEgg() { return this.entityData.get(PARAM_FROM_EGG); }
     public void setMale(boolean isMale) { this.entityData.set(PARAM_IS_MALE, isMale); }

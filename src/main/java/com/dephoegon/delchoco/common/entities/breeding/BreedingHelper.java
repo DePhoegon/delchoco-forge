@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
-import static com.dephoegon.delchoco.common.items.ChocoboSpawnEggItem.wbChocobos;
+import static com.dephoegon.delchoco.common.items.ChocoboSpawnEggItem.*;
 import static java.lang.Math.*;
 
 public class BreedingHelper {
@@ -84,6 +84,8 @@ public class BreedingHelper {
         baby.setMale(.50f > (float) random());
         baby.setChocoboColor(bColor);
         baby.setWaterBreath(mother.waterBreath || father.waterBreath || wbChocobos().contains(bColor));
+        baby.setWitherImmune(mother.witherImmune || father.witherImmune || wiChocobos().contains(bColor));
+        baby.setPoisonImmune(mother.poisonImmune || father.poisonImmune || piChocobos().contains(bColor));
         baby.setFlame(mother.flameBlood || father.flameBlood || bColor == flame);
         baby.setFromEgg(true);
         if (egg.hasCustomHoverName()) { baby.setCustomName(egg.getHoverName()); }

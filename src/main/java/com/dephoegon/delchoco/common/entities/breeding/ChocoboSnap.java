@@ -4,7 +4,7 @@ import com.dephoegon.delchoco.common.ChocoConfig;
 
 import static com.dephoegon.delchoco.common.entities.properties.ChocoboColor.FLAME;
 import static com.dephoegon.delchoco.common.entities.properties.ChocoboColor.getRandomColor;
-import static com.dephoegon.delchoco.common.items.ChocoboSpawnEggItem.wbChocobos;
+import static com.dephoegon.delchoco.common.items.ChocoboSpawnEggItem.*;
 import static com.dephoegon.delchoco.utils.RandomHelper.random;
 
 public class ChocoboSnap {
@@ -21,6 +21,8 @@ public class ChocoboSnap {
         this.TWEAKED_DEFAULT.color = getRandomColor();
         this.TWEAKED_DEFAULT.flameBlood = TWEAKED_DEFAULT.color == FLAME;
         this.TWEAKED_DEFAULT.waterBreath = wbChocobos().contains(TWEAKED_DEFAULT.color);
+        this.TWEAKED_DEFAULT.witherImmune = wiChocobos().contains(TWEAKED_DEFAULT.color);
+        this.TWEAKED_DEFAULT.poisonImmune = piChocobos().contains(TWEAKED_DEFAULT.color);
     }
     public ChocoboSnap() {
         setTWEAKED();

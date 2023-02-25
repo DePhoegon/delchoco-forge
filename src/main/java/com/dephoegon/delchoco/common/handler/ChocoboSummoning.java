@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
-import static com.dephoegon.delchoco.common.items.ChocoboSpawnEggItem.wbChocobos;
+import static com.dephoegon.delchoco.common.items.ChocoboSpawnEggItem.*;
 import static com.dephoegon.delchoco.common.items.ChocoboSpawnerItemHelper.*;
 import static com.dephoegon.delchoco.utils.RandomHelper.random;
 import static net.minecraft.world.entity.ai.attributes.Attributes.*;
@@ -109,6 +109,8 @@ public class ChocoboSummoning {
                     chocobo.setFromEgg(true);
                     chocobo.setFlame(color == ChocoboColor.FLAME);
                     chocobo.setWaterBreath(wbChocobos().contains(color));
+                    chocobo.setWitherImmune(wiChocobos().contains(color));
+                    chocobo.setPoisonImmune(piChocobos().contains(color));
                 }
                 if (summonItem.hasCustomHoverName()) { chocobo.setCustomName(customName()); }
                 chocoboStatShake(MAX_HEALTH, "health", chocobo);
