@@ -69,6 +69,8 @@ public class ChocoboRenderer extends MobRenderer<Chocobo, EntityModel<Chocobo>> 
     public void render(@NotNull Chocobo chocobo, float entityYaw, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight) {
         this.model = chocobo.isBaby() ? chicoboModel : chocoboModel;
         if (hideChocoboMountInFirstPerson(chocobo)) { return; }
+        float factor = chocobo.getChocoboScale() == 0 ? 1 : chocobo.getChocoboScaleMod();
+        poseStack.scale(factor, factor, factor);
         super.render(chocobo, entityYaw, partialTicks, poseStack, bufferSource, packedLight);
     }
 

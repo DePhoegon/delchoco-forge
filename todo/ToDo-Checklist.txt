@@ -27,14 +27,3 @@ Create Paralyze 'item'
 
 Guide Book Structure
 -Showcase Alters for summons
-
-Consider Size variance
-- 60% range
--- -30 to 10 for 'female' chocobo
--- -10 to 30 for 'male' chocobos
----- Maybe -30 to 20  & -20 to 30
-- Use some math that would use a random parents size modifier to effect the baby gender range
-- set hard limits (consider 80% range -40 to 40)
--- use scale to set per chocobo
-
-Test new Spawn rates with lowered weights.

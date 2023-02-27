@@ -20,6 +20,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import static com.dephoegon.delchoco.utils.RandomHelper.random;
+
 public class ChocoboSpawnEggItem extends Item {
     private final ChocoboColor color;
 
@@ -53,6 +55,7 @@ public class ChocoboSpawnEggItem extends Item {
             chocobo.setWitherImmune(wiChocobos().contains(color));
             chocobo.setPoisonImmune(piChocobos().contains(color));
             chocobo.setFromEgg(true);
+            chocobo.setChocoboScale(chocobo.isMale(), 0, false);
             chocobo.finalizeSpawn((ServerLevel)worldIn, worldIn.getCurrentDifficultyAt(chocobo.blockPosition()), MobSpawnType.SPAWN_EGG, (SpawnGroupData)null, (CompoundTag)null);
             worldIn.addFreshEntity(chocobo);
             chocobo.playAmbientSound();

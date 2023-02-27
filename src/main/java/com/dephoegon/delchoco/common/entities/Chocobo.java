@@ -3,7 +3,6 @@ package com.dephoegon.delchoco.common.entities;
 import com.dephoegon.delchoco.DelChoco;
 import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.entities.breeding.ChocoboMateGoal;
-import com.dephoegon.delchoco.common.entities.breeding.ChocoboSnap;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboGoals.*;
 import com.dephoegon.delchoco.common.entities.properties.ModDataSerializers;
@@ -87,6 +86,7 @@ import static com.dephoegon.delbase.item.shiftingDyes.*;
 import static com.dephoegon.delchoco.aid.chocoKB.isAltDown;
 import static com.dephoegon.delchoco.aid.dyeList.getDyeList;
 import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
+import static com.dephoegon.delchoco.common.entities.breeding.ChocoboSnap.setChocoScale;
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 import static com.dephoegon.delchoco.common.init.ModSounds.AMBIENT_SOUND;
 import static com.dephoegon.delchoco.common.items.ChocoboSpawnEggItem.*;
@@ -116,6 +116,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     private static final String NBTKEY_CHOCOBO_COLLAR = "Collar";
     private static final String NBTKEY_CHOCOBO_WITHER_IMMUNE = "WitherImmune";
     private static final String NBTKEY_CHOCOBO_POISON_IMMUNE = "PoisonImmune";
+    private static final String NBTKEY_CHOCOBO_SCALE = "Scale";
+    private static final String NBTKEY_CHOCOBO_SCALE_MOD = "ScaleMod";
     private static final UUID CHOCOBO_CHEST_ARMOR_MOD_UUID = UUID.fromString("c03d8021-8839-4377-ac23-ed723ece6454");
     private static final UUID CHOCOBO_CHEST_ARMOR_TOUGH_MOD_UUID = UUID.fromString("f7dcb185-7182-4a28-83ae-d1a2de9c022d");
     private static final UUID CHOCOBO_WEAPON_DAM_MOD_UUID = UUID.fromString("b9f0dc43-15a7-49f5-815c-915322c30402");
@@ -144,6 +146,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     private final static EntityDataAccessor<Byte> PARAM_ABILITY_MASK = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.BYTE);
     private final static EntityDataAccessor<Boolean> PARAM_WITHER_IMMUNE = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.BOOLEAN);
     private final static EntityDataAccessor<Boolean> PARAM_POISON_IMMUNE = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> PARAM_SCALE = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> PARAM_SCALE_MOD = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.FLOAT);
 
     private static final UUID CHOCOBO_SPRINTING_BOOST_ID = UUID.fromString("03ba3167-393e-4362-92b8-909841047640");
     private static final AttributeModifier CHOCOBO_SPRINTING_SPEED_BOOST = (new AttributeModifier(CHOCOBO_SPRINTING_BOOST_ID, "Chocobo sprinting speed boost", 1, Operation.MULTIPLY_BASE));
@@ -261,6 +265,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         this.entityData.define(PARAM_STAMINA, (float) COMMON.defaultStamina.get());
         this.entityData.define(PARAM_GENERATION, 0);
         this.entityData.define(PARAM_ABILITY_MASK, (byte) 0);
+        this.entityData.define(PARAM_SCALE, 0);
+        this.entityData.define(PARAM_SCALE_MOD, 1f);
         this.entityData.define(DATA_REMAINING_ANGER_TIME, 0);
     }
     @Override
@@ -281,6 +287,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         this.setWaterBreath(compound.getBoolean(NBTKEY_CHOCOBO_WATER_BREATH));
         this.setWitherImmune(compound.getBoolean(NBTKEY_CHOCOBO_WITHER_IMMUNE));
         this.setPoisonImmune(compound.getBoolean(NBTKEY_CHOCOBO_POISON_IMMUNE));
+        this.setChocoboScale(false, compound.getInt(NBTKEY_CHOCOBO_SCALE), true);
+        this.setChocoboScaleMod(compound.getFloat(NBTKEY_CHOCOBO_SCALE_MOD));
         this.setCollarColor(compound.getInt(NBTKEY_CHOCOBO_COLLAR));
     }
     @Override
@@ -300,6 +308,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         compound.putBoolean(NBTKEY_CHOCOBO_WATER_BREATH, this.isWaterBreather());
         compound.putBoolean(NBTKEY_CHOCOBO_WITHER_IMMUNE, this.isWitherImmune());
         compound.putBoolean(NBTKEY_CHOCOBO_POISON_IMMUNE, this.isPoisonImmune());
+        compound.putInt(NBTKEY_CHOCOBO_SCALE, this.getChocoboScale());
+        compound.putFloat(NBTKEY_CHOCOBO_SCALE_MOD, this.getChocoboScaleMod());
         compound.putFloat(NBTKEY_CHOCOBO_STAMINA, this.getStamina());
         compound.putInt(NBTKEY_CHOCOBO_COLLAR, this.getCollarColor());
     }
@@ -359,6 +369,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             if (biomeCategory == BiomeCategory.FOREST || biomeCategory == BiomeCategory.MESA) { setChocoboSpawnCheck(ChocoboColor.RED); }
             if (greenChocobo().contains(BiomesKey)) { setChocoboSpawnCheck(ChocoboColor.GREEN); }
             if (currentBiomes.containsTag(IS_HOT_OVERWORLD) && !currentBiomes.containsTag(IS_SAVANNA)) { setChocoboSpawnCheck(ChocoboColor.BLACK); }
+            this.setChocoboScale(this.isMale(), 0, false);
         }
         chocoboStatShake(MAX_HEALTH, "health");
         chocoboStatShake(ATTACK_DAMAGE, "attack");
@@ -439,10 +450,24 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     public void setWaterBreath(boolean waterBreath) { this.entityData.set(PARAM_IS_WATER_BREATH, waterBreath); }
     public void setWitherImmune(boolean witherImmune) { this.entityData.set(PARAM_WITHER_IMMUNE, witherImmune); }
     public void setPoisonImmune(boolean poisonImmune) { this.entityData.set(PARAM_POISON_IMMUNE, poisonImmune); }
+    public void setChocoboScale(boolean isMale, int overrideValue, boolean override) {
+        int scale;
+        if (override) { scale = overrideValue; } else { scale = setChocoScale(isMale); }
+        this.setChocoboScaleMod(ScaleMod(scale));
+        this.entityData.set(PARAM_SCALE, scale);
+    }
+    public void setChocoboScaleMod(float value) {
+        this.entityData.set(PARAM_SCALE_MOD, value);
+    }
     public boolean nonFlameFireImmune() { return fireImmune() && ChocoboColor.FLAME != getChocoboColor(); }
     public boolean isWaterBreather() { return this.entityData.get(PARAM_IS_WATER_BREATH); }
     public boolean isWitherImmune() { return this.entityData.get(PARAM_WITHER_IMMUNE); }
     public boolean isPoisonImmune() { return this.entityData.get(PARAM_POISON_IMMUNE); }
+    public int getChocoboScale() { return this.entityData.get(PARAM_SCALE); }
+    public float getChocoboScaleMod() { return this.entityData.get(PARAM_SCALE_MOD); }
+    public float ScaleMod(int scale) {
+        return (scale == 0) ? 0 : ((scale < 0) ? (((float) ((scale * -1) - 100) / 100) * -1) : (1f + ((float) scale / 100)));
+    }
     public boolean canBeAffected(@NotNull MobEffectInstance potionEffect) {
         if (potionEffect.getEffect() == MobEffects.WITHER) return !this.isWitherImmune();
         if (potionEffect.getEffect() == MobEffects.POISON) return !this.isPoisonImmune();
@@ -494,7 +519,10 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         return true;
     }
     @Override
-    public double getPassengersRidingOffset() { return 1.65D; }
+    public double getPassengersRidingOffset() {
+        double scaleZero = this.getChocoboScale() == 0 ? 1.65D : this.getChocoboScale() < 0 ? 1.55D : 1.75D;
+        return this.getChocoboScale() == 0 ? scaleZero : scaleZero * this.getChocoboScaleMod();
+    }
     @Override
     public boolean canBeRiddenInWater(Entity rider) { return true; }
     @Nullable
@@ -679,15 +707,12 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         }
     }
     private int randomIntInclusive(int pMin, int pMax) { return this.getRandom().nextInt(pMax - pMin + 1) + pMin; }
-    @Override
     public AgeableMob getBreedOffspring(@NotNull ServerLevel world, @NotNull AgeableMob mate) { return null; }
-    @Override
     public boolean canMate(@NotNull Animal otherAnimal) {
         if (otherAnimal == this || !(otherAnimal instanceof Chocobo otherChocobo)) return false;
         if (!this.isInLove() || !otherAnimal.isInLove()) return false;
         return otherChocobo.isMale() != this.isMale();
     }
-    @Override
     public void setSprinting(boolean sprinting) {
         this.setSharedFlag(3, sprinting);
         AttributeInstance attributeInstance = this.getAttribute(Attributes.MOVEMENT_SPEED);
@@ -700,9 +725,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         this.spawnAtLocation(new ItemStack(CHOCOBO_FEATHER.get(), 1), 0.0F);
     }
     public int TimeSinceFeatherChance = 0;
-    @Override
     protected boolean canRide(@NotNull Entity entityIn) { return !this.getSaddle().isEmpty() && super.canRide(entityIn); }
-    @Override
     public void aiStep() {
         super.aiStep();
         this.setRot(this.getYRot(), this.getXRot());
@@ -769,7 +792,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         // TODO: implement regen bonus (another IAttribute?)
         this.useStamina(-regen);
     }
-    @Override
     public boolean isFood(@NotNull ItemStack stack) { return false; }
     private final Map<Item, Integer> COLLAR_COLOR = Util.make(Maps.newHashMap(), (map) ->{
         map.put(CLEANSE_SHIFT_DYE.get().asItem(), 0);
@@ -807,7 +829,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         map.put(BLACK_SHIFT_DYE.get().asItem(), 1);
         map.put(BLACK_DYE.asItem(), 1);
     });
-    @Override
     public @NotNull InteractionResult interactAt(@NotNull Player player, @NotNull Vec3 vec, @NotNull InteractionHand hand) {
         ItemStack heldItemStack = player.getItemInHand(hand);
         Item defaultHand = heldItemStack.getItem();
@@ -964,7 +985,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         }
         if (pick) { if (receivingInv.getStackInSlot(slotAdjust) != sendingInv.getStackInSlot(slot)) { receivingInv.setStackInSlot(slotAdjust, sendingInv.getStackInSlot(slot)); } }
     }
-    @Override
     protected void dropFromLootTable(@NotNull DamageSource damageSourceIn, boolean attackedRecently) {
         super.dropFromLootTable(damageSourceIn, attackedRecently);
         if (this.chocoboInventory != null && this.isSaddled()) {
@@ -977,11 +997,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     protected SoundEvent getAmbientSound() { return AMBIENT_SOUND.get(); }
     protected SoundEvent getHurtSound(@NotNull DamageSource damageSourceIn) { return AMBIENT_SOUND.get(); }
     protected SoundEvent getDeathSound() { return AMBIENT_SOUND.get(); }
-    @Override
     protected float getSoundVolume() { return .6f; }
-    @Override
     public int getAmbientSoundInterval() { return (24 * (int) (Math.random() * 100)); }
-    @Override
     public boolean checkSpawnRules(@NotNull LevelAccessor worldIn, @NotNull MobSpawnType spawnReasonIn) {
         final Holder<Biome> currentBiome = this.level.getBiome(blockPosition().below());
         if (!currentBiome.containsTag(IS_OVERWORLD)) {
@@ -990,7 +1007,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         }
         return super.checkSpawnRules(worldIn, spawnReasonIn);
     }
-    @Override
     protected void reassessTameGoals() {
         super.reassessTameGoals();
         if(chocoboAvoidPlayerGoal == null) { chocoboAvoidPlayerGoal = new ChocoboAvoidPlayer(this); }
@@ -1010,13 +1026,9 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         return chk;
     }
     public int getRemainingPersistentAngerTime() { return this.remainingPersistentAngerTime; }
-    @Override
     public void setRemainingPersistentAngerTime(int pTime) { this.remainingPersistentAngerTime = pTime; }
-    @Override
-    public @org.jetbrains.annotations.Nullable UUID getPersistentAngerTarget() { return this.persistentAngerTarget; }
-    @Override
+    public @Nullable UUID getPersistentAngerTarget() { return this.persistentAngerTarget; }
     public void setPersistentAngerTarget(@Nullable UUID pTarget) { this.persistentAngerTarget = pTarget; }
-    @Override
     public void startPersistentAngerTimer() { this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random)); }
     protected void customServerAiStep() {
         this.updatePersistentAnger((ServerLevel)this.level, true);

@@ -129,6 +129,7 @@ public class ChocoboSummoning {
                         chocobo.chocoboInventory.setStackInSlot(random.nextInt(18)+27, new ItemStack(ENDER_PEARL.getDefaultInstance().split(random.nextInt(3) + 1).getItem()));
                     }
                 }
+                chocobo.setChocoboScale(chocobo.isMale(), 0 , false);
                 chocobo.finalizeSpawn((ServerLevel)worldIn, worldIn.getCurrentDifficultyAt(chocobo.blockPosition()), MobSpawnType.SPAWN_EGG, null, null);
                 worldIn.addFreshEntity(chocobo);
                 chocobo.playAmbientSound();

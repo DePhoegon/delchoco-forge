@@ -20,9 +20,10 @@ public class ChocoboSnap {
         this.TWEAKED_DEFAULT.toughness = boundedIntRange(1, 3, ChocoConfig.COMMON.defaultArmorToughness.get());
         this.TWEAKED_DEFAULT.color = getRandomColor();
         this.TWEAKED_DEFAULT.flameBlood = TWEAKED_DEFAULT.color == FLAME;
-        this.TWEAKED_DEFAULT.waterBreath = wbChocobos().contains(TWEAKED_DEFAULT.color);
-        this.TWEAKED_DEFAULT.witherImmune = wiChocobos().contains(TWEAKED_DEFAULT.color);
-        this.TWEAKED_DEFAULT.poisonImmune = piChocobos().contains(TWEAKED_DEFAULT.color);
+        this.TWEAKED_DEFAULT.waterBreath = wbChocobos().contains(this.TWEAKED_DEFAULT.color);
+        this.TWEAKED_DEFAULT.witherImmune = wiChocobos().contains(this.TWEAKED_DEFAULT.color);
+        this.TWEAKED_DEFAULT.poisonImmune = piChocobos().contains(this.TWEAKED_DEFAULT.color);
+        this.TWEAKED_DEFAULT.scale = setChocoScale(.50f > (float) Math.random());
     }
     public ChocoboSnap() {
         setTWEAKED();
@@ -32,5 +33,9 @@ public class ChocoboSnap {
         int upEnd = origin+upper;
         int range = upEnd-lowEnd;
         return random.nextInt(range)+lowEnd;
+    }
+    public static int setChocoScale(boolean isMale) {
+        int base = random.nextInt(50) + 1;
+        return isMale ? base - 20 : base - 30;
     }
 }

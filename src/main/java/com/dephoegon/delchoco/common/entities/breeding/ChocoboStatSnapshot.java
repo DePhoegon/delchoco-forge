@@ -24,8 +24,10 @@ public class ChocoboStatSnapshot {
     public static final String NBTKEY_ARMOR_TOUGHNESS = "Toughness";
     private static final String NBTKEY_CHOCOBO_WITHER_IMMUNE = "WitherImmune";
     private static final String NBTKEY_CHOCOBO_POISON_IMMUNE = "PoisonImmune";
+    private static final String NBTKEY_CHOCOBO_SCALE = "Scale";
 
     public int generation;
+    public int scale;
     public float health;
     public float speed;
     public float stamina;
@@ -66,6 +68,7 @@ public class ChocoboStatSnapshot {
         this.waterBreath = chocobo.isWaterBreather();
         this.witherImmune = chocobo.isWitherImmune();
         this.poisonImmune = chocobo.isPoisonImmune();
+        this.scale = 0;
         this.color = chocobo.getChocoboColor();
     }
     public ChocoboStatSnapshot(@NotNull CompoundTag nbt) {
@@ -80,6 +83,7 @@ public class ChocoboStatSnapshot {
         this.waterBreath = nbt.getBoolean(NBTKEY_WATER_BREATH);
         this.witherImmune = nbt.getBoolean(NBTKEY_CHOCOBO_WITHER_IMMUNE);
         this.poisonImmune = nbt.getBoolean(NBTKEY_CHOCOBO_POISON_IMMUNE);
+        this.scale = nbt.getInt(NBTKEY_CHOCOBO_SCALE);
         this.color = ChocoboColor.values()[nbt.getByte(NBTKEY_COLOR)];
     }
     public CompoundTag serialize() {
@@ -95,6 +99,7 @@ public class ChocoboStatSnapshot {
         nbt.putBoolean(NBTKEY_WATER_BREATH, this.waterBreath);
         nbt.putBoolean(NBTKEY_CHOCOBO_WITHER_IMMUNE, this.witherImmune);
         nbt.putBoolean(NBTKEY_CHOCOBO_POISON_IMMUNE, this.poisonImmune);
+        nbt.putInt(NBTKEY_CHOCOBO_SCALE, this.scale);
         nbt.putByte(NBTKEY_COLOR, (byte) this.color.ordinal());
         return nbt;
     }

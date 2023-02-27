@@ -1,0 +1,10 @@
+Chocobo Size Variance
+-Preserved though save/load
+-Random, softly based on gender
+-Unstable eggs can have the smallest males & largest females.
+-babies born from eggs get a bit of an averaged shakeup.
+
+Player Riding offset Adjusted based on Chocobo Scale
+
+Chocobos variance ~2 Blocks (just over) to ~4 Blocks
+-  Does not effect health (currently) or any other stat
