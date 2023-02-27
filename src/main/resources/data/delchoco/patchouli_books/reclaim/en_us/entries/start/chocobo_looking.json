@@ -7,7 +7,7 @@
       "title": "Locations & Locations",
       "type": "patchouli:spotlight",
       "item": "minecraft:filled_map",
-      "text": "Locations That Chocobos Can be found in.$(br)- Hills & Plains$(br)- Swamps$(br)- Snowy Locations$(br)- Hot & Dry Locations$(br)- Mushroom Fields$(br)- Mesas'$(br) The Nether"
+      "text": "Locations That Chocobos Can be found in is Varied. Examples are to follow.$(br)- The only Chocobo that will not spawn naturally & must be bred for - Gold Chocobo -"
     },
     {
       "title": "Black Chocobo",
@@ -37,7 +37,7 @@
       "title": "Red Chocobo",
       "type": "patchouli:image",
       "images": ["delchoco:textures/screens/chocobos/red_spawn.png"],
-      "text": "Mesa Places"
+      "text": "Mesa & Forest Places"
     },
     {
       "title": "White Chocobo",
@@ -50,6 +50,18 @@
       "type": "patchouli:image",
       "images": ["delchoco:textures/screens/chocobos/yellow_spawn.png"],
       "text": "Plains & Hills, Most common"
+    },
+    {
+      "title": "Blue Chocobo",
+      "type": "patchouli:image",
+      "images": ["delchoco:textures/screens/chocobos/blue_spawn.png"],
+      "text": "Rivers & Warm Oceans"
+    },
+    {
+      "title": "Purple Chocobo",
+      "type": "patchouli:image",
+      "images": ["delchoco:textures/screens/chocobos/purple_spawn.png"],
+      "text": "The End Dimension"
     }
   ]
 }

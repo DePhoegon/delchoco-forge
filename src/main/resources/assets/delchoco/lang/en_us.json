@@ -10,8 +10,8 @@
     "item.delchoco.gysahl_green": "Gysahl Green",
     "item.delchoco.gysahl_green_seeds": "Gysahl Green Seeds",
     "item.delchoco.lovely_gysahl_green": "Lovely Gysahl Green",
-    "item.delchoco.pickled_gysahl_raw": "Raw Pickled Gysahl Green",
-    "item.delchoco.pickled_gysahl_cooked": "Baked Pickled Gysahl Green",
+    "item.delchoco.pickled_gysahl_raw": "Raw Pickled Gysahl",
+    "item.delchoco.pickled_gysahl_cooked": "Baked Pickled Gysahl",
 
     "item.delchoco.chocobo_armor_chain": "Chocobo Chain Armor",
     "item.delchoco.chocobo_armor_iron": "Chocobo Iron Armor",
@@ -37,7 +37,7 @@
     "item.delchoco.gysahl_cake": "Gysahl Cake",
 
     "item.delchoco.chocobo_drumstick_raw": "Raw Chocobo Drumstick",
-    "item.delchoco.chocobo_drumstick_cooked": "Cooked Chocobo Drumstick",
+    "item.delchoco.chocobo_drumstick_cooked": "Forbidden Drumstick",
     "item.delchoco.yellow_chocobo_spawn_egg": "Yellow Chocobo Spawn Egg",
     "item.delchoco.green_chocobo_spawn_egg": "Green Chocobo Spawn Egg",
     "item.delchoco.blue_chocobo_spawn_egg": "Blue Chocobo Spawn Egg",

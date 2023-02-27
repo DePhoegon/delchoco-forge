@@ -13,9 +13,7 @@ public class ModWorldgen {
 	public void biomeLoadingEvent(BiomeLoadingEvent event) {
 		BiomeGenerationSettingsBuilder builder = event.getGeneration();
 		Biome.BiomeCategory category = event.getCategory();
-		if(!category.equals(Biome.BiomeCategory.THEEND)) {
-			builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacements.PATCH_GYSAHL_NO_BIOME);
-			builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, ModPlacements.PATCH_GYSAHL_UNDERGROUND);
-		}
+		builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacements.PATCH_GYSAHL_NO_BIOME);
+		builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, ModPlacements.PATCH_GYSAHL_UNDERGROUND);
 	}
 }

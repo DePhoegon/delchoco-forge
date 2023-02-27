@@ -1,13 +1,18 @@
 {
-  "name": "02 - Chocobo Teaming",
-  "icon": "delchoco:chocobo_egg",
-  "category": "delchoco:chocobo_combat",
+  "name": "Teaming with Chocobos",
+  "icon": "minecraft:oak_sign",
+  "category": "delchoco:chocobo_ent",
   "pages": [
     {
-      "title": "General Combat with Chocobos",
+      "title": "Built in Teams",
       "type": "patchouli:spotlight",
-      "item": "delchoco:chocobo_weapon_stone",
-      "text": "Breeding can bring Stats & colors.$(br)Chocobo Stats are$(br)- Stamina$(br)- Health$(br)- Speed"
+      "item": "minecraft:oak_sign",
+      "text": "Includes Built in Teams.$(br)- /DelChoco Player JoinTeam <Color> $(br)-- Join Team of that color$(br)- /DelChoco Player LeaveTeam $(br)--Leave the team you're on$(br)- /DelChoco TeamSettings TeamFriendlyFire <true/false>$(br)-- Turns the teams friendly fire on or off for your team"
+    },
+    {
+      "title": "OP Commands",
+      "type": "patchouli:text",
+      "text": "Just commands to create all the groups or completely reset the groups & their members (removes them)$(br)$(br)- /DelChoco TeamInitialize <create / refresh>"
     }
   ]
 }

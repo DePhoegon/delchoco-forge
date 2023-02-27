@@ -1,0 +1,24 @@
+Gysahl Greens
+- Spawn Expanded to the End
+-- allowed to spawn on endstone
+
+Chocobo Combat Effects
+- Added On hit chances for minor items
+- Added On Kill Chances for Chocobo themed items based on the chocobo color that killed it.
+- Added on killed chance for chocobo to drop their own spawn egg when killed
+
+Lang File
+- en_us
+-- Changed some item names to shorten them
+
+Updated Screenshots
+- Guide book images updated, & added
+
+Guide book
+- Flushed Out
+-- Alters are WIP (for Guide book)
+- Combat effects fully finished,
+- Icons Changed
+- Fixed mislabeled errors with a few pages
+
+Some stuff Checked off ToDo-Checklist

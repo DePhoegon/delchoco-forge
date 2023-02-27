@@ -26,22 +26,7 @@ Create Paralyze 'item'
 2-21-23
 
 Guide Book Structure
--Showcase spawns by Biomes
--Showcase spawns by Chocobo Color
 -Showcase Alters for summons
--showcase Choco Armor for player
--Showcase Chocobo armor for chocobos
--Showcase Chocobo weapons
--Pages for the following
--- Chocobo on hits, by color
--- Chocobo being hit, by color
--- Chocobo being killed, by color
--- Chocobo killing, by color
--- Chocobo armors
--- Chocobo weapons
--- Chocobo disguise armor
--- Chocobo Summon Alters
--- Chocobo Behavior with teams & players
 
 Consider Size variance
 - 60% range

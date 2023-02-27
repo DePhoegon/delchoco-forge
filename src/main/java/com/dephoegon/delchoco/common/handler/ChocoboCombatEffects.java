@@ -2,16 +2,16 @@ package com.dephoegon.delchoco.common.handler;
 
 import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
-import com.sun.jna.platform.win32.WinBase;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.IronGolem;
-import net.minecraft.world.entity.monster.*;
+import net.minecraft.world.entity.monster.CaveSpider;
+import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.monster.WitherSkeleton;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TridentItem;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -123,7 +123,6 @@ public class ChocoboCombatEffects {
                 chocoboKill.spawnAtLocation(flower);
             }}
         }
-
         if (chocoboDie != null) {
             @NotNull ItemStack egg = switch (chocoboDie.getChocoboColor()) {
                 case YELLOW -> new ItemStack(YELLOW_CHOCOBO_SPAWN_EGG.get());

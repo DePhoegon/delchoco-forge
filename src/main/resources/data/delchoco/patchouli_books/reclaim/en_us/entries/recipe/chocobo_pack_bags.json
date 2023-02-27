@@ -12,7 +12,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "delchoco:chocobo_pack_bags",
-      "text": "-$(item)Chocobo feather$()$(br)-$(item)Leather$()$(br)-4x$(item)String$()$(br)-2x%(item)Wool$()$(br)-$(l:delchoco:recipe/chocobo_saddle_bags)Saddle Bag$(/l)"
+      "text": "-$(item)Chocobo feather$()$(br)-$(item)Leather$()$(br)-4x$(item)String$()$(br)-2x$(item)Wool$()$(br)-$(l:delchoco:recipe/chocobo_saddle_bags)Saddle Bag$(/l)"
     }
   ]
 }

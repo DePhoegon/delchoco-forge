@@ -13,13 +13,19 @@
       "title": "Nesting Habits",
       "type": "patchouli:spotlight",
       "item": "delchoco:straw_nest",
-      "text": "is Useful for hatching chocobos a bit faster.$(br)$(item)Currently, These are visually bugged & do not 'remove' the egg after the chicbo hatches from it.$()$(br)- It is safe to break & replace $(item)AFTER THE CHICOBO IS HATCHED$(), just right click it & see if an egg is in the slot$(br)- $(l:delchoco:chocobos/tools)here$(/l)"
+      "text": "is Useful for hatching chocobos from eggs.$(br)- It is safe to break & replace $(item)AFTER THE CHICOBO IS HATCHED$(), just right click it & see if an egg is in the slot$(br)- $(l:delchoco:chocobos/tools)here$(/l)"
     },
     {
       "title": "Colorful Choices",
       "type": "patchouli:image",
-      "images": ["delchoco:textures/screens/chocobos/colors.png"],
-      "text": "All Chocobo can be bred from Yellow Chocobos & Flame Chocobos$(br)=Flames Pass on their Fire/Lava Immunity"
+      "images": ["delchoco:textures/screens/chocobos/colorsone.png"],
+      "text": "All Chocobo can be bred from Yellow Chocobos & Flame Chocobos"
+    },
+    {
+      "title": "Colorful Choices",
+      "type": "patchouli:image",
+      "images": ["delchoco:textures/screens/chocobos/colorstwo.png"],
+      "text": "Default red collar tamed Chocobos"
     },
     {
       "title": "Breeding Chart",

@@ -32,6 +32,16 @@
       "title": "Swamp Greens",
       "type": "patchouli:image",
       "images": [ "delchoco:textures/screens/greens/swamp_green.png" ]
+    },
+    {
+      "title": "Nether Greens",
+      "type": "patchouli:image",
+      "images": [ "delchoco:textures/screens/greens/nether_greens.png" ]
+    },
+    {
+      "title": "End Greens",
+      "type": "patchouli:image",
+      "images": [ "delchoco:textures/screens/greens/end_greens.png" ]
     }
   ]
 }

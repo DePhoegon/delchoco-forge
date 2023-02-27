@@ -10,9 +10,9 @@
       "text": "Useful for eating, if you must."
     },
     {
-      "type": "patchouli:crafting",
+      "type": "patchouli:smelting",
       "recipe": "delchoco:chocobo_drumstick_cooked",
-      "text": "Eatable, if you must.$(br)-$(item)Raw Forbidden Drumstick()$(br)-Also able to be cooked on a campfire or in a smoker."
+      "text": "Eatable, if you must.$(br)-$(item)Raw Forbidden Drumstick$()$(br)-Also able to be cooked on a campfire or in a smoker."
     }
   ]
 }

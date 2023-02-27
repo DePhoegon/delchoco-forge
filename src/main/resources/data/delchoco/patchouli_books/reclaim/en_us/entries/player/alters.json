@@ -1,13 +1,78 @@
 {
-  "name": "Chocobo Alters by Color",
+  "name": "-Guide WIP, Alters Functional-",
   "icon": "delchoco:chocobo_egg",
   "category": "delchoco:chocobo_sum",
   "pages": [
     {
+      "title": "Random Chocobo",
+      "type": "patchouli:spotlight",
+      "item": "minecraft:dirt",
+      "text": "Alter Block $(item)Dirt Block$()$(br)Pillar Blocks -None-"
+    },
+    {
+      "title": "Random Alter",
+      "type": "patchouli:image",
+      "images": [ "delchoco:textures/screens/alters/random.jpg" ]
+    },
+    {
+      "title": "Flame Chocobo",
+      "type": "patchouli:spotlight",
+      "item": "minecraft:magma_block",
+      "text": "Alter Block - $(item)Magma Block$()$(br)Pillar Blocks - $(item)Magma Block$()"
+    },
+    {
+      "title": "Purple Chocobo",
+      "type": "patchouli:spotlight",
+      "item": "minecraft:purpur_block",
+      "text": "Alter Block Options - $(br)- $(item)Purpur Block$()$(br)- $(item)End Stone Bricks$()$(br)Pillar Blocks - $(item)PurPur Pillar$()"
+    },
+    {
+      "title": "Pink Chocobo",
+      "type": "patchouli:spotlight",
+      "item": "minecraft:mycelium",
+      "text": "Alter Block Options - $(br)- $(item)Mycelium$()$(br)- $(item)Mushroom Stem$()$(br)- $(item)Red Mushroom Block$()$(br)- $(item)Brown Mushroom Block$()$(br)Pillar Blocks - $(item)Mushroom Stem$()"
+    },
+    {
+      "title": "White Chocobo",
+      "type": "patchouli:spotlight",
+      "item": "minecraft:packed_ice",
+      "text": "Alter Block Options - $(br)- $(item)Ice$()$(br)- $(item)Blue Ice$()$(br)- $(item)Packed Ice$()$(br)- $(item)Birch Wood$()$(br)Pillar Blocks - $(item)Snow Block$()"
+    },
+    {
+      "title": "Blue Chocobo",
+      "type": "patchouli:spotlight",
+      "item": "minecraft:brain_coral",
+      "text": "Alter Block Options -$(br)- Any 'ALIVE' Coral$(br)- 'ALIVE' coral Fan$(br)- 'ALIVE' Coral Block$(br)Pillar Blocks - $(item)Dried Kelp Block$()"
+    },
+    {
+      "title": "Red Chocobo",
+      "type": "patchouli:spotlight",
+      "item": "minecraft:terracotta",
+      "text": "Alter Block Options -$(br)- $(item)Red Sand$()$(br)- $(item)Red SandStone$()(including cut, chiseled, smooth)$(br)Pillar Blocks - $(item)Red Terracotta$()"
+    },
+    {
+      "title": "Green Chocobo",
+      "type": "patchouli:spotlight",
+      "item": "minecraft:moss_block",
+      "text": "Alter Block Options -$(br)- $(item)Moss Block$()$(br)- $(item)Clay Block$()$(br)- $(item)Jungle Wood$()$(br)Pillar Blocks - $(item)Moss Block$()"
+    },
+    {
       "title": "Black Chocobo",
       "type": "patchouli:spotlight",
-      "item": "delchoco:black_chocobo_spawn_egg",
-      "text": "Breeding can bring Stats & colors.$(br)Chocobo Stats are$(br)- Stamina$(br)- Health$(br)- Speed"
+      "item": "minecraft:sand",
+      "text": "Alter Block Options -$(br)- $(item)Sand$()$(br)- $(item)SandStone$()(including cut, chiseled, smooth)$(br)Pillar Blocks - $(item)Cactus$()"
+    },
+    {
+      "title": "Gold Chocobo",
+      "type": "patchouli:spotlight",
+      "item": "minecraft:gold_block",
+      "text": "Alter Block - $(item)Gold Block$()$(br)Pillar Blocks - $(item)Gold Block$()"
+    },
+    {
+      "title": "Yellow Chocobo",
+      "type": "patchouli:spotlight",
+      "item": "minecraft:grass_block",
+      "text": "Alter Block - $(item)Grass Block$()$(br)Pillar Blocks - $(item)Hay Block$()"
     }
   ]
 }

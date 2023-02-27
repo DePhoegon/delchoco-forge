@@ -7,7 +7,7 @@
       "title": "Chocobos",
       "type": "patchouli:spotlight",
       "item": "delchoco:yellow_chocobo_spawn_egg",
-      "text": "Chocobos have a chance at dropping a spawn egg of their color on their death."
+      "text": "Chocobos have a chance at dropping a spawn egg of their color on their death.$(br)-Does not Interact with in world spawners."
     }
   ]
 }
