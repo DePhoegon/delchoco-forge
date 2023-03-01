@@ -16,7 +16,6 @@ Test flow & balance
 2-14-23
 
 Update Guide Book
-- Indicate inside corner of walls/fences issues with pathing
 - List crafting Recipes for gear
 
 2-21-23

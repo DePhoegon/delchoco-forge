@@ -433,3 +433,7 @@ Chocobo Sizes
 2-28-23
 
 ChocoDisguise Eye fixed
+
+3-1-23
+
+Fixed floating pixel off the head.
