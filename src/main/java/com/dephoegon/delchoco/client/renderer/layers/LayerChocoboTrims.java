@@ -53,9 +53,7 @@ public class LayerChocoboTrims extends RenderLayer<Chocobo, EntityModel<Chocobo>
 		this.tamedShow = tamedAlpha;
 		this.untamedShow = untamedAlpha;
 	}
-
 	// Use logic to use different Plumage on tames of different Colors
-	@Override
 	public void render(@NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int packedLightIn, @NotNull Chocobo chocobo, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 		if (!chocobo.isInvisible()) {
 			if (!chocobo.isBaby()) {

@@ -11,16 +11,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class ChocoboEggBlockItem extends BlockItem {
     public ChocoboEggBlockItem(Block block, Item.Properties builder) { super(block, builder); }
-    @Override
     public boolean isBarVisible(@NotNull ItemStack stack) {
         if (!ChocoboEggBlock.isChocoboEgg(stack)) { return super.isBarVisible(stack); }
-
         if (!stack.hasTag()) { return false; }
-
         CompoundTag nbtHatchIngstate = stack.getTagElement(ChocoboEggBlock.NBTKEY_HATCHINGSTATE);
         return nbtHatchIngstate != null;
     }
-    @Override
     public int getBarWidth(@NotNull ItemStack stack) {
         if (!ChocoboEggBlock.isChocoboEgg(stack)) { return super.getBarWidth(stack); }
         if (!stack.hasTag()) { return 0; }
@@ -32,7 +28,6 @@ public class ChocoboEggBlockItem extends BlockItem {
         }
         return 1;
     }
-    @Override
     public int getBarColor(@NotNull ItemStack stack) {
         if (!ChocoboEggBlock.isChocoboEgg(stack)) { return super.getBarColor(stack); }
         return 0x0000FF00;

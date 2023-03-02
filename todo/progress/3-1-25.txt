@@ -1,0 +1,14 @@
+Code Trimming
+- getting rid of unneeded code snippets
+-- Bunch of Overrides tags
+-- Bunch of empty lines
+
+Chocobo Texture Layers
+- expanded 128x64 to 128x128
+- created 3D eye effect w/ a forth of a pixel showing on the outside.
+- created layers separate for armors & weapons, that gives slightly more space
+-- re-exported all chocobo textures with expanded & recorrected spaces
+
+Guide Book Texture
+- Shrank images down to 350x350
+-- Cut over 2/3 the size overall

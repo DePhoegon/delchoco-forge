@@ -126,11 +126,7 @@ public class chocoboTeams {
         return 0;
     }
     @Contract("_, _, _ -> new")
-    private static @NotNull TranslatableComponent getText(String key, @NotNull Chocobo chocobo, Attribute attribute) {
-        return new TranslatableComponent("command." + MOD_ID + ".chocobo." + key, Objects.requireNonNull(chocobo.getAttribute(attribute)).getBaseValue());
-    }
+    private static @NotNull TranslatableComponent getText(String key, @NotNull Chocobo chocobo, Attribute attribute) { return new TranslatableComponent("command." + MOD_ID + ".chocobo." + key, Objects.requireNonNull(chocobo.getAttribute(attribute)).getBaseValue()); }
     @Contract(value = "_ -> new", pure = true)
-    private static @NotNull TranslatableComponent getText(String value) {
-        return new TranslatableComponent("command." + MOD_ID + ".chocobo." + "get_generation", value);
-    }
+    private static @NotNull TranslatableComponent getText(String value) { return new TranslatableComponent("command." + MOD_ID + ".chocobo." + "get_generation", value); }
 }

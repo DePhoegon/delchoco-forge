@@ -21,7 +21,6 @@ public class OpenChocoboGuiMessage {
 	public int entityId;
 	public int windowId;
 	public CompoundTag saddle;
-	@Nullable
 	public CompoundTag inventory;
 
 	public OpenChocoboGuiMessage(@NotNull Chocobo chocobo, int windowId) {
@@ -32,7 +31,6 @@ public class OpenChocoboGuiMessage {
 		ItemStack saddleStack = chocobo.getSaddle();
 		if(!saddleStack.isEmpty() && saddleStack.getItem() instanceof ChocoboSaddleItem saddleItem) { if(saddleItem.getInventorySize() > 0) { this.inventory = chocobo.chocoboInventory.serializeNBT(); } }
 	}
-
 	public OpenChocoboGuiMessage(int entityID, int windowId, CompoundTag saddle, CompoundTag inventory) {
 		this.entityId = entityID;
 		this.windowId = windowId;
@@ -40,7 +38,6 @@ public class OpenChocoboGuiMessage {
 		this.saddle = saddle;
 		this.inventory = inventory;
 	}
-
 	public void encode(@NotNull FriendlyByteBuf buf) {
 		buf.writeInt(this.entityId);
 		buf.writeInt(this.windowId);
@@ -48,10 +45,8 @@ public class OpenChocoboGuiMessage {
 		buf.writeBoolean(this.inventory != null);
 		if (this.inventory != null) { buf.writeNbt(inventory); }
 	}
-
 	@Contract("_ -> new")
 	public static @NotNull OpenChocoboGuiMessage decode(final @NotNull FriendlyByteBuf buffer) { return new OpenChocoboGuiMessage(buffer.readInt(), buffer.readInt(), buffer.readNbt(), buffer.readBoolean() ? buffer.readNbt() : null); }
-
 	public void handle(@NotNull Supplier<Context> context) {
 		NetworkEvent.Context ctx = context.get();
 		ctx.enqueueWork(() -> {

@@ -36,8 +36,6 @@ public class LayerWeapon extends RenderLayer<Chocobo, EntityModel<Chocobo>> {
         this.hide = invisibleAlpha;
         this.show = visibleAlpha;
     }
-
-    @Override
     public void render(@NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int packedLightIn, @NotNull Chocobo chocoboEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (!chocoboEntity.isBaby()) {
             String weaponID = chocoboEntity.isArmed() ? chocoboEntity.getWeapon().getDescriptionId() : null;

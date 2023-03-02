@@ -62,10 +62,8 @@ public class ChocoboRenderer extends MobRenderer<Chocobo, EntityModel<Chocobo>> 
         this.addLayer(new LayerWeapon(this, weaponAlpha, ChocoConfig.COMMON.weaponInvisibility.get().floatValue()));
         this.addLayer(new LayerCollar(this, collarAlpha, ChocoConfig.COMMON.collarInvisibility.get().floatValue()));
         this.addLayer(new LayerSaddle(this, saddleAlpha, ChocoConfig.COMMON.saddleInvisibility.get().floatValue()));
-        this.addLayer(new LayerChocoboTrims(this, .65F, .75F));
+        this.addLayer(new LayerChocoboTrims(this, .75F, .85F));
     }
-
-    @Override
     public void render(@NotNull Chocobo chocobo, float entityYaw, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight) {
         this.model = chocobo.isBaby() ? chicoboModel : chocoboModel;
         if (hideChocoboMountInFirstPerson(chocobo)) { return; }
@@ -73,8 +71,6 @@ public class ChocoboRenderer extends MobRenderer<Chocobo, EntityModel<Chocobo>> 
         poseStack.scale(factor, factor, factor);
         super.render(chocobo, entityYaw, partialTicks, poseStack, bufferSource, packedLight);
     }
-
-    @Override
     public @NotNull ResourceLocation getTextureLocation(@NotNull Chocobo chocobo) {
         ChocoboColor color = chocobo.getChocoboColor();
         return chocobo.isBaby() ? CHICOBO_PER_COLOR.get(color) : CHOCOBO_PER_COLOR.get(color);

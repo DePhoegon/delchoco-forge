@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 @Mod.EventBusSubscriber(modid = DelChoco.MOD_ID)
 public class RidingEventHandler {
     @SubscribeEvent
-    public static void onMountEntity(EntityMountEvent event) {
+    public static void onMountEntity(@NotNull EntityMountEvent event) {
         if (event.isMounting()) { return; }
         if (!event.getEntityBeingMounted().isAlive()) { return; }
         if (!(event.getEntityBeingMounted() instanceof Chocobo)) { return; }

@@ -437,3 +437,8 @@ ChocoDisguise Eye fixed
 3-1-23
 
 Fixed floating pixel off the head.
+
+Chocobo Model Rework
+
+Texture File Rework
+

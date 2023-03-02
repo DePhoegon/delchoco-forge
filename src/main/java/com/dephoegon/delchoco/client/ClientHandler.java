@@ -28,7 +28,6 @@ public class ClientHandler {
         MenuScreens.register(ModContainers.NEST.get(), NestScreen::new);
     }
     public static void registerEntityRenders(EntityRenderersEvent.@NotNull RegisterRenderers event) { event.registerEntityRenderer(ModEntities.CHOCOBO.get(), ChocoboRenderer::new); }
-
     public static void registerLayerDefinitions(EntityRenderersEvent.@NotNull RegisterLayerDefinitions event) {
         event.registerLayerDefinition(CHOCOBO, AdultChocoboModel::createBodyLayer);
         event.registerLayerDefinition(CHICOBO, ChicoboModel::createBodyLayer);

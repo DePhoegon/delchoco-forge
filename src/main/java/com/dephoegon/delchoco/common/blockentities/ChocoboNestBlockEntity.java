@@ -145,39 +145,30 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
         }
     }
     public IItemHandler getInventory() { return this.inventory; }
-    @Override
     public void load(@NotNull CompoundTag nbt) {
         super.load(nbt);
         this.isSheltered = nbt.getBoolean(NBTKEY_IS_SHELTERED);
         this.ticks = nbt.getInt(NBTKEY_TICKS);
         this.inventory.deserializeNBT(nbt.getCompound(NBTKEY_NEST_INVENTORY));
     }
-    @Override
     public void saveAdditional(@NotNull CompoundTag nbt) {
         super.saveAdditional(nbt);
         nbt.putBoolean(NBTKEY_IS_SHELTERED, this.isSheltered);
         nbt.putInt(NBTKEY_TICKS, this.ticks);
         nbt.put(NBTKEY_NEST_INVENTORY, this.inventory.serializeNBT());
     }
-    @Nullable
-    @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
         CompoundTag nbt = new CompoundTag();
         saveAdditional(nbt);
         return ClientboundBlockEntityDataPacket.create(this);
     }
-    @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) { this.inventory.deserializeNBT(Objects.requireNonNull(pkt.getTag()).getCompound(NBTKEY_NEST_INVENTORY)); }
-    @Override
+    public void onDataPacket(Connection net, @NotNull ClientboundBlockEntityDataPacket pkt) { this.inventory.deserializeNBT(Objects.requireNonNull(pkt.getTag()).getCompound(NBTKEY_NEST_INVENTORY)); }
     public @NotNull CompoundTag getUpdateTag() {
         CompoundTag nbt = super.getUpdateTag();
         this.saveAdditional(nbt);
         return nbt;
     }
-    @Override
     public void handleUpdateTag(CompoundTag tag) { super.handleUpdateTag(tag); }
-    @Nullable
-    @Override
     public AbstractContainerMenu createMenu(int id, @NotNull Inventory playerInventory, @NotNull Player player) { return new NestContainer(id, playerInventory, this); }
     private static class CheckOffset {
         Vec3i offset;
@@ -188,8 +179,6 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
             this.shouldBeAir = shouldBeAir;
         }
     }
-    @Nonnull
-    @Override
     public Component getDisplayName() { return new TranslatableComponent(DelChoco.MOD_ID + ".container.nest"); }
     public void onInventoryChanged() {
         this.setChanged();
@@ -207,13 +196,10 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
         }
         return sheltered;
     }
-    @Nonnull
-    @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) { return inventoryHolder.cast(); }
         return super.getCapability(cap, side);
     }
-    @Override
     public void invalidateCaps() {
         super.invalidateCaps();
         this.inventoryHolder.invalidate();

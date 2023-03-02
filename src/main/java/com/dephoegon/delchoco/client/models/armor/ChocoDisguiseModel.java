@@ -147,7 +147,6 @@ public class 	ChocoDisguiseModel extends HumanoidModel<LivingEntity> {
 
 		return LayerDefinition.create(meshdefinition,  128,  128);
 	}
-	@Override
 	public void setupAnim(@NotNull LivingEntity livingEntity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		if (livingEntity instanceof ArmorStand armorStand) {
 			this.chocobo_head.xRot = ((float) Math.PI / 180F) * armorStand.getHeadPose().getX();
@@ -174,7 +173,6 @@ public class 	ChocoDisguiseModel extends HumanoidModel<LivingEntity> {
 			this.hat.copyFrom(this.chocobo_head);
 		} else { super.setupAnim(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch); }
 	}
-	@Override
 	public void renderToBuffer(@NotNull PoseStack matrixStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
 		matrixStack.pushPose();
 		this.setHeadRotation();

@@ -68,9 +68,7 @@ public class SaddleBagContainer extends AbstractContainerMenu {
         } }
         for (int i = 0; i < 9; ++i) { this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 180)); }
     }
-    @Override
     public boolean stillValid(@NotNull Player playerIn) { return this.chocobo.isAlive() && this.chocobo.distanceTo(playerIn) < 8.0F; }
-    @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);

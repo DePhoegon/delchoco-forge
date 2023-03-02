@@ -25,8 +25,6 @@ public class chocoboEquipmentSlot extends SlotItemHandler {
             default -> this.saddle = false;
         }
     }
-
-    @Override
     public boolean mayPlace(@Nonnull ItemStack stack) {
         if (stack.isEmpty()) { return false; } else {
             if (stack.getItem() instanceof ChocoboArmorItems && this.armor) { return true; }
@@ -34,7 +32,5 @@ public class chocoboEquipmentSlot extends SlotItemHandler {
             return stack.getItem() instanceof ChocoboWeaponItems && this.weapon;
         }
     }
-
-    @Override
     public int getMaxStackSize(@Nonnull ItemStack stack) { return 1; }
 }

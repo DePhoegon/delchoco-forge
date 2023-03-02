@@ -24,23 +24,15 @@ public class GysahlGreenBlock extends CropBlock {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(this.getAgeProperty(), 0));
     }
-    @Override
-    protected @NotNull ItemLike getBaseSeedId() {
-        return ModRegistry.GYSAHL_GREEN_SEEDS::get;
-    }
-    @Override
+    protected @NotNull ItemLike getBaseSeedId() { return ModRegistry.GYSAHL_GREEN_SEEDS::get; }
     public boolean canSurvive(@NotNull BlockState state, @NotNull LevelReader worldIn, @NotNull BlockPos pos) {
         BlockState block = worldIn.getBlockState(pos.below());
         if (state.getBlock() == this) { return blockPlaceableOnList().contains(block.getBlock().defaultBlockState()); }
         return mayPlaceOn(worldIn.getBlockState(pos), worldIn, pos.below());
     }
-    @Override
     protected boolean mayPlaceOn(@NotNull BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos) { return blockPlaceableOnList().contains(state.getBlock().defaultBlockState()); }
-    @Override
     protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder) { builder.add(AGE); }
-    @Override
     public @NotNull IntegerProperty getAgeProperty() { return AGE; }
-    @Override
     public int getMaxAge() { return MAX_AGE; }
     private @NotNull ArrayList<BlockState> blockPlaceableOnList() {
         ArrayList<BlockState> block_set = new ArrayList<>();

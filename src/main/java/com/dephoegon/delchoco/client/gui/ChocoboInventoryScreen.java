@@ -36,13 +36,11 @@ public class ChocoboInventoryScreen extends AbstractContainerScreen<SaddleBagCon
         player.containerMenu = saddleContainer;
         Minecraft.getInstance().setScreen(new ChocoboInventoryScreen(saddleContainer, player.getInventory(), chocobo));
     }
-    @Override
     public void render(@NotNull PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         renderTooltip(matrixStack, mouseX, mouseY);
     }
-    @Override
     protected void renderBg(@NotNull PoseStack matrixStack, float partialTicks, int x, int y) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -59,7 +57,6 @@ public class ChocoboInventoryScreen extends AbstractContainerScreen<SaddleBagCon
         this.blit(matrixStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
         this.blit(matrixStack, i - 24, j - 10, 0, 204, 27+xAdjust, 33);
     }
-    @Override
     protected void renderLabels(@NotNull PoseStack matrixStack, int x, int y) {
         this.font.draw(matrixStack, this.chocobo.getDisplayName().getString(), xAdjust-16, 6, 0x888888);
         this.font.draw(matrixStack, this.playerInventoryTitle, 8, this.imageHeight - 96 + 2, 0x888888);

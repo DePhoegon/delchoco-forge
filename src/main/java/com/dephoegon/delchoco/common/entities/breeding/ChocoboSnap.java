@@ -25,9 +25,7 @@ public class ChocoboSnap {
         this.TWEAKED_DEFAULT.poisonImmune = piChocobos().contains(this.TWEAKED_DEFAULT.color);
         this.TWEAKED_DEFAULT.scale = setChocoScale(.50f > (float) Math.random());
     }
-    public ChocoboSnap() {
-        setTWEAKED();
-    }
+    public ChocoboSnap() { setTWEAKED(); }
     public int boundedIntRange(int lower, int upper, int origin) {
         int lowEnd = Math.max(origin - lower, 0);
         int upEnd = origin+upper;

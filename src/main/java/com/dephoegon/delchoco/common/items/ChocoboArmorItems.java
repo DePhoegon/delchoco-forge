@@ -80,7 +80,6 @@ public class ChocoboArmorItems extends Item implements Wearable {
     }
     @SuppressWarnings("deprecation")
     public @NotNull Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@NotNull EquipmentSlot pEquipmentSlot) { return pEquipmentSlot == this.slot ? this.defaultModifiers : super.getDefaultAttributeModifiers(pEquipmentSlot); }
-
     public int getDefense() { return this.defense; }
     public float getToughness() { return this.toughness; }
     @Nullable

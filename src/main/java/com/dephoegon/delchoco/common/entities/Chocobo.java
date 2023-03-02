@@ -129,6 +129,16 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     private int ticksUntilNextAlert;
     private int timeToRecalculatePath;
     private final double followSpeedModifier = 2.0D;
+    private AvoidEntityGoal chocoboAvoidPlayerGoal;
+    private WaterAvoidingRandomStrollGoal roamAround;
+    private Goal avoidBlocks;
+    private float wingRotation;
+    private float destPos;
+    private boolean isChocoboJumping;
+    private float wingRotDelta;
+    private BlockPos nestPos;
+    private boolean noRoam;
+    public float followingMrHuman = 2;
     private final UniformInt ALERT_INTERVAL = TimeUtil.rangeOfSeconds(4, 6);
 
     private static final EntityDataAccessor<ChocoboColor> PARAM_COLOR = SynchedEntityData.defineId(Chocobo.class, ModDataSerializers.CHOCOBO_COLOR);
@@ -148,13 +158,9 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     private final static EntityDataAccessor<Boolean> PARAM_POISON_IMMUNE = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> PARAM_SCALE = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> PARAM_SCALE_MOD = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.FLOAT);
-
     private static final UUID CHOCOBO_SPRINTING_BOOST_ID = UUID.fromString("03ba3167-393e-4362-92b8-909841047640");
+    private final FollowOwnerGoal follow = new FollowOwnerGoal(this, followSpeedModifier, 4.0F, 30.0F, false);
     private static final AttributeModifier CHOCOBO_SPRINTING_SPEED_BOOST = (new AttributeModifier(CHOCOBO_SPRINTING_BOOST_ID, "Chocobo sprinting speed boost", 1, Operation.MULTIPLY_BASE));
-
-    private AvoidEntityGoal chocoboAvoidPlayerGoal;
-    private WaterAvoidingRandomStrollGoal roamAround;
-    private Goal avoidBlocks;
     public static final int tier_one_chocobo_inv_slot_count = 15; // 3*5
     public static final int tier_two_chocobo_inv_slot_count = 45; //5*9
     private final int top_tier_chocobo_inv_slot_count = tier_two_chocobo_inv_slot_count;
@@ -202,12 +208,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         }
     };
 
-    private float wingRotation;
-    private float destPos;
-    private boolean isChocoboJumping;
-    private float wingRotDelta;
-    private BlockPos nestPos;
-
     public Chocobo(EntityType<? extends Chocobo> type, Level world) { super(type, world); }
     @Override
     protected void registerGoals() {
@@ -232,10 +232,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, Endermite.class, false));
         this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, Silverfish.class, false));
     }
-    private final FollowOwnerGoal follow = new FollowOwnerGoal(this, followSpeedModifier, 4.0F, 30.0F, false);
-    private boolean noRoam;
-    public float followingMrHuman = 2;
-
     public static AttributeSupplier.@NotNull Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(ModAttributes.MAX_STAMINA.get(),  ChocoConfig.COMMON.defaultStamina.get())
@@ -247,7 +243,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                 .add(Attributes.ATTACK_DAMAGE, COMMON.defaultAttackStrength.get())
                 .add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()*3);
     }
-    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(PARAM_IS_FLAME_BLOOD, false);
@@ -269,7 +264,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         this.entityData.define(PARAM_SCALE_MOD, 1f);
         this.entityData.define(DATA_REMAINING_ANGER_TIME, 0);
     }
-    @Override
     public void readAdditionalSaveData(@NotNull CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setChocoboColor(ChocoboColor.values()[compound.getByte(NBTKEY_CHOCOBO_COLOR)]);
@@ -291,7 +285,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         this.setChocoboScaleMod(compound.getFloat(NBTKEY_CHOCOBO_SCALE_MOD));
         this.setCollarColor(compound.getInt(NBTKEY_CHOCOBO_COLLAR));
     }
-    @Override
     public void addAdditionalSaveData(@NotNull CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putByte(NBTKEY_CHOCOBO_COLOR, (byte) this.getChocoboColor().ordinal());
@@ -350,7 +343,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         int range = lower+upper;
         return random.nextInt(range)-lower;
     }
-    @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor worldIn, @NotNull DifficultyInstance difficultyIn, @NotNull MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setMale(this.level.random.nextBoolean());
 

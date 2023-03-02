@@ -9,11 +9,11 @@ import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import static com.dephoegon.delchoco.client.renderer.entities.ChocoboRenderer.*;
 
 public class ChocoConfig {
-
     public static class Common {
         // public final BooleanValue add_blank_ToDungeonLoot;
         // public final IntValue _blank_DungeonLootWeight;
@@ -296,7 +296,6 @@ public class ChocoConfig {
             builder.pop();
         }
     }
-
     public static final ForgeConfigSpec commonSpec;
     public static final Common COMMON;
 
@@ -305,14 +304,10 @@ public class ChocoConfig {
         commonSpec = specPair.getRight();
         COMMON = specPair.getLeft();
     }
-
     @SubscribeEvent
-    public static void onLoad(final ModConfigEvent.Loading configEvent) {
-        DelChoco.log.debug("Loaded delchoco's config file {}", configEvent.getConfig().getFileName());
-    }
-
+    public static void onLoad(final ModConfigEvent.@NotNull Loading configEvent) { DelChoco.log.debug("Loaded delchoco's config file {}", configEvent.getConfig().getFileName()); }
     @SubscribeEvent
-    public static void onFileChange(final ModConfigEvent.Reloading configEvent) {
+    public static void onFileChange(final ModConfigEvent.@NotNull Reloading configEvent) {
         DelChoco.log.debug("delchoco's config just got changed on the file system!");
         if(configEvent.getConfig().getModId() == DelChoco.MOD_ID) {
             if (COMMON.chocoboPackSizeMin.get() > COMMON.chocoboPackSizeMax.get()) {

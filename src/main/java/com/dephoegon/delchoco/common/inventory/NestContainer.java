@@ -39,9 +39,7 @@ public class NestContainer extends AbstractContainerMenu {
         for (int i = 0; i < 9; ++i) { this.addSlot(new Slot(inventory, i, 8 + i * 18, 142)); }
     }
     public ChocoboNestBlockEntity getTile() { return tile; }
-    @Override
     public boolean stillValid(@NotNull Player playerIn) { return true; }
-    @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);

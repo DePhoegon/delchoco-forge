@@ -76,6 +76,11 @@ public class AdultChocoboModel<T extends Chocobo> extends EntityModel<Chocobo> {
                         .texOffs(0, 36).addBox(-6.0F, -7.0F, -8.0F, 12.0F, 11.0F, 16.0F),
                 PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.0873F, 0.0F, 0.0F));
 
+        PartDefinition armor_body_r1 = body.addOrReplaceChild("armor_body_r1", CubeListBuilder.create()
+                        .texOffs(0, 100).addBox(-6.0F, -7.0F, -8.0F, 12.0F, 11.0F, 16.0F,
+                                new CubeDeformation(0.25F)),
+                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.0873F, 0.0F, 0.0F));
+
         PartDefinition wing_left = body.addOrReplaceChild("wing_left", CubeListBuilder.create(),
                 PartPose.offset(6.0F, -5.0F, -3.0F));
 
@@ -100,6 +105,11 @@ public class AdultChocoboModel<T extends Chocobo> extends EntityModel<Chocobo> {
                                 new CubeDeformation(0.1F)),
                 PartPose.offsetAndRotation(0.0F, -1.0F, -1.0F, 0.7854F, 0.0F, 0.0F));
 
+        PartDefinition armor_chest_r1 = chest.addOrReplaceChild("armor_chest_r1", CubeListBuilder.create()
+                        .texOffs(0, 82).addBox(-4.0F, -4.0F, -5.0F, 8.0F, 8.0F, 10.0F,
+                                new CubeDeformation(0.35F)),
+                PartPose.offsetAndRotation(0.0F, -1.0F, -1.0F, 0.7854F, 0.0F, 0.0F));
+
         PartDefinition neck = chest.addOrReplaceChild("neck", CubeListBuilder.create(),
                 PartPose.offset(0.0F, -4.0F, -2.0F));
 
@@ -108,8 +118,15 @@ public class AdultChocoboModel<T extends Chocobo> extends EntityModel<Chocobo> {
                                 new CubeDeformation(0.2F)),
                 PartPose.offsetAndRotation(0.0F, 1.0F, 0.0F, 0.1309F, 0.0F, 0.0F));
 
+        PartDefinition armor_neck_r1 = neck.addOrReplaceChild("armor_neck_r1", CubeListBuilder.create()
+                        .texOffs(36, 20).addBox(-2.0F, -12.0F, -3.0F, 4.0F, 12.0F, 4.0F,
+                                new CubeDeformation(0.45F)),
+                PartPose.offsetAndRotation(0.0F, 1.0F, 0.0F, 0.1309F, 0.0F, 0.0F));
+
         PartDefinition head = neck.addOrReplaceChild("head", CubeListBuilder.create()
-                        .texOffs(0, 0).addBox(-3.0F, -5.0F, -9.0F, 6.0F, 6.0F, 12.0F),
+                        .texOffs(0, 0).addBox(-3.0F, -5.0F, -9.0F, 6.0F, 6.0F, 12.0F)
+                        .texOffs(100, 0).addBox(2.25F, -4.0F, -3.0F, 1.0F, 3.0F, 3.0F)
+                        .texOffs(100, 0).addBox(-3.25F, -4.0F, -3.0F, 1.0F, 3.0F, 3.0F).mirror(),
                 PartPose.offset(0.0F, -11.0F, -2.0F));
 
         PartDefinition crest_top_r1 = head.addOrReplaceChild("crest_top_r1", CubeListBuilder.create()
@@ -130,9 +147,17 @@ public class AdultChocoboModel<T extends Chocobo> extends EntityModel<Chocobo> {
                         .texOffs(79, 48).addBox(-1.5F, -2.0F, 1.0F, 3.0F, 12.0F, 3.0F,
                                 new CubeDeformation(0.1F)),
                 PartPose.offsetAndRotation(0.0F, 8.0F, 0.0F, -0.3927F, 0.0F, 0.0F));
+        PartDefinition armor_leg_left_lower_r1 = leg_left.addOrReplaceChild("armor_leg_left_lower_r1", CubeListBuilder.create()
+                        .texOffs(79, 112).addBox(-1.5F, -2.0F, 1.0F, 3.0F, 12.0F, 3.0F,
+                                new CubeDeformation(0.35F)),
+                PartPose.offsetAndRotation(0.0F, 8.0F, 0.0F, -0.3927F, 0.0F, 0.0F));
 
         PartDefinition leg_left_upper_r1 = leg_left.addOrReplaceChild("leg_left_upper_r1", CubeListBuilder.create()
                         .texOffs(60, 49).addBox(-2.0F, 0.0F, -1.0F, 4.0F, 9.0F, 5.0F),
+                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.2618F, 0.0F, 0.0F));
+
+        PartDefinition armor_leg_left_upper_r1 = leg_left.addOrReplaceChild("armor_leg_left_upper_r1", CubeListBuilder.create()
+                        .texOffs(60, 113).addBox(-2.0F, 0.0F, -1.0F, 4.0F, 9.0F, 5.0F, new CubeDeformation(0.25F)),
                 PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.2618F, 0.0F, 0.0F));
 
         PartDefinition foot_left = leg_left.addOrReplaceChild("foot_left", CubeListBuilder.create()
@@ -155,8 +180,17 @@ public class AdultChocoboModel<T extends Chocobo> extends EntityModel<Chocobo> {
                                 new CubeDeformation(0.1F)),
                 PartPose.offsetAndRotation(0.0F, 8.0F, 0.0F, -0.3927F, 0.0F, 0.0F));
 
+        PartDefinition armor_leg_right_lower_r1 = leg_right.addOrReplaceChild("armor_leg_right_lower_r1", CubeListBuilder.create()
+                        .texOffs(79, 112).addBox(-1.5F, -2.0F, 1.0F, 3.0F, 12.0F, 3.0F,
+                                new CubeDeformation(0.35F)),
+                PartPose.offsetAndRotation(0.0F, 8.0F, 0.0F, -0.3927F, 0.0F, 0.0F));
+
         PartDefinition leg_right_upper_r1 = leg_right.addOrReplaceChild("leg_right_upper_r1", CubeListBuilder.create()
                         .texOffs(60, 49).addBox(-2.0F, 0.0F, -1.0F, 4.0F, 9.0F, 5.0F),
+                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.2618F, 0.0F, 0.0F));
+
+        PartDefinition armor_leg_right_upper_r1 = leg_right.addOrReplaceChild("armor_leg_right_upper_r1", CubeListBuilder.create()
+                        .texOffs(60, 113).addBox(-2.0F, 0.0F, -1.0F, 4.0F, 9.0F, 5.0F, new CubeDeformation(0.25F)),
                 PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.2618F, 0.0F, 0.0F));
 
         PartDefinition foot_right = leg_right.addOrReplaceChild("foot_right", CubeListBuilder.create()
@@ -171,7 +205,7 @@ public class AdultChocoboModel<T extends Chocobo> extends EntityModel<Chocobo> {
                         .texOffs(92, 54).addBox(0.0F, -3.0F, -5.0F, 2.0F, 2.0F, 7.0F),
                 PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.2182F, -0.2618F, 0.0F));
 
-        return LayerDefinition.create(meshdefinition, 128, 64);
+        return LayerDefinition.create(meshdefinition, 128, 128);
     }
     @Override
     public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer consumer, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) { this.root.render(poseStack, consumer, packedLightIn, packedOverlayIn, red, green, blue, alpha); }

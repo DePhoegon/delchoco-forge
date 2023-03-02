@@ -37,23 +37,18 @@ public class ChocoboMateGoal extends Goal {
         this.moveSpeed = moveSpeed;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
-    @Override
     public boolean canUse() { return this.chocobo.isInLove() && (this.targetMate = this.getNearbyMate()) != null; }
-    @Override
     public boolean canContinueToUse() { return this.targetMate.isAlive() && this.targetMate.isInLove() && this.spawnBabyDelay < 60; }
-    @Override
     public void stop() {
         this.targetMate = null;
         this.spawnBabyDelay = 0;
     }
-    @Override
     public void tick() {
         this.chocobo.getLookControl().setLookAt(this.targetMate, 10.0F, (float) this.chocobo.getMaxHeadXRot());
         this.chocobo.getNavigation().moveTo(this.targetMate, this.moveSpeed);
         ++this.spawnBabyDelay;
         if (this.spawnBabyDelay >= 60 && this.chocobo.distanceToSqr(this.targetMate) < 9.0D) { this.spawnEgg(); }
     }
-    @Nullable
     private Chocobo getNearbyMate() {
         List<Chocobo> list = this.world.getEntitiesOfClass(Chocobo.class, this.chocobo.getBoundingBox().inflate(8.0D));
         double dist = Double.MAX_VALUE;
@@ -66,7 +61,6 @@ public class ChocoboMateGoal extends Goal {
         }
         return closestMate;
     }
-
     private void spawnEgg() {
         if (this.chocobo.isMale()) return;
         this.chocobo.setAge(6000);

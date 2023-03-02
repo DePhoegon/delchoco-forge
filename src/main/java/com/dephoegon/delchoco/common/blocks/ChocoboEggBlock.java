@@ -48,17 +48,11 @@ public class ChocoboEggBlock extends BaseEntityBlock {
             Block.box(6, 8, 6, 10, 10, 10)
     ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 
-    public ChocoboEggBlock(Properties properties) {
-        super(properties);
-    }
-    @Override
+    public ChocoboEggBlock(Properties properties) { super(properties); }
     public @NotNull RenderShape getRenderShape(@NotNull BlockState state) { return RenderShape.MODEL; }
-    @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos, @NotNull CollisionContext context) { return SHAPE; }
     public static boolean isChocoboEgg(@NotNull ItemStack itemStack) { return itemStack.getItem() instanceof BlockItem && ((BlockItem) itemStack.getItem()).getBlock() instanceof ChocoboEggBlock; }
-    @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) { return new ChocoboEggBlockEntity(pos, state); }
-    @Override
     public void setPlacedBy(@NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState state, LivingEntity placer, @NotNull ItemStack stack) {
         if (!worldIn.isClientSide) {
             BlockEntity tile = worldIn.getBlockEntity(pos);
@@ -68,7 +62,6 @@ public class ChocoboEggBlock extends BaseEntityBlock {
         }
         super.setPlacedBy(worldIn, pos, state, placer, stack);
     }
-    @Override
     public void playerDestroy(@NotNull Level worldIn, @NotNull Player player, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable BlockEntity te, @NotNull ItemStack stack) {
         if (worldIn.isClientSide) { return; }
         if (te instanceof ChocoboEggBlockEntity) {
@@ -83,7 +76,6 @@ public class ChocoboEggBlock extends BaseEntityBlock {
         }
         super.playerDestroy(worldIn, player, pos, state, te, stack);
     }
-    @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable BlockGetter worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
         CompoundTag nbtBreedInfo = stack.getTagElement(NBTKEY_BREEDINFO);

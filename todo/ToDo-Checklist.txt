@@ -22,3 +22,15 @@ Update Guide Book
 
 Guide Book Structure
 -Showcase Alters for summons
+
+3-1-23
+
+ChocoDisguise armor color texture work
+
+Add Colored Chocobo feathers
+
+Add new variance for ChocoDisguise Armor
+
+Pass along benefits of chocobo by color onto it's armor
+-Allow for upgrading with feathers
+-Consider upgrade for smithing tablet versions with native armors

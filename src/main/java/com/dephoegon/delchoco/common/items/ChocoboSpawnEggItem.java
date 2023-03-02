@@ -29,11 +29,7 @@ public class ChocoboSpawnEggItem extends Item {
         super(pProperties);
         this.color = color;
     }
-
-    private @NotNull Component name(@NotNull ItemStack egg) {
-        return egg.getHoverName();
-    }
-    @Override
+    private @NotNull Component name(@NotNull ItemStack egg) { return egg.getHoverName(); }
     public @NotNull InteractionResult useOn(@NotNull UseOnContext context) {
         Level worldIn = context.getLevel();
         if (worldIn.isClientSide) { return InteractionResult.SUCCESS; }
@@ -71,7 +67,7 @@ public class ChocoboSpawnEggItem extends Item {
         out.add(ChocoboColor.PURPLE);
         return out;
     }
-    public static ArrayList<ChocoboColor> wiChocobos() {
+    public static @NotNull ArrayList<ChocoboColor> wiChocobos() {
         ArrayList<ChocoboColor> out = new ArrayList<>();
         out.add(ChocoboColor.PURPLE);
         out.add(ChocoboColor.RED);
@@ -80,7 +76,7 @@ public class ChocoboSpawnEggItem extends Item {
         out.add(ChocoboColor.GOLD);
         return out;
     }
-    public static ArrayList<ChocoboColor> piChocobos() {
+    public static @NotNull ArrayList<ChocoboColor> piChocobos() {
         ArrayList<ChocoboColor> out = new ArrayList<>();
         out.add(ChocoboColor.GREEN);
         out.add(ChocoboColor.BLACK);

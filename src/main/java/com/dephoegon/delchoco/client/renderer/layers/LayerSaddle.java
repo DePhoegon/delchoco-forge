@@ -36,8 +36,6 @@ public class LayerSaddle extends RenderLayer<Chocobo, EntityModel<Chocobo>> {
 		this.hide = invisibleAlpha;
 		this.show = visibleAlpha;
 	}
-
-	@Override
 	public void render(@NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int packedLightIn, @NotNull Chocobo chocobo, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 		if (!chocobo.isBaby()) {
 			float alpha = chocobo.isInvisible() ? hide : show;

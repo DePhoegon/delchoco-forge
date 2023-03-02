@@ -111,8 +111,6 @@ public class ModDataGenerator {
 
 	private static class FarmingItemModels extends ItemModelProvider {
 		public FarmingItemModels(DataGenerator gen, ExistingFileHelper helper) { super(gen, DelChoco.MOD_ID, helper); }
-
-		@Override
 		protected void registerModels() {
 			ModRegistry.ITEMS.getEntries().stream()
 				.map(RegistryObject::get)
@@ -124,7 +122,6 @@ public class ModDataGenerator {
 		}
 
 		@Contract(pure = true)
-		@Override
 		public @NotNull String getName() { return "Item Models"; }
 	}
 }
