@@ -6,6 +6,7 @@ import com.dephoegon.delchoco.client.models.armor.ChocoDisguiseModel;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.LazyLoadedValue;
@@ -34,28 +35,26 @@ import static com.dephoegon.delchoco.aid.dyeList.CHOCO_COLOR_ITEMS;
 
 public class ChocoDisguiseItem extends ArmorItem {
 	private final LazyLoadedValue<HumanoidModel<?>> model;
-	private String resource;
-	public String CustomModelData;
+	public String NBTKEY_CUSTOM_ARMOR = "CustomArmor";
+	public String NBTKEY_COLOR = "Color";
 
 	public ChocoDisguiseItem(ArmorMaterial material, EquipmentSlot slot, Properties properties, ChocoboColor color) {
 		super(material, slot, properties);
-		setCustomModel(color);
 		this.model = DistExecutor.unsafeRunForDist(() -> () -> new LazyLoadedValue<>(() -> this.provideArmorModelForSlot(this.slot)), () -> () -> null);
 	}
-	public void setCustomModel(@NotNull ChocoboColor customModelData) {
-		this.resource = switch (customModelData) {
+	public String setCustomModel(@NotNull String customModelData) {
+		return switch (customModelData) {
 			default -> DelChoco.MOD_ID + ":textures/models/armor/yellow.png";
-			case GREEN -> DelChoco.MOD_ID + ":textures/models/armor/green.png";
-			case PINK -> DelChoco.MOD_ID + ":textures/models/armor/pink.png";
-			case RED -> DelChoco.MOD_ID + ":textures/models/armor/red.png";
-			case BLUE -> DelChoco.MOD_ID + ":textures/models/armor/blue.png";
-			case GOLD -> DelChoco.MOD_ID + ":textures/models/armor/gold.png";
-			case BLACK -> DelChoco.MOD_ID + ":textures/models/armor/black.png";
-			case FLAME -> DelChoco.MOD_ID + ":textures/models/armor/flame.png";
-			case WHITE -> DelChoco.MOD_ID + ":textures/models/armor/white.png";
-			case PURPLE -> DelChoco.MOD_ID + ":textures/models/armor/purple.png";
+			case "green" -> DelChoco.MOD_ID + ":textures/models/armor/green.png";
+			case "pink" -> DelChoco.MOD_ID + ":textures/models/armor/pink.png";
+			case "red" -> DelChoco.MOD_ID + ":textures/models/armor/red.png";
+			case "blue" -> DelChoco.MOD_ID + ":textures/models/armor/blue.png";
+			case "gold" -> DelChoco.MOD_ID + ":textures/models/armor/gold.png";
+			case "black" -> DelChoco.MOD_ID + ":textures/models/armor/black.png";
+			case "flame" -> DelChoco.MOD_ID + ":textures/models/armor/flame.png";
+			case "white" -> DelChoco.MOD_ID + ":textures/models/armor/white.png";
+			case "purple" -> DelChoco.MOD_ID + ":textures/models/armor/purple.png";
 		};
-		this.CustomModelData = itemColor(customModelData);
 	}
 	private String itemColor(@NotNull ChocoboColor chocoboColor) {
 		return switch (chocoboColor) {
@@ -71,24 +70,49 @@ public class ChocoDisguiseItem extends ArmorItem {
 			case PURPLE -> "purple";
 		};
 	}
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) { return this.resource; }
-	private String getCustomModelData() { return this.CustomModelData; }
+	public String getArmorTexture(@NotNull ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+		CompoundTag color = stack.getTagElement(NBTKEY_CUSTOM_ARMOR);
+		if (color == null) { return setCustomModel("yellow"); }
+		return setCustomModel(color.getString(NBTKEY_COLOR));
+	}
+	private @NotNull String getCustomModelData(@NotNull ItemStack itemStack) {
+		CompoundTag out = itemStack.getTagElement(NBTKEY_CUSTOM_ARMOR);
+		if (out == null) { return "yellow"; }
+		return out.getString(NBTKEY_COLOR);
+	}
+	public CompoundTag serialize(String string) {
+		CompoundTag nbt = new CompoundTag();
+		nbt.putString(NBTKEY_COLOR, string);
+		return nbt;
+	}
 	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level pLevel, @NotNull Player pPlayer, @NotNull InteractionHand pUsedHand) {
 		ItemStack mainHand = pPlayer.getItemBySlot(EquipmentSlot.MAINHAND);
 		ItemStack offHand = pPlayer.getItemBySlot(EquipmentSlot.OFFHAND);
 		ItemStack outHand = mainHand;
-		if (mainHand.getItem() instanceof ChocoDisguiseItem armor) {
+		if (mainHand.getItem() instanceof ChocoDisguiseItem) {
 			if (CHOCO_COLOR_ITEMS.containsKey(offHand.getItem())) {
-				if (!armor.getCustomModelData().equals(itemColor(CHOCO_COLOR_ITEMS.get(offHand.getItem())))) {
-					armor.setCustomModel(CHOCO_COLOR_ITEMS.get(offHand.getItem()));
+				CompoundTag bob = mainHand.getTagElement(NBTKEY_CUSTOM_ARMOR);
+				if (bob != null) {
+					if (!bob.getString(NBTKEY_COLOR).equals(itemColor(CHOCO_COLOR_ITEMS.get(offHand.getItem())))) {
+						mainHand.addTagElement(NBTKEY_CUSTOM_ARMOR, serialize(itemColor(CHOCO_COLOR_ITEMS.get(offHand.getItem()))));
+						offHand.shrink(1);
+					}
+				} else {
+					mainHand.addTagElement(NBTKEY_CUSTOM_ARMOR, serialize(itemColor(CHOCO_COLOR_ITEMS.get(offHand.getItem()))));
 					offHand.shrink(1);
 				}
 			}
 		}
-		if (offHand.getItem() instanceof ChocoDisguiseItem armor) {
+		if (offHand.getItem() instanceof ChocoDisguiseItem) {
 			if (CHOCO_COLOR_ITEMS.containsKey(mainHand.getItem())) {
-				if (!armor.getCustomModelData().equals(itemColor(CHOCO_COLOR_ITEMS.get(mainHand.getItem())))) {
-					armor.setCustomModel(CHOCO_COLOR_ITEMS.get(mainHand.getItem()));
+				CompoundTag bob = offHand.getTagElement(NBTKEY_CUSTOM_ARMOR);
+				if (bob != null) {
+					if (!bob.getString(NBTKEY_COLOR).equals(itemColor(CHOCO_COLOR_ITEMS.get(mainHand.getItem())))) {
+						offHand.addTagElement(NBTKEY_CUSTOM_ARMOR, serialize(itemColor(CHOCO_COLOR_ITEMS.get(mainHand.getItem()))));
+						mainHand.shrink(1);
+					}
+				} else {
+					offHand.addTagElement(NBTKEY_CUSTOM_ARMOR, serialize(itemColor(CHOCO_COLOR_ITEMS.get(mainHand.getItem()))));
 					mainHand.shrink(1);
 				}
 			}
@@ -104,6 +128,6 @@ public class ChocoDisguiseItem extends ArmorItem {
 	}); }
 	public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
 		super.appendHoverText(stack, level, tooltip, flagIn);
-		tooltip.add(new TranslatableComponent("item." + DelChoco.MOD_ID + ".choco_disguise_"+this.CustomModelData));
+		tooltip.add(new TranslatableComponent("item." + DelChoco.MOD_ID + ".choco_disguise_"+getCustomModelData(stack)));
 	}
 }
