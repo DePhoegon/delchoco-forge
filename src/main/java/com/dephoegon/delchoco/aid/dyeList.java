@@ -1,9 +1,13 @@
 package com.dephoegon.delchoco.aid;
 
+import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
+import com.google.common.collect.Maps;
+import net.minecraft.Util;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import static com.dephoegon.delbase.item.shiftingDyes.*;
 import static net.minecraft.world.item.Items.*;
@@ -57,4 +61,29 @@ public abstract class dyeList {
         out.addAll(setListOfModDyes());
         return out;
     }
+    public static final Map<Item, ChocoboColor> CHOCO_COLOR_ITEMS = Util.make(Maps.newHashMap(), (map) ->{
+        map.put(YELLOW_DYE.asItem(), ChocoboColor.YELLOW);
+        map.put(YELLOW_SHIFT_DYE.get().asItem(), ChocoboColor.YELLOW);
+        map.put(GREEN_DYE.asItem(), ChocoboColor.GREEN);
+        map.put(GREEN_SHIFT_DYE.get().asItem(), ChocoboColor.GREEN);
+        map.put(BLUE_DYE.asItem(), ChocoboColor.BLUE);
+        map.put(BLUE_SHIFT_DYE.get().asItem(), ChocoboColor.BLUE);
+        map.put(WHITE_DYE.asItem(), ChocoboColor.WHITE);
+        map.put(WHITE_SHIFT_DYE.get().asItem(), ChocoboColor.WHITE);
+        map.put(BLACK_DYE.asItem(), ChocoboColor.BLACK);
+        map.put(BLACK_SHIFT_DYE.get().asItem(), ChocoboColor.BLACK);
+        map.put(CHARCOAL.asItem(), ChocoboColor.BLACK);
+        map.put(COAL.asItem(), ChocoboColor.BLACK);
+        map.put(GOLD_INGOT.asItem(), ChocoboColor.GOLD);
+        map.put(PINK_DYE.asItem(), ChocoboColor.PINK);
+        map.put(PINK_SHIFT_DYE.get().asItem(), ChocoboColor.PINK);
+        map.put(RED_DYE.asItem(), ChocoboColor.RED);
+        map.put(RED_SHIFT_DYE.get().asItem(), ChocoboColor.RED);
+        map.put(REDSTONE.asItem(), ChocoboColor.RED);
+        map.put(PURPLE_DYE.asItem(), ChocoboColor.PURPLE);
+        map.put(PINK_SHIFT_DYE.get().asItem(), ChocoboColor.PURPLE);
+        map.put(POPPED_CHORUS_FRUIT.asItem(), ChocoboColor.PURPLE);
+        map.put(BLAZE_POWDER.asItem(), ChocoboColor.FLAME);
+        map.put(CRIMSON_FUNGUS.asItem(), ChocoboColor.FLAME);
+    });
 }

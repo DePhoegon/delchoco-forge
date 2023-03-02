@@ -1,0 +1,6 @@
+Choco Disguise
+- setup for 1 of each Chocobo Color
+- Setup tooltip for Colors
+- setup 1 set of armor to do all 10 colors w/o registering 10 versions.
+
+- Set dyeing up by hand. 
