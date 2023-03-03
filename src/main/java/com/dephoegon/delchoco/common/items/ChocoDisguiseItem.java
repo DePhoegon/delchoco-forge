@@ -35,7 +35,6 @@ import static com.dephoegon.delchoco.aid.dyeList.CHOCO_COLOR_ITEMS;
 
 public class ChocoDisguiseItem extends ArmorItem {
 	private final LazyLoadedValue<HumanoidModel<?>> model;
-	public String NBTKEY_CUSTOM_ARMOR = "CustomArmor";
 	public String NBTKEY_COLOR = "Color";
 
 	public ChocoDisguiseItem(ArmorMaterial material, EquipmentSlot slot, Properties properties, ChocoboColor color) {
@@ -71,18 +70,18 @@ public class ChocoDisguiseItem extends ArmorItem {
 		};
 	}
 	public String getArmorTexture(@NotNull ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-		CompoundTag color = stack.getTagElement(NBTKEY_CUSTOM_ARMOR);
+		CompoundTag color = stack.getTag();
 		if (color == null) { return setCustomModel("yellow"); }
 		return setCustomModel(color.getString(NBTKEY_COLOR));
 	}
 	private @NotNull String getCustomModelData(@NotNull ItemStack itemStack) {
-		CompoundTag out = itemStack.getTagElement(NBTKEY_CUSTOM_ARMOR);
+		CompoundTag out = itemStack.getTag();
 		if (out == null) { return "yellow"; }
 		return out.getString(NBTKEY_COLOR);
 	}
-	public CompoundTag serialize(String string) {
+	public CompoundTag serialize(String key, String string) {
 		CompoundTag nbt = new CompoundTag();
-		nbt.putString(NBTKEY_COLOR, string);
+		nbt.putString(key, string);
 		return nbt;
 	}
 	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level pLevel, @NotNull Player pPlayer, @NotNull InteractionHand pUsedHand) {
@@ -91,28 +90,28 @@ public class ChocoDisguiseItem extends ArmorItem {
 		ItemStack outHand = mainHand;
 		if (mainHand.getItem() instanceof ChocoDisguiseItem) {
 			if (CHOCO_COLOR_ITEMS.containsKey(offHand.getItem())) {
-				CompoundTag bob = mainHand.getTagElement(NBTKEY_CUSTOM_ARMOR);
+				CompoundTag bob = mainHand.getTag();
 				if (bob != null) {
 					if (!bob.getString(NBTKEY_COLOR).equals(itemColor(CHOCO_COLOR_ITEMS.get(offHand.getItem())))) {
-						mainHand.addTagElement(NBTKEY_CUSTOM_ARMOR, serialize(itemColor(CHOCO_COLOR_ITEMS.get(offHand.getItem()))));
+						mainHand.setTag(serialize(NBTKEY_COLOR, itemColor(CHOCO_COLOR_ITEMS.get(offHand.getItem()))));
 						offHand.shrink(1);
 					}
 				} else {
-					mainHand.addTagElement(NBTKEY_CUSTOM_ARMOR, serialize(itemColor(CHOCO_COLOR_ITEMS.get(offHand.getItem()))));
+					mainHand.setTag(serialize(NBTKEY_COLOR, itemColor(CHOCO_COLOR_ITEMS.get(offHand.getItem()))));
 					offHand.shrink(1);
 				}
 			}
 		}
 		if (offHand.getItem() instanceof ChocoDisguiseItem) {
 			if (CHOCO_COLOR_ITEMS.containsKey(mainHand.getItem())) {
-				CompoundTag bob = offHand.getTagElement(NBTKEY_CUSTOM_ARMOR);
+				CompoundTag bob = offHand.getTag();
 				if (bob != null) {
 					if (!bob.getString(NBTKEY_COLOR).equals(itemColor(CHOCO_COLOR_ITEMS.get(mainHand.getItem())))) {
-						offHand.addTagElement(NBTKEY_CUSTOM_ARMOR, serialize(itemColor(CHOCO_COLOR_ITEMS.get(mainHand.getItem()))));
+						offHand.setTag(serialize(NBTKEY_COLOR, itemColor(CHOCO_COLOR_ITEMS.get(mainHand.getItem()))));
 						mainHand.shrink(1);
 					}
 				} else {
-					offHand.addTagElement(NBTKEY_CUSTOM_ARMOR, serialize(itemColor(CHOCO_COLOR_ITEMS.get(mainHand.getItem()))));
+					offHand.setTag(serialize(NBTKEY_COLOR, itemColor(CHOCO_COLOR_ITEMS.get(mainHand.getItem()))));
 					mainHand.shrink(1);
 				}
 			}
@@ -122,7 +121,6 @@ public class ChocoDisguiseItem extends ArmorItem {
 	}
 	@OnlyIn(Dist.CLIENT)
 	public HumanoidModel<?> provideArmorModelForSlot(EquipmentSlot slot) { return new ChocoDisguiseModel(Minecraft.getInstance().getEntityModels().bakeLayer(ClientHandler.CHOCO_DISGUISE), slot); }
-
 	public void initializeClient(@NotNull Consumer<IItemRenderProperties> consumer) { consumer.accept(new IItemRenderProperties() {
 		public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) { return model.get(); }
 	}); }

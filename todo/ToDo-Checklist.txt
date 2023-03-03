@@ -27,10 +27,10 @@ Guide Book Structure
 
 ChocoDisguise armor color texture work
 
-Add Colored Chocobo feathers
-
 Add new variance for ChocoDisguise Armor
 
 Pass along benefits of chocobo by color onto it's armor
 -Allow for upgrading with feathers
+ -- assign 1 color per special ability
+ -- only allow one 'dying' of each armor piece (off of yellow
 -Consider upgrade for smithing tablet versions with native armors
