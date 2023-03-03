@@ -1,0 +1,23 @@
+Choco Disguise
+-setup iron, Diamond, Netherite versions,
+-setup Armor material
+-Rebalanced Default armor material
+-Setup Tag over Compound Tag for Colors
+-Setup lock on color dying, to prevent dying colors other than the Yellow one
+-Setup Cleanse dye to revert one back to yellow
+-Setup Abilities on tick to remove poision/wither if right color every 60 ticks
+-- Full set bonus of the same color only
+-Setup Fire resistance & Night vision effects to be given
+-- Full set bonus of the same color only.
+-Gave Gold & flame color armor fire immunity (item) despite any tier.
+- Made ' InteractionResultHolder<ItemStack> use ' easier to read.
+- primed ' setCustomModel() ' for material selection
+- Removed 'ChocoboColor' from the registry of the armor items, assuming default of 'yellow'
+-- Yellow is the only one able to be crafted without the smithing table, and only at the 'leather' level.
+
+Item Model Files
+- Primed all model files, using the basic version of the disguise armors
+-- Update when sprite is made.
+
+Balance
+- Overall Nerf to base Leather Disguise armor.

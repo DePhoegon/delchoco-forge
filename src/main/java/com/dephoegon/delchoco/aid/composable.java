@@ -40,10 +40,10 @@ public class composable {
         add(f4, LOVELY_GYSAHL_GREEN.get());
         add(f4, STRAW_NEST_ITEM.get());
         add(f4, GYSAHL_CAKE.get());
-        add(f4, CHOCO_DISGUISE_LEGGINGS.get());
-        add(f4, CHOCO_DISGUISE_BOOTS.get());
-        add(f4, CHOCO_DISGUISE_CHESTPLATE.get());
-        add(f4, CHOCO_DISGUISE_HELMET.get());
+        add(f4, LEATHER_CHOCO_DISGUISE_LEGS.get());
+        add(f4, LEATHER_CHOCO_DISGUISE_FEET.get());
+        add(f4, LEATHER_CHOCO_DISGUISE_CHEST.get());
+        add(f4, LEATHER_CHOCO_DISGUISE_HELMET.get());
     }
     private static void add(float pChance, @NotNull ItemLike pItem) { if (!COMPOSTABLES.containsKey(pItem.asItem())) { COMPOSTABLES.put(pItem.asItem(), pChance); } }
     public static void addToList(){ compost(); }

@@ -2,7 +2,10 @@ package com.dephoegon.delchoco.common.handler;
 
 import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
+import com.dephoegon.delchoco.common.items.ChocoDisguiseItem;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.IronGolem;
@@ -10,8 +13,10 @@ import net.minecraft.world.entity.monster.CaveSpider;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.monster.WitherSkeleton;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -141,4 +146,28 @@ public class ChocoboCombatEffects {
     }
     private static boolean flowerChance() { return random.nextInt(100)+1 < 45; }
     private static boolean onHitMobChance(int percentChance) { return random.nextInt(100)+1 < percentChance; }
+    @SubscribeEvent
+    public void onPlayerTick(@NotNull TickEvent.PlayerTickEvent e) {
+        Player player = e.player;
+        if (player.tickCount % 60 == 0) {
+            if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof ChocoDisguiseItem disguiseHead) {
+                String headColor = disguiseHead.getNBTKEY_COLOR();
+                if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ChocoDisguiseItem disguiseChest) {
+                    String chestColor = disguiseChest.getNBTKEY_COLOR();
+                    if (player.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof ChocoDisguiseItem disguiseLeg) {
+                        String legColor = disguiseLeg.getNBTKEY_COLOR();
+                        if (player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof ChocoDisguiseItem disguiseFeet) {
+                            String feetColor = disguiseFeet.getNBTKEY_COLOR();
+                            if ((feetColor.equals(headColor)) && chestColor.equals(legColor) && legColor.equals(feetColor)) {
+                                if (headColor.equals("green") || headColor.equals("black") || headColor.equals("gold")) { if (player.hasEffect(MobEffects.POISON)) { player.removeEffect(MobEffects.POISON); } }
+                                if (headColor.equals("black") || headColor.equals("red") || headColor.equals("purple") || headColor.equals("gold") || headColor.equals("pink")) { if (player.hasEffect(MobEffects.WITHER)) { player.removeEffect(MobEffects.WITHER); } }
+                                if (headColor.equals("flame") || headColor.equals("gold")) { player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0, true, false, false)); }
+                                if (headColor.equals("gold")) { player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 100, 0, true, false, false)); }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

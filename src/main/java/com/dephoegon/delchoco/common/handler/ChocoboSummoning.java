@@ -161,16 +161,16 @@ public class ChocoboSummoning {
         boolean eatAlter = eatAlter(player);
         if (eatAlter) { worldIn.setBlockAndUpdate(pos, AIR.defaultBlockState()); }
         else {
-            if (player.getItemBySlot(EquipmentSlot.CHEST).getItem().equals(CHOCO_DISGUISE_CHESTPLATE.get())) {
+            if (player.getItemBySlot(EquipmentSlot.CHEST).getItem().equals(LEATHER_CHOCO_DISGUISE_CHEST.get())) {
                 player.getItemBySlot(EquipmentSlot.CHEST).hurtAndBreak(this.damage, player, (event) -> { event.broadcastBreakEvent(EquipmentSlot.CHEST); });
             }
-            if (player.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(CHOCO_DISGUISE_HELMET.get())) {
+            if (player.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(LEATHER_CHOCO_DISGUISE_HELMET.get())) {
                 player.getItemBySlot(EquipmentSlot.HEAD).hurtAndBreak(this.damage, player, (event) -> { event.broadcastBreakEvent(EquipmentSlot.HEAD); });
             }
-            if (player.getItemBySlot(EquipmentSlot.LEGS).getItem().equals(CHOCO_DISGUISE_LEGGINGS.get())) {
+            if (player.getItemBySlot(EquipmentSlot.LEGS).getItem().equals(LEATHER_CHOCO_DISGUISE_LEGS.get())) {
                 player.getItemBySlot(EquipmentSlot.LEGS).hurtAndBreak(this.damage, player, (event) -> { event.broadcastBreakEvent(EquipmentSlot.LEGS); });
             }
-            if (player.getItemBySlot(EquipmentSlot.FEET).getItem().equals(CHOCO_DISGUISE_BOOTS.get())) {
+            if (player.getItemBySlot(EquipmentSlot.FEET).getItem().equals(LEATHER_CHOCO_DISGUISE_FEET.get())) {
                 player.getItemBySlot(EquipmentSlot.FEET).hurtAndBreak(this.damage, player, (event) -> { event.broadcastBreakEvent(EquipmentSlot.FEET); });
             }
         }
@@ -178,10 +178,10 @@ public class ChocoboSummoning {
     private boolean eatAlter(@NotNull Player player){
         int alterEatChance = 100;
         boolean eatAlter;
-        if (player.getItemBySlot(EquipmentSlot.CHEST).getItem().equals(CHOCO_DISGUISE_CHESTPLATE.get())) { alterEatChance = alterEatChance-25; }
-        if (player.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(CHOCO_DISGUISE_HELMET.get())) { alterEatChance = alterEatChance-25; }
-        if (player.getItemBySlot(EquipmentSlot.LEGS).getItem().equals(CHOCO_DISGUISE_LEGGINGS.get())) { alterEatChance = alterEatChance-25; }
-        if (player.getItemBySlot(EquipmentSlot.FEET).getItem().equals(CHOCO_DISGUISE_BOOTS.get())) { alterEatChance = alterEatChance-25; }
+        if (player.getItemBySlot(EquipmentSlot.CHEST).getItem().equals(LEATHER_CHOCO_DISGUISE_CHEST.get())) { alterEatChance = alterEatChance-25; }
+        if (player.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(LEATHER_CHOCO_DISGUISE_HELMET.get())) { alterEatChance = alterEatChance-25; }
+        if (player.getItemBySlot(EquipmentSlot.LEGS).getItem().equals(LEATHER_CHOCO_DISGUISE_LEGS.get())) { alterEatChance = alterEatChance-25; }
+        if (player.getItemBySlot(EquipmentSlot.FEET).getItem().equals(LEATHER_CHOCO_DISGUISE_FEET.get())) { alterEatChance = alterEatChance-25; }
         eatAlter = random.nextInt(100) + 1 <= alterEatChance;
         this.damage = switch (alterEatChance) {
             case 75 -> 4;

@@ -25,12 +25,21 @@ Guide Book Structure
 
 3-1-23
 
-ChocoDisguise armor color texture work
-
 Add new variance for ChocoDisguise Armor
 
-Pass along benefits of chocobo by color onto it's armor
--Allow for upgrading with feathers
- -- assign 1 color per special ability
- -- only allow one 'dying' of each armor piece (off of yellow
 -Consider upgrade for smithing tablet versions with native armors
+
+3-2_3-23
+
+Setup Textures for iron, diamond, & netherite choco disguises
+- including  sprite assets
+-- use highlights of material over template images
+
+Remove override for textuers when done
+
+Set up smithing recipes for iron, diamond, gold armor pieces
+
+Change recipes for leather one
+- to include a leather armor piece with the feathers  on making an item.
+
+Chocobo Summoning, include Other Armor tiers.
