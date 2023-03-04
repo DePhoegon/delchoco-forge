@@ -1,0 +1,8 @@
+ChocoDisguises
+- Final Attempted to swap out item sprites for armor
+-- Failure & not worth it atm
+- setup static final strings to be used for names & calling
+- cleaned up dye logic
+- Fixed mistakes
+- Prepped for iron, diamond, netherite sets
+- fixed Guide book (recipe broken on changing names)

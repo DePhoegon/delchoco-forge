@@ -16,7 +16,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -34,59 +37,71 @@ import static com.dephoegon.delchoco.common.init.ModArmorMaterial.*;
 
 public class ChocoDisguiseItem extends ArmorItem {
 	private final LazyLoadedValue<HumanoidModel<?>> model;
-	public String NBTKEY_COLOR = "Color";
+	private final static String NBTKEY_COLOR = "Color";
+	public final static String yellow = "yellow"; // default
+	public final static String green = "green";
+	public final static String pink = "pink";
+	public final static String red = "red";
+	public final static String blue = "blue";
+	public final static String gold = "gold";
+	public final static String black = "black";
+	public final static String flame = "flame";
+	public final static String white = "white";
+	public final static String purple = "purple";
 
 	public ChocoDisguiseItem(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
 		super(material, slot, properties);
+		ItemStack stack = new ItemStack(this);
+		stack.setTag(serialize(NBTKEY_COLOR, yellow));
 		this.model = DistExecutor.unsafeRunForDist(() -> () -> new LazyLoadedValue<>(() -> this.provideArmorModelForSlot(this.slot)), () -> () -> null);
 	}
-	public String setCustomModel(@NotNull String customModelData) {
+	public String setCustomModel(String customModelData) {
 		ArmorMaterial armor = getMaterial();
-		String folder = "armor";
-		if (armor == IRON_CHOCO_DISGUISE) { folder = "iron"; }
-		if (armor == DIAMOND_CHOCO_DISGUISE) { folder = "diamond"; }
-		if (armor == NETHERITE_CHOCO_DISGUISE) { folder = "netherite"; }
-		folder = "armor"; // Override till Textures are filled out
+		String folder = DelChoco.MOD_ID + ":textures/models/armor/";
+		if (armor == IRON_CHOCO_DISGUISE) { folder = DelChoco.MOD_ID + ":textures/models/iron/"; }
+		if (armor == DIAMOND_CHOCO_DISGUISE) { folder = DelChoco.MOD_ID + ":textures/models/diamond/"; }
+		if (armor == NETHERITE_CHOCO_DISGUISE) { folder = DelChoco.MOD_ID + ":textures/models/netherite/"; }
+		folder = DelChoco.MOD_ID + ":textures/models/armor/"; // Override till Textures are filled out
 		/*
 			Insert Material Based picking, atm uses same as base.
 			Create patches of iron, diamond, & netherite showing for those tiers in the template
 		*/
 		return switch (customModelData) {
-			default -> DelChoco.MOD_ID + ":textures/models/"+folder+"/yellow.png";
-			case "green" -> DelChoco.MOD_ID + ":textures/models/"+folder+"/green.png";
-			case "pink" -> DelChoco.MOD_ID + ":textures/models/"+folder+"/pink.png";
-			case "red" -> DelChoco.MOD_ID + ":textures/models/"+folder+"/red.png";
-			case "blue" -> DelChoco.MOD_ID + ":textures/models/"+folder+"/blue.png";
-			case "gold" -> DelChoco.MOD_ID + ":textures/models/"+folder+"/gold.png";
-			case "black" -> DelChoco.MOD_ID + ":textures/models/"+folder+"/black.png";
-			case "flame" -> DelChoco.MOD_ID + ":textures/models/"+folder+"/flame.png";
-			case "white" -> DelChoco.MOD_ID + ":textures/models/"+folder+"/white.png";
-			case "purple" -> DelChoco.MOD_ID + ":textures/models/"+folder+"/purple.png";
+			default -> folder + "yellow.png";
+			case green -> folder + "green.png";
+			case pink -> folder + "pink.png";
+			case red -> folder + "red.png";
+			case blue -> folder + "blue.png";
+			case gold -> folder + "gold.png";
+			case black -> folder + "black.png";
+			case flame -> folder + "flame.png";
+			case white -> folder + "white.png";
+			case purple -> folder + "purple.png";
 		};
 	}
 	private String itemColor(@NotNull ChocoboColor chocoboColor) {
 		return switch (chocoboColor) {
-			default -> "yellow";
-			case GREEN -> "green";
-			case PINK -> "pink";
-			case RED -> "red";
-			case BLUE -> "blue";
-			case GOLD -> "gold";
-			case BLACK -> "black";
-			case FLAME -> "flame";
-			case WHITE -> "white";
-			case PURPLE -> "purple";
+			default -> yellow;
+			case GREEN -> green;
+			case PINK -> pink;
+			case RED -> red;
+			case BLUE -> blue;
+			case GOLD -> gold;
+			case BLACK -> black;
+			case FLAME -> flame;
+			case WHITE -> white;
+			case PURPLE -> purple;
 		};
 	}
 	public String getArmorTexture(@NotNull ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		CompoundTag color = stack.getTag();
-		if (color == null) { return setCustomModel("yellow"); }
-		return setCustomModel(color.getString(NBTKEY_COLOR));
+		if (color != null && color.contains(NBTKEY_COLOR)) { return setCustomModel(color.getString(NBTKEY_COLOR)); }
+		return setCustomModel(yellow);
 	}
-	private @NotNull String getCustomModelData(@NotNull ItemStack itemStack) {
-		CompoundTag out = itemStack.getTag();
-		if (out == null) { return "yellow"; }
-		return out.getString(NBTKEY_COLOR);
+	private String getCustomModelColor(@NotNull ItemStack stack) {
+		CompoundTag color = stack.getTag();
+		if (color != null && color.contains(NBTKEY_COLOR)) { return color.getString(NBTKEY_COLOR); }
+		return yellow;
 	}
 	public CompoundTag serialize(String key, String string) {
 		CompoundTag nbt = new CompoundTag();
@@ -104,27 +119,29 @@ public class ChocoDisguiseItem extends ArmorItem {
 		if (mainHand.getItem() instanceof ChocoDisguiseItem) {
 			if (CHOCO_COLOR_ITEMS.containsKey(offHand.getItem())) {
 				ChocoboColor chocoboColor = CHOCO_COLOR_ITEMS.get(offHand.getItem());
-				if (mainHand.getTag() != null) {
-					String itemColor = mainHand.getTag().getString(NBTKEY_COLOR);
-					if (!itemColor.equals(itemColor(chocoboColor))) {
-						if (itemColor.equals("yellow")) { setNBT(mainHand, offHand, itemColor(chocoboColor)); }
-					} else if (offHand.getItem().getDefaultInstance() == CLEANSE_SHIFT_DYE.get().getDefaultInstance()) {
-						if (!itemColor.equals("yellow")) { setNBT(mainHand, offHand, "yellow"); }
-					}
-				} else { setNBT(mainHand, offHand, itemColor(chocoboColor)); }
+				CompoundTag coloring = mainHand.getTag();
+				if (coloring != null && coloring.contains(NBTKEY_COLOR)) {
+					String armorColor = coloring.getString(NBTKEY_COLOR);
+					if ((armorColor.equals(yellow) || itemColor(chocoboColor).equals(yellow)) && !itemColor(chocoboColor).equals(armorColor)) { setNBT(mainHand, offHand, itemColor(chocoboColor)); }
+				} else if (!itemColor(chocoboColor).equals(yellow)) { setNBT(mainHand, offHand, itemColor(chocoboColor)); }
+			}
+			if (offHand.getItem().getDefaultInstance() == CLEANSE_SHIFT_DYE.get().getDefaultInstance()) {
+				CompoundTag coloring = mainHand.getTag();
+				if (coloring != null && coloring.contains(NBTKEY_COLOR) && !coloring.getString(NBTKEY_COLOR).equals(yellow)) { setNBT(mainHand, offHand, yellow); }
 			}
 		}
 		if (offHand.getItem() instanceof ChocoDisguiseItem) {
 			if (CHOCO_COLOR_ITEMS.containsKey(mainHand.getItem())) {
 				ChocoboColor chocoboColor = CHOCO_COLOR_ITEMS.get(mainHand.getItem());
-				if (offHand.getTag() != null) {
-					String itemColor = offHand.getTag().getString(NBTKEY_COLOR);
-					if (!itemColor.equals(itemColor(chocoboColor))) {
-						if (itemColor.equals("yellow")) { setNBT(offHand, mainHand, itemColor(chocoboColor)); }
-					} else if (mainHand.getItem().getDefaultInstance() == CLEANSE_SHIFT_DYE.get().getDefaultInstance()) {
-						if (!itemColor.equals("yellow")) { setNBT(offHand, mainHand, "yellow"); }
-					}
-				} else { setNBT(offHand, mainHand, itemColor(chocoboColor)); }
+				CompoundTag coloring = offHand.getTag();
+				if (coloring != null && coloring.contains(NBTKEY_COLOR)) {
+					String armorColor = coloring.getString(NBTKEY_COLOR);
+					if ((armorColor.equals(yellow) || itemColor(chocoboColor).equals(yellow)) && !itemColor(chocoboColor).equals(armorColor)) { setNBT(offHand, mainHand, itemColor(chocoboColor)); }
+				} else if (!itemColor(chocoboColor).equals(yellow)) { setNBT(offHand, mainHand, itemColor(chocoboColor)); }
+			}
+			if (mainHand.getItem().getDefaultInstance() == CLEANSE_SHIFT_DYE.get().getDefaultInstance()) {
+				CompoundTag coloring = mainHand.getTag();
+				if (coloring != null && coloring.contains(NBTKEY_COLOR) && !coloring.getString(NBTKEY_COLOR).equals(yellow)) { setNBT(offHand, mainHand, yellow); }
 			}
 			outHand = offHand;
 		}
@@ -137,17 +154,17 @@ public class ChocoDisguiseItem extends ArmorItem {
 	}); }
 	public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
 		super.appendHoverText(stack, level, tooltip, flagIn);
-		tooltip.add(new TranslatableComponent("item." + DelChoco.MOD_ID + ".choco_disguise_"+getCustomModelData(stack)));
+		tooltip.add(new TranslatableComponent("item." + DelChoco.MOD_ID + ".choco_disguise_"+ getCustomModelColor(stack)));
 	}
 	public String getNBTKEY_COLOR() {
 		ItemStack stack = new ItemStack(this);
 		if (stack.getTag() != null) {
 			return stack.getTag().getString(NBTKEY_COLOR);
-		} else { return "yellow"; }
+		} else { return yellow; }
 	}
 	public boolean isFireResistant() {
 		String color = getNBTKEY_COLOR();
-		if (color.equals("gold") || color.equals("flame")) { return true; }
+		if (color.equals(gold) || color.equals(flame)) { return true; }
 		return super.isFireResistant();
 	}
 }

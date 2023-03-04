@@ -23,6 +23,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
 
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
+import static com.dephoegon.delchoco.common.items.ChocoDisguiseItem.*;
 import static com.dephoegon.delchoco.utils.RandomHelper.random;
 import static net.minecraft.world.item.Items.*;
 
@@ -158,11 +159,11 @@ public class ChocoboCombatEffects {
                         String legColor = disguiseLeg.getNBTKEY_COLOR();
                         if (player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof ChocoDisguiseItem disguiseFeet) {
                             String feetColor = disguiseFeet.getNBTKEY_COLOR();
-                            if ((feetColor.equals(headColor)) && chestColor.equals(legColor) && legColor.equals(feetColor)) {
-                                if (headColor.equals("green") || headColor.equals("black") || headColor.equals("gold")) { if (player.hasEffect(MobEffects.POISON)) { player.removeEffect(MobEffects.POISON); } }
-                                if (headColor.equals("black") || headColor.equals("red") || headColor.equals("purple") || headColor.equals("gold") || headColor.equals("pink")) { if (player.hasEffect(MobEffects.WITHER)) { player.removeEffect(MobEffects.WITHER); } }
-                                if (headColor.equals("flame") || headColor.equals("gold")) { player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0, true, false, false)); }
-                                if (headColor.equals("gold")) { player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 100, 0, true, false, false)); }
+                            if (feetColor.equals(headColor) && chestColor.equals(legColor) && legColor.equals(feetColor)) {
+                                if (headColor.equals(green) || headColor.equals(black) || headColor.equals(gold)) { if (player.hasEffect(MobEffects.POISON)) { player.removeEffect(MobEffects.POISON); } }
+                                if (headColor.equals(black) || headColor.equals(red) || headColor.equals(purple) || headColor.equals(gold) || headColor.equals(pink)) { if (player.hasEffect(MobEffects.WITHER)) { player.removeEffect(MobEffects.WITHER); } }
+                                if (headColor.equals(flame) || headColor.equals(gold)) { player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0, true, false, false)); }
+                                if (headColor.equals(gold)) { player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 100, 0, true, false, false)); }
                             }
                         }
                     }
