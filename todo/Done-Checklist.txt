@@ -443,3 +443,7 @@ Chocobo Model Rework
 Texture File Rework
 
 all 10 base chocobo armors
+
+3-3-23
+
+CustomModelData setup properly

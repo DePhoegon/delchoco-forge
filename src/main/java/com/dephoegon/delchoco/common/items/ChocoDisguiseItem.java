@@ -20,6 +20,8 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -29,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import static com.dephoegon.delbase.item.shiftingDyes.CLEANSE_SHIFT_DYE;
@@ -108,8 +111,13 @@ public class ChocoDisguiseItem extends ArmorItem {
 		nbt.putString(key, string);
 		return nbt;
 	}
-	private void setNBT(@NotNull ItemStack itemStack, @NotNull ItemStack shrinkMe, String colorValue) {
+	private void setNBT(@NotNull ItemStack itemStack, @NotNull ItemStack shrinkMe, String colorValue, ChocoboColor chocoboColor) {
+		Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(itemStack);
 		itemStack.setTag(serialize(NBTKEY_COLOR, colorValue));
+		CompoundTag tag = itemStack.getTag();
+		assert tag != null;
+		tag.putDouble("CustomModelData", chocoboColor.getCustomModelData());
+		EnchantmentHelper.setEnchantments(enchantments, itemStack);
 		shrinkMe.shrink(1);
 	}
 	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level pLevel, @NotNull Player pPlayer, @NotNull InteractionHand pUsedHand) {
@@ -122,12 +130,12 @@ public class ChocoDisguiseItem extends ArmorItem {
 				CompoundTag coloring = mainHand.getTag();
 				if (coloring != null && coloring.contains(NBTKEY_COLOR)) {
 					String armorColor = coloring.getString(NBTKEY_COLOR);
-					if ((armorColor.equals(yellow) || itemColor(chocoboColor).equals(yellow)) && !itemColor(chocoboColor).equals(armorColor)) { setNBT(mainHand, offHand, itemColor(chocoboColor)); }
-				} else if (!itemColor(chocoboColor).equals(yellow)) { setNBT(mainHand, offHand, itemColor(chocoboColor)); }
+					if ((armorColor.equals(yellow) || itemColor(chocoboColor).equals(yellow)) && !itemColor(chocoboColor).equals(armorColor)) { setNBT(mainHand, offHand, itemColor(chocoboColor), chocoboColor); }
+				} else if (!itemColor(chocoboColor).equals(yellow)) { setNBT(mainHand, offHand, itemColor(chocoboColor),chocoboColor); }
 			}
 			if (offHand.getItem().getDefaultInstance() == CLEANSE_SHIFT_DYE.get().getDefaultInstance()) {
 				CompoundTag coloring = mainHand.getTag();
-				if (coloring != null && coloring.contains(NBTKEY_COLOR) && !coloring.getString(NBTKEY_COLOR).equals(yellow)) { setNBT(mainHand, offHand, yellow); }
+				if (coloring != null && coloring.contains(NBTKEY_COLOR) && !coloring.getString(NBTKEY_COLOR).equals(yellow)) { setNBT(mainHand, offHand, yellow, ChocoboColor.YELLOW); }
 			}
 		}
 		if (offHand.getItem() instanceof ChocoDisguiseItem) {
@@ -136,12 +144,12 @@ public class ChocoDisguiseItem extends ArmorItem {
 				CompoundTag coloring = offHand.getTag();
 				if (coloring != null && coloring.contains(NBTKEY_COLOR)) {
 					String armorColor = coloring.getString(NBTKEY_COLOR);
-					if ((armorColor.equals(yellow) || itemColor(chocoboColor).equals(yellow)) && !itemColor(chocoboColor).equals(armorColor)) { setNBT(offHand, mainHand, itemColor(chocoboColor)); }
-				} else if (!itemColor(chocoboColor).equals(yellow)) { setNBT(offHand, mainHand, itemColor(chocoboColor)); }
+					if ((armorColor.equals(yellow) || itemColor(chocoboColor).equals(yellow)) && !itemColor(chocoboColor).equals(armorColor)) { setNBT(offHand, mainHand, itemColor(chocoboColor), chocoboColor); }
+				} else if (!itemColor(chocoboColor).equals(yellow)) { setNBT(offHand, mainHand, itemColor(chocoboColor), chocoboColor); }
 			}
 			if (mainHand.getItem().getDefaultInstance() == CLEANSE_SHIFT_DYE.get().getDefaultInstance()) {
 				CompoundTag coloring = mainHand.getTag();
-				if (coloring != null && coloring.contains(NBTKEY_COLOR) && !coloring.getString(NBTKEY_COLOR).equals(yellow)) { setNBT(offHand, mainHand, yellow); }
+				if (coloring != null && coloring.contains(NBTKEY_COLOR) && !coloring.getString(NBTKEY_COLOR).equals(yellow)) { setNBT(offHand, mainHand, yellow, ChocoboColor.YELLOW); }
 			}
 			outHand = offHand;
 		}

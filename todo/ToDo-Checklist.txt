@@ -35,7 +35,7 @@ Setup Textures for iron, diamond, & netherite choco disguises
 - including  sprite assets
 -- use highlights of material over template images
 
-Remove override for textuers when done
+Remove override for textures when done
 
 Set up smithing recipes for iron, diamond, gold armor pieces
 
@@ -43,3 +43,7 @@ Change recipes for leather one
 - to include a leather armor piece with the feathers  on making an item.
 
 Chocobo Summoning, include Other Armor tiers.
+
+3-3-23
+
+Sprites for chocobo Armor pieces. all 40 per tier set
