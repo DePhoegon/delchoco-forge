@@ -60,15 +60,10 @@ public class ChocoDisguiseItem extends ArmorItem {
 	}
 	public String setCustomModel(String customModelData) {
 		ArmorMaterial armor = getMaterial();
-		String folder = DelChoco.MOD_ID + ":textures/models/armor/";
-		if (armor == IRON_CHOCO_DISGUISE) { folder = DelChoco.MOD_ID + ":textures/models/iron/"; }
-		if (armor == DIAMOND_CHOCO_DISGUISE) { folder = DelChoco.MOD_ID + ":textures/models/diamond/"; }
-		if (armor == NETHERITE_CHOCO_DISGUISE) { folder = DelChoco.MOD_ID + ":textures/models/netherite/"; }
-		folder = DelChoco.MOD_ID + ":textures/models/armor/"; // Override till Textures are filled out
-		/*
-			Insert Material Based picking, atm uses same as base.
-			Create patches of iron, diamond, & netherite showing for those tiers in the template
-		*/
+		String folder = DelChoco.MOD_ID + ":textures/models/armor/leather/";
+		if (armor == IRON_CHOCO_DISGUISE) { folder = DelChoco.MOD_ID + ":textures/models/armor/iron/"; }
+		if (armor == DIAMOND_CHOCO_DISGUISE) { folder = DelChoco.MOD_ID + ":textures/models/armor/diamond/"; }
+		if (armor == NETHERITE_CHOCO_DISGUISE) { folder = DelChoco.MOD_ID + ":textures/models/armor/netherite/"; }
 		return switch (customModelData) {
 			default -> folder + "yellow.png";
 			case green -> folder + "green.png";
@@ -111,7 +106,7 @@ public class ChocoDisguiseItem extends ArmorItem {
 		nbt.putString(key, string);
 		return nbt;
 	}
-	private void setNBT(@NotNull ItemStack itemStack, @NotNull ItemStack shrinkMe, String colorValue, ChocoboColor chocoboColor) {
+	private void setNBT(@NotNull ItemStack itemStack, @NotNull ItemStack shrinkMe, String colorValue, @NotNull ChocoboColor chocoboColor) {
 		Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(itemStack);
 		itemStack.setTag(serialize(NBTKEY_COLOR, colorValue));
 		CompoundTag tag = itemStack.getTag();

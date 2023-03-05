@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "delchoco:item/choco_disguise_helmet"
+    "layer0": "delchoco:item/guise_gear/iron/head_pink"
   }
 }

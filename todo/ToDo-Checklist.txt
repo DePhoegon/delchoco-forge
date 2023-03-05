@@ -25,15 +25,9 @@ Guide Book Structure
 
 3-1-23
 
-Add new variance for ChocoDisguise Armor
-
 -Consider upgrade for smithing tablet versions with native armors
 
 3-2_3-23
-
-Setup Textures for iron, diamond, & netherite choco disguises
-- including  sprite assets
--- use highlights of material over template images
 
 Remove override for textures when done
 
@@ -44,6 +38,3 @@ Change recipes for leather one
 
 Chocobo Summoning, include Other Armor tiers.
 
-3-3-23
-
-Sprites for chocobo Armor pieces. all 40 per tier set

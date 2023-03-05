@@ -1,0 +1,10 @@
+Choco Disguise
+- 4 tiers
+-- leather, iron, diamond, netherite
+- Textures re-dided
+-- 40, 10 color versions per tier
+- Sprites re-dided
+-- 160, 10 per armor piece
+--- 16 armor pieces across all tiers 4 per tier
+- removed override
+- corrected model files

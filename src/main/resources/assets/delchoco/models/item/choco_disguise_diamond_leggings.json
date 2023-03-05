@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "delchoco:item/choco_disguise_leggings"
+    "layer0": "delchoco:item/guise_gear/diamond/leg_yellow"
   },
   "overrides": [
     { "predicate": { "custom_model_data": 2}, "model": "delchoco:item/armor/diamond_leg_2" },

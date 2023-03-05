@@ -45,8 +45,8 @@ public class ChocoboArmorItems extends Item implements Wearable {
         int nextLowestArmor = CHOCOBO_ARMOR_MATERIAL.get(armor)-1;
         return nextLowestArmor > 0 ? totalArmorMaterialDefense(CHOCOBO_ARMOR_MATERIALS.get(nextLowestArmor), slot, out, false) : out;
     }
-    private static float totalArmorMaterialToughness(ArmorMaterial armor, float additive, boolean initalMaterial) {
-        float out = initalMaterial ? armor.getToughness()*setMod + additive : ((armor.getToughness()/2)*setMod)+ additive;
+    private static float totalArmorMaterialToughness(ArmorMaterial armor, float additive, boolean initialMaterial) {
+        float out = initialMaterial ? armor.getToughness()*setMod + additive : ((armor.getToughness()/2)*setMod)+ additive;
         int nextLowestArmor = CHOCOBO_ARMOR_MATERIAL.get(armor)-1;
         return nextLowestArmor > 0 ? totalArmorMaterialToughness(CHOCOBO_ARMOR_MATERIALS.get(nextLowestArmor), out, false) : out;
     }

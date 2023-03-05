@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "delchoco:item/choco_disguise_chestplate"
+    "layer0": "delchoco:item/guise_gear/iron/chest_flame"
   }
 }

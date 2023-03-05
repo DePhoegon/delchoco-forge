@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "delchoco:item/choco_disguise_chestplate"
+    "layer0": "delchoco:item/guise_gear/netherite/chest_yellow"
   },
   "overrides": [
     { "predicate": { "custom_model_data": 2}, "model": "delchoco:item/armor/netherite_chest_2" },
