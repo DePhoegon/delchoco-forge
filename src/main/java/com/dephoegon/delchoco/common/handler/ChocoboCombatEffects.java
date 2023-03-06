@@ -4,6 +4,7 @@ import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.dephoegon.delchoco.common.items.ChocoDisguiseItem;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -19,8 +20,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.system.CallbackI;
 
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 import static com.dephoegon.delchoco.common.items.ChocoDisguiseItem.*;
@@ -28,6 +31,39 @@ import static com.dephoegon.delchoco.utils.RandomHelper.random;
 import static net.minecraft.world.item.Items.*;
 
 public class ChocoboCombatEffects {
+    @SubscribeEvent
+    public void onChocoboLegs(@NotNull LivingHurtEvent event) {
+        Chocobo chocobo = event.getEntityLiving() instanceof Chocobo choco ? choco : null;
+        Player player = event.getEntityLiving() instanceof Player player1 ? player1 : null;
+        DamageSource source = event.getSource();
+
+        if (chocobo != null) {
+            ChocoboColor color = chocobo.getChocoboColor();
+            if (source == DamageSource.SWEET_BERRY_BUSH) { event.setCanceled(true); }
+            if (source == DamageSource.FREEZE) { event.setCanceled(color == ChocoboColor.WHITE || color == ChocoboColor.GOLD); }
+            if (source == DamageSource.DRAGON_BREATH) { event.setCanceled(color == ChocoboColor.PURPLE || color == ChocoboColor.GOLD); }
+        }
+        if (player != null) {
+            if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof ChocoDisguiseItem disguiseHead) {
+                String headColor = disguiseHead.getNBTKEY_COLOR();
+                if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ChocoDisguiseItem disguiseChest) {
+                    String chestColor = disguiseChest.getNBTKEY_COLOR();
+                    if (player.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof ChocoDisguiseItem disguiseLeg) {
+                        String legColor = disguiseLeg.getNBTKEY_COLOR();
+                        if (player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof ChocoDisguiseItem disguiseFeet) {
+                            String feetColor = disguiseFeet.getNBTKEY_COLOR();
+                            if (feetColor.equals(headColor) && chestColor.equals(legColor) && legColor.equals(feetColor)) {
+                                if (source == DamageSource.WITHER) { event.setCanceled(headColor.equals(black) || headColor.equals(red) || headColor.equals(purple) || headColor.equals(gold) || headColor.equals(pink)); }
+                                if (source == DamageSource.DRAGON_BREATH) { event.setCanceled(headColor.equals(purple) || headColor.equals(gold)); }
+                                if (source == DamageSource.SWEET_BERRY_BUSH) { event.setCanceled(true); }
+                                if (source == DamageSource.FREEZE) { event.setCanceled(headColor.equals(white) || headColor.equals(gold)); }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     @SubscribeEvent
     public void onChocoboAttack(@NotNull LivingAttackEvent event) {
         Chocobo chocoboAttacker = event.getSource().getEntity() instanceof Chocobo choco ? choco : null;
@@ -161,7 +197,6 @@ public class ChocoboCombatEffects {
                             String feetColor = disguiseFeet.getNBTKEY_COLOR();
                             if (feetColor.equals(headColor) && chestColor.equals(legColor) && legColor.equals(feetColor)) {
                                 if (headColor.equals(green) || headColor.equals(black) || headColor.equals(gold)) { if (player.hasEffect(MobEffects.POISON)) { player.removeEffect(MobEffects.POISON); } }
-                                if (headColor.equals(black) || headColor.equals(red) || headColor.equals(purple) || headColor.equals(gold) || headColor.equals(pink)) { if (player.hasEffect(MobEffects.WITHER)) { player.removeEffect(MobEffects.WITHER); } }
                                 if (headColor.equals(flame) || headColor.equals(gold)) { player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0, true, false, false)); }
                                 if (headColor.equals(gold)) { player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 100, 0, true, false, false)); }
                             }

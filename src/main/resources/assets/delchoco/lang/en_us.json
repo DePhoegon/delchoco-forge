@@ -98,8 +98,6 @@
     "delchoco.general.world.gysahlgreenspawnweight": "Gysahl Green Spawn Weight",
     "delchoco.general.gysahlgreenpatchsize": "Gysahl Green Patch Size",
 
-    "command.delchoco.chocobo.invalid_set_parameters": "Invalid parameters",
-    "command.delchoco.chocobo.successfuly_set_parameters": "Set %s to %s",
     "command.delchoco.chocobo.not_riding_chocobo": "You should ride the Chocobo to use this command!",
 
     "command.delchoco.chocobo.get_health": "Health: %s",
@@ -109,5 +107,10 @@
     "command.delchoco.chocobo.get_attack": "Attack Strength: %s",
     "command.delchoco.chocobo.get_generation": "Chocobo Generation: %s",
 
-    "delchoco.container.nest": "Chocobo Nest"
+    "delchoco.container.nest": "Chocobo Nest",
+    "delchoco.alter.invalid_base": "Invalid Alter Base Block",
+    "delchoco.alter.invalid_center": "Invalid Alter Center",
+    "delchoco.alter.invalid_pillar": "Invalid/Wrong Pillar Block",
+    "delchoco.alter.invalid_air": "Air Block Obstructed",
+    "delchoco.alter.invalid_air_base": "Alter Base Block Missing"
 }

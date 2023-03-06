@@ -1,11 +1,17 @@
 package com.dephoegon.delchoco.common.handler;
 
+import com.dephoegon.delchoco.DelChoco;
 import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.dephoegon.delchoco.common.init.ModEntities;
+import com.dephoegon.delchoco.common.items.ChocoDisguiseItem;
+import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -59,36 +65,48 @@ public class ChocoboSummoning {
                 default -> HAY_BLOCK.defaultBlockState();
             };
         } else { pillar = null; }
-        boolean summon = pillarCheck(pos, worldIn, pillar) && baseCheck(pos, worldIn);
+        boolean summon = pillarCheck(pos, worldIn, pillar, player) && baseCheck(pos, worldIn, player);
         if (summon) { cost(player, pos, worldIn); summonChocobo(worldIn, pos, player); }
     }
-    private boolean pillarCheck(BlockPos alterPOS, Level worldIn, BlockState pillar) {
+    private boolean pillarCheck(BlockPos alterPOS, Level worldIn, BlockState pillar, Player player) {
         for (int x = -3; x < 4; x++) {
             for (int z = -3; z < 4; z++) {
                 for (int y = -2; y < 2; y++) {
                     BlockState blockState = worldIn.getBlockState(new BlockPos(alterPOS.getX()+x, alterPOS.getY()+y, alterPOS.getZ()+z));
                     if ((x == -3 || x == 3) && (z == -3 || z == 3)) {
-                        if (blockState != pillar && pillar != null) return false;
+                        boolean swapCheck = pillar == null ? !blockState.isAir() : blockState != pillar;
+                        String out = swapCheck ? pillar == null ? ".alter.invalid_air" : ".alter.invalid_pillar" : null;
+                        if (out != null) { player.displayClientMessage(new TranslatableComponent(DelChoco.MOD_ID + out), true); return false; }
                         continue;
                     }
                     if (x == 0 && y == 0 && z ==0) { continue; }
                     if (y < 0) { if (x < 2 && x > -2 && z < 2 && z > -2) { continue; } }
                     if (y < -1) { if (x < 3 && x > -3 && z < 3 && z > -3) { continue; } }
-                    if (!blockState.isAir()) return false;
+                    if (!blockState.isAir()) {
+                        player.displayClientMessage(new TranslatableComponent(DelChoco.MOD_ID + ".alter.invalid_air"), true);
+                        return false;
+                    }
                 }
             }
         }
         return true;
     }
-    private boolean baseCheck(BlockPos alterPOS, Level worldIn) {
+    private boolean baseCheck(BlockPos alterPOS, Level worldIn, Player player) {
         for (int x = -3; x < 4; x++) {
             for (int z = -3; z < 4; z++) {
                 for (int y = -3; y < 0; y++) {
                     BlockState baseCheck = worldIn.getBlockState(new BlockPos(alterPOS.getX()+x, alterPOS.getY()+y, alterPOS.getZ()+z));
-                    if (x == 0 && z == 0) { if (!baseCheck.getFluidState().isSource()) { return false; } continue; }
+                    if (x == 0 && z == 0) { if (!baseCheck.getFluidState().isSource()) {
+                        player.displayClientMessage(new TranslatableComponent(DelChoco.MOD_ID + ".alter.invalid_center"), true);
+                        return false;
+                    } continue; }
                     else if (y > -3 && (x < -2 || x > 2 || z < -2 || z > 2)) { continue; }
                     else if (y > -2 && (x < -1 || x > 1 || z < -1 || z > 1)) { continue; }
-                    if (!alterBlocks(baseCheck.getBlock().defaultBlockState())) { return false; }
+                    if (!alterBlocks(baseCheck.getBlock().defaultBlockState())) {
+                        String isAir = baseCheck.isAir() ? ".invalid_air_base" : ".alter.invalid_base";
+                        player.displayClientMessage(new TranslatableComponent(DelChoco.MOD_ID + isAir), true);
+                        return false;
+                    }
                 }
             }
         }
@@ -161,16 +179,16 @@ public class ChocoboSummoning {
         boolean eatAlter = eatAlter(player);
         if (eatAlter) { worldIn.setBlockAndUpdate(pos, AIR.defaultBlockState()); }
         else {
-            if (player.getItemBySlot(EquipmentSlot.CHEST).getItem().equals(LEATHER_CHOCO_DISGUISE_CHEST.get())) {
+            if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ChocoDisguiseItem) {
                 player.getItemBySlot(EquipmentSlot.CHEST).hurtAndBreak(this.damage, player, (event) -> { event.broadcastBreakEvent(EquipmentSlot.CHEST); });
             }
-            if (player.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(LEATHER_CHOCO_DISGUISE_HELMET.get())) {
+            if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof ChocoDisguiseItem) {
                 player.getItemBySlot(EquipmentSlot.HEAD).hurtAndBreak(this.damage, player, (event) -> { event.broadcastBreakEvent(EquipmentSlot.HEAD); });
             }
-            if (player.getItemBySlot(EquipmentSlot.LEGS).getItem().equals(LEATHER_CHOCO_DISGUISE_LEGS.get())) {
+            if (player.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof ChocoDisguiseItem) {
                 player.getItemBySlot(EquipmentSlot.LEGS).hurtAndBreak(this.damage, player, (event) -> { event.broadcastBreakEvent(EquipmentSlot.LEGS); });
             }
-            if (player.getItemBySlot(EquipmentSlot.FEET).getItem().equals(LEATHER_CHOCO_DISGUISE_FEET.get())) {
+            if (player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof ChocoDisguiseItem) {
                 player.getItemBySlot(EquipmentSlot.FEET).hurtAndBreak(this.damage, player, (event) -> { event.broadcastBreakEvent(EquipmentSlot.FEET); });
             }
         }
@@ -178,10 +196,10 @@ public class ChocoboSummoning {
     private boolean eatAlter(@NotNull Player player){
         int alterEatChance = 100;
         boolean eatAlter;
-        if (player.getItemBySlot(EquipmentSlot.CHEST).getItem().equals(LEATHER_CHOCO_DISGUISE_CHEST.get())) { alterEatChance = alterEatChance-25; }
-        if (player.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(LEATHER_CHOCO_DISGUISE_HELMET.get())) { alterEatChance = alterEatChance-25; }
-        if (player.getItemBySlot(EquipmentSlot.LEGS).getItem().equals(LEATHER_CHOCO_DISGUISE_LEGS.get())) { alterEatChance = alterEatChance-25; }
-        if (player.getItemBySlot(EquipmentSlot.FEET).getItem().equals(LEATHER_CHOCO_DISGUISE_FEET.get())) { alterEatChance = alterEatChance-25; }
+        if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ChocoDisguiseItem armor && armor.getSlot() == EquipmentSlot.CHEST) { alterEatChance = alterEatChance-25; }
+        if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof ChocoDisguiseItem armor && armor.getSlot() == EquipmentSlot.HEAD) { alterEatChance = alterEatChance-25; }
+        if (player.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof ChocoDisguiseItem armor && armor.getSlot() == EquipmentSlot.LEGS) { alterEatChance = alterEatChance-25; }
+        if (player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof ChocoDisguiseItem armor && armor.getSlot() == EquipmentSlot.FEET) { alterEatChance = alterEatChance-25; }
         eatAlter = random.nextInt(100) + 1 <= alterEatChance;
         this.damage = switch (alterEatChance) {
             case 75 -> 4;

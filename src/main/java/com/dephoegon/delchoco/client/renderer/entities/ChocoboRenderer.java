@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -55,7 +56,7 @@ public class ChocoboRenderer extends MobRenderer<Chocobo, EntityModel<Chocobo>> 
     public static final float saddleAlpha = 1;
 
     public ChocoboRenderer(EntityRendererProvider.Context context) {
-        super(context, new AdultChocoboModel<>(context.bakeLayer(ClientHandler.CHOCOBO)), 1.0f);
+        super(context, new AdultChocoboModel<>(context.bakeLayer(ClientHandler.CHOCOBO)), .75f);
         this.chicoboModel = new ChicoboModel<>(context.bakeLayer(ClientHandler.CHICOBO));
 
         this.addLayer(new LayerArmor(this, armorAlpha, ChocoConfig.COMMON.armorInvisibility.get().floatValue()));

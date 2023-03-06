@@ -75,8 +75,6 @@
     "delchoco.general.world.gysahlgreenspawnweight": "Gizarkraut Spawnanteil",
     "delchoco.general.gysahlgreenpatchsize": "Gizarkraut PflanzengrÃ¶ÃŸe",
 
-    "command.delchoco.chocobo.invalid_set_parameters": "Parameter ungÃ¼ltig",
-    "command.delchoco.chocobo.successfuly_set_parameters": "Parameter %s wurde auf %s gesetzt",
     "command.delchoco.chocobo.not_riding_chocobo": "Sie sollten den Chocobo reiten, um diesen Befehl zu verwenden!",
 
     "command.delchoco.chocobo.get_health": "Leben: %s",

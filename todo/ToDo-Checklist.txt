@@ -13,28 +13,15 @@ Double Check
 Update Guidebook
 Test flow & balance
 
-2-14-23
+3-6-23
 
-Update Guide Book
-- List crafting Recipes for gear
+Double check guidebook for missing elements
 
-2-21-23
+Test Combat elements of Chocobo armor
 
-Guide Book Structure
--Showcase Alters for summons
-
-3-1-23
-
--Consider upgrade for smithing tablet versions with native armors
-
-3-2_3-23
-
-Remove override for textures when done
-
-Set up smithing recipes for iron, diamond, gold armor pieces
-
-Change recipes for leather one
-- to include a leather armor piece with the feathers  on making an item.
-
-Chocobo Summoning, include Other Armor tiers.
-
+Guidebook
+- Explain choco disguise combat effects
+-- Include restrictions
+--- All pieces must be worn
+--- All pieces must be the same color
+--- Pieces may be from different tiers

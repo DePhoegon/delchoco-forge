@@ -450,4 +450,27 @@ CustomModelData setup properly
 
 3-4-23
 
-Sprites & textures for chocodisguise
+Sprites & textures for choco disguise
+
+3-5_6-23
+
+Choco Disguise Recipes
+
+Guide Book Expansion
+
+Feedback given to Chocobo Summoning (when failed)
+
+Allowed Mix/matching Choco Disguise armor tiers for the cost of summoning
+
+Added Tag retention for Damage, display, & repair costs
+
+Added Repair costs lowering when Dying armor(choco disguise ones only)
+
+Testing Changes work as intended.
+
+Took things off the To Do list
+- Added short notes to list :{
+
+Expanded Chocobo effects
+
+Expanded Choco Guise Armor effects

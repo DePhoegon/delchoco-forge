@@ -75,8 +75,6 @@
     "delchoco.general.world.gysahlgreenspawnweight": "Fuerza de Generación de Gisal Verde",
     "delchoco.general.gysahlgreenpatchsize": "Tamaño de Parcela de Gisal Verde",
 
-    "command.delchoco.chocobo.invalid_set_parameters": "Parámetros inválidos",
-    "command.delchoco.chocobo.successfuly_set_parameters": "Fijar %s a %s",
     "command.delchoco.chocobo.not_riding_chocobo": "¡Deberías montar el Chocobo para usar este comando!",
 
     "command.delchoco.chocobo.get_health": "Salud: %s",

@@ -107,11 +107,24 @@ public class ChocoDisguiseItem extends ArmorItem {
 		return nbt;
 	}
 	private void setNBT(@NotNull ItemStack itemStack, @NotNull ItemStack shrinkMe, String colorValue, @NotNull ChocoboColor chocoboColor) {
+		// Will Refresh & remove Tags not in use
 		Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(itemStack);
+		CompoundTag tempTag = itemStack.getTag();
+		CompoundTag display = null;
+		int damage = 0;
+		int repairCost = 0;
+		if (tempTag != null) {
+			if (tempTag.contains("Damage")) { damage = tempTag.getInt("Damage"); }
+			if (tempTag.contains("display")) { display = tempTag.getCompound("display"); }
+			if (tempTag.contains("RepairCost")) { repairCost = Math.max(0, Math.min(tempTag.getInt("RepairCost")-1, 5)); }
+		}
 		itemStack.setTag(serialize(NBTKEY_COLOR, colorValue));
 		CompoundTag tag = itemStack.getTag();
 		assert tag != null;
 		tag.putDouble("CustomModelData", chocoboColor.getCustomModelData());
+		if (damage != 0) { tag.putInt("Damage", damage); }
+		if (display != null) { tag.put("display", display); }
+		tag.putInt("RepairCost", repairCost);
 		EnchantmentHelper.setEnchantments(enchantments, itemStack);
 		shrinkMe.shrink(1);
 	}

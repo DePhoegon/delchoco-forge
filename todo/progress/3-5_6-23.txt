@@ -1,0 +1,48 @@
+Recipes
+- fixed & set Choco Disguise Recipes
+-- Used Smithing to allow enchantments to continue to be passed on from the first tier
+
+Patchouli Book
+- Added Recipes for armors
+- Added alters
+- Added alter blocks
+- Added Screenshots of the Alters & pillars for each Chocobo
+
+Chocobo Summoning
+- Added Feedback if an alter base block is missing or wrong
+- Added Feedback if an alter pillar is missing or wrong
+- Added Feedback if spots that are meant to have Airblocks have something else instead
+- Adjusted Costs to account for all tiers of Choco Disguise armor
+-- Mix & matching tiers is allowed
+
+Choco Disguise Armor
+- When dying
+-- Added Repair cost reduction
+-- Added Display Tag saving
+-- Added Damage Tag Saving
+
+Testing
+-Verified dying works
+-- Preserved what was needed to be preserved
+-Verified Summoning gives feedback when failed
+-Verified Text readable in guidebook
+-- aka, not crammed to full per page
+-Verified Images show.
+-Verified new links in guidebook
+
+Chocobo Effects
+- Added Immunity To Berry Bush damage (all Chocobo)
+- Added Immunity To Freeze Damage (white Chocobo)
+- Added Immunity to Dragon Breath (Purple/Gold)
+
+Choco Guise Armor Effects
+- Added Immunity to Berry Bushes (if wearing a matching set)
+- Added Immunity to Freeze (if white set)
+- Added Immunity to Dragon Breath (if purple/gold set)
+- Extended Removal of wither by sets, to immunity of damage.
+
+onChocoboLegs (LivingHurtEvent)
+- implemented to extend chocobo & choco guise armor effects
+
+ToDo
+- Added things that need to be checked

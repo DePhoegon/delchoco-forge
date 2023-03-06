@@ -75,8 +75,6 @@
     "delchoco.general.world.gysahlgreenspawnweight": "Gysahl Zöld Spawn Súly",
     "delchoco.general.gysahlgreenpatchsize": "Gysahl Zöld Folt Méret",
 
-    "command.delchoco.chocobo.invalid_set_parameters": "Hibás parameter",
-    "command.delchoco.chocobo.successfuly_set_parameters": "%s beállítva: %s",
     "command.delchoco.chocobo.not_riding_chocobo": "Egy Chocobon kell ülnöd a parancs használatához.",
 
     "command.delchoco.chocobo.get_health": "Életerő: %s",
