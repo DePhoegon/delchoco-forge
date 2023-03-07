@@ -23,7 +23,6 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
-import org.lwjgl.system.CallbackI;
 
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 import static com.dephoegon.delchoco.common.items.ChocoDisguiseItem.*;

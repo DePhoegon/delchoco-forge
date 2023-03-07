@@ -1,7 +1,7 @@
 {
   "name": "Tamed Chocobos",
   "icon": "delchoco:chocobo_feather",
-  "category": "delchoco:chocobo_sho",
+  "category": "delchoco:chocobo_combat",
   "pages": [
     {
       "title": "Black Chocobo",

@@ -10,6 +10,11 @@
       "text": "Dying the armor will lower the repair costs.$(br) Armor can only be Dyed from Yellow, and to Yellow.$(br)- $(item)Cleansing Shift Dye$() will put it set the piece to yellow"
     },
     {
+      "title": "Combat Effects",
+      "type": "patchouli:text",
+      "text": "Effects with a full Color set.$(br)Any Colors $(br)- Immunity to Berry Bushes$(br)White $(br)- Immunity to Freezing$(br)Purple/Gold $(br)- Immunity to Dragon Breath$(br)Black/Red/Purple/Pink/Gold $(br)- Immunity to Wither$(br)Green/Black/Gold $(br)- Poison Resistance$(br)Flame/Gold $(br)- Fire Resistance$(br)Gold $(br)- Night Vision"
+    },
+    {
       "title": "Chocobo Disguise",
       "type": "patchouli:crafting",
       "recipe": "delchoco:choco_disguise/leather_head",

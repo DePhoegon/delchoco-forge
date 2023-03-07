@@ -1,0 +1,13 @@
+Texture Touch up
+-Helmet Sprites adjusted
+
+Guide Book
+- Added Chocobo Information
+- Fixed Alter Image
+- Added Choco Disguise Effect Information
+- Fixed Choco Disguise Page Recipe Icon
+- Shuffled Categories
+
+Published
+- V 3.0.5
+- De-listed prior versions & beta

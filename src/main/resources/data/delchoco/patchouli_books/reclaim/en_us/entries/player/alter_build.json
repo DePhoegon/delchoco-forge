@@ -18,7 +18,7 @@
     {
       "title": "Top Layer",
       "type": "patchouli:image",
-      "images": [ "delchoco:textures/screens/alters/base.png" ],
+      "images": [ "delchoco:textures/screens/alters/top.png" ],
       "text": "Center Must be liquid Source(Water/Lava)"
     },
     {

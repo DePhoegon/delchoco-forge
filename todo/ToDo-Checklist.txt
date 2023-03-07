@@ -1,27 +1,3 @@
-Added 7-21
-
-Find/Remove Useless code (In Progress)
-
-Added 1-23-23
-
-Double Check
-- Prior TODOs
--- Validate if they are or are not done.
-
-2-13-23
-
-Update Guidebook
-Test flow & balance
-
 3-6-23
 
-Double check guidebook for missing elements
-
-Test Combat elements of Chocobo armor
-
-Guidebook
-- Explain choco disguise combat effects
--- Include restrictions
---- All pieces must be worn
---- All pieces must be the same color
---- Pieces may be from different tiers
+Get Feedback from Release

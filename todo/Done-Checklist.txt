@@ -474,3 +474,9 @@ Took things off the To Do list
 Expanded Chocobo effects
 
 Expanded Choco Guise Armor effects
+
+3-6-23
+
+Helmet Sprite touch up
+
+Guide book overall finished.
