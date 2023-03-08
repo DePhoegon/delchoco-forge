@@ -1,5 +1,6 @@
 package com.dephoegon.delchoco.common.handler;
 
+import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.dephoegon.delchoco.common.items.ChocoDisguiseItem;
@@ -36,13 +37,13 @@ public class ChocoboCombatEffects {
         Player player = event.getEntityLiving() instanceof Player player1 ? player1 : null;
         DamageSource source = event.getSource();
 
-        if (chocobo != null) {
+        if (chocobo != null && ChocoConfig.COMMON.extraChocoboEffects.get()) {
             ChocoboColor color = chocobo.getChocoboColor();
             if (source == DamageSource.SWEET_BERRY_BUSH) { event.setCanceled(true); }
             if (source == DamageSource.FREEZE) { event.setCanceled(color == ChocoboColor.WHITE || color == ChocoboColor.GOLD); }
             if (source == DamageSource.DRAGON_BREATH) { event.setCanceled(color == ChocoboColor.PURPLE || color == ChocoboColor.GOLD); }
         }
-        if (player != null) {
+        if (player != null && ChocoConfig.COMMON.extraChocoboEffects.get()) {
             if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof ChocoDisguiseItem disguiseHead) {
                 String headColor = disguiseHead.getNBTKEY_COLOR();
                 if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ChocoDisguiseItem disguiseChest) {
@@ -67,7 +68,7 @@ public class ChocoboCombatEffects {
     public void onChocoboAttack(@NotNull LivingAttackEvent event) {
         Chocobo chocoboAttacker = event.getSource().getEntity() instanceof Chocobo choco ? choco : null;
         Chocobo chocoboTarget = event.getEntityLiving() instanceof Chocobo choco ? choco : null;
-        if (chocoboAttacker != null) {
+        if (chocoboAttacker != null && ChocoConfig.COMMON.chocoboResourcesOnHit.get()) {
              LivingEntity target = event.getEntityLiving();
             if (target instanceof Spider e) { if (onHitMobChance(10)) { e.spawnAtLocation(STRING); } }
             if (target instanceof CaveSpider e) { if (onHitMobChance(5)) { e.spawnAtLocation(FERMENTED_SPIDER_EYE); } }
@@ -95,7 +96,7 @@ public class ChocoboCombatEffects {
     public void onChocoboKillOrDie(@NotNull LivingDeathEvent event) {
         Chocobo chocoboKill = event.getSource().getEntity() instanceof  Chocobo choco ? choco : null;
         Chocobo chocoboDie = event.getEntityLiving() instanceof  Chocobo choco ? choco : null;
-        if (chocoboKill != null) {
+        if (chocoboKill != null && ChocoConfig.COMMON.chocoboResourcesOnKill.get()) {
             ChocoboColor color = chocoboKill.getChocoboColor();
             LivingEntity target = event.getEntityLiving();
             if (target instanceof Spider) { if (.20f > (float) Math.random()) { chocoboKill.spawnAtLocation(COBWEB); } }
@@ -185,7 +186,7 @@ public class ChocoboCombatEffects {
     @SubscribeEvent
     public void onPlayerTick(@NotNull TickEvent.PlayerTickEvent e) {
         Player player = e.player;
-        if (player.tickCount % 60 == 0) {
+        if (player.tickCount % 60 == 0 && ChocoConfig.COMMON.extraChocoboEffects.get()) {
             if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof ChocoDisguiseItem disguiseHead) {
                 String headColor = disguiseHead.getNBTKEY_COLOR();
                 if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ChocoDisguiseItem disguiseChest) {

@@ -1,0 +1,8 @@
+Config File flushing
+- Setting up to disable some extra effects.
+
+Prep work for 3.1.0
+- Waiting on Model rework of Chocobos to push version
+
+Screenshot gathering for curseforge project page
+-including 3-7-23 gathering as well.

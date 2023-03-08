@@ -4,6 +4,12 @@
   "category": "delchoco:chocobo_combat",
   "pages": [
     {
+      "title": "Configuration",
+      "type": "patchouli:spotlight",
+      "item": "minecraft:oak_sign",
+      "text": "Can be disabled in the configuration file."
+    },
+    {
       "title": "All Targets",
       "type": "patchouli:spotlight",
       "item": "delchoco:chocobo_weapon_stone",

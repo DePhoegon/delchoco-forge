@@ -1,7 +1,6 @@
 package com.dephoegon.delchoco.common;
 
 import com.dephoegon.delchoco.DelChoco;
-import com.sun.jdi.FloatValue;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
@@ -65,6 +64,9 @@ public class ChocoConfig {
         public final BooleanValue netherSpawns;
         public final BooleanValue endSpawns;
         public final BooleanValue summonSpawns;
+        public final BooleanValue chocoboResourcesOnHit;
+        public final BooleanValue chocoboResourcesOnKill;
+        public final BooleanValue extraChocoboEffects;
 
         Common(ForgeConfigSpec.Builder builder) {
             builder.comment("World generation related configuration")
@@ -129,8 +131,24 @@ public class ChocoConfig {
                     .defineInRange("chocoboPackSizeMax", 3, 0, Integer.MAX_VALUE);
 
             builder.pop();
+            builder.comment("Chocobo Extras")
+                    .push("extras");
+
+            chocoboResourcesOnHit = builder
+                    .comment("Controls if the Chocobos will produce extra resources on combat hits. (Includes Disarming Targets on hit chance)")
+                    .define("choco_hit_resource", true);
+
+            chocoboResourcesOnKill = builder
+                    .comment("Controls if the Chocobos will produce extra resources on Kills")
+                    .define("choco_kill_resource", true);
+
+            extraChocoboEffects = builder
+                    .comment("Controls if the chocobos get extra effects outside traits that can be passed through breeding & outside of no fall damage.\n-Also Controls if the player receives stats/buff bonuses from wearing the a full color set of the ChocoGuise Gear.")
+                    .define("effects", true);
+
+            builder.pop();
             builder.comment("Chocobo configuration")
-                    .push("Chocobo");
+                    .push("chocobo");
 
             ownerOnlyAccess = builder
                     .comment("Chocobos Rideable & Custom Nameable by Owners (Player that tamed it) Only. [Default: False]")
