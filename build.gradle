@@ -30,7 +30,7 @@ println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty '
 minecraft {
 
     // mappings channel: 'official', version: '1.18.2'
-    mappings channel: project.maptype, version: project.maptype_version
+    mappings channel: project.map_type, version: project.map_type_version
 
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
 
@@ -120,13 +120,6 @@ sourceSets {
 }
 
 repositories {
-    // Put repositories for dependencies here
-    // ForgeGradle automatically adds the Forge maven and Maven Central for you
-
-    // If you have mod jar dependencies in ./libs, you can declare them as a repository like so:
-    // flatDir {
-    //     dir 'libs'
-    // }
     maven {
         // location of the maven that hosts JEI files
         name = "Progwml6 maven"

@@ -1,12 +1,11 @@
 modLoader="javafml"
 loaderVersion="[40,)"
-issueTrackerURL=""
 license="MIT"
 
 [[mods]]
 modId="delchoco"
 version="${file.jarVersion}"
-displayName="Delbase Chocobo Fork"
+displayName="DePhoegons' Chocobos"
 displayURL=""
 authors="Mrbysco, Xalcon, Slayer5934, balika011, DePhoegon"
 credits="Thanks to EddieV for the original Chococraft, ArnoSaxena(Torojimas) and clienthax for maintaining it"
@@ -28,6 +27,6 @@ side="BOTH"
 [[dependencies.delchoco]]
 modId="delbase"
 mandatory=true
-versionRange="[1,)"
+versionRange="[1.2,)"
 ordering="NONE"
 side="BOTH"
