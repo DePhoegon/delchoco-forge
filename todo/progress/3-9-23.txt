@@ -1,0 +1,16 @@
+3.1.0 Release
+--------
+Configuration Options for Chocobo Combat effects
+Configuration Options for Chocobo Resource gain
+Configuration Options for Player Effects gain while in full color set of ChocoGuise armor
+
+-------------
+
+
+Error Caught
+---  Rendering setting error caught, that would have produced a very real ugly issue
+-- Multiple errors caught
+
+Cut Curved beaks
+
+-left commented out to allow for easy of testing.

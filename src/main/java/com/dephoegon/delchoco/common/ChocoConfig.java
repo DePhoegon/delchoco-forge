@@ -67,8 +67,9 @@ public class ChocoConfig {
         public final BooleanValue chocoboResourcesOnHit;
         public final BooleanValue chocoboResourcesOnKill;
         public final BooleanValue extraChocoboEffects;
+        // public final BooleanValue chocoboBeak;
 
-        Common(ForgeConfigSpec.Builder builder) {
+        Common(ForgeConfigSpec.@NotNull Builder builder) {
             builder.comment("World generation related configuration")
                     .push("World");
 
@@ -145,7 +146,11 @@ public class ChocoConfig {
             extraChocoboEffects = builder
                     .comment("Controls if the chocobos get extra effects outside traits that can be passed through breeding & outside of no fall damage.\n-Also Controls if the player receives stats/buff bonuses from wearing the a full color set of the ChocoGuise Gear.")
                     .define("effects", true);
-
+/* -- Commented out for now
+            chocoboBeak = builder
+                    .comment("Controls if the chocobos will have a boxed beak or a 'detailed' Curved beak. [ Default : True ] Boxed beak")
+                            .define("beak", true);
+*/
             builder.pop();
             builder.comment("Chocobo configuration")
                     .push("chocobo");
