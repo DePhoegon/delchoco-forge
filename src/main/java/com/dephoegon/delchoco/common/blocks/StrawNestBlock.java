@@ -25,7 +25,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -71,7 +70,7 @@ public class StrawNestBlock extends BaseEntityBlock {
             nest.setEggItemStack(playerIn.getItemInHand(handIn).copy().split(1));
             if (!playerIn.isCreative()) { playerIn.getItemInHand(handIn).shrink(1); }
             return InteractionResult.SUCCESS;
-        } else { if(!worldIn.isClientSide) { NetworkHooks.openGui((ServerPlayer) playerIn, nest, pos); } }
+        } else { if(!worldIn.isClientSide) { NetworkHooks.openScreen((ServerPlayer) playerIn, nest, pos); } }
         return InteractionResult.FAIL;
     }
     public void onRemove(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) { super.onRemove(state, worldIn, pos, newState, isMoving); }

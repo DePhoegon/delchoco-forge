@@ -8,7 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -25,7 +24,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.fml.DistExecutor;
 import org.jetbrains.annotations.NotNull;
 
@@ -54,8 +53,6 @@ public class ChocoDisguiseItem extends ArmorItem {
 
 	public ChocoDisguiseItem(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
 		super(material, slot, properties);
-		ItemStack stack = new ItemStack(this);
-		stack.setTag(serialize(NBTKEY_COLOR, yellow));
 		this.model = DistExecutor.unsafeRunForDist(() -> () -> new LazyLoadedValue<>(() -> this.provideArmorModelForSlot(this.slot)), () -> () -> null);
 	}
 	public String setCustomModel(String customModelData) {
@@ -165,12 +162,13 @@ public class ChocoDisguiseItem extends ArmorItem {
 	}
 	@OnlyIn(Dist.CLIENT)
 	public HumanoidModel<?> provideArmorModelForSlot(EquipmentSlot slot) { return new ChocoDisguiseModel(Minecraft.getInstance().getEntityModels().bakeLayer(ClientHandler.CHOCO_DISGUISE), slot); }
-	public void initializeClient(@NotNull Consumer<IItemRenderProperties> consumer) { consumer.accept(new IItemRenderProperties() {
+	public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
+		consumer.accept(new IClientItemExtensions() {
 		public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) { return model.get(); }
 	}); }
 	public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
 		super.appendHoverText(stack, level, tooltip, flagIn);
-		tooltip.add(new TranslatableComponent("item." + DelChoco.MOD_ID + ".choco_disguise_"+ getCustomModelColor(stack)));
+		tooltip.add(Component.translatable("item." + DelChoco.MOD_ID + ".choco_disguise_"+ getCustomModelColor(stack)));
 	}
 	public String getNBTKEY_COLOR() {
 		ItemStack stack = new ItemStack(this);

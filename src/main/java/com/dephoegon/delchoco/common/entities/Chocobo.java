@@ -24,7 +24,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -34,6 +34,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.*;
@@ -60,7 +61,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biome.BiomeCategory;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -69,7 +69,6 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.PacketDistributor;
@@ -77,12 +76,10 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static com.dephoegon.delbase.item.shiftingDyes.*;
+import static com.dephoegon.delchoco.aid.SpawnBiomesChecks.allBiomes;
 import static com.dephoegon.delchoco.aid.chocoKB.isAltDown;
 import static com.dephoegon.delchoco.aid.dyeList.getDyeList;
 import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
@@ -90,11 +87,10 @@ import static com.dephoegon.delchoco.common.entities.breeding.ChocoboSnap.setCho
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 import static com.dephoegon.delchoco.common.init.ModSounds.AMBIENT_SOUND;
 import static com.dephoegon.delchoco.common.items.ChocoboSpawnEggItem.*;
+import static net.minecraft.tags.BiomeTags.*;
 import static net.minecraft.world.entity.ai.attributes.Attributes.*;
 import static net.minecraft.world.item.Items.*;
-import static net.minecraft.world.level.biome.Biome.getBiomeCategory;
 import static net.minecraft.world.level.biome.Biomes.*;
-import static net.minecraftforge.common.BiomeDictionary.hasType;
 import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 import static net.minecraftforge.common.Tags.Biomes.*;
 
@@ -234,13 +230,13 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     }
     public static AttributeSupplier.@NotNull Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(ModAttributes.MAX_STAMINA.get(),  ChocoConfig.COMMON.defaultStamina.get())
-                .add(Attributes.MOVEMENT_SPEED, COMMON.defaultSpeed.get() / 100f)
-                .add(MAX_HEALTH, ChocoConfig.COMMON.defaultHealth.get())
-                .add(Attributes.ARMOR, COMMON.defaultArmor.get())
-                .add(Attributes.ARMOR_TOUGHNESS, COMMON.defaultArmorToughness.get())
+                .add(ModAttributes.MAX_STAMINA.get(),  ChocoConfig.COMMON.defaultStamina.getDefault())
+                .add(Attributes.MOVEMENT_SPEED, COMMON.defaultSpeed.getDefault() / 100f)
+                .add(MAX_HEALTH, ChocoConfig.COMMON.defaultHealth.getDefault())
+                .add(Attributes.ARMOR, COMMON.defaultArmor.getDefault())
+                .add(Attributes.ARMOR_TOUGHNESS, COMMON.defaultArmorToughness.getDefault())
                 .add(Attributes.ATTACK_SPEED)
-                .add(Attributes.ATTACK_DAMAGE, COMMON.defaultAttackStrength.get())
+                .add(Attributes.ATTACK_DAMAGE, COMMON.defaultAttackStrength.getDefault())
                 .add(Attributes.FOLLOW_RANGE, Attributes.FOLLOW_RANGE.getDefaultValue()*3);
     }
     protected void defineSynchedData() {
@@ -347,7 +343,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         this.setMale(this.level.random.nextBoolean());
 
         final Holder<Biome> currentBiomes = this.level.getBiome(blockPosition().below());
-        BiomeCategory biomeCategory = getBiomeCategory(currentBiomes);
         //noinspection OptionalGetWithoutIsPresent
         final ResourceKey<Biome> BiomesKey = currentBiomes.unwrapKey().get();
         ChocoboColor color;
@@ -355,10 +350,10 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             setChocoboSpawnCheck(ChocoboColor.YELLOW);
             if (!currentBiomes.containsTag(IS_END) && !currentBiomes.containsTag(IS_OVERWORLD)) { setChocoboSpawnCheck(ChocoboColor.FLAME); }
             if (currentBiomes.containsTag(IS_END)) { setChocoboSpawnCheck(ChocoboColor.PURPLE); }
-            if (hasType(BiomesKey, BiomeDictionary.Type.MUSHROOM)) { setChocoboSpawnCheck(ChocoboColor.PINK); }
+            if (currentBiomes.containsTag(IS_MUSHROOM)) { setChocoboSpawnCheck(ChocoboColor.PINK); }
             if (currentBiomes.containsTag(IS_SNOWY) || whiteChocobo().contains(BiomesKey)) { setChocoboSpawnCheck(ChocoboColor.WHITE); }
             if (blueChocobo().contains(BiomesKey)) { setChocoboSpawnCheck(ChocoboColor.BLUE); }
-            if (biomeCategory == BiomeCategory.FOREST || biomeCategory == BiomeCategory.MESA) { setChocoboSpawnCheck(ChocoboColor.RED); }
+            if (currentBiomes.containsTag(IS_FOREST) || currentBiomes.containsTag(IS_BADLANDS)) { setChocoboSpawnCheck(ChocoboColor.RED); }
             if (greenChocobo().contains(BiomesKey)) { setChocoboSpawnCheck(ChocoboColor.GREEN); }
             if (currentBiomes.containsTag(IS_HOT_OVERWORLD) && !currentBiomes.containsTag(IS_SAVANNA)) { setChocoboSpawnCheck(ChocoboColor.BLACK); }
             this.setChocoboScale(this.isMale(), 0, false);
@@ -392,8 +387,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         ChocoboColor chocobo = this.getChocoboColor();
         if ((chocobo == ChocoboColor.YELLOW || color == ChocoboColor.YELLOW) && chocobo != color) { setChocobo(color, color == ChocoboColor.FLAME, wbChocobos().contains(color), wiChocobos().contains(color), piChocobos().contains(color)); }
     }
-    @Override
-    public boolean canBeControlledByRider() { return this.isTame(); }
     private void setArmor(ItemStack pStack) {
         this.setItemSlot(EquipmentSlot.CHEST, pStack);
         this.setDropChance(EquipmentSlot.CHEST, 0.0F);
@@ -515,7 +508,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         double scaleZero = this.getChocoboScale() == 0 ? 1.65D : this.getChocoboScale() < 0 ? 1.55D : 1.75D;
         return this.getChocoboScale() == 0 ? scaleZero : scaleZero * this.getChocoboScaleMod();
     }
-    @Override
     public boolean canBeRiddenInWater(Entity rider) { return true; }
     @Nullable
     public Entity getControllingPassenger() { return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0); }
@@ -843,7 +835,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             if (heldItemStack.isEmpty() && !player.isShiftKeyDown() && !this.isBaby() && this.isSaddled()) {
                 if (COMMON.ownerOnlyAccess.get()) {
                     if (isOwnedBy(player)) { player.startRiding(this); }
-                    else { player.displayClientMessage(new TranslatableComponent(DelChoco.MOD_ID + ".entity_chocobo.not_owner"), true); }
+                    else { player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.not_owner"), true); }
                 } else { player.startRiding(this); }
                 return InteractionResult.SUCCESS;
             }
@@ -851,7 +843,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                 if (getHealth() != getMaxHealth()) {
                     this.usePlayerItem(player, hand, player.getInventory().getSelected());
                     heal(COMMON.defaultHealAmmount.get());
-                } else { player.displayClientMessage(new TranslatableComponent(DelChoco.MOD_ID + ".entity_chocobo.heal_fail"), true); }
+                } else { player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.heal_fail"), true); }
             }
             if (defaultHand == CHOCOBO_WHISTLE.get() && !this.isBaby()) {
                 if (isOwnedBy(player)) {
@@ -865,12 +857,12 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                         }
                         this.goalSelector.addGoal(3, this.follow);
                         followingMrHuman = 1;
-                        player.displayClientMessage(new TranslatableComponent(DelChoco.MOD_ID + ".entity_chocobo.chocobo_follow_cmd"), true);
+                        player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.chocobo_follow_cmd"), true);
                     } else if (this.followingMrHuman == 1) {
                         this.playSound(ModSounds.WHISTLE_SOUND_WANDER.get(), 1.0F, 1.0F);
                         this.goalSelector.removeGoal(this.follow);
                         followingMrHuman = 2;
-                        player.displayClientMessage(new TranslatableComponent(DelChoco.MOD_ID + ".entity_chocobo.chocobo_wander_cmd"), true);
+                        player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.chocobo_wander_cmd"), true);
                     } else if (this.followingMrHuman == 2) {
                         this.playSound(ModSounds.WHISTLE_SOUND_STAY.get(), 1.0F, 1.0F);
                         // this.setNoAi(true);
@@ -880,9 +872,9 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                             noRoam = true;
                         }
                         followingMrHuman = 3;
-                        player.displayClientMessage(new TranslatableComponent(DelChoco.MOD_ID + ".entity_chocobo.chocobo_stay_cmd"), true);
+                        player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.chocobo_stay_cmd"), true);
                     }
-                } else { player.displayClientMessage(new TranslatableComponent(DelChoco.MOD_ID + ".entity_chocobo.not_owner"), true); }
+                } else { player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.not_owner"), true); }
                 return InteractionResult.SUCCESS;
             }
             if (!this.isInLove() && defaultHand == LOVELY_GYSAHL_GREEN.get() && !this.isBaby()) {
@@ -916,7 +908,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                         this.setCustomName(heldItemStack.getHoverName());
                         this.setCustomNameVisible(true);
                         this.usePlayerItem(player, hand, heldItemStack);
-                    } else { player.displayClientMessage(new TranslatableComponent(DelChoco.MOD_ID + ".entity_chocobo.not_owner"), true); }
+                    } else { player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.not_owner"), true); }
                 } else {
                     this.setCustomName(heldItemStack.getHoverName());
                     this.setCustomNameVisible(true);
@@ -926,7 +918,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             }
             if (defaultHand == CHOCOBO_FEATHER.get().asItem()) {
                 if (isOwnedBy(player)) { this.setCustomNameVisible(!this.isCustomNameVisible()); }
-                else { player.displayClientMessage(new TranslatableComponent(DelChoco.MOD_ID + ".entity_chocobo.not_owner"), true); }
+                else { player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.not_owner"), true); }
                 return InteractionResult.SUCCESS;
             }
         } else {
@@ -936,8 +928,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                     this.setOwnerUUID(player.getUUID());
                     this.setTame(true);
                     this.setCollarColor(16);
-                    player.displayClientMessage(new TranslatableComponent(DelChoco.MOD_ID + ".entity_chocobo.tame_success"), true);
-                } else { player.displayClientMessage(new TranslatableComponent(DelChoco.MOD_ID + ".entity_chocobo.tame_fail"), true); }
+                    player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.tame_success"), true);
+                } else { player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.tame_fail"), true); }
                 return InteractionResult.SUCCESS;
             }
             if (defaultHand == Items.NAME_TAG) {
@@ -1070,5 +1062,18 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                 else if (d0 < (double)l) { this.noActionTime = 0; }
             }
         } else { this.noActionTime = 0; }
+    }
+    public static boolean canSpawn(EntityType<Chocobo> entityType, @NotNull LevelAccessor pLevel, MobSpawnType spawnType, @NotNull BlockPos pPos, RandomSource random) {
+        boolean spawn = false;
+        final Holder<Biome> pLevelBiomes = pLevel.getBiome(pPos.below());
+        if (pLevelBiomes.containsTag(IS_END)) {
+            return !pLevel.getBlockState(pPos.below()).isAir();
+        }
+        if (pLevelBiomes.containsTag(IS_NETHER)) {
+            return pLevel.getBlockState(pPos.below()).isSolidRender(pLevel, pPos);
+        }
+        Optional<ResourceKey<Biome>> booby = pLevelBiomes.unwrapKey();
+        spawn = booby.isPresent() ? spawn || allBiomes(booby.get()) : spawn;
+        return spawn;
     }
 }

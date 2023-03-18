@@ -2,49 +2,22 @@ package com.dephoegon.delchoco.aid;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 import static net.minecraft.world.level.biome.Biomes.*;
-import static net.minecraftforge.common.BiomeDictionary.hasType;
 
 public class SpawnBiomesChecks {
-    public static final String overWorld = "OverWorld";
-    public static final String nether = "Nether";
-    public static final String theEnd = "TheEnd";
-    public static boolean typeCheck(ResourceKey<Biome> biomesKey, BiomeDictionary.Type type, String OptionalDimension) {
-        boolean biomes = hasType(biomesKey, type);
-        if (OptionalDimension == null) { OptionalDimension = "default"; }
-        boolean dimensions = switch (OptionalDimension) {
-            default -> true;
-            case overWorld -> overWorldCheck(biomesKey, false);
-            case nether -> netherCheck(biomesKey, false);
-            case theEnd -> theEndCheck(biomesKey, false);
-        };
-        return biomes && dimensions;
-    }
-    public static boolean netherCheck(ResourceKey<Biome> biomesKey, boolean includeBiomesCheck) {
-        boolean nether = hasType(biomesKey, BiomeDictionary.Type.NETHER);
-        boolean biomesCheck = !includeBiomesCheck || netherBiomes(biomesKey);
-        return (biomesCheck || nether) && COMMON.netherSpawns.get();
-    }
-    private static boolean netherBiomes(ResourceKey<Biome> Key) {
+    private static @NotNull ArrayList<ResourceKey<Biome>> netherBiomes() {
         ArrayList<ResourceKey<Biome>> netherList = new ArrayList<>();
         netherList.add(NETHER_WASTES);
         netherList.add(WARPED_FOREST);
         netherList.add(SOUL_SAND_VALLEY);
         netherList.add(BASALT_DELTAS);
-        return netherList.contains(Key);
+        return netherList;
     }
-    public static boolean overWorldCheck(ResourceKey<Biome> biomesKey, boolean includeBiomesCheck) {
-        boolean oceans = typeCheck(biomesKey, BiomeDictionary.Type.OCEAN, null);
-        boolean overWorld = hasType(biomesKey, BiomeDictionary.Type.OVERWORLD) && !oceans;
-        boolean biomesCheck = !includeBiomesCheck || overWorldBiomes(biomesKey);
-        return (biomesCheck || overWorld) && COMMON.overworldSpawns.get();
-    }
-    private static boolean overWorldBiomes(ResourceKey<Biome> Key) {
+    private static @NotNull ArrayList<ResourceKey<Biome>> overWorldBiomes() {
         ArrayList<ResourceKey<Biome>> overWorldList = new ArrayList<>();
         overWorldList.add(PLAINS);
         overWorldList.add(SUNFLOWER_PLAINS);
@@ -85,21 +58,22 @@ public class SpawnBiomesChecks {
         overWorldList.add(MUSHROOM_FIELDS);
         overWorldList.add(DRIPSTONE_CAVES);
         overWorldList.add(LUSH_CAVES);
-        return overWorldList.contains(Key);
+        return overWorldList;
     }
-    public static boolean theEndCheck(ResourceKey<Biome> biomesKey, boolean includeBiomesCheck) {
-        boolean theEnd = hasType(biomesKey, BiomeDictionary.Type.END);
-        boolean biomesCheck = !includeBiomesCheck || endBiomes(biomesKey);
-        return (biomesCheck || theEnd) && COMMON.endSpawns.get();
-    }
-    private static boolean endBiomes(ResourceKey<Biome> Key) {
+    private static ArrayList<ResourceKey<Biome>> endBiomes() {
         ArrayList<ResourceKey<Biome>> endList = new ArrayList<>();
         endList.add(THE_END);
         endList.add(END_HIGHLANDS);
         endList.add(END_MIDLANDS);
         endList.add(SMALL_END_ISLANDS);
         endList.add(END_BARRENS);
-        return  endList.contains(Key);
+        return  endList;
     }
-    public static boolean biomesCheck(ResourceKey<Biome> biomesKey, ResourceKey<Biome> biomes) { return biomesKey == biomes; }
+    public static boolean allBiomes(ResourceKey<Biome> key) {
+        ArrayList<ResourceKey<Biome>> out = new ArrayList<>();
+        out.addAll(endBiomes());
+        out.addAll(netherBiomes());
+        out.addAll(overWorldBiomes());
+        return out.contains(key);
+    }
 }

@@ -1,30 +1,30 @@
 package com.dephoegon.delchoco.client.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.dephoegon.delchoco.DelChoco;
 import com.dephoegon.delchoco.common.entities.Chocobo;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.jetbrains.annotations.NotNull;
+
+import static net.minecraftforge.client.gui.overlay.VanillaGuiOverlay.PLAYER_HEALTH;
 
 @Mod.EventBusSubscriber(modid = DelChoco.MOD_ID, value = Dist.CLIENT)
 public class RenderChocoboOverlay {
     private static final ResourceLocation ICONS = new ResourceLocation(DelChoco.MOD_ID, "textures/gui/icons.png");
 
     @SubscribeEvent
-    public static void onGuiInGameOverlayRender(RenderGameOverlayEvent.@NotNull PostLayer event) {
-        if (event.getOverlay() != ForgeIngameGui.PLAYER_HEALTH_ELEMENT) { return; }
+    public static void onGuiInGameOverlayRender(RenderGuiOverlayEvent.Post event) {
+        if (event.getOverlay() != PLAYER_HEALTH.type()) { return; }
         Minecraft minecraft = Minecraft.getInstance();
-        PoseStack matrixStack = event.getMatrixStack();
+        PoseStack matrixStack = event.getPoseStack();
         assert minecraft.player != null;
         Entity mountedEntity = minecraft.player.getVehicle();
         if (!(mountedEntity instanceof Chocobo chocobo)) { return; }

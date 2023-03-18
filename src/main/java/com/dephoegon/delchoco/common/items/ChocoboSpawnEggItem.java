@@ -14,13 +14,14 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
-
-import static com.dephoegon.delchoco.utils.RandomHelper.random;
+import java.util.List;
 
 public class ChocoboSpawnEggItem extends Item {
     private final ChocoboColor color;
@@ -82,5 +83,9 @@ public class ChocoboSpawnEggItem extends Item {
         out.add(ChocoboColor.BLACK);
         out.add(ChocoboColor.GOLD);
         return out;
+    }
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> toolTip, @NotNull TooltipFlag flag) {
+        super.appendHoverText(stack, level, toolTip, flag);
+        toolTip.add(Component.translatable("tooltip.delchoco.info.spawn_egg")); //if shift, show tip1 (if not empty)
     }
 }

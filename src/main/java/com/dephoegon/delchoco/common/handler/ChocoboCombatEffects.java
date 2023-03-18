@@ -33,8 +33,8 @@ import static net.minecraft.world.item.Items.*;
 public class ChocoboCombatEffects {
     @SubscribeEvent
     public void onChocoboLegs(@NotNull LivingHurtEvent event) {
-        Chocobo chocobo = event.getEntityLiving() instanceof Chocobo choco ? choco : null;
-        Player player = event.getEntityLiving() instanceof Player player1 ? player1 : null;
+        Chocobo chocobo = event.getEntity() instanceof Chocobo choco ? choco : null;
+        Player player = event.getEntity() instanceof Player player1 ? player1 : null;
         DamageSource source = event.getSource();
 
         if (chocobo != null && ChocoConfig.COMMON.extraChocoboEffects.get()) {
@@ -67,9 +67,9 @@ public class ChocoboCombatEffects {
     @SubscribeEvent
     public void onChocoboAttack(@NotNull LivingAttackEvent event) {
         Chocobo chocoboAttacker = event.getSource().getEntity() instanceof Chocobo choco ? choco : null;
-        Chocobo chocoboTarget = event.getEntityLiving() instanceof Chocobo choco ? choco : null;
+        Chocobo chocoboTarget = event.getEntity() instanceof Chocobo choco ? choco : null;
         if (chocoboAttacker != null && ChocoConfig.COMMON.chocoboResourcesOnHit.get()) {
-             LivingEntity target = event.getEntityLiving();
+             LivingEntity target = event.getEntity();
             if (target instanceof Spider e) { if (onHitMobChance(10)) { e.spawnAtLocation(STRING); } }
             if (target instanceof CaveSpider e) { if (onHitMobChance(5)) { e.spawnAtLocation(FERMENTED_SPIDER_EYE); } }
             if (target instanceof Skeleton e) { if (onHitMobChance(10)) { e.spawnAtLocation(BONE); } }
@@ -95,10 +95,10 @@ public class ChocoboCombatEffects {
     @SubscribeEvent
     public void onChocoboKillOrDie(@NotNull LivingDeathEvent event) {
         Chocobo chocoboKill = event.getSource().getEntity() instanceof  Chocobo choco ? choco : null;
-        Chocobo chocoboDie = event.getEntityLiving() instanceof  Chocobo choco ? choco : null;
+        Chocobo chocoboDie = event.getEntity() instanceof  Chocobo choco ? choco : null;
         if (chocoboKill != null && ChocoConfig.COMMON.chocoboResourcesOnKill.get()) {
             ChocoboColor color = chocoboKill.getChocoboColor();
-            LivingEntity target = event.getEntityLiving();
+            LivingEntity target = event.getEntity();
             if (target instanceof Spider) { if (.20f > (float) Math.random()) { chocoboKill.spawnAtLocation(COBWEB); } }
             if (color == ChocoboColor.BLACK) { if (flowerChance()) {
                if (.50f > (float) Math.random()) { chocoboKill.spawnAtLocation(WITHER_ROSE); }

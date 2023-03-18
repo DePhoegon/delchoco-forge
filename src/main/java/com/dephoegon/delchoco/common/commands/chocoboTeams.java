@@ -10,7 +10,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -72,7 +71,7 @@ public class chocoboTeams {
     private static int leave(@NotNull CommandContext<CommandSourceStack> commandSourceStack) throws CommandSyntaxException {
         Scoreboard scoreboard = commandSourceStack.getSource().getScoreboard();
         ServerPlayer player = commandSourceStack.getSource().getPlayerOrException();
-        scoreboard.removePlayerFromTeam(player.getName().getContents());
+        scoreboard.removePlayerFromTeam(player.getName().getString());
         commandSourceStack.getSource().sendSuccess(Component.nullToEmpty("Player " + player.getName().getContents() + " left their team."), true);
         return 1;
     }
@@ -111,7 +110,7 @@ public class chocoboTeams {
         if(commandEntity instanceof Player player) {
             Entity mount = player.getVehicle();
             if (!(mount instanceof Chocobo chocobo)) {
-                source.sendSuccess(new TranslatableComponent("command." + MOD_ID + ".chocobo.not_riding_chocobo"), false);
+                source.sendSuccess(Component.translatable("command." + MOD_ID + ".chocobo.not_riding_chocobo"), false);
                 return 0;
             } else {
                 source.sendSuccess(getText("get_health", chocobo, Attributes.MAX_HEALTH), false);
@@ -126,7 +125,7 @@ public class chocoboTeams {
         return 0;
     }
     @Contract("_, _, _ -> new")
-    private static @NotNull TranslatableComponent getText(String key, @NotNull Chocobo chocobo, Attribute attribute) { return new TranslatableComponent("command." + MOD_ID + ".chocobo." + key, Objects.requireNonNull(chocobo.getAttribute(attribute)).getBaseValue()); }
+    private static @NotNull Component getText(String key, @NotNull Chocobo chocobo, Attribute attribute) { return Component.translatable("command." + MOD_ID + ".chocobo." + key, Objects.requireNonNull(chocobo.getAttribute(attribute)).getBaseValue()); }
     @Contract(value = "_ -> new", pure = true)
-    private static @NotNull TranslatableComponent getText(String value) { return new TranslatableComponent("command." + MOD_ID + ".chocobo." + "get_generation", value); }
+    private static @NotNull Component getText(String value) { return Component.translatable("command." + MOD_ID + ".chocobo." + "get_generation", value); }
 }

@@ -1,22 +1,39 @@
 package com.dephoegon.delchoco.common.world.worldgen;
 
-import com.dephoegon.delchoco.common.ChocoConfig;
 import net.minecraft.core.Holder;
-import net.minecraft.data.worldgen.features.VegetationFeatures;
-import net.minecraft.data.worldgen.placement.PlacementUtils;
-import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.level.levelgen.placement.BiomeFilter;
-import net.minecraft.world.level.levelgen.placement.CountPlacement;
-import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.placement.VegetationPlacements;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
-import net.minecraft.world.level.levelgen.placement.RarityFilter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import static com.dephoegon.delchoco.DelChoco.MOD_ID;
+import static com.dephoegon.delchoco.common.world.worldgen.ModFeatureConfig.GYSAHL_KEY;
+
 public class ModPlacements {
-	public static final List<PlacementModifier> GYSAHL_PLACEMENT_NO_BIOME = List.of(CountPlacement.of(UniformInt.of(0, 5)), RarityFilter.onAverageOnceEvery((int) ChocoConfig.COMMON.gysahlGreenSpawnChance.get().doubleValue() * 10), InSquarePlacement.spread(), PlacementUtils.FULL_RANGE);
-	public static final RarityFilter GYSAHL_RARITY_UNDERGROUND = RarityFilter.onAverageOnceEvery((int) ChocoConfig.COMMON.gysahlGreenSpawnChance.get().doubleValue() * 10*6);
-	public static final Holder<PlacedFeature> PATCH_GYSAHL_NO_BIOME = PlacementUtils.register("patch_gysahl_no_biome", ModFeatureConfigs.PATCH_GYSAHL_GRASS, GYSAHL_PLACEMENT_NO_BIOME);
-	public static final Holder<PlacedFeature> PATCH_GYSAHL_UNDERGROUND = PlacementUtils.register("patch_gysahl_underground", ModFeatureConfigs.PATCH_GYSAHL_GRASS, GYSAHL_RARITY_UNDERGROUND, InSquarePlacement.spread(), PlacementUtils.FULL_RANGE);
+    public static final ResourceKey<PlacedFeature> GYSAHL_PLACE_FEATURE = createKey("gysahl_place_feature");
+
+    public static void bootstrap(@NotNull BootstapContext<PlacedFeature> context) {
+        HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
+        register(context, GYSAHL_PLACE_FEATURE, configuredFeatures.getOrThrow(GYSAHL_KEY),
+                VegetationPlacements.worldSurfaceSquaredWithCount(64));
+    }
+    private static @NotNull ResourceKey<PlacedFeature> createKey(String name) {
+        return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(MOD_ID, name));
+    }
+    private static void register(@NotNull BootstapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> configuration,
+                                 List<PlacementModifier> modifiers) {
+        context.register(key, new PlacedFeature(configuration, List.copyOf(modifiers)));
+    }
+    private static void register(BootstapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> configuration,
+                                 PlacementModifier... modifiers) {
+        register(context, key, configuration, List.of(modifiers));
+    }
 }

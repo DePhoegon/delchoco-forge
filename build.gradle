@@ -1,23 +1,9 @@
-buildscript {
-    repositories {
-        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
-        maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://maven.parchmentmc.org' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.parchmentmc:librarian:1.+'
-    }
-}
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 plugins {
     id 'eclipse'
     id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-
 
 version = "${delchoco_ver}"
 group = 'com.dephoegon.delchoco' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -28,11 +14,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-
-    // mappings channel: 'official', version: '1.18.2'
     mappings channel: project.map_type, version: project.map_type_version
-
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
 
     runs {
         client {
@@ -44,7 +26,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            property 'forge.enabledGameTestNamespaces', 'delchoco'
+            property 'forge.enabledGameTestNamespaces', 'delbase'
 
             mods {
                 delchoco {
@@ -62,7 +44,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            property 'forge.enabledGameTestNamespaces', 'delchoco'
+            property 'forge.enabledGameTestNamespaces', 'delbase'
 
             mods {
                 delchoco {
@@ -71,7 +53,7 @@ minecraft {
             }
         }
 
-         gameTestServer {
+        gameTestServer {
             workingDirectory project.file('run')
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
@@ -80,7 +62,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            property 'forge.enabledGameTestNamespaces', 'delchoco'
+            property 'forge.enabledGameTestNamespaces', 'delbase'
 
             mods {
                 delchoco {
@@ -98,8 +80,8 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            // Specify the delchoco for data generation, where to output the resulting resource, and where to look for existing resources.
-            args '--mod', 'delchoco', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+            args '--mod', 'delbase', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
                 delchoco {
@@ -121,17 +103,19 @@ sourceSets {
 
 repositories {
     maven {
-        // location of the maven that hosts JEI files
-        name = "Progwml6 maven"
+        // location of the maven that hosts JEI files before January 2023
+        name = "Progwml6's maven"
         url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
     }
     maven {
         // location of a maven mirror for JEI files, as a fallback
         name = "ModMaven"
         url = "https://modmaven.dev"
-    }
-    maven {
-        url 'https://maven.blamejared.com'
     }
     maven {
         url "https://cursemaven.com"
@@ -142,25 +126,20 @@ repositories {
 }
 
 dependencies {
-    // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
-    // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
-    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
-    compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
-    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
+    compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}"))
+    compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}"))
+    runtimeOnly(fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}"))
 
-    // Guidebook
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:${mc_version}-${patchouli_ver}:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${mc_version}-${patchouli_ver}")
 
-    // DePhoegons' Reclaim
     implementation fg.deobf("curse.maven:${delbase_curseforge_project}:${delbase_curseforge_file}")
-
-
 }
 
+// Example for how to get properties into the manifest for reading at runtime.
 jar {
     manifest {
         attributes([
@@ -176,9 +155,6 @@ jar {
 }
 
 jar.finalizedBy('reobfJar')
-
-// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
-// publish.dependsOn('reobfJar')
 
 publishing {
     publications {

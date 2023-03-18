@@ -17,8 +17,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +37,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
-import java.util.Random;
 
 import static com.dephoegon.delchoco.common.blocks.ChocoboEggBlock.NBTKEY_BREEDINFO;
 import static com.dephoegon.delchoco.common.entities.breeding.ChocoboBreedInfo.getFromNbtOrDefault;
@@ -110,7 +109,7 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
         assert this.level != null;
         this.level.addFreshEntity(baby);
 
-        Random random = baby.getRandom();
+        RandomSource random = baby.getRandom();
         for (int i = 0; i < 7; ++i) {
             double d0 = random.nextGaussian() * 0.02D;
             double d1 = random.nextGaussian() * 0.02D;
@@ -179,7 +178,7 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
             this.shouldBeAir = shouldBeAir;
         }
     }
-    public Component getDisplayName() { return new TranslatableComponent(DelChoco.MOD_ID + ".container.nest"); }
+    public Component getDisplayName() { return Component.translatable(DelChoco.MOD_ID + ".container.nest"); }
     public void onInventoryChanged() {
         this.setChanged();
         BlockState newState = ModRegistry.STRAW_NEST.get().defaultBlockState().setValue(StrawNestBlock.HAS_EGG, !this.getEggItemStack().isEmpty());

@@ -1,7 +1,7 @@
 package com.dephoegon.delchoco.common.entities.properties;
 
 import com.dephoegon.delchoco.DelChoco;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -23,13 +23,13 @@ public enum ChocoboColor {
 
     private final static Random rand = new Random();
     private final TagKey<Item> colorTag;
-    private final TranslatableComponent eggText;
+    private final Component eggText;
     private final int customModelData;
 
     ChocoboColor(TagKey<Item> colorIngredient, int CustomModelData) {
         this.colorTag = colorIngredient;
         this.customModelData = CustomModelData;
-        this.eggText = new TranslatableComponent("item." + DelChoco.MOD_ID + ".chocobo_egg.tooltip." + this.name().toLowerCase());
+        this.eggText = Component.translatable("item." + DelChoco.MOD_ID + ".chocobo_egg.tooltip." + this.name().toLowerCase());
     }
     public int getCustomModelData() { return this.customModelData; }
     public static ChocoboColor getRandomColor() { return values()[rand.nextInt(values().length)]; }
@@ -37,5 +37,5 @@ public enum ChocoboColor {
         for (ChocoboColor color : values()) { if(color.colorTag != null && stack.is(color.colorTag)) { return Optional.of(color); } }
         return Optional.empty();
     }
-    public TranslatableComponent getEggText() { return eggText; }
+    public Component getEggText() { return eggText; }
 }

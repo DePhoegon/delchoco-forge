@@ -9,7 +9,8 @@ import com.dephoegon.delchoco.common.blocks.StrawNestBlock;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.dephoegon.delchoco.common.items.*;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -19,7 +20,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import static com.dephoegon.delchoco.DelChoco.CHOCO_TAB;
 import static com.dephoegon.delchoco.common.entities.Chocobo.tier_one_chocobo_inv_slot_count;
 import static com.dephoegon.delchoco.common.entities.Chocobo.tier_two_chocobo_inv_slot_count;
 import static com.dephoegon.delchoco.common.items.ChocoboArmorItems.CHOCOBO_ARMOR_MATERIALS;
@@ -30,7 +30,7 @@ public class ModRegistry {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, DelChoco.MOD_ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, DelChoco.MOD_ID);
 
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, DelChoco.MOD_ID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, DelChoco.MOD_ID);
     public static final RegistryObject<Block> GYSAHL_GREEN = BLOCKS.register("gysahl_green", () -> new GysahlGreenBlock(Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.CROP)));
     public static final RegistryObject<Block> STRAW_NEST = BLOCKS.register("straw_nest", () -> new StrawNestBlock(Properties.of(Material.STONE).sound(SoundType.GRASS)));
     public static final RegistryObject<Block> CHOCOBO_EGG = BLOCKS.register("chocobo_egg", () -> new ChocoboEggBlock(Properties.of(Material.EGG).strength(0.5F).noOcclusion().sound(SoundType.GRASS)));
@@ -95,5 +95,5 @@ public class ModRegistry {
     public static final RegistryObject<Item> CHOCOBO_EGG_ITEM = ITEMS.register("chocobo_egg", () -> new ChocoboEggBlockItem(CHOCOBO_EGG.get(), itemBuilder(false)));
 
 
-    private static Item.Properties itemBuilder(boolean fireImmune) { if (fireImmune) { return new Item.Properties().tab(CHOCO_TAB).fireResistant();} else { return new Item.Properties().tab(CHOCO_TAB); } }
+    private static Item.Properties itemBuilder(boolean fireImmune) { if (fireImmune) { return new Item.Properties().fireResistant();} else { return new Item.Properties(); } }
 }
