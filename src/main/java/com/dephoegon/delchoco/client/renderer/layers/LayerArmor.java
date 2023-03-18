@@ -22,10 +22,10 @@ public class LayerArmor extends RenderLayer<Chocobo, EntityModel<Chocobo>> {
     private final float hide;
     private final float show;
     private static final Map<String, ResourceLocation> CHOCOBO_ARMORS = Util.make(Maps.newHashMap(), (map) -> {
-        map.put(CHAIN_CHOCO_CHEST.get().getDescriptionId(), new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/armor/chocobo_chain.png"));
-        map.put(IRON_CHOCO_CHEST.get().getDescriptionId(), new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/armor/chocobo_iron.png"));
-        map.put(DIAMOND_CHOCO_CHEST.get().getDescriptionId(), new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/armor/chocobo_diamond.png"));
-        map.put(NETHERITE_CHOCO_CHEST.get().getDescriptionId(), new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/armor/chocobo_netherite.png"));
+        map.put(CHAIN_CHOCO_CHEST.get().getDescriptionId(), new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/armor/chocobo_chain.png"));
+        map.put(IRON_CHOCO_CHEST.get().getDescriptionId(), new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/armor/chocobo_iron.png"));
+        map.put(DIAMOND_CHOCO_CHEST.get().getDescriptionId(), new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/armor/chocobo_diamond.png"));
+        map.put(NETHERITE_CHOCO_CHEST.get().getDescriptionId(), new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/armor/chocobo_netherite.png"));
     });
     public LayerArmor(RenderLayerParent<Chocobo, EntityModel<Chocobo>> pRenderer, float visibleAlpha, float invisibleAlpha) {
         super(pRenderer);

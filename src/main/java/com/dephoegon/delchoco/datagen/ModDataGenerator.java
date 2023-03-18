@@ -1,7 +1,6 @@
 package com.dephoegon.delchoco.datagen;
 
 import com.dephoegon.delchoco.DelChoco;
-import com.dephoegon.delchoco.common.world.worldgen.ModWorldGen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -13,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
-@Mod.EventBusSubscriber(modid = DelChoco.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = DelChoco.DELCHOCO_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModDataGenerator {
     @SubscribeEvent
     public static void gatherData(@NotNull GatherDataEvent event) {
@@ -22,7 +21,6 @@ public class ModDataGenerator {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        generator.addProvider(event.includeServer(), new ModWorldGen(packOutput, lookupProvider));
+        generator.addProvider(event.includeServer(), new ModWorldGenProvider(packOutput, lookupProvider));
     }
-
 }

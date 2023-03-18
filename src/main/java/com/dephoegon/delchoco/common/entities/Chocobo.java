@@ -510,7 +510,14 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     }
     public boolean canBeRiddenInWater(Entity rider) { return true; }
     @Nullable
-    public Entity getControllingPassenger() { return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0); }
+    public Entity getControllingPassenger() {
+        if (isTame() && this.isSaddled()) {
+            Entity entity = this.getFirstPassenger();
+            if (entity instanceof LivingEntity) {
+                return entity;
+            }
+        }
+        return null; }
     @Override
     protected boolean updateInWaterStateAndDoFluidPushing() {
         this.fluidHeight.clear();
@@ -835,7 +842,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             if (heldItemStack.isEmpty() && !player.isShiftKeyDown() && !this.isBaby() && this.isSaddled()) {
                 if (COMMON.ownerOnlyAccess.get()) {
                     if (isOwnedBy(player)) { player.startRiding(this); }
-                    else { player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.not_owner"), true); }
+                    else { player.displayClientMessage(Component.translatable(DelChoco.DELCHOCO_ID + ".entity_chocobo.not_owner"), true); }
                 } else { player.startRiding(this); }
                 return InteractionResult.SUCCESS;
             }
@@ -843,7 +850,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                 if (getHealth() != getMaxHealth()) {
                     this.usePlayerItem(player, hand, player.getInventory().getSelected());
                     heal(COMMON.defaultHealAmmount.get());
-                } else { player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.heal_fail"), true); }
+                } else { player.displayClientMessage(Component.translatable(DelChoco.DELCHOCO_ID + ".entity_chocobo.heal_fail"), true); }
             }
             if (defaultHand == CHOCOBO_WHISTLE.get() && !this.isBaby()) {
                 if (isOwnedBy(player)) {
@@ -857,12 +864,12 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                         }
                         this.goalSelector.addGoal(3, this.follow);
                         followingMrHuman = 1;
-                        player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.chocobo_follow_cmd"), true);
+                        player.displayClientMessage(Component.translatable(DelChoco.DELCHOCO_ID + ".entity_chocobo.chocobo_follow_cmd"), true);
                     } else if (this.followingMrHuman == 1) {
                         this.playSound(ModSounds.WHISTLE_SOUND_WANDER.get(), 1.0F, 1.0F);
                         this.goalSelector.removeGoal(this.follow);
                         followingMrHuman = 2;
-                        player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.chocobo_wander_cmd"), true);
+                        player.displayClientMessage(Component.translatable(DelChoco.DELCHOCO_ID + ".entity_chocobo.chocobo_wander_cmd"), true);
                     } else if (this.followingMrHuman == 2) {
                         this.playSound(ModSounds.WHISTLE_SOUND_STAY.get(), 1.0F, 1.0F);
                         // this.setNoAi(true);
@@ -872,9 +879,9 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                             noRoam = true;
                         }
                         followingMrHuman = 3;
-                        player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.chocobo_stay_cmd"), true);
+                        player.displayClientMessage(Component.translatable(DelChoco.DELCHOCO_ID + ".entity_chocobo.chocobo_stay_cmd"), true);
                     }
-                } else { player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.not_owner"), true); }
+                } else { player.displayClientMessage(Component.translatable(DelChoco.DELCHOCO_ID + ".entity_chocobo.not_owner"), true); }
                 return InteractionResult.SUCCESS;
             }
             if (!this.isInLove() && defaultHand == LOVELY_GYSAHL_GREEN.get() && !this.isBaby()) {
@@ -908,7 +915,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                         this.setCustomName(heldItemStack.getHoverName());
                         this.setCustomNameVisible(true);
                         this.usePlayerItem(player, hand, heldItemStack);
-                    } else { player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.not_owner"), true); }
+                    } else { player.displayClientMessage(Component.translatable(DelChoco.DELCHOCO_ID + ".entity_chocobo.not_owner"), true); }
                 } else {
                     this.setCustomName(heldItemStack.getHoverName());
                     this.setCustomNameVisible(true);
@@ -918,7 +925,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             }
             if (defaultHand == CHOCOBO_FEATHER.get().asItem()) {
                 if (isOwnedBy(player)) { this.setCustomNameVisible(!this.isCustomNameVisible()); }
-                else { player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.not_owner"), true); }
+                else { player.displayClientMessage(Component.translatable(DelChoco.DELCHOCO_ID + ".entity_chocobo.not_owner"), true); }
                 return InteractionResult.SUCCESS;
             }
         } else {
@@ -928,8 +935,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                     this.setOwnerUUID(player.getUUID());
                     this.setTame(true);
                     this.setCollarColor(16);
-                    player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.tame_success"), true);
-                } else { player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".entity_chocobo.tame_fail"), true); }
+                    player.displayClientMessage(Component.translatable(DelChoco.DELCHOCO_ID + ".entity_chocobo.tame_success"), true);
+                } else { player.displayClientMessage(Component.translatable(DelChoco.DELCHOCO_ID + ".entity_chocobo.tame_fail"), true); }
                 return InteractionResult.SUCCESS;
             }
             if (defaultHand == Items.NAME_TAG) {

@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -25,28 +24,28 @@ import static com.dephoegon.delchoco.aid.chocoKB.hideChocoboMountInFirstPerson;
 
 public class ChocoboRenderer extends MobRenderer<Chocobo, EntityModel<Chocobo>> {
     private static final Map<ChocoboColor, ResourceLocation> CHOCOBO_PER_COLOR = Util.make(Maps.newHashMap(), (map) -> {
-        map.put(ChocoboColor.YELLOW, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/base/yellow.png"));
-        map.put(ChocoboColor.GREEN, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/base/green.png"));
-        map.put(ChocoboColor.BLUE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/base/blue.png"));
-        map.put(ChocoboColor.WHITE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/base/white.png"));
-        map.put(ChocoboColor.BLACK, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/base/black.png"));
-        map.put(ChocoboColor.GOLD, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/base/gold.png"));
-        map.put(ChocoboColor.PINK, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/base/pink.png"));
-        map.put(ChocoboColor.RED, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/base/red.png"));
-        map.put(ChocoboColor.PURPLE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/base/purple.png"));
-        map.put(ChocoboColor.FLAME, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/flame/flame.png"));
+        map.put(ChocoboColor.YELLOW, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/base/yellow.png"));
+        map.put(ChocoboColor.GREEN, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/base/green.png"));
+        map.put(ChocoboColor.BLUE, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/base/blue.png"));
+        map.put(ChocoboColor.WHITE, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/base/white.png"));
+        map.put(ChocoboColor.BLACK, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/base/black.png"));
+        map.put(ChocoboColor.GOLD, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/base/gold.png"));
+        map.put(ChocoboColor.PINK, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/base/pink.png"));
+        map.put(ChocoboColor.RED, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/base/red.png"));
+        map.put(ChocoboColor.PURPLE, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/base/purple.png"));
+        map.put(ChocoboColor.FLAME, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/flame/flame.png"));
     });
     private static final Map<ChocoboColor, ResourceLocation> CHICOBO_PER_COLOR = Util.make(Maps.newHashMap(), (map) -> {
-        map.put(ChocoboColor.YELLOW, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/base/yellow.png"));
-        map.put(ChocoboColor.GREEN, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/base/green.png"));
-        map.put(ChocoboColor.BLUE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/base/blue.png"));
-        map.put(ChocoboColor.WHITE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/base/white.png"));
-        map.put(ChocoboColor.BLACK, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/base/black.png"));
-        map.put(ChocoboColor.GOLD, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/base/gold.png"));
-        map.put(ChocoboColor.PINK, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/base/pink.png"));
-        map.put(ChocoboColor.RED, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/base/red.png"));
-        map.put(ChocoboColor.PURPLE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/base/purple.png"));
-        map.put(ChocoboColor.FLAME, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/flame/flame.png"));
+        map.put(ChocoboColor.YELLOW, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chicobos/base/yellow.png"));
+        map.put(ChocoboColor.GREEN, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chicobos/base/green.png"));
+        map.put(ChocoboColor.BLUE, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chicobos/base/blue.png"));
+        map.put(ChocoboColor.WHITE, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chicobos/base/white.png"));
+        map.put(ChocoboColor.BLACK, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chicobos/base/black.png"));
+        map.put(ChocoboColor.GOLD, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chicobos/base/gold.png"));
+        map.put(ChocoboColor.PINK, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chicobos/base/pink.png"));
+        map.put(ChocoboColor.RED, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chicobos/base/red.png"));
+        map.put(ChocoboColor.PURPLE, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chicobos/base/purple.png"));
+        map.put(ChocoboColor.FLAME, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chicobos/flame/flame.png"));
     });
     private final EntityModel<Chocobo> chicoboModel;
     private final EntityModel<Chocobo> chocoboModel = this.getModel();

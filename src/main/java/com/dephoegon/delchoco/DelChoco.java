@@ -15,6 +15,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -31,22 +32,17 @@ import org.jetbrains.annotations.NotNull;
 import static com.dephoegon.delchoco.aid.creativeTabAid.CHOCO_TAB;
 import static com.dephoegon.delchoco.aid.creativeTabArrayLists.*;
 import static com.dephoegon.delchoco.common.init.ModEntities.CHOCOBO;
-import static net.minecraftforge.event.CreativeModeTabEvent.BuildContents;
 
-@Mod(DelChoco.MOD_ID)
+@Mod(DelChoco.DELCHOCO_ID)
 public class DelChoco {
-    public static final String MOD_ID = "delchoco";
-    public final static Logger log = LogManager.getLogger(MOD_ID);
-    private void addCreative(@NotNull BuildContents event) {
-        if(event.getTab() == CHOCO_TAB) {
-            getChocoBlocks().forEach(event::accept);
-            getAllChocoboItems().forEach(event::accept);
-        }
-        if(event.getTab() == CreativeModeTabs.COMBAT) {
-            getChocoboArmors().forEach(event::accept);
-            getChocoboWeapons().forEach(event::accept);
-            getChocoboDisguiseItems().forEach(event::accept);
-        }
+    public static final String DELCHOCO_ID = "delchoco";
+    public final static Logger log = LogManager.getLogger(DELCHOCO_ID);
+    private void addCreative(CreativeModeTabEvent.@NotNull BuildContents event) {
+        if(event.getTab() == CHOCO_TAB) { getChocoBlocks().forEach(event::accept); }
+        if(event.getTab() == CHOCO_TAB) { getAllChocoboItems().forEach(event::accept); }
+        if(event.getTab() == CreativeModeTabs.COMBAT) { getChocoboArmors().forEach(event::accept); }
+        if(event.getTab() == CreativeModeTabs.COMBAT) { getChocoboWeapons().forEach(event::accept); }
+        if(event.getTab() == CreativeModeTabs.COMBAT) { getChocoboDisguiseItems().forEach(event::accept); }
         if(event.getTab() == CreativeModeTabs.FOOD_AND_DRINKS) { getChocoboFood().forEach(event::accept); }
         if(event.getTab() == CreativeModeTabs.INGREDIENTS) { getChocoboMiscItems().forEach(event::accept); }
         if(event.getTab() == CreativeModeTabs.SPAWN_EGGS) { getChocoboSpawnEggs().forEach(event::accept); }
@@ -63,7 +59,7 @@ public class DelChoco {
         ModRegistry.BLOCKS.register(eventBus);
         ModRegistry.ITEMS.register(eventBus);
         ModRegistry.BLOCK_ENTITIES.register(eventBus);
-        ModEntities.ENTITIES.register(eventBus);
+        ModEntities.ENTITY_TYPES.register(eventBus);
         ModSounds.SOUND_EVENTS.register(eventBus);
         ModContainers.CONTAINERS.register(eventBus);
         ModAttributes.ATTRIBUTES.register(eventBus);
@@ -71,7 +67,7 @@ public class DelChoco {
         MinecraftForge.EVENT_BUS.register(new ChocoboCombatEffects());
         MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommandsEvent);
         MinecraftForge.EVENT_BUS.addListener(this::onWorldLoad);
-        MinecraftForge.EVENT_BUS.addListener(this::addCreative);
+        eventBus.addListener(this::addCreative);
         eventBus.addListener(ModEntities::registerEntityAttributes);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {

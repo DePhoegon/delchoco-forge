@@ -71,14 +71,14 @@ public class ChocoboSummoning {
                     if ((x == -3 || x == 3) && (z == -3 || z == 3)) {
                         boolean swapCheck = pillar == null ? !blockState.isAir() : blockState != pillar;
                         String out = swapCheck ? pillar == null ? ".alter.invalid_air" : ".alter.invalid_pillar" : null;
-                        if (out != null) { player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + out), true); return false; }
+                        if (out != null) { player.displayClientMessage(Component.translatable(DelChoco.DELCHOCO_ID + out), true); return false; }
                         continue;
                     }
                     if (x == 0 && y == 0 && z ==0) { continue; }
                     if (y < 0) { if (x < 2 && x > -2 && z < 2 && z > -2) { continue; } }
                     if (y < -1) { if (x < 3 && x > -3 && z < 3 && z > -3) { continue; } }
                     if (!blockState.isAir()) {
-                        player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".alter.invalid_air"), true);
+                        player.displayClientMessage(Component.translatable(DelChoco.DELCHOCO_ID + ".alter.invalid_air"), true);
                         return false;
                     }
                 }
@@ -92,14 +92,14 @@ public class ChocoboSummoning {
                 for (int y = -3; y < 0; y++) {
                     BlockState baseCheck = worldIn.getBlockState(new BlockPos(alterPOS.getX()+x, alterPOS.getY()+y, alterPOS.getZ()+z));
                     if (x == 0 && z == 0) { if (!baseCheck.getFluidState().isSource()) {
-                        player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + ".alter.invalid_center"), true);
+                        player.displayClientMessage(Component.translatable(DelChoco.DELCHOCO_ID + ".alter.invalid_center"), true);
                         return false;
                     } continue; }
                     else if (y > -3 && (x < -2 || x > 2 || z < -2 || z > 2)) { continue; }
                     else if (y > -2 && (x < -1 || x > 1 || z < -1 || z > 1)) { continue; }
                     if (!alterBlocks(baseCheck.getBlock().defaultBlockState())) {
                         String isAir = baseCheck.isAir() ? ".invalid_air_base" : ".alter.invalid_base";
-                        player.displayClientMessage(Component.translatable(DelChoco.MOD_ID + isAir), true);
+                        player.displayClientMessage(Component.translatable(DelChoco.DELCHOCO_ID + isAir), true);
                         return false;
                     }
                 }

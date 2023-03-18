@@ -19,21 +19,20 @@ import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConf
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import org.jetbrains.annotations.NotNull;
 
-import static com.dephoegon.delchoco.DelChoco.MOD_ID;
+import static com.dephoegon.delchoco.DelChoco.DELCHOCO_ID;
 
 public class ModFeatureConfig {
 	protected static final BlockState GYSAHL_GREEN = ModRegistry.GYSAHL_GREEN.get().defaultBlockState().setValue(GysahlGreenBlock.AGE, GysahlGreenBlock.MAX_AGE);
 	public static final ResourceKey<ConfiguredFeature<?, ?>> GYSAHL_KEY = registerKey("gysahl_green");
 
-	public static void init() { }
-	public static <T> void boots(BootstapContext<ConfiguredFeature<?, ?>> context) {
+	public static <T> void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
 		featureRegister(context, GYSAHL_KEY, Feature.RANDOM_PATCH, new RandomPatchConfiguration(64, 10, 4, PlacementUtils.filtered(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(GYSAHL_GREEN)), BlockPredicate.allOf(BlockPredicate.ONLY_IN_AIR_PREDICATE, BlockPredicate.matchesBlocks(Direction.DOWN.getNormal(), Blocks.GRASS_BLOCK, Blocks.NETHERRACK, Blocks.CLAY, Blocks.MOSS_BLOCK, Blocks.CRIMSON_NYLIUM, Blocks.WARPED_NYLIUM, Blocks.TUFF, Blocks.DRIPSTONE_BLOCK, Blocks.END_STONE)))));
 	}
 	public static @NotNull ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
-		return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(MOD_ID, name));
+		return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(DELCHOCO_ID, name));
 	}
 
-	public static <FC extends FeatureConfiguration, F extends Feature<FC>> void featureRegister(@NotNull BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC configuration) {
+	private static <FC extends FeatureConfiguration, F extends Feature<FC>> void featureRegister(@NotNull BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC configuration) {
 		context.register(key, new ConfiguredFeature<>(feature, configuration));
 	}
 }

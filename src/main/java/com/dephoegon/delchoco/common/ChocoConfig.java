@@ -332,7 +332,7 @@ public class ChocoConfig {
     @SubscribeEvent
     public static void onFileChange(final ModConfigEvent.@NotNull Reloading configEvent) {
         DelChoco.log.debug("delchoco's config just got changed on the file system!");
-        if(configEvent.getConfig().getModId() == DelChoco.MOD_ID) {
+        if(configEvent.getConfig().getModId() == DelChoco.DELCHOCO_ID) {
             if (COMMON.chocoboPackSizeMin.get() > COMMON.chocoboPackSizeMax.get()) {
                 int t = COMMON.chocoboPackSizeMax.get();
                 COMMON.chocoboPackSizeMax.set(COMMON.chocoboPackSizeMin.get());

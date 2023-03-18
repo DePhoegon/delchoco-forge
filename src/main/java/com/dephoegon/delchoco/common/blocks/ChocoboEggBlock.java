@@ -80,8 +80,8 @@ public class ChocoboEggBlock extends BaseEntityBlock {
             final ChocoboBreedInfo info = new ChocoboBreedInfo(nbtBreedInfo);
             final ChocoboStatSnapshot mother = info.getMother();
             final ChocoboStatSnapshot father = info.getFather();
-            tooltip.add(Component.translatable("item." + DelChoco.MOD_ID + ".chocobo_egg.tooltip.mother_info", (int) mother.health, (int) (mother.speed * 100), (int) mother.stamina, mother.color.getEggText()));
-            tooltip.add(Component.translatable("item." + DelChoco.MOD_ID + ".chocobo_egg.tooltip.father_info", (int) father.health, (int) (father.speed * 100), (int) father.stamina, father.color.getEggText()));
-        } else { tooltip.add(Component.translatable("item." + DelChoco.MOD_ID + ".chocobo_egg.tooltip.invalid_egg")); }
+            tooltip.add(Component.translatable("item." + DelChoco.DELCHOCO_ID + ".chocobo_egg.tooltip.mother_info", (int) mother.health, (int) (mother.speed * 100), (int) mother.stamina, mother.color.getEggText()));
+            tooltip.add(Component.translatable("item." + DelChoco.DELCHOCO_ID + ".chocobo_egg.tooltip.father_info", (int) father.health, (int) (father.speed * 100), (int) father.stamina, father.color.getEggText()));
+        } else { tooltip.add(Component.translatable("item." + DelChoco.DELCHOCO_ID + ".chocobo_egg.tooltip.invalid_egg")); }
     }
 }

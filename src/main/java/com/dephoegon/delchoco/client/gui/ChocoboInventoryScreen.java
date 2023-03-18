@@ -17,9 +17,9 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class ChocoboInventoryScreen extends AbstractContainerScreen<SaddleBagContainer> {
-    private static final ResourceLocation INV_TEXTURE_NULL = new ResourceLocation(DelChoco.MOD_ID, "textures/gui/chocobo_inventory_null.png");
-    private static final ResourceLocation INV_TEXTURE_SMALL = new ResourceLocation(DelChoco.MOD_ID, "textures/gui/chocobo_inventory_small.png");
-    private static final ResourceLocation INV_TEXTURE_LARGE = new ResourceLocation(DelChoco.MOD_ID, "textures/gui/chocobo_inventory_large.png");
+    private static final ResourceLocation INV_TEXTURE_NULL = new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/gui/chocobo_inventory_null.png");
+    private static final ResourceLocation INV_TEXTURE_SMALL = new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/gui/chocobo_inventory_small.png");
+    private static final ResourceLocation INV_TEXTURE_LARGE = new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/gui/chocobo_inventory_large.png");
     private static final int xAdjust = (4*18+16)+5; // (Additional Sizes for slots) + Border buffer
     private final Chocobo chocobo;
 

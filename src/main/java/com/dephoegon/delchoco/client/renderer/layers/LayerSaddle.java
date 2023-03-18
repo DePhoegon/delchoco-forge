@@ -16,19 +16,17 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class LayerSaddle extends RenderLayer<Chocobo, EntityModel<Chocobo>> {
 	private final float hide;
 	private final float show;
 	private static final Map<Item, ResourceLocation> CHOCOBO_SADDLES = Util.make(Maps.newHashMap(), (map) ->{
-		map.put(ModRegistry.CHOCOBO_SADDLE.get(), new ResourceLocation(DelChoco.MOD_ID,"textures/entities/chocobos/saddle.png"));
-		map.put(ModRegistry.CHOCOBO_SADDLE_BAGS.get(), new ResourceLocation(DelChoco.MOD_ID,"textures/entities/chocobos/saddle_bag.png"));
-		map.put(ModRegistry.CHOCOBO_SADDLE_PACK.get(),new ResourceLocation(DelChoco.MOD_ID,"textures/entities/chocobos/pack_bag.png"));
+		map.put(ModRegistry.CHOCOBO_SADDLE.get(), new ResourceLocation(DelChoco.DELCHOCO_ID,"textures/entities/chocobos/saddle.png"));
+		map.put(ModRegistry.CHOCOBO_SADDLE_BAGS.get(), new ResourceLocation(DelChoco.DELCHOCO_ID,"textures/entities/chocobos/saddle_bag.png"));
+		map.put(ModRegistry.CHOCOBO_SADDLE_PACK.get(),new ResourceLocation(DelChoco.DELCHOCO_ID,"textures/entities/chocobos/pack_bag.png"));
 	});
 
 	public LayerSaddle(RenderLayerParent<Chocobo, EntityModel<Chocobo>> rendererIn, float visibleAlpha, float invisibleAlpha) {

@@ -1,7 +1,6 @@
 package com.dephoegon.delchoco.aid;
 
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,15 +9,15 @@ import java.util.ArrayList;
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 
 public class creativeTabArrayLists {
-    public static @NotNull ArrayList<RegistryObject<? extends Block>> getChocoBlocks() {
-        ArrayList<RegistryObject<? extends Block>> out = new ArrayList<>();
+    public static @NotNull ArrayList<RegistryObject<? extends ItemLike>> getChocoBlocks() {
+        ArrayList<RegistryObject<? extends ItemLike>> out = new ArrayList<>();
         out.add(GYSAHL_GREEN);
         out.add(STRAW_NEST);
         out.add(CHOCOBO_EGG);
         return out;
     }
-    public static @NotNull ArrayList<RegistryObject<? extends Item>> getAllChocoboItems() {
-        ArrayList<RegistryObject<? extends Item>> out = new ArrayList<>();
+    public static @NotNull ArrayList<RegistryObject<? extends ItemLike>> getAllChocoboItems() {
+        ArrayList<RegistryObject<? extends ItemLike>> out = new ArrayList<>();
         out.addAll(getChocoboFood());
         out.addAll(getChocoboWeapons());
         out.addAll(getChocoboArmors());
@@ -28,31 +27,31 @@ public class creativeTabArrayLists {
         out.addAll(getChocoboSpawnEggs());
         return out;
     }
-    public static @NotNull ArrayList<RegistryObject<? extends Item>> getChocoboWeapons() {
-        ArrayList<RegistryObject<? extends Item>> out = new ArrayList<>();
+    public static @NotNull ArrayList<RegistryObject<? extends ItemLike>> getChocoboWeapons() {
+        ArrayList<RegistryObject<? extends ItemLike>> out = new ArrayList<>();
         out.add(STONE_CHOCO_WEAPON);
         out.add(IRON_CHOCO_WEAPON);
         out.add(DIAMOND_CHOCO_WEAPON);
         out.add(NETHERITE_CHOCO_WEAPON);
         return out;
     }
-    public static @NotNull ArrayList<RegistryObject<? extends Item>> getChocoboArmors() {
-        ArrayList<RegistryObject<? extends Item>> out = new ArrayList<>();
+    public static @NotNull ArrayList<RegistryObject<? extends ItemLike>> getChocoboArmors() {
+        ArrayList<RegistryObject<? extends ItemLike>> out = new ArrayList<>();
         out.add(CHAIN_CHOCO_CHEST);
         out.add(IRON_CHOCO_CHEST);
         out.add(DIAMOND_CHOCO_CHEST);
         out.add(NETHERITE_CHOCO_CHEST);
         return out;
     }
-    public static @NotNull ArrayList<RegistryObject<? extends Item>> getChocoboSaddles() {
-        ArrayList<RegistryObject<? extends Item>> out = new ArrayList<>();
+    public static @NotNull ArrayList<RegistryObject<? extends ItemLike>> getChocoboSaddles() {
+        ArrayList<RegistryObject<? extends ItemLike>> out = new ArrayList<>();
         out.add(CHOCOBO_SADDLE);
         out.add(CHOCOBO_SADDLE_BAGS);
         out.add(CHOCOBO_SADDLE_PACK);
         return out;
     }
-    public static @NotNull ArrayList<RegistryObject<? extends Item>> getChocoboSpawnEggs() {
-        ArrayList<RegistryObject<? extends Item>> out = new ArrayList<>();
+    public static @NotNull ArrayList<RegistryObject<? extends ItemLike>> getChocoboSpawnEggs() {
+        ArrayList<RegistryObject<? extends ItemLike>> out = new ArrayList<>();
         out.add(YELLOW_CHOCOBO_SPAWN_EGG);
         out.add(BLUE_CHOCOBO_SPAWN_EGG);
         out.add(GREEN_CHOCOBO_SPAWN_EGG);
@@ -65,16 +64,16 @@ public class creativeTabArrayLists {
         out.add(FLAME_CHOCOBO_SPAWN_EGG);
         return out;
     }
-    public static @NotNull ArrayList<RegistryObject<? extends Item>> getChocoboMiscItems() {
-        ArrayList<RegistryObject<? extends Item>> out = new ArrayList<>();
+    public static @NotNull ArrayList<RegistryObject<? extends ItemLike>> getChocoboMiscItems() {
+        ArrayList<RegistryObject<? extends ItemLike>> out = new ArrayList<>();
         out.add(CHOCOBO_WHISTLE);
         out.add(CHOCOBO_FEATHER);
         out.add(LOVELY_GYSAHL_GREEN);
         out.add(GYSAHL_CAKE);
         return out;
     }
-    public static @NotNull ArrayList<RegistryObject<? extends Item>> getChocoboDisguiseItems() {
-        ArrayList<RegistryObject<? extends Item>> out = new ArrayList<>();
+    public static @NotNull ArrayList<RegistryObject<? extends ItemLike>> getChocoboDisguiseItems() {
+        ArrayList<RegistryObject<? extends ItemLike>> out = new ArrayList<>();
         out.add(LEATHER_CHOCO_DISGUISE_HELMET);
         out.add(LEATHER_CHOCO_DISGUISE_CHEST);
         out.add(LEATHER_CHOCO_DISGUISE_LEGS);
@@ -93,8 +92,8 @@ public class creativeTabArrayLists {
         out.add(NETHERITE_CHOCO_DISGUISE_FEET);
         return out;
     }
-    public static @NotNull ArrayList<RegistryObject<? extends Item>> getChocoboFood() {
-        ArrayList<RegistryObject<? extends Item>> out = new ArrayList<>();
+    public static @NotNull ArrayList<RegistryObject<? extends ItemLike>> getChocoboFood() {
+        ArrayList<RegistryObject<? extends ItemLike>> out = new ArrayList<>();
         out.add(CHOCOBO_DRUMSTICK_RAW);
         out.add(CHOCOBO_DRUMSTICK_COOKED);
         out.add(PICKLED_GYSAHL_RAW);
