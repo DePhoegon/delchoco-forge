@@ -38,6 +38,8 @@ public class DelChoco {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ChocoConfig.commonSpec);
         eventBus.register(ChocoConfig.class);
 
+        eventBus.addListener(this::setup);
+
         ModRegistry.BLOCKS.register(eventBus);
         ModRegistry.ITEMS.register(eventBus);
         ModRegistry.BLOCK_ENTITIES.register(eventBus);
@@ -48,7 +50,9 @@ public class DelChoco {
 
         MinecraftForge.EVENT_BUS.register(new ModWorldgen());
         MinecraftForge.EVENT_BUS.register(new ChocoboCombatEffects());
+        MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommandsEvent);
         MinecraftForge.EVENT_BUS.addListener(ModEntities::addSpawns);
+        MinecraftForge.EVENT_BUS.addListener(this::onWorldLoad);
         eventBus.addListener(ModEntities::registerEntityAttributes);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
@@ -57,4 +61,11 @@ public class DelChoco {
             eventBus.addListener(ClientHandler::registerLayerDefinitions);
         });
     }
+    public void onWorldLoad(WorldEvent.Load event) { composable.addToList(); }
+    private void setup(final FMLCommonSetupEvent event) {
+        ModDataSerializers.init();
+        PacketManager.init();
+        Log4jFilter.init();
+    }
+    public void onRegisterCommandsEvent(@NotNull RegisterCommandsEvent event) { chocoboTeams.commands(event.getDispatcher()); }
 }
