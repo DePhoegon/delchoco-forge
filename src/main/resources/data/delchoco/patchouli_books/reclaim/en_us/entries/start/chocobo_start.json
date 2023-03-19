@@ -4,6 +4,12 @@
   "category": "delchoco:chocobo_ent",
   "pages": [
     {
+      "title": "No Natural Spawn Option",
+      "type": "patchouli:spotlight",
+      "item": "delchoco:chocobo_egg",
+      "text": "For when Natural Spawning is disabled.$(br)- $(l:delchoco:disabled_spawns/disabled_spawn)Basics$(/l)"
+    },
+    {
       "title": "Minimally Needed Mats",
       "type": "patchouli:spotlight",
       "item": "delchoco:chocobo_saddle",
