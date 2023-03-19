@@ -1,0 +1,10 @@
+Porting to 1.19.3
+----
+All features work
+
+- Datagen
+= Partly working
+
+- Natural Spawning (Gysahl Greens & Chocobos) Not working
+
+Ported the rest of the things outside of new spawning requirements.

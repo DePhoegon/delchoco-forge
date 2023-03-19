@@ -39,7 +39,7 @@ import static com.dephoegon.delchoco.common.init.ModArmorMaterial.*;
 
 public class ChocoDisguiseItem extends ArmorItem {
 	private final LazyLoadedValue<HumanoidModel<?>> model;
-	private final static String NBTKEY_COLOR = "Color";
+	public final static String NBTKEY_COLOR = "Color";
 	public final static String yellow = "yellow"; // default
 	public final static String green = "green";
 	public final static String pink = "pink";

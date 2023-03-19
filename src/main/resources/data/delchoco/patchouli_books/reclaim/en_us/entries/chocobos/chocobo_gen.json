@@ -24,19 +24,19 @@
       "title": "Water Breathing Ability",
       "type": "patchouli:spotlight",
       "item": "minecraft:water_bucket",
-      "text": "Blue/Black/Purple/Gold Chocobos can breath water.$(br)- This Trait can be passed on Through Breeding"
+      "text": "Blue & Gold Chocobos can breath water.$(br)- This Trait can be passed on Through Breeding"
     },
     {
       "title": "Poison Damage",
       "type": "patchouli:spotlight",
       "item": "minecraft:pufferfish",
-      "text": "Green/Black/Gold Chocobos are Naturally immune.$(br)- This Trait can be passed on Through Breeding"
+      "text": "Green & Gold Chocobos are Naturally immune.$(br)- This Trait can be passed on Through Breeding"
     },
     {
       "title": "Wither Damage",
       "type": "patchouli:spotlight",
       "item": "minecraft:wither_rose",
-      "text": "Red/Black/Purple/Pink/Gold Chocobos are Naturally immune.$(br)- This Trait can be passed on Through Breeding"
+      "text": "Black & Gold Chocobos are Naturally immune.$(br)- This Trait can be passed on Through Breeding"
     },
     {
       "title": "Freezing Damage",
