@@ -22,8 +22,8 @@ public class LayerBeakClaws extends RenderLayer<Chocobo, EntityModel<Chocobo>> {
     private static final String curved = "curved";
     private static final String boxed = "boxed";
     private static final Map<String, ResourceLocation> CHOCOBO_BEAKS = Util.make(Maps.newHashMap(), (map) -> {
-        map.put(curved, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/flame/curved.png"));
-        map.put(boxed, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/flame/boxed.png"));
+        map.put(curved, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/flame/curved.png"));
+        map.put(boxed, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/flame/boxed.png"));
     });
     public LayerBeakClaws(RenderLayerParent<Chocobo, EntityModel<Chocobo>> pRenderer, boolean isBoxedBeak) {
         super(pRenderer);

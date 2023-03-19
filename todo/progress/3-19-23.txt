@@ -1,0 +1,3 @@
+Under the hood alignments
+-----------
+trimming natural immunity of chocobos to 1 color + Gold

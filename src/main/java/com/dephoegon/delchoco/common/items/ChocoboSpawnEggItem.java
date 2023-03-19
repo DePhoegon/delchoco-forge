@@ -63,23 +63,17 @@ public class ChocoboSpawnEggItem extends Item {
         ArrayList<ChocoboColor> out = new ArrayList<>();
         out.add(ChocoboColor.BLUE);
         out.add(ChocoboColor.GOLD);
-        out.add(ChocoboColor.BLACK);
-        out.add(ChocoboColor.PURPLE);
         return out;
     }
     public static @NotNull ArrayList<ChocoboColor> wiChocobos() {
         ArrayList<ChocoboColor> out = new ArrayList<>();
-        out.add(ChocoboColor.PURPLE);
-        out.add(ChocoboColor.RED);
         out.add(ChocoboColor.BLACK);
-        out.add(ChocoboColor.PINK);
         out.add(ChocoboColor.GOLD);
         return out;
     }
     public static @NotNull ArrayList<ChocoboColor> piChocobos() {
         ArrayList<ChocoboColor> out = new ArrayList<>();
         out.add(ChocoboColor.GREEN);
-        out.add(ChocoboColor.BLACK);
         out.add(ChocoboColor.GOLD);
         return out;
     }

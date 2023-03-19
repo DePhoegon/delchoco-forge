@@ -16,9 +16,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 
-@Mod.EventBusSubscriber(modid = DelChoco.MOD_ID, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = DelChoco.DELCHOCO_ID, value = Dist.CLIENT)
 public class RenderChocoboOverlay {
-    private static final ResourceLocation ICONS = new ResourceLocation(DelChoco.MOD_ID, "textures/gui/icons.png");
+    private static final ResourceLocation ICONS = new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/gui/icons.png");
 
     @SubscribeEvent
     public static void onGuiInGameOverlayRender(RenderGameOverlayEvent.@NotNull PostLayer event) {

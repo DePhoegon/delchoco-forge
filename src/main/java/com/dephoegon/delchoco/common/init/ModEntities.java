@@ -1,7 +1,6 @@
 package com.dephoegon.delchoco.common.init;
 
 import com.dephoegon.delchoco.DelChoco;
-import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.entities.Chocobo;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -21,11 +20,9 @@ import org.jetbrains.annotations.NotNull;
 import static com.dephoegon.delchoco.aid.SpawnBiomesChecks.*;
 import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.entities.Chocobo.createAttributes;
-import static net.minecraft.world.level.biome.Biomes.WARM_OCEAN;
-import static net.minecraftforge.common.BiomeDictionary.hasType;
 
 public class ModEntities {
-    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, DelChoco.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, DelChoco.DELCHOCO_ID);
     public static final RegistryObject<EntityType<Chocobo>> CHOCOBO = ENTITIES.register("chocobo", () -> register("chocobo", EntityType.Builder.of(Chocobo::new, MobCategory.CREATURE).sized(1.2f, 2.8f).clientTrackingRange(64)));
 
     public static <T extends Entity> @NotNull EntityType<T> register(String id, EntityType.@NotNull Builder<T> builder) { return builder.build(id); }

@@ -179,7 +179,7 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
             this.shouldBeAir = shouldBeAir;
         }
     }
-    public Component getDisplayName() { return new TranslatableComponent(DelChoco.MOD_ID + ".container.nest"); }
+    public Component getDisplayName() { return new TranslatableComponent(DelChoco.DELCHOCO_ID + ".container.nest"); }
     public void onInventoryChanged() {
         this.setChanged();
         BlockState newState = ModRegistry.STRAW_NEST.get().defaultBlockState().setValue(StrawNestBlock.HAS_EGG, !this.getEggItemStack().isEmpty());

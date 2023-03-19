@@ -19,9 +19,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class ClientHandler {
-    public static final ModelLayerLocation CHOCOBO = new ModelLayerLocation(new ResourceLocation(DelChoco.MOD_ID, "main"), "chocobo");
-    public static final ModelLayerLocation CHICOBO = new ModelLayerLocation(new ResourceLocation(DelChoco.MOD_ID, "main"), "chicobo");
-    public static final ModelLayerLocation CHOCO_DISGUISE = new ModelLayerLocation(new ResourceLocation(DelChoco.MOD_ID, "main"), "choco_disguise");
+    public static final ModelLayerLocation CHOCOBO = new ModelLayerLocation(new ResourceLocation(DelChoco.DELCHOCO_ID, "main"), "chocobo");
+    public static final ModelLayerLocation CHICOBO = new ModelLayerLocation(new ResourceLocation(DelChoco.DELCHOCO_ID, "main"), "chicobo");
+    public static final ModelLayerLocation CHOCO_DISGUISE = new ModelLayerLocation(new ResourceLocation(DelChoco.DELCHOCO_ID, "main"), "choco_disguise");
 
     public static void onClientSetup(final FMLClientSetupEvent event) {
         ItemBlockRenderTypes.setRenderLayer(ModRegistry.GYSAHL_GREEN.get(), RenderType.cutout());

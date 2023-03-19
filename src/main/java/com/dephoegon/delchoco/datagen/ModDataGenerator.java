@@ -110,7 +110,7 @@ public class ModDataGenerator {
 	}
 
 	private static class FarmingItemModels extends ItemModelProvider {
-		public FarmingItemModels(DataGenerator gen, ExistingFileHelper helper) { super(gen, DelChoco.MOD_ID, helper); }
+		public FarmingItemModels(DataGenerator gen, ExistingFileHelper helper) { super(gen, DelChoco.DELCHOCO_ID, helper); }
 		protected void registerModels() {
 			ModRegistry.ITEMS.getEntries().stream()
 				.map(RegistryObject::get)

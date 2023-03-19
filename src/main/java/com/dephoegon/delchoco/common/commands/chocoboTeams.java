@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-import static com.dephoegon.delchoco.DelChoco.MOD_ID;
+import static com.dephoegon.delchoco.DelChoco.DELCHOCO_ID;
 
 public class chocoboTeams {
     public static void commands (@NotNull CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -111,7 +111,7 @@ public class chocoboTeams {
         if(commandEntity instanceof Player player) {
             Entity mount = player.getVehicle();
             if (!(mount instanceof Chocobo chocobo)) {
-                source.sendSuccess(new TranslatableComponent("command." + MOD_ID + ".chocobo.not_riding_chocobo"), false);
+                source.sendSuccess(new TranslatableComponent("command." + DELCHOCO_ID + ".chocobo.not_riding_chocobo"), false);
                 return 0;
             } else {
                 source.sendSuccess(getText("get_health", chocobo, Attributes.MAX_HEALTH), false);
@@ -126,7 +126,7 @@ public class chocoboTeams {
         return 0;
     }
     @Contract("_, _, _ -> new")
-    private static @NotNull TranslatableComponent getText(String key, @NotNull Chocobo chocobo, Attribute attribute) { return new TranslatableComponent("command." + MOD_ID + ".chocobo." + key, Objects.requireNonNull(chocobo.getAttribute(attribute)).getBaseValue()); }
+    private static @NotNull TranslatableComponent getText(String key, @NotNull Chocobo chocobo, Attribute attribute) { return new TranslatableComponent("command." + DELCHOCO_ID + ".chocobo." + key, Objects.requireNonNull(chocobo.getAttribute(attribute)).getBaseValue()); }
     @Contract(value = "_ -> new", pure = true)
-    private static @NotNull TranslatableComponent getText(String value) { return new TranslatableComponent("command." + MOD_ID + ".chocobo." + "get_generation", value); }
+    private static @NotNull TranslatableComponent getText(String value) { return new TranslatableComponent("command." + DELCHOCO_ID + ".chocobo." + "get_generation", value); }
 }

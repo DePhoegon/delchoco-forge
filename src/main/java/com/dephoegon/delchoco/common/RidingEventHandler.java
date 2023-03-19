@@ -10,7 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 
-@Mod.EventBusSubscriber(modid = DelChoco.MOD_ID)
+@Mod.EventBusSubscriber(modid = DelChoco.DELCHOCO_ID)
 public class RidingEventHandler {
     @SubscribeEvent
     public static void onMountEntity(@NotNull EntityMountEvent event) {

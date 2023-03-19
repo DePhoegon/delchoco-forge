@@ -22,32 +22,32 @@ public class LayerChocoboTrims extends RenderLayer<Chocobo, EntityModel<Chocobo>
 	private final float tamedShow;
 	private final float untamedShow;
 	private static final Map<ChocoboColor, ResourceLocation> TAMED_CHOCOBO_PLUMES = Util.make(Maps.newHashMap(), (map) -> {
-		map.put(ChocoboColor.YELLOW, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/tamed_yellow.png"));
-		map.put(ChocoboColor.GREEN, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/tamed_green.png"));
-		map.put(ChocoboColor.BLUE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/tamed_blue.png"));
-		map.put(ChocoboColor.BLACK, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/tamed_black.png"));
-		map.put(ChocoboColor.WHITE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/tamed_white.png"));
-		map.put(ChocoboColor.GOLD, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/tamed_gold.png"));
-		map.put(ChocoboColor.PINK, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/tamed_pink.png"));
-		map.put(ChocoboColor.RED, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/tamed_red.png"));
-		map.put(ChocoboColor.PURPLE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/tamed_purple.png"));
-		map.put(ChocoboColor.FLAME, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/tamed_plumes/tamed_flame.png"));
+		map.put(ChocoboColor.YELLOW, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/tamed_plumes/tamed_yellow.png"));
+		map.put(ChocoboColor.GREEN, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/tamed_plumes/tamed_green.png"));
+		map.put(ChocoboColor.BLUE, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/tamed_plumes/tamed_blue.png"));
+		map.put(ChocoboColor.BLACK, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/tamed_plumes/tamed_black.png"));
+		map.put(ChocoboColor.WHITE, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/tamed_plumes/tamed_white.png"));
+		map.put(ChocoboColor.GOLD, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/tamed_plumes/tamed_gold.png"));
+		map.put(ChocoboColor.PINK, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/tamed_plumes/tamed_pink.png"));
+		map.put(ChocoboColor.RED, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/tamed_plumes/tamed_red.png"));
+		map.put(ChocoboColor.PURPLE, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/tamed_plumes/tamed_purple.png"));
+		map.put(ChocoboColor.FLAME, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/tamed_plumes/tamed_flame.png"));
 	});
 	private static final Map<ChocoboColor, ResourceLocation> UNTAMED_CHOCOBO_PLUMES = Util.make(Maps.newHashMap(), (map) -> {
-		map.put(ChocoboColor.YELLOW, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/untamed_plumes/yellow.png"));
-		map.put(ChocoboColor.GREEN, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/untamed_plumes/green.png"));
-		map.put(ChocoboColor.BLUE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/untamed_plumes/blue.png"));
-		map.put(ChocoboColor.BLACK, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/untamed_plumes/black.png"));
-		map.put(ChocoboColor.WHITE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/untamed_plumes/white.png"));
-		map.put(ChocoboColor.GOLD, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/untamed_plumes/gold.png"));
-		map.put(ChocoboColor.PINK, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/untamed_plumes/pink.png"));
-		map.put(ChocoboColor.RED, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/untamed_plumes/red.png"));
-		map.put(ChocoboColor.PURPLE, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/untamed_plumes/purple.png"));
-		map.put(ChocoboColor.FLAME, new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/untamed_plumes/flame.png"));
+		map.put(ChocoboColor.YELLOW, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/untamed_plumes/yellow.png"));
+		map.put(ChocoboColor.GREEN, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/untamed_plumes/green.png"));
+		map.put(ChocoboColor.BLUE, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/untamed_plumes/blue.png"));
+		map.put(ChocoboColor.BLACK, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/untamed_plumes/black.png"));
+		map.put(ChocoboColor.WHITE, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/untamed_plumes/white.png"));
+		map.put(ChocoboColor.GOLD, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/untamed_plumes/gold.png"));
+		map.put(ChocoboColor.PINK, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/untamed_plumes/pink.png"));
+		map.put(ChocoboColor.RED, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/untamed_plumes/red.png"));
+		map.put(ChocoboColor.PURPLE, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/untamed_plumes/purple.png"));
+		map.put(ChocoboColor.FLAME, new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/untamed_plumes/flame.png"));
 
 	});
-	private static final ResourceLocation CHOCOBO_FLAME_EYES = new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chocobos/flame/eyes.png");
-	private static final ResourceLocation CHICOBO_FLAME_EYES = new ResourceLocation(DelChoco.MOD_ID, "textures/entities/chicobos/flame/eyes.png");
+	private static final ResourceLocation CHOCOBO_FLAME_EYES = new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chocobos/flame/eyes.png");
+	private static final ResourceLocation CHICOBO_FLAME_EYES = new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/entities/chicobos/flame/eyes.png");
 	public LayerChocoboTrims(RenderLayerParent<Chocobo, EntityModel<Chocobo>> rendererIn, float tamedAlpha, float untamedAlpha) {
 		super(rendererIn);
 		this.tamedShow = tamedAlpha;

@@ -2,7 +2,6 @@ package com.dephoegon.delchoco.common.blocks;
 
 import com.dephoegon.delchoco.DelChoco;
 import com.dephoegon.delchoco.common.blockentities.ChocoboEggBlockEntity;
-import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.entities.breeding.ChocoboBreedInfo;
 import com.dephoegon.delchoco.common.entities.breeding.ChocoboStatSnapshot;
 import com.dephoegon.delchoco.common.init.ModRegistry;
@@ -18,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -83,8 +81,8 @@ public class ChocoboEggBlock extends BaseEntityBlock {
             final ChocoboBreedInfo info = new ChocoboBreedInfo(nbtBreedInfo);
             final ChocoboStatSnapshot mother = info.getMother();
             final ChocoboStatSnapshot father = info.getFather();
-            tooltip.add(new TranslatableComponent("item." + DelChoco.MOD_ID + ".chocobo_egg.tooltip.mother_info", (int) mother.health, (int) (mother.speed * 100), (int) mother.stamina, mother.color.getEggText()));
-            tooltip.add(new TranslatableComponent("item." + DelChoco.MOD_ID + ".chocobo_egg.tooltip.father_info", (int) father.health, (int) (father.speed * 100), (int) father.stamina, father.color.getEggText()));
-        } else { tooltip.add(new TranslatableComponent("item." + DelChoco.MOD_ID + ".chocobo_egg.tooltip.invalid_egg")); }
+            tooltip.add(new TranslatableComponent("item." + DelChoco.DELCHOCO_ID + ".chocobo_egg.tooltip.mother_info", (int) mother.health, (int) (mother.speed * 100), (int) mother.stamina, mother.color.getEggText()));
+            tooltip.add(new TranslatableComponent("item." + DelChoco.DELCHOCO_ID + ".chocobo_egg.tooltip.father_info", (int) father.health, (int) (father.speed * 100), (int) father.stamina, father.color.getEggText()));
+        } else { tooltip.add(new TranslatableComponent("item." + DelChoco.DELCHOCO_ID + ".chocobo_egg.tooltip.invalid_egg")); }
     }
 }
