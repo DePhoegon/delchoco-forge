@@ -67,7 +67,7 @@ public class ChocoConfig {
         public final BooleanValue chocoboResourcesOnHit;
         public final BooleanValue chocoboResourcesOnKill;
         public final BooleanValue extraChocoboEffects;
-        // public final BooleanValue chocoboBeak;
+        public final BooleanValue chocoboSpawnEnabler;
 
         Common(ForgeConfigSpec.@NotNull Builder builder) {
             builder.comment("World generation related configuration")
@@ -91,6 +91,11 @@ public class ChocoConfig {
             builder.pop();
             builder.comment("Chocobo Spawn Configuration")
                     .push("spawning");
+
+            chocoboSpawnEnabler = builder
+                    .comment("Enables/Disables Chocobo Natural Spawning")
+                    .define("naturalSpawns", true);
+
             overworldSpawns = builder
                     .comment("Allows Chocobo to spawn in the OverWorld [Default: true]")
                     .define("overworldSpawns", true);

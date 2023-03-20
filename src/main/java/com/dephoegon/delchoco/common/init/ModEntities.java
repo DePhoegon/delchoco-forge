@@ -30,10 +30,12 @@ public class ModEntities {
         if (event.getName() == null) { return; }
         ResourceKey<Biome> biomesKey = ResourceKey.create(Registry.BIOME_REGISTRY, event.getName());
 
-        if (netherCheck(biomesKey, true)) { event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(), COMMON.chocoboSpawnWeightNether.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get())); }
-        if (theEndCheck(biomesKey, true)) { event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(), COMMON.chocoboSpawnWeightEnd.get(), COMMON.chocoboPackSizeMin.get()+1, COMMON.chocoboPackSizeMax.get()+2)); }
-        if (typeCheck(biomesKey, Type.MUSHROOM, overWorld)) { event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(), COMMON.chocoboSpawnWeightMushroom.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get())); }
-        else if (overWorldCheck(biomesKey, true)) { event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(), COMMON.chocoboSpawnWeight.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get()));  }
+         if (COMMON.chocoboSpawnEnabler.get()) {
+            if (netherCheck(biomesKey, true)) { event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(), COMMON.chocoboSpawnWeightNether.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get())); }
+            if (theEndCheck(biomesKey, true)) { event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(), COMMON.chocoboSpawnWeightEnd.get(), COMMON.chocoboPackSizeMin.get() + 1, COMMON.chocoboPackSizeMax.get() + 2)); }
+            if (typeCheck(biomesKey, Type.MUSHROOM, overWorld)) { event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(), COMMON.chocoboSpawnWeightMushroom.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get())); }
+            else if (overWorldCheck(biomesKey, true)) { event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(), COMMON.chocoboSpawnWeight.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get())); }
+        }
     }
     public static void registerEntityAttributes(@NotNull EntityAttributeCreationEvent event) { event.put(CHOCOBO.get(), createAttributes().build()); }
 }
