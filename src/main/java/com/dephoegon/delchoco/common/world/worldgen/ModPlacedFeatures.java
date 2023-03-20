@@ -5,12 +5,11 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
-import net.minecraft.data.worldgen.placement.VegetationPlacements;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.levelgen.placement.PlacementModifier;
+import net.minecraft.world.level.levelgen.placement.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -20,11 +19,10 @@ import static com.dephoegon.delchoco.common.world.worldgen.ModFeatureConfig.GYSA
 public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> GYSAHL_PLACED_KEY = createKey("gysahl_placed");
 
-    public static void bootstrap(BootstapContext<PlacedFeature> context) {
+    public static void bootstrap(@NotNull BootstapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?,?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
 
-        register(context, GYSAHL_PLACED_KEY, configuredFeatures.getOrThrow(GYSAHL_KEY),
-                VegetationPlacements.worldSurfaceSquaredWithCount(64));
+        register(context, GYSAHL_PLACED_KEY, configuredFeatures.getOrThrow(GYSAHL_KEY), CountPlacement.of(125), InSquarePlacement.spread(), PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT, RarityFilter.onAverageOnceEvery(12), BiomeFilter.biome());
     }
 
     private static @NotNull ResourceKey<PlacedFeature> createKey(String name) {

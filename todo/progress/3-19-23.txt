@@ -1,0 +1,7 @@
+DataGen
+- Gysahl Greens
+
+Natural Spawns of Gysahl Greens
+- Overworld
+- Nether
+- The End
