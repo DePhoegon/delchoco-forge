@@ -1070,17 +1070,28 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             }
         } else { this.noActionTime = 0; }
     }
-    public static boolean canSpawn(EntityType<Chocobo> entityType, @NotNull LevelAccessor pLevel, MobSpawnType spawnType, @NotNull BlockPos pPos, RandomSource random) {
-        boolean spawn = false;
+    public static boolean canSpawnLand(EntityType<Chocobo> entityType, @NotNull LevelAccessor pLevel, MobSpawnType spawnType, @NotNull BlockPos pPos, RandomSource random) {
+        boolean spawn;
+        BlockPos blockpos = pPos.below();
         final Holder<Biome> pLevelBiomes = pLevel.getBiome(pPos.below());
-        if (pLevelBiomes.containsTag(IS_END)) {
-            return !pLevel.getBlockState(pPos.below()).isAir();
+        Optional<ResourceKey<Biome>> resourceKey = pLevelBiomes.unwrapKey();
+        if (resourceKey.isPresent() && allBiomes(resourceKey.get())) {
+            spawn = pLevel.getBlockState(blockpos).isValidSpawn(pLevel, blockpos, entityType);
+        } else if (pLevelBiomes.containsTag(IS_OCEAN)) { spawn = false; } else {
+            spawn = pLevel.getBlockState(blockpos).isValidSpawn(pLevel, blockpos, entityType);
         }
-        if (pLevelBiomes.containsTag(IS_NETHER)) {
-            return pLevel.getBlockState(pPos.below()).isSolidRender(pLevel, pPos);
-        }
-        Optional<ResourceKey<Biome>> booby = pLevelBiomes.unwrapKey();
-        spawn = booby.isPresent() ? spawn || allBiomes(booby.get()) : spawn;
+        spawn = COMMON.chocoboSpawnEnabler.get() && spawn;
+        return spawn;
+    }
+    public static boolean canSpawnWater(EntityType<Chocobo> entityType, @NotNull LevelAccessor pLevel, MobSpawnType spawnType, @NotNull BlockPos pPos, RandomSource random) {
+        boolean spawn;
+        BlockPos blockpos = pPos.below();
+        final Holder<Biome> pLevelBiomes = pLevel.getBiome(pPos.below());
+        Optional<ResourceKey<Biome>> resourceKey = pLevelBiomes.unwrapKey();
+        if (!pLevelBiomes.containsTag(IS_COLD) && resourceKey.isPresent() && allBiomes(resourceKey.get())) {
+            spawn = pLevel.getBlockState(blockpos).isValidSpawn(pLevel, blockpos, entityType) || pLevel.getBlockState(pPos).getFluidState().is(FluidTags.WATER);
+        } else { spawn = false; }
+        spawn = COMMON.chocoboSpawnEnabler.get() && spawn;
         return spawn;
     }
 }

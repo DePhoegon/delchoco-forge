@@ -80,7 +80,8 @@ public class DelChoco {
         PacketManager.init();
         Log4jFilter.init();
         event.enqueueWork(() -> {
-            SpawnPlacements.register(CHOCOBO.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE, Chocobo::canSpawn);
+            SpawnPlacements.register(CHOCOBO.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Chocobo::canSpawnLand);
+            SpawnPlacements.register(CHOCOBO.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Chocobo::canSpawnWater);
         });
     }
     @SubscribeEvent
