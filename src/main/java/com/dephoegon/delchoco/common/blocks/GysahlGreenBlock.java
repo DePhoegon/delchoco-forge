@@ -34,7 +34,7 @@ public class GysahlGreenBlock extends CropBlock {
     protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder) { builder.add(AGE); }
     public @NotNull IntegerProperty getAgeProperty() { return AGE; }
     public int getMaxAge() { return MAX_AGE; }
-    private @NotNull ArrayList<BlockState> blockPlaceableOnList() {
+    public static @NotNull ArrayList<BlockState> blockPlaceableOnList() {
         ArrayList<BlockState> block_set = new ArrayList<>();
         block_set.add(0, Blocks.END_STONE.defaultBlockState());
         block_set.add(1, Blocks.DIRT.defaultBlockState());

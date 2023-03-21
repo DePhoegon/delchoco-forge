@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#delchoco:overworld_chocobo_biomes",
+  "spawners": {
+    "type": "delchoco:chocobo",
+    "weight": 8,
+    "minCount": 2,
+    "maxCount" : 5
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#forge:is_mushroom",
+  "spawners": {
+    "type": "delchoco:chocobo",
+    "weight": 1,
+    "minCount": 2,
+    "maxCount" : 4
+  }
+}

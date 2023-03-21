@@ -14,18 +14,6 @@ import static com.dephoegon.delchoco.client.renderer.entities.ChocoboRenderer.*;
 
 public class ChocoConfig {
     public static class Common {
-        // public final BooleanValue add_blank_ToDungeonLoot;
-        // public final IntValue _blank_DungeonLootWeight;
-        public final IntValue gysahlGreenSpawnWeight;
-        public final IntValue gysahlGreenPatchSize;
-        public final DoubleValue gysahlGreenSpawnChance;
-        public final IntValue chocoboSpawnWeight;
-        public final IntValue chocoboSpawnWeightMushroom;
-        public final IntValue chocoboSpawnWeightNether;
-        public final IntValue chocoboSpawnWeightEnd;
-        public final IntValue chocoboPackSizeMin;
-        public final IntValue chocoboPackSizeMax;
-
         public final DoubleValue tameChance;
         public final DoubleValue sprintStaminaCost;
         public final DoubleValue glideStaminaCost;
@@ -70,25 +58,6 @@ public class ChocoConfig {
         public final BooleanValue chocoboSpawnEnabler;
 
         Common(ForgeConfigSpec.@NotNull Builder builder) {
-            builder.comment("World generation related configuration")
-                    .push("World");
-
-            gysahlGreenSpawnWeight = builder
-                    .worldRestart()
-                    .comment("Controls the weight compared to other world gen [Default: 3]")
-                    .defineInRange("gysahlGreenSpawnWeight", 3, 0, Integer.MAX_VALUE);
-
-            gysahlGreenPatchSize = builder
-                    .worldRestart()
-                    .comment("Controls the Patch Size compared to other world gen [Default: 64]")
-                    .defineInRange("gysahlGreenPatchSize", 64, 0, Integer.MAX_VALUE);
-
-            gysahlGreenSpawnChance = builder
-                    .worldRestart()
-                    .comment("Controls the Spawn Chance compared to other world gen [Default: 0.1]")
-                    .defineInRange("gysahlGreenSpawnChance", 0.1, 0, 1);
-
-            builder.pop();
             builder.comment("Chocobo Spawn Configuration")
                     .push("spawning");
 
@@ -112,30 +81,6 @@ public class ChocoConfig {
                     .comment("Allows Chocobo to spawned in by the player with spawning [Default: true]\nSpawn weights lowered, if summonSpawns is disabled raise weights to commented Defaults")
                     .define("summonSpawns", true);
 
-            chocoboSpawnWeight = builder
-                    .comment("Controls Chocobo Spawn Weight [Default: 2]\nSpawn weight Lowered to allow for natural spawns & Chocobo Alters Usage [ Defaults for normal spawns w/o alter usage : 4]")
-                    .defineInRange("chocoboSpawnWeight", 2, 0, Integer.MAX_VALUE);
-
-            chocoboSpawnWeightMushroom = builder
-                    .comment("Controls Chocobo Spawn Weight in Mushroom Fields [Default: 1]\nMooshrooms are easily pushed out (spawn wise)\nSpawn weight Lowered to allow for natural spawns & Chocobo Alters Usage [ Defaults for normal spawns w/o alter usage : 1]")
-                    .defineInRange("chocoboSpawnWeightMushrooms", 1, 0, 4);
-
-            chocoboSpawnWeightNether = builder
-                    .comment("Controls Chocobo Spawn Weight in the Nether. [Default: 100]\nThe Nether seems to be a bit more aggressive & requires a higher number.\nSpawn weight Lowered to allow for natural spawns & Chocobo Alters Usage [ Defaults for normal spawns w/o alter usage : 250]")
-                    .defineInRange("chocoboSpawnWeightNether", 100, 75, Integer.MAX_VALUE);
-
-            chocoboSpawnWeightEnd = builder
-                    .comment("Controls Chocobo Spawn Weight in the End. [Default: 100]\nEnderman Spawns are super aggressive.\nTested at old default spawn weight (10)*25 to be reasonable\nSpawn weight Lowered to allow for natural spawns & Chocobo Alters Usage [ Defaults for normal spawns w/o alter usage : 250]")
-                    .defineInRange("chocoboSpawnWeightEnd", 100, 75, Integer.MAX_VALUE);
-
-            chocoboPackSizeMin = builder
-                    .comment("Controls Chocobo Pack Size Min [Default: 1]")
-                    .defineInRange("chocoboPackSizeMin", 1, 0, Integer.MAX_VALUE);
-
-            chocoboPackSizeMax = builder
-                    .comment("Controls Chocobo Pack Size Max [Default: 3]")
-                    .defineInRange("chocoboPackSizeMax", 3, 0, Integer.MAX_VALUE);
-
             builder.pop();
             builder.comment("Chocobo Extras")
                     .push("extras");
@@ -151,11 +96,7 @@ public class ChocoConfig {
             extraChocoboEffects = builder
                     .comment("Controls if the chocobos get extra effects outside traits that can be passed through breeding & outside of no fall damage.\n-Also Controls if the player receives stats/buff bonuses from wearing the a full color set of the ChocoGuise Gear.")
                     .define("effects", true);
-/* -- Commented out for now
-            chocoboBeak = builder
-                    .comment("Controls if the chocobos will have a boxed beak or a 'detailed' Curved beak. [ Default : True ] Boxed beak")
-                            .define("beak", true);
-*/
+
             builder.pop();
             builder.comment("Chocobo configuration")
                     .push("chocobo");
@@ -174,11 +115,6 @@ public class ChocoConfig {
             glideStaminaCost = builder
                     .comment("Controls the Glide Stamina cost [Default: 0.005]")
                     .defineInRange("glideStaminaCost", 0.005D, 0, 1);
-            /* Disabled, no current use [Commented out, lines 31-33]
-            flyStaminaCost = builder
-                    .comment("Controls the Fly Stamina cost [Default: 0.08]")
-                    .defineInRange("flyStaminaCost", 0.08D, 0, 1);
-             */
 
             jumpStaminaCost = builder
                     .comment("Controls the Jump Stamina cost [Default: 0.00]")
@@ -337,12 +273,7 @@ public class ChocoConfig {
     @SubscribeEvent
     public static void onFileChange(final ModConfigEvent.@NotNull Reloading configEvent) {
         DelChoco.log.debug("delchoco's config just got changed on the file system!");
-        if(configEvent.getConfig().getModId() == DelChoco.DELCHOCO_ID) {
-            if (COMMON.chocoboPackSizeMin.get() > COMMON.chocoboPackSizeMax.get()) {
-                int t = COMMON.chocoboPackSizeMax.get();
-                COMMON.chocoboPackSizeMax.set(COMMON.chocoboPackSizeMin.get());
-                COMMON.chocoboPackSizeMin.set(t);
-            }
+        if(configEvent.getConfig().getModId().equals(DelChoco.DELCHOCO_ID)) {
             configEvent.getConfig().save();
         }
     }

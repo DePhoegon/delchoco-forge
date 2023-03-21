@@ -83,6 +83,7 @@ import static com.dephoegon.delchoco.aid.SpawnBiomesChecks.allBiomes;
 import static com.dephoegon.delchoco.aid.chocoKB.isAltDown;
 import static com.dephoegon.delchoco.aid.dyeList.getDyeList;
 import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
+import static com.dephoegon.delchoco.common.blocks.GysahlGreenBlock.blockPlaceableOnList;
 import static com.dephoegon.delchoco.common.entities.breeding.ChocoboSnap.setChocoScale;
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 import static com.dephoegon.delchoco.common.init.ModSounds.AMBIENT_SOUND;
@@ -321,6 +322,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         out.add(SWAMP);
         out.add(LUSH_CAVES);
         out.add(DRIPSTONE_CAVES);
+        out.add(MANGROVE_SWAMP);
         return out;
     }
     public int ChocoboShaker(@NotNull String stat) {
@@ -345,7 +347,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         final Holder<Biome> currentBiomes = this.level.getBiome(blockPosition().below());
         //noinspection OptionalGetWithoutIsPresent
         final ResourceKey<Biome> BiomesKey = currentBiomes.unwrapKey().get();
-        ChocoboColor color;
         if (!fromEgg()) {
             setChocoboSpawnCheck(ChocoboColor.YELLOW);
             if (!currentBiomes.containsTag(IS_END) && !currentBiomes.containsTag(IS_OVERWORLD)) { setChocoboSpawnCheck(ChocoboColor.FLAME); }
@@ -508,7 +509,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         double scaleZero = this.getChocoboScale() == 0 ? 1.65D : this.getChocoboScale() < 0 ? 1.55D : 1.75D;
         return this.getChocoboScale() == 0 ? scaleZero : scaleZero * this.getChocoboScaleMod();
     }
-    public boolean canBeRiddenInWater(Entity rider) { return true; }
     @Nullable
     public Entity getControllingPassenger() {
         if (isTame() && this.isSaddled()) {
@@ -1037,10 +1037,10 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         double d0 = this.getAttributeValue(Attributes.FOLLOW_RANGE);
         AABB aabb = AABB.unitCubeFromLowerCorner(this.position()).inflate(d0, 10.0D, d0);
         this.level.getEntitiesOfClass(Chocobo.class, aabb, EntitySelector.NO_SPECTATORS).stream()
-                .filter((p_34463_) -> { return p_34463_ != this; })
-                .filter((p_34461_) -> { return p_34461_.getTarget() == null; })
-                .filter((p_34456_) -> { return !p_34456_.isAlliedTo(this.getTarget()); })
-                .forEach((p_34440_) -> { p_34440_.setTarget(this.getTarget()); });
+                .filter((p_34463_) -> p_34463_ != this)
+                .filter((p_34461_) -> p_34461_.getTarget() == null)
+                .filter((p_34456_) -> !p_34456_.isAlliedTo(this.getTarget()))
+                .forEach((p_34440_) -> p_34440_.setTarget(this.getTarget()));
     }
     public boolean isPersistenceRequired() { return this.isTame(); }
     public boolean requiresCustomPersistence() { return this.isPassenger(); }
@@ -1070,27 +1070,20 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             }
         } else { this.noActionTime = 0; }
     }
-    public static boolean canSpawnLand(EntityType<Chocobo> entityType, @NotNull LevelAccessor pLevel, MobSpawnType spawnType, @NotNull BlockPos pPos, RandomSource random) {
+    public static boolean canSpawn(EntityType<Chocobo> entityType, @NotNull LevelAccessor pLevel, MobSpawnType ignoredSpawnType, @NotNull BlockPos pPos, RandomSource ignoredRandom) {
         boolean spawn;
         BlockPos blockpos = pPos.below();
         final Holder<Biome> pLevelBiomes = pLevel.getBiome(pPos.below());
         Optional<ResourceKey<Biome>> resourceKey = pLevelBiomes.unwrapKey();
         if (resourceKey.isPresent() && allBiomes(resourceKey.get())) {
-            spawn = pLevel.getBlockState(blockpos).isValidSpawn(pLevel, blockpos, entityType);
-        } else if (pLevelBiomes.containsTag(IS_OCEAN)) { spawn = false; } else {
+            spawn = pLevelBiomes.containsTag(IS_CAVE) ? blockPlaceableOnList().contains(pLevel.getBlockState(blockpos).getBlock().defaultBlockState()) : pLevel.getBlockState(blockpos).isValidSpawn(pLevel, blockpos, entityType);
+        } else if (pLevelBiomes.containsTag(IS_OCEAN) || pLevelBiomes.containsTag(MINESHAFT_BLOCKING)) { spawn = false; } else {
             spawn = pLevel.getBlockState(blockpos).isValidSpawn(pLevel, blockpos, entityType);
         }
-        spawn = COMMON.chocoboSpawnEnabler.get() && spawn;
-        return spawn;
-    }
-    public static boolean canSpawnWater(EntityType<Chocobo> entityType, @NotNull LevelAccessor pLevel, MobSpawnType spawnType, @NotNull BlockPos pPos, RandomSource random) {
-        boolean spawn;
-        BlockPos blockpos = pPos.below();
-        final Holder<Biome> pLevelBiomes = pLevel.getBiome(pPos.below());
-        Optional<ResourceKey<Biome>> resourceKey = pLevelBiomes.unwrapKey();
-        if (!pLevelBiomes.containsTag(IS_COLD) && resourceKey.isPresent() && allBiomes(resourceKey.get())) {
-            spawn = pLevel.getBlockState(blockpos).isValidSpawn(pLevel, blockpos, entityType) || pLevel.getBlockState(pPos).getFluidState().is(FluidTags.WATER);
-        } else { spawn = false; }
+        if (pLevelBiomes.containsTag(IS_OVERWORLD)) { spawn = COMMON.overworldSpawns.get() && spawn; }
+        if (pLevelBiomes.containsTag(IS_NETHER)) { spawn = COMMON.netherSpawns.get() && spawn; }
+        if (pLevelBiomes.containsTag(IS_END)) { spawn = COMMON.endSpawns.get() && spawn; }
+
         spawn = COMMON.chocoboSpawnEnabler.get() && spawn;
         return spawn;
     }
