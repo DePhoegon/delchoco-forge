@@ -128,20 +128,7 @@ public class AdultChocoboModel<T extends Chocobo> extends EntityModel<Chocobo> {
                         .texOffs(100, 0).addBox(2.25F, -4.0F, -3.0F, 1.0F, 3.0F, 3.0F)
                         .texOffs(100, 0).addBox(-3.25F, -4.0F, -3.0F, 1.0F, 3.0F, 3.0F).mirror(),
                 PartPose.offset(0.0F, -11.0F, -2.0F));
-/*  ---  Commented out for now
-        PartDefinition beak = head.addOrReplaceChild("beak", CubeListBuilder.create()
-                .texOffs(0, 36).addBox(-2F, -3F, -11F, 4F, 3F, 1F)
-                .texOffs(0, 41).addBox(-1F, -5F, -10F, 2F, 1F, 1F)
-                .texOffs(0, 41).addBox(-1F, -4F, -11F, 2F, 1F, 1F)
-                .texOffs(6, 41).addBox(-1F, 0F, -11F, 2F, 1F, 1F)
-                .texOffs(0, 44).addBox(-2F, -5F, -9F, 4F, 1F, 1F)
-                .texOffs(0, 46).addBox(-2F, -4F, -10F, 4F, 5F, 1F)
-                .texOffs(115, 0).addBox(-3F, -4F, -9F, 6F, 5F, 1F)
-                .texOffs(115, 6).addBox(2F, -3F, -10F, 1F, 3F, 1F)
-                .texOffs(115, 10).addBox(-3F, -3F, -10F, 1F, 3F, 1F)
-                .texOffs(115, 15).addBox(-3F, -5F, -8F, 6F, 1F, 0F),
-                PartPose.offset(0F, 0F, 1F));
-*/
+
         PartDefinition crest_top_r1 = head.addOrReplaceChild("crest_top_r1", CubeListBuilder.create()
                         .texOffs(20, 0).addBox(-2.5F, 0.0F, 0.0F, 5.0F, 0.0F, 6.0F),
                 PartPose.offsetAndRotation(0.0F, -5.0F, 3.0F, 0.2618F, 0.0F, 0.0F));

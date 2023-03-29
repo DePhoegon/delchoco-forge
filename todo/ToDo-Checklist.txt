@@ -1,1 +1,17 @@
-Natural Spawning for Chocobos
+BlockBench
+-Redo Chicobo Model
+-Animations for Chocobos & chicobos
+--Walk
+--Attack
+--Idle
+--gliding
+--dance
+--resting
+
+Address Chocobo Weapon layers
+- Claw covers seem off
+
+Consider Spawner compatible Chocobo Spawn Eggs
+-- Consider random from smaller color set
+
+Backport work done to the 1.18.2 version
