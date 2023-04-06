@@ -4,13 +4,11 @@ import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.dephoegon.delchoco.common.init.ModEntities;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -53,7 +51,7 @@ public class ChocoboSpawnEggItem extends Item {
             chocobo.setPoisonImmune(piChocobos().contains(color));
             chocobo.setFromEgg(true);
             chocobo.setChocoboScale(chocobo.isMale(), 0, false);
-            chocobo.finalizeSpawn((ServerLevel)worldIn, worldIn.getCurrentDifficultyAt(chocobo.blockPosition()), MobSpawnType.SPAWN_EGG, (SpawnGroupData)null, (CompoundTag)null);
+            chocobo.finalizeSpawn((ServerLevel)worldIn, worldIn.getCurrentDifficultyAt(chocobo.blockPosition()), MobSpawnType.SPAWN_EGG, null, null);
             worldIn.addFreshEntity(chocobo);
             chocobo.playAmbientSound();
             context.getItemInHand().shrink(1);
@@ -80,6 +78,6 @@ public class ChocoboSpawnEggItem extends Item {
     }
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> toolTip, @NotNull TooltipFlag flag) {
         super.appendHoverText(stack, level, toolTip, flag);
-        toolTip.add(Component.translatable("tooltip.delchoco.info.spawn_egg")); //if shift, show tip1 (if not empty)
+        toolTip.add(Component.translatable("tooltip.delchoco.info.spawn_egg")); //if shifting, show tip1 (if not empty)
     }
 }

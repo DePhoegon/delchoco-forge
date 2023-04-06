@@ -30,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.Stream;
 
+@SuppressWarnings("ALL")
 public class StrawNestBlock extends BaseEntityBlock {
     public final static BooleanProperty HAS_EGG = BooleanProperty.create("egg");
     protected static final VoxelShape EMPTY_SHAPE = Stream.of(

@@ -25,6 +25,7 @@ public class ModPlacedFeatures {
         register(context, GYSAHL_PLACED_KEY, configuredFeatures.getOrThrow(GYSAHL_KEY), CountPlacement.of(125), InSquarePlacement.spread(), PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT, RarityFilter.onAverageOnceEvery(12), BiomeFilter.biome());
     }
 
+    @SuppressWarnings("SameParameterValue")
     private static @NotNull ResourceKey<PlacedFeature> createKey(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(DelChoco.DELCHOCO_ID, name));
     }
@@ -34,6 +35,7 @@ public class ModPlacedFeatures {
         context.register(key, new PlacedFeature(configuration, List.copyOf(modifiers)));
     }
 
+    @SuppressWarnings("SameParameterValue")
     private static void register(BootstapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> configuration,
                                  PlacementModifier... modifiers) {
         register(context, key, configuration, List.of(modifiers));

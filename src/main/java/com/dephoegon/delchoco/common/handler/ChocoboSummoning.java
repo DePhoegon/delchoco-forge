@@ -175,16 +175,16 @@ public class ChocoboSummoning {
         if (eatAlter) { worldIn.setBlockAndUpdate(pos, AIR.defaultBlockState()); }
         else {
             if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ChocoDisguiseItem) {
-                player.getItemBySlot(EquipmentSlot.CHEST).hurtAndBreak(this.damage, player, (event) -> { event.broadcastBreakEvent(EquipmentSlot.CHEST); });
+                player.getItemBySlot(EquipmentSlot.CHEST).hurtAndBreak(this.damage, player, (event) -> event.broadcastBreakEvent(EquipmentSlot.CHEST));
             }
             if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof ChocoDisguiseItem) {
-                player.getItemBySlot(EquipmentSlot.HEAD).hurtAndBreak(this.damage, player, (event) -> { event.broadcastBreakEvent(EquipmentSlot.HEAD); });
+                player.getItemBySlot(EquipmentSlot.HEAD).hurtAndBreak(this.damage, player, (event) -> event.broadcastBreakEvent(EquipmentSlot.HEAD));
             }
             if (player.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof ChocoDisguiseItem) {
-                player.getItemBySlot(EquipmentSlot.LEGS).hurtAndBreak(this.damage, player, (event) -> { event.broadcastBreakEvent(EquipmentSlot.LEGS); });
+                player.getItemBySlot(EquipmentSlot.LEGS).hurtAndBreak(this.damage, player, (event) -> event.broadcastBreakEvent(EquipmentSlot.LEGS));
             }
             if (player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof ChocoDisguiseItem) {
-                player.getItemBySlot(EquipmentSlot.FEET).hurtAndBreak(this.damage, player, (event) -> { event.broadcastBreakEvent(EquipmentSlot.FEET); });
+                player.getItemBySlot(EquipmentSlot.FEET).hurtAndBreak(this.damage, player, (event) -> event.broadcastBreakEvent(EquipmentSlot.FEET));
             }
         }
     }

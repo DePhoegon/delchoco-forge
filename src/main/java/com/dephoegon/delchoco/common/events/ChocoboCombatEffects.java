@@ -22,7 +22,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -182,10 +181,6 @@ public class ChocoboCombatEffects {
     }
     private static boolean flowerChance() { return random.nextInt(100)+1 < 45; }
     private static boolean onHitMobChance(int percentChance) { return random.nextInt(100)+1 < percentChance; }
-    //@SubscribeEvent
-    public void onPlayerEquip(@NotNull LivingEquipmentChangeEvent event) {
-        // For later use
-    }
     @SubscribeEvent
     public void onPlayerTick(TickEvent.@NotNull PlayerTickEvent e) {
         Player player = e.player;

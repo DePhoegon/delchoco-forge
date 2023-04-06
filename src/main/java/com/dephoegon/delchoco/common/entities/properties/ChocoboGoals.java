@@ -129,7 +129,7 @@ public class ChocoboGoals {
                         break;
                     }
                 }
-                // Sets postion to wonder towards.
+                // Sets position to wonder towards.
                 if (newBlockPos != null) { mob.getMoveControl().setWantedPosition(newBlockPos.getX(), newBlockPos.getY(), newBlockPos.getZ(), 1.0D); }
             }
         }

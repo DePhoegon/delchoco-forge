@@ -20,12 +20,13 @@ import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.UUID;
 
+@SuppressWarnings("deprecation")
 public class ChocoboArmorItems extends Item implements Wearable {
     private static final UUID CHOCO_ARMOR_SLOT = UUID.fromString("02a4a813-7afd-4073-bf47-6dcffdf18fca");
     protected final EquipmentSlot slot;
     private final int defense;
     private final float toughness;
-    protected final float knockbackResistance;
+    protected final float knockBackResistance;
     protected final ArmorMaterial material;
 
     private final int enchantmentValue;
@@ -62,12 +63,12 @@ public class ChocoboArmorItems extends Item implements Wearable {
         this.defense = totalArmorMaterialDefense(pMaterial, pSlot, 0, true);
         this.toughness = totalArmorMaterialToughness(pMaterial, 0, true);
         this.enchantmentValue = pMaterial.getEnchantmentValue();
-        this.knockbackResistance = totalArmorMaterialKnockBackResistance(pMaterial, 0);
+        this.knockBackResistance = totalArmorMaterialKnockBackResistance(pMaterial, 0);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         UUID uuid = CHOCO_ARMOR_SLOT;
         builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", this.defense, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier("Armor toughness", this.toughness, AttributeModifier.Operation.ADDITION));
-        if (this.knockbackResistance > 0) { builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(uuid, "Armor knockback resistance", this.knockbackResistance, AttributeModifier.Operation.ADDITION)); }
+        if (this.knockBackResistance > 0) { builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(uuid, "Armor knockBack resistance", this.knockBackResistance, AttributeModifier.Operation.ADDITION)); }
         this.defaultModifiers = builder.build();
     }
     public EquipmentSlot getSlot() { return this.slot; }

@@ -4,12 +4,9 @@ import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.dephoegon.delchoco.common.init.ModAttributes;
 import com.dephoegon.delchoco.common.init.ModEntities;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -17,7 +14,6 @@ import java.util.Objects;
 import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.entities.breeding.ChocoboSnap.setChocoScale;
 import static com.dephoegon.delchoco.common.items.ChocoboSpawnEggItem.*;
-import static com.dephoegon.delchoco.utils.RandomHelper.random;
 import static java.lang.Math.*;
 
 public class BreedingHelper {
@@ -101,5 +97,4 @@ public class BreedingHelper {
         if (newColor) { return baby; }
         else return .50f > Math.random() ? mother : father;
     }
-    private static boolean alter(BlockState centerDefaultBlockstate, BlockState NEWS_blockstate, BlockPos centerPos, @NotNull Level world) { return world.getBlockState(centerPos).getBlock().defaultBlockState() == centerDefaultBlockstate && world.getBlockState(centerPos.north()).getBlock().defaultBlockState() == NEWS_blockstate && world.getBlockState(centerPos.south()).getBlock().defaultBlockState() == NEWS_blockstate && world.getBlockState(centerPos.east()).getBlock().defaultBlockState() == NEWS_blockstate && world.getBlockState(centerPos.west()).getBlock().defaultBlockState() == NEWS_blockstate; }
 }

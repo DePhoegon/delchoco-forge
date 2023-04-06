@@ -20,7 +20,7 @@ public class RidingEventHandler {
         if (!event.getEntityBeingMounted().isOnGround()) { event.setCanceled(true); }
     }
 
-    /* This Foricbly dismounts players that log out
+    /* This Forcibly dismounts players that log out
      * when riding a chocobo to prevent them from
      * maintaining control over it upon logging back in
      */

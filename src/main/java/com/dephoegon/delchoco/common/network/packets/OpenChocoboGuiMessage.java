@@ -14,7 +14,6 @@ import net.minecraftforge.network.NetworkEvent.Context;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 public class OpenChocoboGuiMessage {
@@ -52,6 +51,7 @@ public class OpenChocoboGuiMessage {
 		ctx.enqueueWork(() -> {
 			if(ctx.getDirection().getReceptionSide() == LogicalSide.CLIENT) {
 				Minecraft mc = Minecraft.getInstance();
+				assert mc.level != null;
 				Entity entity = mc.level.getEntity(entityId);
 				if (!(entity instanceof Chocobo chocobo)) {
 					DelChoco.log.warn("Server send OpenGUI for chocobo with id {}, but this entity does not exist on my side", entityId);

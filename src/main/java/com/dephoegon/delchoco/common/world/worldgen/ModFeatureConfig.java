@@ -20,10 +20,12 @@ import java.util.List;
 
 import static com.dephoegon.delchoco.DelChoco.DELCHOCO_ID;
 
+
 public class ModFeatureConfig {
 	protected static final BlockState GYSAHL_GREEN = ModRegistry.GYSAHL_GREEN.get().defaultBlockState().setValue(GysahlGreenBlock.AGE, GysahlGreenBlock.MAX_AGE);
 	public static final ResourceKey<ConfiguredFeature<?, ?>> GYSAHL_KEY = registerKey("gysahl_green");
 
+	@SuppressWarnings("unused")
 	public static <T> void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
 		featureRegister(context, GYSAHL_KEY, Feature.RANDOM_PATCH, FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(GYSAHL_GREEN)), List.of(Blocks.GRASS_BLOCK, Blocks.NETHERRACK, Blocks.CLAY, Blocks.MOSS_BLOCK, Blocks.CRIMSON_NYLIUM, Blocks.WARPED_NYLIUM, Blocks.TUFF, Blocks.DRIPSTONE_BLOCK, Blocks.END_STONE), 64));
 	}
@@ -31,6 +33,7 @@ public class ModFeatureConfig {
 		return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(DELCHOCO_ID, name));
 	}
 
+	@SuppressWarnings("SameParameterValue")
 	private static <FC extends FeatureConfiguration, F extends Feature<FC>> void featureRegister(@NotNull BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC configuration) {
 		context.register(key, new ConfiguredFeature<>(feature, configuration));
 	}

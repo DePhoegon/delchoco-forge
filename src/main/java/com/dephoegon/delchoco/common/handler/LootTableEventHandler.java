@@ -7,7 +7,7 @@ public class LootTableEventHandler {
     // Removal of Ability Fruits
     // Keeping the LootPool InjectPool setup for possible future use
 
-    // entire class commented out to prevent ingame resource usage
+    // entire class commented out to prevent in-game resource usage
     /*
     @SubscribeEvent
     public static void onLootTableLoad(LootTableLoadEvent event) {

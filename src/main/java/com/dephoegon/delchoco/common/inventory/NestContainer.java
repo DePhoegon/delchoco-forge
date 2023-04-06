@@ -45,17 +45,17 @@ public class NestContainer extends AbstractContainerMenu {
         Slot slot = this.slots.get(index);
 
         if (slot.hasItem()) {
-            ItemStack itemstack1 = slot.getItem();
-            itemstack = itemstack1.copy();
+            ItemStack itemStack1 = slot.getItem();
+            itemstack = itemStack1.copy();
             final int tileSize = 1;
 
             if (index < tileSize) {
-                if (!this.moveItemStackTo(itemstack1, tileSize, slots.size(), true)) { return ItemStack.EMPTY; }
-            } else if (!this.moveItemStackTo(itemstack1, 0, tileSize, false)) { return ItemStack.EMPTY; }
+                if (!this.moveItemStackTo(itemStack1, tileSize, slots.size(), true)) { return ItemStack.EMPTY; }
+            } else if (!this.moveItemStackTo(itemStack1, 0, tileSize, false)) { return ItemStack.EMPTY; }
             this.tile.onInventoryChanged();
-            if (itemstack1.isEmpty()) { slot.set(ItemStack.EMPTY);}
+            if (itemStack1.isEmpty()) { slot.set(ItemStack.EMPTY);}
             else { slot.setChanged(); }
-            if (itemstack1.getCount() == itemstack.getCount()) { return ItemStack.EMPTY; }
+            if (itemStack1.getCount() == itemstack.getCount()) { return ItemStack.EMPTY; }
         }
         return itemstack;
     }

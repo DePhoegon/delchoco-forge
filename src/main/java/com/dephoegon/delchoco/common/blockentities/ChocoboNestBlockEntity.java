@@ -38,7 +38,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-import static com.dephoegon.delchoco.common.blocks.ChocoboEggBlock.NBTKEY_BREEDINFO;
+import static com.dephoegon.delchoco.common.blocks.ChocoboEggBlock.NBTKEY_BREED_INFO;
 import static com.dephoegon.delchoco.common.entities.breeding.ChocoboBreedInfo.getFromNbtOrDefault;
 
 public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider {
@@ -94,15 +94,15 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
     private boolean updateEgg() {
         ItemStack egg = this.getEggItemStack();
         if (!ChocoboEggBlock.isChocoboEgg(egg)) { return false; }
-        if (!egg.hasTag()) { egg.addTagElement(NBTKEY_BREEDINFO, getFromNbtOrDefault(null).serialize()); }
-        CompoundTag nbt = egg.getOrCreateTagElement(ChocoboEggBlock.NBTKEY_HATCHINGSTATE);
-        int time = nbt.getInt(ChocoboEggBlock.NBTKEY_HATCHINGSTATE_TIME);
+        if (!egg.hasTag()) { egg.addTagElement(NBTKEY_BREED_INFO, getFromNbtOrDefault(null).serialize()); }
+        CompoundTag nbt = egg.getOrCreateTagElement(ChocoboEggBlock.NBTKEY_HATCHING_STATE);
+        int time = nbt.getInt(ChocoboEggBlock.NBTKEY_HATCHING_STATE_TIME);
         time += this.isSheltered ? 2 : 1;
-        nbt.putInt(ChocoboEggBlock.NBTKEY_HATCHINGSTATE_TIME, time);
+        nbt.putInt(ChocoboEggBlock.NBTKEY_HATCHING_STATE_TIME, time);
         if (time < ChocoConfig.COMMON.eggHatchTimeTicks.get()) { return false; }
 
         // egg is ready to hatch
-        ChocoboBreedInfo breedInfo = ChocoboBreedInfo.getFromNbtOrDefault(egg.getTagElement(NBTKEY_BREEDINFO));
+        ChocoboBreedInfo breedInfo = ChocoboBreedInfo.getFromNbtOrDefault(egg.getTagElement(NBTKEY_BREED_INFO));
         Chocobo baby = BreedingHelper.createChild(breedInfo, this.level, egg);
         if (baby == null) { return false; }
         baby.moveTo(this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.2, this.worldPosition.getZ() + 0.5, 0.0F, 0.0F);
@@ -137,9 +137,9 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
         else if (ChocoboEggBlock.isChocoboEgg(itemStack)) {
             this.inventory.setStackInSlot(0, itemStack);
             if (itemStack.hasTag()) {
-                CompoundTag nbt = itemStack.getOrCreateTagElement(ChocoboEggBlock.NBTKEY_HATCHINGSTATE);
-                int time = nbt.getInt(ChocoboEggBlock.NBTKEY_HATCHINGSTATE_TIME);
-                nbt.putInt(ChocoboEggBlock.NBTKEY_HATCHINGSTATE_TIME, time);
+                CompoundTag nbt = itemStack.getOrCreateTagElement(ChocoboEggBlock.NBTKEY_HATCHING_STATE);
+                int time = nbt.getInt(ChocoboEggBlock.NBTKEY_HATCHING_STATE_TIME);
+                nbt.putInt(ChocoboEggBlock.NBTKEY_HATCHING_STATE_TIME, time);
             }
         }
     }

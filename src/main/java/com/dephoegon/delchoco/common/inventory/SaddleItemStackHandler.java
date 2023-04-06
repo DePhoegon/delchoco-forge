@@ -15,7 +15,7 @@ public abstract class SaddleItemStackHandler implements IItemHandler, IItemHandl
     public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
         ItemStack oldStack = this.itemStack;
         this.itemStack = stack;
-        // dont update if we change from empty to empty
+        // don't update if we change from empty to empty
         if (!(oldStack.isEmpty() && stack.isEmpty())) { this.onStackChanged(); }
     }
     public int getSlots() { return 1; }

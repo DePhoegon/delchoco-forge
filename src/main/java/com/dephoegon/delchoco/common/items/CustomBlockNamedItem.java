@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 
 public class CustomBlockNamedItem extends ItemNameBlockItem {
 	private final Supplier<Block> blockSupplier;
+	@SuppressWarnings("DataFlowIssue")
 	public CustomBlockNamedItem(Supplier<Block> blockSupplier, Properties properties) {
 		super(null, properties);
 		this.blockSupplier = blockSupplier;

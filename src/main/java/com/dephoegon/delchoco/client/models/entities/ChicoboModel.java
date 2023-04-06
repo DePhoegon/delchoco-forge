@@ -10,6 +10,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("unused")
 public class ChicoboModel<T extends Chocobo> extends EntityModel<Chocobo> {
     private final ModelPart root;
 

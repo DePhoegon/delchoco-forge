@@ -14,6 +14,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Mod.EventBusSubscriber(modid = DelChoco.DELCHOCO_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModDataGenerator {
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public static void gatherData(@NotNull GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();

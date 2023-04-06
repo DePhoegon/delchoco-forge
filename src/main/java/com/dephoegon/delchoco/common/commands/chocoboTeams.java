@@ -104,6 +104,7 @@ public class chocoboTeams {
         }
         return 1;
     }
+    @SuppressWarnings("SameReturnValue")
     private static int sendList(@NotNull CommandContext<CommandSourceStack> commandContext) {
         CommandSourceStack source = commandContext.getSource();
         Entity commandEntity = source.getEntity();
@@ -121,7 +122,6 @@ public class chocoboTeams {
                 source.sendSuccess(getText(chocobo.getGenerationString()), false);
             }
         }
-
         return 0;
     }
     @Contract("_, _, _ -> new")

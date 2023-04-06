@@ -33,10 +33,11 @@ import java.util.stream.Stream;
 
 import static com.dephoegon.delchoco.common.entities.breeding.ChocoboBreedInfo.getFromNbtOrDefault;
 
+@SuppressWarnings("ALL")
 public class ChocoboEggBlock extends BaseEntityBlock {
-    public final static String NBTKEY_HATCHINGSTATE_TIME = "Time";
-    public final static String NBTKEY_HATCHINGSTATE = "HatchingState";
-    public final static String NBTKEY_BREEDINFO = "BreedInfo";
+    public final static String NBTKEY_HATCHING_STATE_TIME = "Time";
+    public final static String NBTKEY_HATCHING_STATE = "HatchingState";
+    public final static String NBTKEY_BREED_INFO = "BreedInfo";
 
     private static final VoxelShape SHAPE = Stream.of(
             Block.box(5, 0, 5, 11, 1, 11),
@@ -54,7 +55,7 @@ public class ChocoboEggBlock extends BaseEntityBlock {
         if (!worldIn.isClientSide) {
             BlockEntity tile = worldIn.getBlockEntity(pos);
             if (!(tile instanceof ChocoboEggBlockEntity)) { return; }
-            ChocoboBreedInfo breedInfo = getFromNbtOrDefault(stack.getTagElement(NBTKEY_BREEDINFO));
+            ChocoboBreedInfo breedInfo = getFromNbtOrDefault(stack.getTagElement(NBTKEY_BREED_INFO));
             ((ChocoboEggBlockEntity) tile).setBreedInfo(breedInfo);
         }
         super.setPlacedBy(worldIn, pos, state, placer, stack);
@@ -67,7 +68,7 @@ public class ChocoboEggBlock extends BaseEntityBlock {
             ItemStack itemStack = new ItemStack(ModRegistry.CHOCOBO_EGG.get());
             ChocoboBreedInfo breedInfo = ((ChocoboEggBlockEntity) te).getBreedInfo();
             if (breedInfo == null) { breedInfo = getFromNbtOrDefault(null); }
-            itemStack.addTagElement(NBTKEY_BREEDINFO, breedInfo.serialize());
+            itemStack.addTagElement(NBTKEY_BREED_INFO, breedInfo.serialize());
             popResource(worldIn, pos, itemStack);
             return;
         }
@@ -75,7 +76,7 @@ public class ChocoboEggBlock extends BaseEntityBlock {
     }
     public void appendHoverText(@NotNull ItemStack stack, @Nullable BlockGetter worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
-        CompoundTag nbtBreedInfo = stack.getTagElement(NBTKEY_BREEDINFO);
+        CompoundTag nbtBreedInfo = stack.getTagElement(NBTKEY_BREED_INFO);
         if (nbtBreedInfo != null) {
             final ChocoboBreedInfo info = new ChocoboBreedInfo(nbtBreedInfo);
             final ChocoboStatSnapshot mother = info.getMother();

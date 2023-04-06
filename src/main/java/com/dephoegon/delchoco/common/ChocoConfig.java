@@ -17,12 +17,9 @@ public class ChocoConfig {
         public final DoubleValue tameChance;
         public final DoubleValue sprintStaminaCost;
         public final DoubleValue glideStaminaCost;
-        /* Disabled, no current use [Commented out Lines 120-124]
-        public final DoubleValue flyStaminaCost;
-         */
         public final DoubleValue jumpStaminaCost;
         public final DoubleValue staminaRegenRate;
-        public final IntValue defaultHealAmmount;
+        public final IntValue defaultHealAmount;
         public final IntValue defaultStamina;
         public final IntValue defaultSpeed;
         public final IntValue defaultHealth;
@@ -48,7 +45,7 @@ public class ChocoConfig {
         public final DoubleValue armorInvisibility;
         public final DoubleValue saddleInvisibility;
         public final DoubleValue weaponInvisibility;
-        public final BooleanValue overworldSpawns;
+        public final BooleanValue overWorldSpawns;
         public final BooleanValue netherSpawns;
         public final BooleanValue endSpawns;
         public final BooleanValue summonSpawns;
@@ -65,7 +62,7 @@ public class ChocoConfig {
                     .comment("Enables/Disables Chocobo Natural Spawning")
                     .define("naturalSpawns", true);
 
-            overworldSpawns = builder
+            overWorldSpawns = builder
                     .comment("Allows Chocobo to spawn in the OverWorld [Default: true]")
                     .define("overworldSpawns", true);
 
@@ -128,9 +125,9 @@ public class ChocoConfig {
             builder.comment("Defaults")
                     .push("defaults");
 
-            defaultHealAmmount = builder
-                    .comment("Ammount of HP Restored per Green { 1HP = 1/2 Heart } [Default: 5]")
-                    .defineInRange("defaultHealAmmount", 5, 2, 10);
+            defaultHealAmount = builder
+                    .comment("Amount of HP Restored per Green { 1HP = 1/2 Heart } [Default: 5]")
+                    .defineInRange("defaultHealAmount", 5, 2, 10);
 
             defaultStamina = builder
                     .comment("Controls the default Stamina [Default: 10]")
@@ -269,10 +266,10 @@ public class ChocoConfig {
         COMMON = specPair.getLeft();
     }
     @SubscribeEvent
-    public static void onLoad(final ModConfigEvent.@NotNull Loading configEvent) { DelChoco.log.debug("Loaded delchoco's config file {}", configEvent.getConfig().getFileName()); }
+    public static void onLoad(final ModConfigEvent.@NotNull Loading configEvent) { DelChoco.log.debug("Loaded delchoco' config file {}", configEvent.getConfig().getFileName()); }
     @SubscribeEvent
     public static void onFileChange(final ModConfigEvent.@NotNull Reloading configEvent) {
-        DelChoco.log.debug("delchoco's config just got changed on the file system!");
+        DelChoco.log.debug("delchoco' config just got changed on the file system!");
         if(configEvent.getConfig().getModId().equals(DelChoco.DELCHOCO_ID)) {
             configEvent.getConfig().save();
         }

@@ -2,40 +2,30 @@ package com.dephoegon.delchoco.common.entities.properties;
 
 import com.dephoegon.delchoco.DelChoco;
 import net.minecraft.network.chat.Component;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 
-import java.util.Optional;
 import java.util.Random;
 
 public enum ChocoboColor {
-    YELLOW(null,1),
-    GREEN(null,2),
-    BLUE(null,3),
-    WHITE(null,4),
-    BLACK(null,5),
-    GOLD(null,6),
-    PINK(null,7),
-    RED(null,8),
-    PURPLE(null,9),
-    FLAME(null,10);
+    YELLOW(1),
+    GREEN(2),
+    BLUE(3),
+    WHITE(4),
+    BLACK(5),
+    GOLD(6),
+    PINK(7),
+    RED(8),
+    PURPLE(9),
+    FLAME(10);
 
     private final static Random rand = new Random();
-    private final TagKey<Item> colorTag;
     private final Component eggText;
     private final int customModelData;
 
-    ChocoboColor(TagKey<Item> colorIngredient, int CustomModelData) {
-        this.colorTag = colorIngredient;
+    ChocoboColor(int CustomModelData) {
         this.customModelData = CustomModelData;
         this.eggText = Component.translatable("item." + DelChoco.DELCHOCO_ID + ".chocobo_egg.tooltip." + this.name().toLowerCase());
     }
     public int getCustomModelData() { return this.customModelData; }
     public static ChocoboColor getRandomColor() { return values()[rand.nextInt(values().length)]; }
-    public static Optional<ChocoboColor> getColorForItemstack(ItemStack stack) {
-        for (ChocoboColor color : values()) { if(color.colorTag != null && stack.is(color.colorTag)) { return Optional.of(color); } }
-        return Optional.empty();
-    }
     public Component getEggText() { return eggText; }
 }

@@ -13,6 +13,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.jetbrains.annotations.NotNull;
 
 import static net.minecraftforge.client.gui.overlay.VanillaGuiOverlay.PLAYER_HEALTH;
 
@@ -21,7 +22,7 @@ public class RenderChocoboOverlay {
     private static final ResourceLocation ICONS = new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/gui/icons.png");
 
     @SubscribeEvent
-    public static void onGuiInGameOverlayRender(RenderGuiOverlayEvent.Post event) {
+    public static void onGuiInGameOverlayRender(RenderGuiOverlayEvent.@NotNull Post event) {
         if (event.getOverlay() != PLAYER_HEALTH.type()) { return; }
         Minecraft minecraft = Minecraft.getInstance();
         PoseStack matrixStack = event.getPoseStack();

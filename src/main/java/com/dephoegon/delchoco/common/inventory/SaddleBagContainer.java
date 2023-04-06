@@ -80,13 +80,13 @@ public class SaddleBagContainer extends AbstractContainerMenu {
         notEmpty = !(slot instanceof chocoboEquipmentSlot);
         if (notEmpty){
             if (slot.hasItem()) {
-                ItemStack itemstack1 = slot.getItem();
-                itemstack = itemstack1.copy();
+                ItemStack itemStack1 = slot.getItem();
+                itemstack = itemStack1.copy();
 
                 if (index < slotSize) {
-                    if (!this.moveItemStackTo(itemstack1, slotSize, this.slots.size(), true)) { return ItemStack.EMPTY; }
-                } else if (!this.moveItemStackTo(itemstack1, 0, slotSize, false)) { return ItemStack.EMPTY; }
-                if (itemstack1.isEmpty()) { slot.set(ItemStack.EMPTY);} else { slot.setChanged(); }
+                    if (!this.moveItemStackTo(itemStack1, slotSize, this.slots.size(), true)) { return ItemStack.EMPTY; }
+                } else if (!this.moveItemStackTo(itemStack1, 0, slotSize, false)) { return ItemStack.EMPTY; }
+                if (itemStack1.isEmpty()) { slot.set(ItemStack.EMPTY);} else { slot.setChanged(); }
             }
         }
         if (notEmpty) { return itemstack; } else { return ItemStack.EMPTY; }

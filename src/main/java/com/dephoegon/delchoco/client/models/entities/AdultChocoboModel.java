@@ -15,11 +15,13 @@ import org.jetbrains.annotations.NotNull;
  * ModelAdultChocobo - Kraeheart
  * Created using Tabula 7.0.0
  */
+@SuppressWarnings("unused")
 public class AdultChocoboModel<T extends Chocobo> extends EntityModel<Chocobo> {
     private final ModelPart root;
     private final ModelPart wing_left;
     private final ModelPart wing_right;
     private final ModelPart head;
+    private final ModelPart neck;
     private final ModelPart leg_left;
     private final ModelPart leg_right;
 
@@ -27,7 +29,7 @@ public class AdultChocoboModel<T extends Chocobo> extends EntityModel<Chocobo> {
         this.root = root.getChild("root");
         ModelPart body = this.root.getChild("body");
 
-        ModelPart neck = body.getChild("chest").getChild("neck");
+        neck = body.getChild("chest").getChild("neck");
         this.head = neck.getChild("head");
         this.leg_left = body.getChild("leg_left");
         this.leg_right = body.getChild("leg_right");
@@ -230,8 +232,8 @@ public class AdultChocoboModel<T extends Chocobo> extends EntityModel<Chocobo> {
         // head/neck movement
         head.xRot = headPitch * (pi / 180F);
         head.yRot = netHeadYaw * (pi / 180F);
-//		neck.xRot = -0.8F;
-//		neck.yRot = 0.0F;
+		neck.xRot = (-0.8F*(netHeadYaw * (pi / 180F)))/8;
+		neck.yRot = (netHeadYaw * (pi / 180F))/9;
 
         // walking animation
         this.setRightLegXRotation(Mth.cos(limbSwing * 0.6662F) * 0.8F * limbSwingAmount);

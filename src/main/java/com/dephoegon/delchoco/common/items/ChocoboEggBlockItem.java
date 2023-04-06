@@ -14,16 +14,16 @@ public class ChocoboEggBlockItem extends BlockItem {
     public boolean isBarVisible(@NotNull ItemStack stack) {
         if (!ChocoboEggBlock.isChocoboEgg(stack)) { return super.isBarVisible(stack); }
         if (!stack.hasTag()) { return false; }
-        CompoundTag nbtHatchIngstate = stack.getTagElement(ChocoboEggBlock.NBTKEY_HATCHINGSTATE);
-        return nbtHatchIngstate != null;
+        CompoundTag nbtHatchingState = stack.getTagElement(ChocoboEggBlock.NBTKEY_HATCHING_STATE);
+        return nbtHatchingState != null;
     }
     public int getBarWidth(@NotNull ItemStack stack) {
         if (!ChocoboEggBlock.isChocoboEgg(stack)) { return super.getBarWidth(stack); }
         if (!stack.hasTag()) { return 0; }
 
-        CompoundTag nbtHatchIngstate = stack.getTagElement(ChocoboEggBlock.NBTKEY_HATCHINGSTATE);
-        if (nbtHatchIngstate != null) {
-            int time = nbtHatchIngstate.getInt(ChocoboEggBlock.NBTKEY_HATCHINGSTATE_TIME);
+        CompoundTag nbtHatchingState = stack.getTagElement(ChocoboEggBlock.NBTKEY_HATCHING_STATE);
+        if (nbtHatchingState != null) {
+            int time = nbtHatchingState.getInt(ChocoboEggBlock.NBTKEY_HATCHING_STATE_TIME);
             return Math.round(time * 13.0F / (float)ChocoConfig.COMMON.eggHatchTimeTicks.get());
         }
         return 1;

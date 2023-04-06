@@ -37,6 +37,7 @@ import static com.dephoegon.delbase.item.shiftingDyes.CLEANSE_SHIFT_DYE;
 import static com.dephoegon.delchoco.aid.dyeList.CHOCO_COLOR_ITEMS;
 import static com.dephoegon.delchoco.common.init.ModArmorMaterial.*;
 
+@SuppressWarnings("deprecation")
 public class ChocoDisguiseItem extends ArmorItem {
 	private final LazyLoadedValue<HumanoidModel<?>> model;
 	public final static String NBTKEY_COLOR = "Color";
@@ -164,7 +165,7 @@ public class ChocoDisguiseItem extends ArmorItem {
 	public HumanoidModel<?> provideArmorModelForSlot(EquipmentSlot slot) { return new ChocoDisguiseModel(Minecraft.getInstance().getEntityModels().bakeLayer(ClientHandler.CHOCO_DISGUISE), slot); }
 	public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
 		consumer.accept(new IClientItemExtensions() {
-		public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) { return model.get(); }
+		public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) { return model.get(); }
 	}); }
 	public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
 		super.appendHoverText(stack, level, tooltip, flagIn);
