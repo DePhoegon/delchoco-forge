@@ -214,13 +214,13 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new ChocoPanicGoal(this,1.5D));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this,2F, true));
-        // toggleable Goal 3, - Follow owner (whistle [tamed])
-        this.goalSelector.addGoal(4, new ChocoboLavaEscape(this));
+        this.goalSelector.addGoal(3, new ChocoboMateGoal(this, 1.0D));
+        // toggleable Goal 4, - Follow owner (whistle [tamed])
+        this.goalSelector.addGoal(5, new ChocoboLavaEscape(this));
         // toggleable Goal 5, - Avoid Player Goal (non-tamed goal)
         // toggleable Goal 6, - Roam Around Goal (whistle toggle [tamed/non-tamed])
-        this.goalSelector.addGoal(7, new TemptGoal(this, 1.2D, Ingredient.of(GYSAHL_GREEN.get()), false));
-        this.goalSelector.addGoal(8, new AvoidEntityGoal<>(this, Llama.class, 15F, 1.3F, 1.5F));
-        this.goalSelector.addGoal(9, new ChocoboMateGoal(this, 1.0D));
+        this.goalSelector.addGoal(8, new TemptGoal(this, 1.2D, Ingredient.of(GYSAHL_GREEN.get()), false));
+        this.goalSelector.addGoal(9, new AvoidEntityGoal<>(this, Llama.class, 15F, 1.3F, 1.5F));
         // toggleable Goal 10, - Avoid Blocks by Class<? extends Block>
         this.goalSelector.addGoal(11, new RandomLookAroundGoal(this)); // moved after Roam, a little too stationary
         this.goalSelector.addGoal(12, new LookAtPlayerGoal(this, Player.class, 6.0F));
@@ -863,7 +863,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                             this.goalSelector.addGoal(10, this.avoidBlocks);
                             noRoam = false;
                         }
-                        this.goalSelector.addGoal(3, this.follow);
+                        this.goalSelector.addGoal(4, this.follow);
                         followingMrHuman = 1;
                         player.displayClientMessage(new TranslatableComponent(DelChoco.DELCHOCO_ID + ".entity_chocobo.chocobo_follow_cmd"), true);
                     } else if (this.followingMrHuman == 1) {
@@ -1005,8 +1005,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         if (roamAround == null) { roamAround = new WaterAvoidingRandomStrollGoal(this, 1D); }
         if (avoidBlocks == null) { avoidBlocks = new ChocoboAvoidBlockGoal(this,  avoidBlocks()); }
         if(isTame()) { goalSelector.removeGoal(chocoboAvoidPlayerGoal);}
-        else { goalSelector.addGoal(5, chocoboAvoidPlayerGoal); }
-        goalSelector.addGoal(6, roamAround);
+        else { goalSelector.addGoal(6, chocoboAvoidPlayerGoal); }
+        goalSelector.addGoal(7, roamAround);
         goalSelector.addGoal(10, avoidBlocks);
         noRoam = false;
     }

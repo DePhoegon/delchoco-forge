@@ -1,21 +1,18 @@
 package com.dephoegon.delchoco;
 
-import com.dephoegon.delchoco.aid.composable;
 import com.dephoegon.delchoco.client.ClientHandler;
 import com.dephoegon.delchoco.common.ChocoConfig;
-import com.dephoegon.delchoco.common.entities.properties.ModDataSerializers;
 import com.dephoegon.delchoco.common.effects.ChocoboCombatEffects;
+import com.dephoegon.delchoco.common.effects.ModCommonEvents;
+import com.dephoegon.delchoco.common.entities.properties.ModDataSerializers;
 import com.dephoegon.delchoco.common.init.*;
 import com.dephoegon.delchoco.common.network.PacketManager;
 import com.dephoegon.delchoco.common.world.worldgen.ModWorldgen;
-import com.dephoegon.delchoco.common.commands.chocoboTeams;
 import com.dephoegon.delchoco.utils.Log4jFilter;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -50,10 +47,11 @@ public class DelChoco {
 
         MinecraftForge.EVENT_BUS.register(new ModWorldgen());
         MinecraftForge.EVENT_BUS.register(new ChocoboCombatEffects());
-        MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommandsEvent);
+        MinecraftForge.EVENT_BUS.addListener(ModCommonEvents::onRegisterCommandsEvent);
         MinecraftForge.EVENT_BUS.addListener(ModEntities::addSpawns);
-        MinecraftForge.EVENT_BUS.addListener(this::onWorldLoad);
+        MinecraftForge.EVENT_BUS.addListener(ModCommonEvents::onWorldLoad);
         eventBus.addListener(ModEntities::registerEntityAttributes);
+        MinecraftForge.EVENT_BUS.addListener(ModCommonEvents::addCustomTrades);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             eventBus.addListener(ClientHandler::onClientSetup);
@@ -61,11 +59,9 @@ public class DelChoco {
             eventBus.addListener(ClientHandler::registerLayerDefinitions);
         });
     }
-    public void onWorldLoad(WorldEvent.Load event) { composable.addToList(); }
     private void setup(final FMLCommonSetupEvent event) {
         ModDataSerializers.init();
         PacketManager.init();
         Log4jFilter.init();
     }
-    public void onRegisterCommandsEvent(@NotNull RegisterCommandsEvent event) { chocoboTeams.commands(event.getDispatcher()); }
 }

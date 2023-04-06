@@ -52,18 +52,22 @@ public class ChocoboRenderer extends MobRenderer<Chocobo, EntityModel<Chocobo>> 
     public static final float armorAlpha = 0.75F;
     public static final float weaponAlpha = 1;
     public static final float collarAlpha = 1;
+    public static final float collarTellAlpha = .45F;
     public static final float saddleAlpha = 1;
 
     public ChocoboRenderer(EntityRendererProvider.Context context) {
         super(context, new AdultChocoboModel<>(context.bakeLayer(ClientHandler.CHOCOBO)), .75f);
         this.chicoboModel = new ChicoboModel<>(context.bakeLayer(ClientHandler.CHICOBO));
+        // Bottom is the Top Layer (from the outside)
 
-        this.addLayer(new LayerArmor(this, armorAlpha, ChocoConfig.COMMON.armorInvisibility.get().floatValue()));
-        this.addLayer(new LayerWeapon(this, weaponAlpha, ChocoConfig.COMMON.weaponInvisibility.get().floatValue()));
         this.addLayer(new LayerCollar(this, collarAlpha, ChocoConfig.COMMON.collarInvisibility.get().floatValue()));
+        this.addLayer(new LayerCollarTells(this, collarTellAlpha, ChocoConfig.COMMON.collarInvisibility.get().floatValue()));
         this.addLayer(new LayerSaddle(this, saddleAlpha, ChocoConfig.COMMON.saddleInvisibility.get().floatValue()));
+        this.addLayer(new LayerMaleTrims(this, .85F));
         this.addLayer(new LayerChocoboTrims(this, .75F, .85F));
         this.addLayer(new LayerBeakClaws(this, true));
+        this.addLayer(new LayerArmor(this, armorAlpha, ChocoConfig.COMMON.armorInvisibility.get().floatValue()));
+        this.addLayer(new LayerWeapon(this, weaponAlpha, ChocoConfig.COMMON.weaponInvisibility.get().floatValue()));
     }
     public void render(@NotNull Chocobo chocobo, float entityYaw, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight) {
         this.model = chocobo.isBaby() ? chicoboModel : chocoboModel;

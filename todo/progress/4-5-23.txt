@@ -1,0 +1,6 @@
+Fixed Mating Issue Oversight
+-Would wander over Mating
+
+Gave some Definition to Male vs Female Chocobos
+
+Added Trades for Lovely Gysahl Greens & Gysahl Greens from Villagers
