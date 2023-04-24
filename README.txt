@@ -1,3 +1,4 @@
+Only Uploaded to Curseforge
 Welcome to the Wonderful World of Chocobos.
 
 This mod is intended to be with DePhoegons' Reclaim  [ Is on forge & on Github ]
@@ -6,9 +7,6 @@ Currently, in active development to fix 'Chococraft 4' for 1.18.2 & theme it for
 -Please forgive me as I am learning as I go & working with ...  unfamiliar bits & bobs because I REALLY want chocobos myself & no one else was seeming to do it.
 
 The Press files include the change & by date.
-
-Actual Jar files will be start to  archived here when they are near release date.
--- Failing & attempting to put them into a beta release on Curseforge  {DePhoegons' Chocobos}
 
 There are many changes coming, and some visual rework on other things.
 
@@ -25,6 +23,8 @@ I can produce a depenancy free version (from my mod), but it will still require
 -Configured (just highly suggested)
 -Patchouli (Guide Book)
 
-Naming Now works Correctly, and  So does the stat screen
-
 Better ToDo & Done Checklists
+
+Current Version
+1.19.3 - 3.2.5
+1.18.2 - 3.2.5
