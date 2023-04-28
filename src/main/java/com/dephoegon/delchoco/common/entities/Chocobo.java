@@ -22,6 +22,8 @@ import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
@@ -64,12 +66,14 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
@@ -517,20 +521,45 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                 return entity;
             }
         }
-        return null; }
+        return null;
+    }
+    public void updateSwimming() { }
+    protected void checkFallDamage(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
+        if (!this.level.isClientSide && pOnGround && this.fallDistance > 0.0F) {
+            this.removeSoulSpeed();
+            this.tryAddSoulSpeed();
+        }
+
+        if (!this.level.isClientSide && this.fallDistance > 3.0F && pOnGround) {
+            float f = (float)Mth.ceil(this.fallDistance - 3.0F);
+            if (!pState.isAir()) {
+                double d0 = Math.min((double)(0.2F + f / 15.0F), 2.5D);
+                int i = (int)(150.0D * d0);
+                if (!pState.addLandingEffects((ServerLevel)this.level, pPos, pState, this, i))
+                    ((ServerLevel)this.level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, pState).setPos(pPos), this.getX(), this.getY(), this.getZ(), i, 0.0D, 0.0D, 0.0D, (double)0.15F);
+            }
+        }
+
+        super.checkFallDamage(pY, pOnGround, pState, pPos);
+    }
     @Override
     protected boolean updateInWaterStateAndDoFluidPushing() {
         this.fluidHeight.clear();
+        this.forgeFluidTypeHeight.clear();
         this.updateInWaterStateAndDoWaterCurrentPushing();
-        boolean flag = this.updateFluidHeightAndDoFluidPushing(FluidTags.LAVA, 0.085D);
-        return this.isInWater() || flag;
+        return this.isInFluidType();
     }
-    private void updateInWaterStateAndDoWaterCurrentPushing() {
+    public boolean isPushedByFluid(FluidType type){
+        if (this.isWaterBreather() && this.isInWater()) { return false; }
+        if (this.fireImmune() && this.isInLava()) { return false; }
+        return super.isPushedByFluid(type);
+    }
+    public void updateInWaterStateAndDoWaterCurrentPushing() {
         if (!this.isWaterBreather()) {
             if (this.getVehicle() instanceof Chocobo) { this.wasTouchingWater = false; }
             else if (this.updateFluidHeightAndDoFluidPushing(FluidTags.WATER, 0.014D)) {
                 if (!this.wasTouchingWater && !this.firstTick) { this.doWaterSplashEffect(); }
-                this.fallDistance = 0.0F;
+                this.resetFallDistance();
                 this.wasTouchingWater = true;
                 this.clearFire();
             } else { this.wasTouchingWater = false; }
@@ -623,6 +652,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     public void tick() {
         super.tick();
         floatChocobo();
+        this.wasTouchingWater = this.level.getFluidState(this.blockPosition()).is(FluidTags.WATER);
         LivingEntity owner = this.getOwner() != null ? this.getOwner() : null;
         if (this.rideTickDelay < 0) {
             Entity RidingPlayer = this.getControllingPassenger();

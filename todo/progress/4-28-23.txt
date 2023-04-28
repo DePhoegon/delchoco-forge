@@ -1,0 +1,3 @@
+fixed water issue
+
+Water should not behave sane like with chocobos

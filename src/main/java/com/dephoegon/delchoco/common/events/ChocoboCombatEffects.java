@@ -36,6 +36,17 @@ public class ChocoboCombatEffects {
         Chocobo chocoboAttacker = event.getSource().getEntity() instanceof Chocobo choco ? choco : null;
         Chocobo chocoboTarget = event.getEntity() instanceof Chocobo choco ? choco : null;
         Player playerTarget = event.getEntity() instanceof Player player ? player : null;
+        if (chocoboTarget != null) {
+            if (chocoboTarget.getControllingPassenger() == event.getSource().getEntity()) { event.setCanceled(true); return; }
+            if (random.nextInt(100)+1 > 35) { chocoboTarget.spawnAtLocation(CHOCOBO_FEATHER.get()); }
+            if (ChocoConfig.COMMON.extraChocoboEffects.get()) {
+                DamageSource source = event.getSource();
+                ChocoboColor color = chocoboTarget.getChocoboColor();
+                if (source == DamageSource.SWEET_BERRY_BUSH) { event.setCanceled(true); return; }
+                if (source == DamageSource.FREEZE) { event.setCanceled(color == ChocoboColor.WHITE || color == ChocoboColor.GOLD); return; }
+                if (source == DamageSource.DRAGON_BREATH) { event.setCanceled(color == ChocoboColor.PURPLE || color == ChocoboColor.GOLD); return; }
+            }
+        }
         if (chocoboAttacker != null && ChocoConfig.COMMON.chocoboResourcesOnHit.get()) {
              LivingEntity target = event.getEntity();
             if (target instanceof Spider e) { if (onHitMobChance(10)) { e.spawnAtLocation(STRING); } }
@@ -56,14 +67,6 @@ public class ChocoboCombatEffects {
                 }
             }
         }
-        if (chocoboTarget != null && ChocoConfig.COMMON.extraChocoboEffects.get()) {
-            DamageSource source = event.getSource();
-            ChocoboColor color = chocoboTarget.getChocoboColor();
-            if (source == DamageSource.SWEET_BERRY_BUSH) { event.setCanceled(true); return; }
-            if (source == DamageSource.FREEZE) { event.setCanceled(color == ChocoboColor.WHITE || color == ChocoboColor.GOLD); return; }
-            if (source == DamageSource.DRAGON_BREATH) { event.setCanceled(color == ChocoboColor.PURPLE || color == ChocoboColor.GOLD); return; }
-            if (random.nextInt(100)+1 > 35) { chocoboTarget.spawnAtLocation(CHOCOBO_FEATHER.get()); }
-        } else if (chocoboTarget != null && random.nextInt(100)+1 > 35) { chocoboTarget.spawnAtLocation(CHOCOBO_FEATHER.get()); }
         if (playerTarget != null && ChocoConfig.COMMON.extraChocoboEffects.get()) {
             ItemStack hStack = playerTarget.getItemBySlot(EquipmentSlot.HEAD);
             ItemStack cStack = playerTarget.getItemBySlot(EquipmentSlot.CHEST);
