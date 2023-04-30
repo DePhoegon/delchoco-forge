@@ -53,10 +53,25 @@ public class ChocoConfig {
         public final BooleanValue chocoboResourcesOnKill;
         public final BooleanValue extraChocoboEffects;
         public final BooleanValue chocoboSpawnEnabler;
+        public final BooleanValue ownChocoboHittable;
+        public final BooleanValue tamedChocoboHittable;
+        public final BooleanValue shiftBypassAllowed;
 
         Common(ForgeConfigSpec.@NotNull Builder builder) {
             builder.comment("Chocobo Spawn Configuration")
                     .push("spawning");
+
+            ownChocoboHittable = builder
+                    .comment("Enables/Disable Hitting of Your Own Tamed/TeamTamed Chocobo\n-AKA, Stops Owner/Team Members From hitting Their Tamed Chocobos")
+                    .define("allowOwnTamedChocoboHit", false);
+
+            tamedChocoboHittable = builder
+                    .comment("Enables/Disable Hitting of Tamed Chocobo\n-AKA, Stops Players From hitting Tamed Chocobos[Intended for Non-pvp servers]")
+                    .define("allowAnyTamedChocoboHit", false);
+
+            shiftBypassAllowed = builder
+                    .comment("Enables/Disable Use of Shift to Hit Tamed Chocobo\n-AKA, Allows you to hit Chocobo while using Shift[Intended as an intentional bypass]")
+                    .define("allowAnyTamedChocoboHit", true);
 
             chocoboSpawnEnabler = builder
                     .comment("Enables/Disables Chocobo Natural Spawning")
