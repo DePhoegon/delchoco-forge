@@ -20,10 +20,10 @@ import net.minecraft.world.entity.monster.WitherSkeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.scores.Team;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -58,14 +58,27 @@ public class ChocoboCombatEffects {
                 }
             }
         }
-        if (chocoboTarget != null && ChocoConfig.COMMON.extraChocoboEffects.get()) {
-            DamageSource source = event.getSource();
-            ChocoboColor color = chocoboTarget.getChocoboColor();
-            if (source == DamageSource.SWEET_BERRY_BUSH) { event.setCanceled(true); return; }
-            if (source == DamageSource.FREEZE) { event.setCanceled(color == ChocoboColor.WHITE || color == ChocoboColor.GOLD); return; }
-            if (source == DamageSource.DRAGON_BREATH) { event.setCanceled(color == ChocoboColor.PURPLE || color == ChocoboColor.GOLD); return; }
+        if (chocoboTarget != null) {
+            if (chocoboTarget.isTame()) {
+                Player source = event.getSource().getEntity() instanceof Player play ? play : null;
+                Player owner = chocoboTarget.getOwner() instanceof Player play ? play : null;
+                Team group = owner != null ? owner.getTeam() : null;
+                boolean shift = ChocoConfig.COMMON.shiftBypassAllowed.get() && source != null && source.isShiftKeyDown();
+                boolean teams = group != null && source != null && source.getTeam() == group;
+                if (!shift) {
+                    if (!ChocoConfig.COMMON.ownChocoboHittable.get()) { event.setCanceled((owner == source) || teams); return; }
+                    if (!ChocoConfig.COMMON.tamedChocoboHittable.get()) { event.setCanceled(source != null); return; }
+                }
+            }
+            if (ChocoConfig.COMMON.extraChocoboEffects.get()) {
+                DamageSource source = event.getSource();
+                ChocoboColor color = chocoboTarget.getChocoboColor();
+                if (source == DamageSource.SWEET_BERRY_BUSH) { event.setCanceled(true); return; }
+                if (source == DamageSource.FREEZE) { event.setCanceled(color == ChocoboColor.WHITE || color == ChocoboColor.GOLD); return; }
+                if (source == DamageSource.DRAGON_BREATH) { event.setCanceled(color == ChocoboColor.PURPLE || color == ChocoboColor.GOLD); return; }
+            }
             if (random.nextInt(100)+1 > 35) { chocoboTarget.spawnAtLocation(CHOCOBO_FEATHER.get()); }
-        } else if (chocoboTarget != null && random.nextInt(100)+1 > 35) { chocoboTarget.spawnAtLocation(CHOCOBO_FEATHER.get()); }
+        }
         if (playerTarget != null && ChocoConfig.COMMON.extraChocoboEffects.get()) {
             ItemStack hStack = playerTarget.getItemBySlot(EquipmentSlot.HEAD);
             ItemStack cStack = playerTarget.getItemBySlot(EquipmentSlot.CHEST);

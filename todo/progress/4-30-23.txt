@@ -1,0 +1,4 @@
+Setup for tamed chocobos to not be hit by players.
+-Settings for General
+-Settings for Teams & Owner
+-Setting to allow Shift to bypass & allow the hit
