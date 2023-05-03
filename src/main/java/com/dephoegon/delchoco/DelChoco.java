@@ -8,6 +8,8 @@ import com.dephoegon.delchoco.common.events.ModCommonEvents;
 import com.dephoegon.delchoco.common.init.*;
 import com.dephoegon.delchoco.common.network.PacketManager;
 import com.dephoegon.delchoco.utils.Log4jFilter;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -25,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 public class DelChoco {
     public static final String DELCHOCO_ID = "delchoco";
     public final static Logger log = LogManager.getLogger(DELCHOCO_ID);
+    public static final CreativeModeTab CHOCO_TAB = new CreativeModeTab(DELCHOCO_ID) { public @NotNull ItemStack makeIcon() { return new ItemStack(ModRegistry.GYSAHL_GREEN.get()); } };
 
     public DelChoco() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -43,7 +46,6 @@ public class DelChoco {
         MinecraftForge.EVENT_BUS.register(new ChocoboCombatEffects());
         MinecraftForge.EVENT_BUS.register(this);
         eventBus.addListener(ModCommonEvents::registerEntityAttributes);
-        eventBus.addListener(ModCommonEvents::addCreative);
         MinecraftForge.EVENT_BUS.addListener(ModCommonEvents::addCustomTrades);
         MinecraftForge.EVENT_BUS.addListener(ModCommonEvents::onServerStartAddCompostItems);
 

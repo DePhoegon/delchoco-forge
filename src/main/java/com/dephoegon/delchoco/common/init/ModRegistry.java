@@ -20,6 +20,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import static com.dephoegon.delchoco.DelChoco.CHOCO_TAB;
 import static com.dephoegon.delchoco.common.entities.Chocobo.tier_one_chocobo_inv_slot_count;
 import static com.dephoegon.delchoco.common.entities.Chocobo.tier_two_chocobo_inv_slot_count;
 import static com.dephoegon.delchoco.common.items.ChocoboArmorItems.CHOCOBO_ARMOR_MATERIALS;
@@ -95,5 +96,5 @@ public class ModRegistry {
     public static final RegistryObject<Item> CHOCOBO_EGG_ITEM = ITEMS.register("chocobo_egg", () -> new ChocoboEggBlockItem(CHOCOBO_EGG.get(), itemBuilder(false)));
 
 
-    private static Item.Properties itemBuilder(boolean fireImmune) { if (fireImmune) { return new Item.Properties().fireResistant();} else { return new Item.Properties(); } }
+    private static Item.Properties itemBuilder(boolean fireImmune) { if (fireImmune) { return new Item.Properties().tab(CHOCO_TAB).fireResistant();} else { return new Item.Properties().tab(CHOCO_TAB); } }
 }
