@@ -1,6 +1,5 @@
 package com.dephoegon.delchoco.aid;
 
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,21 +21,6 @@ public class composable {
         add(f3, PICKLED_GYSAHL_RAW.get());
         add(f3, CHOCOBO_DRUMSTICK_COOKED.get());
         add(f3, CHOCOBO_DRUMSTICK_RAW.get());
-        add(f2, Items.ROTTEN_FLESH);
-        add(f2, Items.SPIDER_EYE);
-        add(f3, Items.COD);
-        add(f3, Items.SALMON);
-        add(f3, Items.TROPICAL_FISH);
-        add(f3, Items.PUFFERFISH);
-        add(f3, Items.BEEF);
-        add(f3, Items.CHICKEN);
-        add(f3, Items.RABBIT);
-        add(f3, Items.MUTTON);
-        add(f3, Items.COOKED_BEEF);
-        add(f3, Items.COOKED_COD);
-        add(f3, Items.COOKED_CHICKEN);
-        add(f3, Items.COOKED_RABBIT);
-        add(f3, Items.COOKED_MUTTON);
         add(f4, LOVELY_GYSAHL_GREEN.get());
         add(f4, STRAW_NEST_ITEM.get());
         add(f4, GYSAHL_CAKE.get());

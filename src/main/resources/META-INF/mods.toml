@@ -15,7 +15,7 @@ Chocobos in Minecraft
 [[dependencies.delchoco]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.18.2,1.18.3)"
+versionRange="1.18.2"
 ordering="NONE"
 side="BOTH"
 [[dependencies.delchoco]]
@@ -27,6 +27,6 @@ side="BOTH"
 [[dependencies.delchoco]]
 modId="delbase"
 mandatory=true
-versionRange="[1.2,)"
+versionRange="[1.4.3,)"
 ordering="NONE"
 side="BOTH"
