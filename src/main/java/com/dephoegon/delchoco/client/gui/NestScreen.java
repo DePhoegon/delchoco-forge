@@ -1,9 +1,9 @@
 package com.dephoegon.delchoco.client.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.dephoegon.delchoco.DelChoco;
 import com.dephoegon.delchoco.common.inventory.NestContainer;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -20,15 +20,15 @@ public class NestScreen extends AbstractContainerScreen<NestContainer> {
         this.imageWidth = 176;
         this.imageHeight = 166;
     }
-    public void render(@NotNull PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull GuiGraphics matrixStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(matrixStack, mouseX, mouseY);
     }
-    protected void renderBg(@NotNull PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+    protected void renderBg(@NotNull GuiGraphics matrixStack, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, this.getMenu().getTile().isSheltered() ? TEXTURE_SHELTERED : TEXTURE);
-        blit(matrixStack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+        ResourceLocation DRAW_TEXTURE = this.getMenu().getTile().isSheltered() ? TEXTURE_SHELTERED : TEXTURE;
+        matrixStack.blit(DRAW_TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
     }
-    protected void renderLabels(@NotNull PoseStack matrixStack, int mouseX, int mouseY) { super.renderLabels(matrixStack, mouseX, mouseY); }
+    protected void renderLabels(@NotNull GuiGraphics matrixStack, int x, int y) { super.renderLabels(matrixStack, x, y); }
 }

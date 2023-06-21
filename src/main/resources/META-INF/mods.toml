@@ -1,32 +1,32 @@
 modLoader="javafml"
-loaderVersion="[40,)"
-license="MIT"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
 
 [[mods]]
-modId="delchoco"
-version="${file.jarVersion}"
-displayName="DePhoegons' Chocobos"
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
 logoFile="dephoegonlogo.png"
-authors="Mrbysco, Xalcon, Slayer5934, balika011, DePhoegon"
-credits="Thanks to EddieV for the original Chococraft, ArnoSaxena(Torojimas) and clienthax for maintaining it"
-description='''
-Chocobos in Minecraft
-'''
-[[dependencies.delchoco]]
-modId="minecraft"
-mandatory=true
-versionRange="1.19.3"
-ordering="NONE"
-side="BOTH"
-[[dependencies.delchoco]]
-modId="forge"
-mandatory=true
-versionRange="[44.1,)"
-ordering="NONE"
-side="BOTH"
-[[dependencies.delchoco]]
-modId="delbase"
-mandatory=true
-versionRange="[1.4.3,)"
-ordering="NONE"
-side="BOTH"
+credits="Lack of Sanity, Myself, Trial & Error, Family, and My friend(s) for listening to insanity."
+authors="${mod_authors}"
+description='''${mod_description}'''
+
+[[dependencies.${mod_id}]]
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_version_range}"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="delbase"
+    mandatory=true
+    versionRange="${project.delbase_ver_req}"
+    ordering="NONE"
+    side="BOTH"

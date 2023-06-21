@@ -21,9 +21,9 @@ import java.util.Map;
 import java.util.UUID;
 
 @SuppressWarnings("deprecation")
-public class ChocoboArmorItems extends Item implements Wearable {
+public class ChocoboArmorItems extends Item implements Equipable {
     private static final UUID CHOCO_ARMOR_SLOT = UUID.fromString("02a4a813-7afd-4073-bf47-6dcffdf18fca");
-    protected final EquipmentSlot slot;
+    protected final ArmorItem.Type armorType;
     private final int defense;
     private final float toughness;
     protected final float knockBackResistance;
@@ -41,8 +41,8 @@ public class ChocoboArmorItems extends Item implements Wearable {
         for (int i = 0; !(i > CHOCOBO_ARMOR_MATERIALS.size()); i++) { map.put(CHOCOBO_ARMOR_MATERIALS.get(i), i); }
     });
     private static final float setMod = 2.5F;
-    private static int totalArmorMaterialDefense(ArmorMaterial armor, EquipmentSlot slot, int additive, boolean initialMaterial) {
-        int out = initialMaterial ? armor.getDefenseForSlot(slot) + additive : (armor.getDefenseForSlot(slot) /2) + additive;
+    private static int totalArmorMaterialDefense(ArmorMaterial armor, ArmorItem.Type slot, int additive, boolean initialMaterial) {
+        int out = initialMaterial ? armor.getDefenseForType(slot) + additive : (armor.getDefenseForType(slot) /2) + additive;
         int nextLowestArmor = CHOCOBO_ARMOR_MATERIAL.get(armor)-1;
         return nextLowestArmor > 0 ? totalArmorMaterialDefense(CHOCOBO_ARMOR_MATERIALS.get(nextLowestArmor), slot, out, false) : out;
     }
@@ -56,11 +56,11 @@ public class ChocoboArmorItems extends Item implements Wearable {
         int nextLowestArmor = CHOCOBO_ARMOR_MATERIAL.get(armor)-1;
         return nextLowestArmor > 0 ? totalArmorMaterialKnockBackResistance(CHOCOBO_ARMOR_MATERIALS.get(nextLowestArmor), out) : out;
     }
-    public ChocoboArmorItems(@NotNull ArmorMaterial pMaterial, EquipmentSlot pSlot, Item.@NotNull Properties pProperties) {
-        super(pProperties.defaultDurability(pMaterial.getDurabilityForSlot(pSlot)));
+    public ChocoboArmorItems(@NotNull ArmorMaterial pMaterial, ArmorItem.Type type, Item.@NotNull Properties pProperties) {
+        super(pProperties.defaultDurability(pMaterial.getDurabilityForType(type)));
         this.material = pMaterial;
-        this.slot = pSlot;
-        this.defense = totalArmorMaterialDefense(pMaterial, pSlot, 0, true);
+        this.armorType = type;
+        this.defense = totalArmorMaterialDefense(pMaterial, type, 0, true);
         this.toughness = totalArmorMaterialToughness(pMaterial, 0, true);
         this.enchantmentValue = pMaterial.getEnchantmentValue();
         this.knockBackResistance = totalArmorMaterialKnockBackResistance(pMaterial, 0);
@@ -71,7 +71,7 @@ public class ChocoboArmorItems extends Item implements Wearable {
         if (this.knockBackResistance > 0) { builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(uuid, "Armor knockBack resistance", this.knockBackResistance, AttributeModifier.Operation.ADDITION)); }
         this.defaultModifiers = builder.build();
     }
-    public EquipmentSlot getSlot() { return this.slot; }
+    public EquipmentSlot getArmorSlot() { return this.armorType.getSlot(); }
     public int getEnchantmentValue() { return this.enchantmentValue; }
     public ArmorMaterial getMaterial() { return this.material; }
     public boolean isValidRepairItem(@NotNull ItemStack pToRepair, @NotNull ItemStack pRepair) { return this.material.getRepairIngredient().test(pRepair) || super.isValidRepairItem(pToRepair, pRepair); }
@@ -80,9 +80,15 @@ public class ChocoboArmorItems extends Item implements Wearable {
         return InteractionResultHolder.fail(itemstack);
     }
     @SuppressWarnings("deprecation")
-    public @NotNull Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@NotNull EquipmentSlot pEquipmentSlot) { return pEquipmentSlot == this.slot ? this.defaultModifiers : super.getDefaultAttributeModifiers(pEquipmentSlot); }
+    public @NotNull Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@NotNull EquipmentSlot pEquipmentSlot) { return pEquipmentSlot == this.armorType.getSlot() ? this.defaultModifiers : super.getDefaultAttributeModifiers(pEquipmentSlot); }
     public int getDefense() { return this.defense; }
     public float getToughness() { return this.toughness; }
+
+    @Override
+    public @NotNull EquipmentSlot getEquipmentSlot() {
+        return this.armorType.getSlot();
+    }
+
     @Nullable
     public SoundEvent getEquipSound() { return this.getMaterial().getEquipSound(); }
 }

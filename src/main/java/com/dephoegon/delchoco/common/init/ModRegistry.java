@@ -8,14 +8,14 @@ import com.dephoegon.delchoco.common.blocks.GysahlGreenBlock;
 import com.dephoegon.delchoco.common.blocks.StrawNestBlock;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.dephoegon.delchoco.common.items.*;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -31,9 +31,9 @@ public class ModRegistry {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, DelChoco.DELCHOCO_ID);
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, DelChoco.DELCHOCO_ID);
-    public static final RegistryObject<Block> GYSAHL_GREEN = BLOCKS.register("gysahl_green", () -> new GysahlGreenBlock(Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.CROP)));
-    public static final RegistryObject<Block> STRAW_NEST = BLOCKS.register("straw_nest", () -> new StrawNestBlock(Properties.of(Material.STONE).sound(SoundType.GRASS)));
-    public static final RegistryObject<Block> CHOCOBO_EGG = BLOCKS.register("chocobo_egg", () -> new ChocoboEggBlock(Properties.of(Material.EGG).strength(0.5F).noOcclusion().sound(SoundType.GRASS)));
+    public static final RegistryObject<Block> GYSAHL_GREEN = BLOCKS.register("gysahl_green", () -> new GysahlGreenBlock(Properties.of().mapColor(MapColor.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.CROP)));
+    public static final RegistryObject<Block> STRAW_NEST = BLOCKS.register("straw_nest", () -> new StrawNestBlock(Properties.of().mapColor(MapColor.STONE).sound(SoundType.GRASS)));
+    public static final RegistryObject<Block> CHOCOBO_EGG = BLOCKS.register("chocobo_egg", () -> new ChocoboEggBlock(Properties.of().mapColor(MapColor.CLAY).strength(0.5F).noOcclusion().sound(SoundType.GRASS)));
     @SuppressWarnings("DataFlowIssue")
     public static final RegistryObject<BlockEntityType<ChocoboNestBlockEntity>> STRAW_NEST_TILE = BLOCK_ENTITIES.register("chocobo_nest", () -> BlockEntityType.Builder.of(ChocoboNestBlockEntity::new, STRAW_NEST.get()).build(null));
     @SuppressWarnings("DataFlowIssue")
@@ -44,10 +44,10 @@ public class ModRegistry {
     public static final RegistryObject<Item> IRON_CHOCO_WEAPON = ITEMS.register("chocobo_weapon_iron", () -> new ChocoboWeaponItems(CHOCOBO_WEAPON_TIERS.get(2), -2.4f, (itemBuilder(false))));
     public static final RegistryObject<Item> DIAMOND_CHOCO_WEAPON = ITEMS.register("chocobo_weapon_diamond", () -> new ChocoboWeaponItems(CHOCOBO_WEAPON_TIERS.get(3), -2.4f, (itemBuilder(false))));
     public static final RegistryObject<Item> NETHERITE_CHOCO_WEAPON = ITEMS.register("chocobo_weapon_netherite", () -> new ChocoboWeaponItems(CHOCOBO_WEAPON_TIERS.get(4), -2.4f, (itemBuilder(true))));
-    public static final RegistryObject<Item> CHAIN_CHOCO_CHEST = ITEMS.register("chocobo_armor_chain", () -> new ChocoboArmorItems(CHOCOBO_ARMOR_MATERIALS.get(1), EquipmentSlot.CHEST, (itemBuilder(false))));
-    public static final RegistryObject<Item> IRON_CHOCO_CHEST = ITEMS.register("chocobo_armor_iron", () -> new ChocoboArmorItems(CHOCOBO_ARMOR_MATERIALS.get(2), EquipmentSlot.CHEST, (itemBuilder(false))));
-    public static final RegistryObject<Item> DIAMOND_CHOCO_CHEST = ITEMS.register("chocobo_armor_diamond", () -> new ChocoboArmorItems(CHOCOBO_ARMOR_MATERIALS.get(3), EquipmentSlot.CHEST, (itemBuilder(false))));
-    public static final RegistryObject<Item> NETHERITE_CHOCO_CHEST = ITEMS.register("chocobo_armor_netherite", () -> new ChocoboArmorItems(CHOCOBO_ARMOR_MATERIALS.get(4), EquipmentSlot.CHEST, (itemBuilder(true))));
+    public static final RegistryObject<Item> CHAIN_CHOCO_CHEST = ITEMS.register("chocobo_armor_chain", () -> new ChocoboArmorItems(CHOCOBO_ARMOR_MATERIALS.get(1), ArmorItem.Type.CHESTPLATE, (itemBuilder(false))));
+    public static final RegistryObject<Item> IRON_CHOCO_CHEST = ITEMS.register("chocobo_armor_iron", () -> new ChocoboArmorItems(CHOCOBO_ARMOR_MATERIALS.get(2), ArmorItem.Type.CHESTPLATE, (itemBuilder(false))));
+    public static final RegistryObject<Item> DIAMOND_CHOCO_CHEST = ITEMS.register("chocobo_armor_diamond", () -> new ChocoboArmorItems(CHOCOBO_ARMOR_MATERIALS.get(3), ArmorItem.Type.CHESTPLATE, (itemBuilder(false))));
+    public static final RegistryObject<Item> NETHERITE_CHOCO_CHEST = ITEMS.register("chocobo_armor_netherite", () -> new ChocoboArmorItems(CHOCOBO_ARMOR_MATERIALS.get(4), ArmorItem.Type.CHESTPLATE, (itemBuilder(true))));
     public static final RegistryObject<Item> CHOCOBO_SADDLE = ITEMS.register("chocobo_saddle", () -> new ChocoboSaddleItem(itemBuilder(false), 0, false));
     public static final RegistryObject<Item> CHOCOBO_SADDLE_BAGS = ITEMS.register("chocobo_saddle_bags", () -> new ChocoboSaddleItem(itemBuilder(false), tier_one_chocobo_inv_slot_count, false));
     public static final RegistryObject<Item> CHOCOBO_SADDLE_PACK = ITEMS.register("chocobo_saddle_pack", () -> new ChocoboSaddleItem(itemBuilder(false), tier_two_chocobo_inv_slot_count, true));
@@ -73,22 +73,22 @@ public class ModRegistry {
     public static final RegistryObject<Item> PICKLED_GYSAHL_RAW = ITEMS.register("pickled_gysahl_raw", () -> new Item(itemBuilder(false).food(ModFoods.PICKLED_GYSAHL_RAW)));
     public static final RegistryObject<Item> PICKLED_GYSAHL_COOKED = ITEMS.register("pickled_gysahl_cooked", () -> new Item(itemBuilder(false).food(ModFoods.PICKLED_GYSAHL_COOKED)));
 
-    public static final RegistryObject<Item> LEATHER_CHOCO_DISGUISE_HELMET = ITEMS.register("choco_disguise_leather_helmet", () -> new ChocoDisguiseItem(ModArmorMaterial.LEATHER_CHOCO_DISGUISE, EquipmentSlot.HEAD, itemBuilder(false)));
-    public static final RegistryObject<Item> LEATHER_CHOCO_DISGUISE_CHEST = ITEMS.register("choco_disguise_leather_chestplate", () -> new ChocoDisguiseItem(ModArmorMaterial.LEATHER_CHOCO_DISGUISE, EquipmentSlot.CHEST, itemBuilder(false)));
-    public static final RegistryObject<Item> LEATHER_CHOCO_DISGUISE_LEGS = ITEMS.register("choco_disguise_leather_leggings", () -> new ChocoDisguiseItem(ModArmorMaterial.LEATHER_CHOCO_DISGUISE, EquipmentSlot.LEGS, itemBuilder(false)));
-    public static final RegistryObject<Item> LEATHER_CHOCO_DISGUISE_FEET = ITEMS.register("choco_disguise_leather_boots", () -> new ChocoDisguiseItem(ModArmorMaterial.LEATHER_CHOCO_DISGUISE, EquipmentSlot.FEET, itemBuilder(false)));
-    public static final RegistryObject<Item> IRON_CHOCO_DISGUISE_HELMET = ITEMS.register("choco_disguise_iron_helmet", () -> new ChocoDisguiseItem(ModArmorMaterial.IRON_CHOCO_DISGUISE, EquipmentSlot.HEAD, itemBuilder(false)));
-    public static final RegistryObject<Item> IRON_CHOCO_DISGUISE_CHEST = ITEMS.register("choco_disguise_iron_chestplate", () -> new ChocoDisguiseItem(ModArmorMaterial.IRON_CHOCO_DISGUISE, EquipmentSlot.CHEST, itemBuilder(false)));
-    public static final RegistryObject<Item> IRON_CHOCO_DISGUISE_LEGS = ITEMS.register("choco_disguise_iron_leggings", () -> new ChocoDisguiseItem(ModArmorMaterial.IRON_CHOCO_DISGUISE, EquipmentSlot.LEGS, itemBuilder(false)));
-    public static final RegistryObject<Item> IRON_CHOCO_DISGUISE_FEET = ITEMS.register("choco_disguise_iron_boots", () -> new ChocoDisguiseItem(ModArmorMaterial.IRON_CHOCO_DISGUISE, EquipmentSlot.FEET, itemBuilder(false)));
-    public static final RegistryObject<Item> DIAMOND_CHOCO_DISGUISE_HELMET = ITEMS.register("choco_disguise_diamond_helmet", () -> new ChocoDisguiseItem(ModArmorMaterial.DIAMOND_CHOCO_DISGUISE, EquipmentSlot.HEAD, itemBuilder(false)));
-    public static final RegistryObject<Item> DIAMOND_CHOCO_DISGUISE_CHEST = ITEMS.register("choco_disguise_diamond_chestplate", () -> new ChocoDisguiseItem(ModArmorMaterial.DIAMOND_CHOCO_DISGUISE, EquipmentSlot.CHEST, itemBuilder(false)));
-    public static final RegistryObject<Item> DIAMOND_CHOCO_DISGUISE_LEGS = ITEMS.register("choco_disguise_diamond_leggings", () -> new ChocoDisguiseItem(ModArmorMaterial.DIAMOND_CHOCO_DISGUISE, EquipmentSlot.LEGS, itemBuilder(false)));
-    public static final RegistryObject<Item> DIAMOND_CHOCO_DISGUISE_FEET = ITEMS.register("choco_disguise_diamond_boots", () -> new ChocoDisguiseItem(ModArmorMaterial.DIAMOND_CHOCO_DISGUISE, EquipmentSlot.FEET, itemBuilder(false)));
-    public static final RegistryObject<Item> NETHERITE_CHOCO_DISGUISE_HELMET = ITEMS.register("choco_disguise_netherite_helmet", () -> new ChocoDisguiseItem(ModArmorMaterial.NETHERITE_CHOCO_DISGUISE, EquipmentSlot.HEAD, itemBuilder(true)));
-    public static final RegistryObject<Item> NETHERITE_CHOCO_DISGUISE_CHEST = ITEMS.register("choco_disguise_netherite_chestplate", () -> new ChocoDisguiseItem(ModArmorMaterial.NETHERITE_CHOCO_DISGUISE, EquipmentSlot.CHEST, itemBuilder(true)));
-    public static final RegistryObject<Item> NETHERITE_CHOCO_DISGUISE_LEGS = ITEMS.register("choco_disguise_netherite_leggings", () -> new ChocoDisguiseItem(ModArmorMaterial.NETHERITE_CHOCO_DISGUISE, EquipmentSlot.LEGS, itemBuilder(true)));
-    public static final RegistryObject<Item> NETHERITE_CHOCO_DISGUISE_FEET = ITEMS.register("choco_disguise_netherite_boots", () -> new ChocoDisguiseItem(ModArmorMaterial.NETHERITE_CHOCO_DISGUISE, EquipmentSlot.FEET, itemBuilder(true)));
+    public static final RegistryObject<Item> LEATHER_CHOCO_DISGUISE_HELMET = ITEMS.register("choco_disguise_leather_helmet", () -> new ChocoDisguiseItem(ModArmorMaterial.LEATHER_CHOCO_DISGUISE, ArmorItem.Type.HELMET, itemBuilder(false)));
+    public static final RegistryObject<Item> LEATHER_CHOCO_DISGUISE_CHEST = ITEMS.register("choco_disguise_leather_chestplate", () -> new ChocoDisguiseItem(ModArmorMaterial.LEATHER_CHOCO_DISGUISE, ArmorItem.Type.CHESTPLATE, itemBuilder(false)));
+    public static final RegistryObject<Item> LEATHER_CHOCO_DISGUISE_LEGS = ITEMS.register("choco_disguise_leather_leggings", () -> new ChocoDisguiseItem(ModArmorMaterial.LEATHER_CHOCO_DISGUISE, ArmorItem.Type.LEGGINGS, itemBuilder(false)));
+    public static final RegistryObject<Item> LEATHER_CHOCO_DISGUISE_FEET = ITEMS.register("choco_disguise_leather_boots", () -> new ChocoDisguiseItem(ModArmorMaterial.LEATHER_CHOCO_DISGUISE, ArmorItem.Type.BOOTS, itemBuilder(false)));
+    public static final RegistryObject<Item> IRON_CHOCO_DISGUISE_HELMET = ITEMS.register("choco_disguise_iron_helmet", () -> new ChocoDisguiseItem(ModArmorMaterial.IRON_CHOCO_DISGUISE, ArmorItem.Type.HELMET, itemBuilder(false)));
+    public static final RegistryObject<Item> IRON_CHOCO_DISGUISE_CHEST = ITEMS.register("choco_disguise_iron_chestplate", () -> new ChocoDisguiseItem(ModArmorMaterial.IRON_CHOCO_DISGUISE, ArmorItem.Type.CHESTPLATE, itemBuilder(false)));
+    public static final RegistryObject<Item> IRON_CHOCO_DISGUISE_LEGS = ITEMS.register("choco_disguise_iron_leggings", () -> new ChocoDisguiseItem(ModArmorMaterial.IRON_CHOCO_DISGUISE, ArmorItem.Type.LEGGINGS, itemBuilder(false)));
+    public static final RegistryObject<Item> IRON_CHOCO_DISGUISE_FEET = ITEMS.register("choco_disguise_iron_boots", () -> new ChocoDisguiseItem(ModArmorMaterial.IRON_CHOCO_DISGUISE, ArmorItem.Type.BOOTS, itemBuilder(false)));
+    public static final RegistryObject<Item> DIAMOND_CHOCO_DISGUISE_HELMET = ITEMS.register("choco_disguise_diamond_helmet", () -> new ChocoDisguiseItem(ModArmorMaterial.DIAMOND_CHOCO_DISGUISE, ArmorItem.Type.HELMET, itemBuilder(false)));
+    public static final RegistryObject<Item> DIAMOND_CHOCO_DISGUISE_CHEST = ITEMS.register("choco_disguise_diamond_chestplate", () -> new ChocoDisguiseItem(ModArmorMaterial.DIAMOND_CHOCO_DISGUISE, ArmorItem.Type.CHESTPLATE, itemBuilder(false)));
+    public static final RegistryObject<Item> DIAMOND_CHOCO_DISGUISE_LEGS = ITEMS.register("choco_disguise_diamond_leggings", () -> new ChocoDisguiseItem(ModArmorMaterial.DIAMOND_CHOCO_DISGUISE, ArmorItem.Type.LEGGINGS, itemBuilder(false)));
+    public static final RegistryObject<Item> DIAMOND_CHOCO_DISGUISE_FEET = ITEMS.register("choco_disguise_diamond_boots", () -> new ChocoDisguiseItem(ModArmorMaterial.DIAMOND_CHOCO_DISGUISE, ArmorItem.Type.BOOTS, itemBuilder(false)));
+    public static final RegistryObject<Item> NETHERITE_CHOCO_DISGUISE_HELMET = ITEMS.register("choco_disguise_netherite_helmet", () -> new ChocoDisguiseItem(ModArmorMaterial.NETHERITE_CHOCO_DISGUISE, ArmorItem.Type.HELMET, itemBuilder(true)));
+    public static final RegistryObject<Item> NETHERITE_CHOCO_DISGUISE_CHEST = ITEMS.register("choco_disguise_netherite_chestplate", () -> new ChocoDisguiseItem(ModArmorMaterial.NETHERITE_CHOCO_DISGUISE, ArmorItem.Type.CHESTPLATE, itemBuilder(true)));
+    public static final RegistryObject<Item> NETHERITE_CHOCO_DISGUISE_LEGS = ITEMS.register("choco_disguise_netherite_leggings", () -> new ChocoDisguiseItem(ModArmorMaterial.NETHERITE_CHOCO_DISGUISE, ArmorItem.Type.LEGGINGS, itemBuilder(true)));
+    public static final RegistryObject<Item> NETHERITE_CHOCO_DISGUISE_FEET = ITEMS.register("choco_disguise_netherite_boots", () -> new ChocoDisguiseItem(ModArmorMaterial.NETHERITE_CHOCO_DISGUISE, ArmorItem.Type.BOOTS, itemBuilder(true)));
 
     //Regular block items
     public static final RegistryObject<Item> STRAW_NEST_ITEM = ITEMS.register("straw_nest", () -> new BlockItem(STRAW_NEST.get(), itemBuilder(false)));

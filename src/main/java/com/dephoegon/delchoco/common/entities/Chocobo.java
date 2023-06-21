@@ -72,6 +72,7 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.items.ItemStackHandler;
@@ -83,9 +84,9 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 import static com.dephoegon.delbase.item.shiftingDyes.*;
-import static com.dephoegon.delchoco.aid.SpawnBiomesChecks.allBiomes;
-import static com.dephoegon.delchoco.aid.chocoKB.isAltDown;
-import static com.dephoegon.delchoco.aid.dyeList.getDyeList;
+import static com.dephoegon.delchoco.aid.arraylists.SpawnBiomesChecks.allBiomes;
+import static com.dephoegon.delchoco.aid.arraylists.dyeList.getDyeList;
+import static com.dephoegon.delchoco.aid.util.chocoKB.isAltDown;
 import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.blocks.GysahlGreenBlock.blockPlaceableOnList;
 import static com.dephoegon.delchoco.common.entities.breeding.ChocoboSnap.setChocoScale;
@@ -202,12 +203,15 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             for (int i = 0; i < chocoboInventory.getSlots(); i++) {
                 if (!(chocoboInventory.getStackInSlot(i).isEmpty())) {
                     dropper.setItem(i, chocoboInventory.getStackInSlot(i));
-                    Containers.dropContents(level, Chocobo.this.getOnPos(), dropper);
+                    Containers.dropContents(level(), Chocobo.this.getOnPos(), dropper);
                 }
             }
             Chocobo.this.setSaddleType(this.itemStack);
         }
     };
+    private int TimeSinceFeatherChance = 0;
+    private static final float maxStepUp = 1.5f;
+    private int rideTickDelay = 0;
 
     public Chocobo(EntityType<? extends Chocobo> type, Level world) { super(type, world); }
     @Override
@@ -346,16 +350,16 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         return random.nextInt(range)-lower;
     }
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor worldIn, @NotNull DifficultyInstance difficultyIn, @NotNull MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-        this.setMale(this.level.random.nextBoolean());
+        this.setMale(this.level().random.nextBoolean());
 
-        final Holder<Biome> currentBiomes = this.level.getBiome(blockPosition().below());
+        final Holder<Biome> currentBiomes = this.level().getBiome(blockPosition().below());
         //noinspection OptionalGetWithoutIsPresent
         final ResourceKey<Biome> BiomesKey = currentBiomes.unwrapKey().get();
         if (!fromEgg()) {
             setChocoboSpawnCheck(ChocoboColor.YELLOW);
             if (!currentBiomes.containsTag(IS_END) && !currentBiomes.containsTag(IS_OVERWORLD)) { setChocoboSpawnCheck(ChocoboColor.FLAME); }
             if (currentBiomes.containsTag(IS_END)) { setChocoboSpawnCheck(ChocoboColor.PURPLE); }
-            if (currentBiomes.containsTag(IS_MUSHROOM)) { setChocoboSpawnCheck(ChocoboColor.PINK); }
+            if (currentBiomes.containsTag(IS_MUSHROOM) || BiomesKey == CHERRY_GROVE) { setChocoboSpawnCheck(ChocoboColor.PINK); }
             if (currentBiomes.containsTag(IS_SNOWY) || whiteChocobo().contains(BiomesKey)) { setChocoboSpawnCheck(ChocoboColor.WHITE); }
             if (blueChocobo().contains(BiomesKey)) { setChocoboSpawnCheck(ChocoboColor.BLUE); }
             if (currentBiomes.containsTag(IS_FOREST) || currentBiomes.containsTag(IS_BADLANDS)) { setChocoboSpawnCheck(ChocoboColor.RED); }
@@ -404,11 +408,11 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     public boolean isChocoWeapon(@NotNull ItemStack pStack) { return pStack.getItem() instanceof ChocoboWeaponItems; }
     public int chocoStatMod() { return COMMON.modifier.get(); }
     private void setChocoboArmorStats(ItemStack pStack) {
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             this.getAttribute(Attributes.ARMOR).removeModifier(CHOCOBO_CHEST_ARMOR_MOD_UUID);
             this.getAttribute(Attributes.ARMOR_TOUGHNESS).removeModifier(CHOCOBO_CHEST_ARMOR_TOUGH_MOD_UUID);
             if (this.isChocoboArmor(pStack)) {
-                this.setDropChance(((ChocoboArmorItems)pStack.getItem()).getSlot(), 0.0F);
+                this.setDropChance(((ChocoboArmorItems)pStack.getItem()).getArmorSlot(), 0.0F);
                 int p = ((ChocoboArmorItems)pStack.getItem()).getDefense()*chocoStatMod();
                 float t = ((ChocoboArmorItems)pStack.getItem()).getToughness()*chocoStatMod();
                 if (p != 0) { this.getAttribute(Attributes.ARMOR).addPermanentModifier(new AttributeModifier(CHOCOBO_CHEST_ARMOR_MOD_UUID, "Chocobo Armor Bonus", p, Operation.ADDITION)); }
@@ -418,7 +422,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         }
     }
     private void setChocoboWeaponStats(ItemStack pStack) {
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             this.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(CHOCOBO_WEAPON_DAM_MOD_UUID);
             this.getAttribute(Attributes.ATTACK_SPEED).removeModifier(CHOCOBO_WEAPON_SPD_MOD_UUID);
             if (this.isChocoWeapon(pStack)) {
@@ -487,8 +491,10 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         ItemStack oldStack = getArmor();
         if (oldStack.getItem() != armorType.getItem()) { this.entityData.set(PARAM_ARMOR_ITEM, armorType.copy()); }
     }
-    public boolean rideableUnderWater() { return this.canBreatheUnderwater(); }
-    public boolean canBreatheUnderwater() { return this.isWaterBreather(); }
+    @Override
+    public boolean canDrownInFluidType(FluidType type) {
+        if (type == ForgeMod.WATER_TYPE.get()) { return !this.isWaterBreather(); } else { return super.canDrownInFluidType(type); }
+    }
     public float getStamina() { return this.entityData.get(PARAM_STAMINA); }
     public void setStamina(float value) { this.entityData.set(PARAM_STAMINA, value); }
     public float getStaminaPercentage() { return (float) (this.getStamina() / this.getAttribute(ModAttributes.MAX_STAMINA.get()).getValue()); }
@@ -514,29 +520,27 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         return this.getChocoboScale() == 0 ? scaleZero : scaleZero * this.getChocoboScaleMod();
     }
     @Nullable
-    public Entity getControllingPassenger() {
+    public LivingEntity getControllingPassenger() {
         if (isTame() && this.isSaddled()) {
             Entity entity = this.getFirstPassenger();
-            if (entity instanceof LivingEntity) {
-                return entity;
-            }
+            return entity instanceof LivingEntity ? (LivingEntity) entity : null;
         }
         return null;
     }
     public void updateSwimming() { }
-    protected void checkFallDamage(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
-        if (!this.level.isClientSide && pOnGround && this.fallDistance > 0.0F) {
+    protected void checkFallDamage(double pY, boolean pOnGround, @NotNull BlockState pState, @NotNull BlockPos pPos) {
+        if (!this.level().isClientSide && pOnGround && this.fallDistance > 0.0F) {
             this.removeSoulSpeed();
             this.tryAddSoulSpeed();
         }
 
-        if (!this.level.isClientSide && this.fallDistance > 3.0F && pOnGround) {
+        if (!this.level().isClientSide && this.fallDistance > 3.0F && pOnGround) {
             float f = (float)Mth.ceil(this.fallDistance - 3.0F);
             if (!pState.isAir()) {
-                double d0 = Math.min((double)(0.2F + f / 15.0F), 2.5D);
+                double d0 = Math.min(0.2F + f / 15.0F, 2.5D);
                 int i = (int)(150.0D * d0);
-                if (!pState.addLandingEffects((ServerLevel)this.level, pPos, pState, this, i))
-                    ((ServerLevel)this.level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, pState).setPos(pPos), this.getX(), this.getY(), this.getZ(), i, 0.0D, 0.0D, 0.0D, (double)0.15F);
+                if (!pState.addLandingEffects((ServerLevel)this.level(), pPos, pState, this, i))
+                    ((ServerLevel)this.level()).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, pState).setPos(pPos), this.getX(), this.getY(), this.getZ(), i, 0.0D, 0.0D, 0.0D, 0.15F);
             }
         }
 
@@ -544,7 +548,6 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     }
     @Override
     protected boolean updateInWaterStateAndDoFluidPushing() {
-        this.fluidHeight.clear();
         this.forgeFluidTypeHeight.clear();
         this.updateInWaterStateAndDoWaterCurrentPushing();
         return this.isInFluidType();
@@ -557,7 +560,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     public void updateInWaterStateAndDoWaterCurrentPushing() {
         if (!this.isWaterBreather()) {
             if (this.getVehicle() instanceof Chocobo) { this.wasTouchingWater = false; }
-            else if (this.updateFluidHeightAndDoFluidPushing(FluidTags.WATER, 0.014D)) {
+            else //noinspection deprecation
+                if (this.updateFluidHeightAndDoFluidPushing(FluidTags.WATER, 0.014D)) {
                 if (!this.wasTouchingWater && !this.firstTick) { this.doWaterSplashEffect(); }
                 this.resetFallDistance();
                 this.wasTouchingWater = true;
@@ -589,12 +593,12 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             if (newVector.z() <= 0.0D)
                 newVector = new Vec3(newVector.x, newVector.y, newVector.z * 0.25F);
 
-            if (this.onGround) { this.isChocoboJumping = false; }
+            if (this.onGround()) { this.isChocoboJumping = false; }
 
             if (this.isControlledByLocalInstance()) {
                 if (Minecraft.getInstance().options.keyJump.isDown()) {
                     // jump logic
-                    if (!this.isChocoboJumping && this.onGround && this.useStamina(COMMON.jumpStaminaCost.get().floatValue())) {
+                    if (!this.isChocoboJumping && this.onGround() && this.useStamina(COMMON.jumpStaminaCost.get().floatValue())) {
                         Vec3 motion = getDeltaMovement();
                         setDeltaMovement(new Vec3(motion.x, .6f, motion.z));
                         this.isChocoboJumping = true;
@@ -620,7 +624,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                     }
                 }
                 // Insert override for slow-fall Option on Chocobo
-                if (!this.onGround && !this.isInWater() && !this.isInLava() && !rider.isShiftKeyDown() && this.getDeltaMovement().y < 0 &&
+                if (!this.onGround() && !this.isInWater() && !this.isInLava() && !rider.isShiftKeyDown() && this.getDeltaMovement().y < 0 &&
                     this.useStamina(COMMON.glideStaminaCost.get().floatValue())) {
                     if (Minecraft.getInstance().options.keyJump.isDown()) {
                         Vec3 motion = getDeltaMovement();
@@ -633,7 +637,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                 super.travel(newVector);
             }
         } else {
-            if (!this.onGround && !this.isInWater() && !this.isInLava() && this.getDeltaMovement().y < 0 && this.useStamina(COMMON.glideStaminaCost.get().floatValue())) {
+            if (!this.onGround() && !this.isInWater() && !this.isInLava() && this.getDeltaMovement().y < 0 && this.useStamina(COMMON.glideStaminaCost.get().floatValue())) {
                 Vec3 motion = getDeltaMovement();
                 setDeltaMovement(new Vec3(motion.x, motion.y * 0.65F, motion.z));
             }
@@ -643,16 +647,10 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             super.travel(cappedNewVector);
         }
     }
-    @Override
-    public void positionRider(@NotNull Entity passenger) {
-        super.positionRider(passenger);
-        if (passenger instanceof Mob && this.getControllingPassenger() == passenger) { this.yBodyRot = ((LivingEntity) passenger).yBodyRot; }
-    }
-    private int rideTickDelay = 0;
     public void tick() {
         super.tick();
         floatChocobo();
-        this.wasTouchingWater = this.level.getFluidState(this.blockPosition()).is(FluidTags.WATER);
+        this.wasTouchingWater = this.level().getFluidState(this.blockPosition()).is(FluidTags.WATER);
         LivingEntity owner = this.getOwner() != null ? this.getOwner() : null;
         if (this.rideTickDelay < 0) {
             Entity RidingPlayer = this.getControllingPassenger();
@@ -685,12 +683,12 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     private void floatChocobo() {
         if (this.isInLava()) {
             CollisionContext collisioncontext = CollisionContext.of(this);
-            if (collisioncontext.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition(), true) && !this.level.getFluidState(this.blockPosition().above()).is(FluidTags.LAVA)) { this.onGround = true; }
+            if (collisioncontext.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition(), true) && !this.level().getFluidState(this.blockPosition().above()).is(FluidTags.LAVA)) { this.setOnGround(true); }
             else { this.setDeltaMovement(this.getDeltaMovement().scale(.003D).add(0.0D, 0.05D, 0.0D)); }
         }
         if (this.isInWater() && !this.isWaterBreather()) {
             CollisionContext collisioncontext = CollisionContext.of(this);
-            if (collisioncontext.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition(), true) && !this.level.getFluidState(this.blockPosition().above()).is(FluidTags.WATER)) { this.onGround = true; }
+            if (collisioncontext.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition(), true) && !this.level().getFluidState(this.blockPosition().above()).is(FluidTags.WATER)) { this.setOnGround(true); }
             else { this.setDeltaMovement(this.getDeltaMovement().scale(.003D).add(0.0D, 0.05D, 0.0D)); }
         }
     }
@@ -720,11 +718,11 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         }
     }
     private boolean canTeleportTo(@NotNull BlockPos pPos) {
-        BlockPathTypes blockpathtypes = WalkNodeEvaluator.getBlockPathTypeStatic(this.level, pPos.mutable());
+        BlockPathTypes blockpathtypes = WalkNodeEvaluator.getBlockPathTypeStatic(this.level(), pPos.mutable());
         if (blockpathtypes != BlockPathTypes.WALKABLE) { return false; }
         else {
             BlockPos blockpos = pPos.subtract(this.blockPosition());
-            return this.level.noCollision(this, this.getBoundingBox().move(blockpos));
+            return this.level().noCollision(this, this.getBoundingBox().move(blockpos));
         }
     }
     private int randomIntInclusive(int pMin, int pMax) { return this.getRandom().nextInt(pMax - pMin + 1) + pMin; }
@@ -745,13 +743,13 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         if (this.isBaby()) { return; }
         this.spawnAtLocation(new ItemStack(CHOCOBO_FEATHER.get(), 1), 0.0F);
     }
-    public int TimeSinceFeatherChance = 0;
     protected boolean canRide(@NotNull Entity entityIn) { return !this.getSaddle().isEmpty() && super.canRide(entityIn); }
+
     public void aiStep() {
         super.aiStep();
         this.setRot(this.getYRot(), this.getXRot());
         this.regenerateStamina();
-        this.maxUpStep = 1f;
+        if (this.maxUpStep() != maxStepUp) { this.setMaxUpStep(2f); }
         this.fallDistance = 0f;
 
         if (this.TimeSinceFeatherChance == 3000) {
@@ -778,32 +776,30 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                 }
             }
         } else {
-            // Wing rotations, control packet, client side
+            // Wing rotations, control packet, client-side
             // Client side
-            this.destPos += (double) (this.onGround ? -1 : 4) * 0.3D;
+            this.destPos += (double) (this.onGround() ? -1 : 4) * 0.3D;
             this.destPos = Mth.clamp(destPos, 0f, 1f);
 
-            if (!this.onGround) { this.wingRotDelta = Math.min(wingRotation, 1f); }
+            if (!this.onGround()) { this.wingRotDelta = Math.min(wingRotation, 1f); }
             this.wingRotDelta *= 0.9D;
             this.wingRotation += this.wingRotDelta * 2.0F;
 
-            if (this.onGround) {
-                this.animationSpeedOld = this.animationSpeed;
+            if (this.onGround()) {
                 double d1 = this.getX() - this.xo;
                 double d0 = this.getZ() - this.zo;
                 float f4 = ((float)Math.sqrt(d1 * d1 + d0 * d0)) * 4.0F;
-                if (f4 > 1.0F) { f4 = 1.0F; }
-                this.animationSpeed += (f4 - this.animationSpeed) * 0.4F;
-                this.animationPosition += this.animationSpeed;
+                if (f4 > 1.0F) { f4 = 1.0F;
+                }
+                walkAnimation.update(f4, 0.4F);
             } else {
-                this.animationPosition = 0;
-                this.animationSpeed = 0;
-                this.animationSpeedOld = 0;
+                walkAnimation.setSpeed(0);
+                walkAnimation.update(0,0);
             }
         }
     }
     private void regenerateStamina() {
-        if (!this.onGround && !this.isSprinting()) { return; }
+        if (!this.onGround() && !this.isSprinting()) { return; }
         float regen = COMMON.staminaRegenRate.get().floatValue();
 
         // half the amount of regeneration while moving
@@ -1021,9 +1017,9 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     protected float getSoundVolume() { return .6f; }
     public int getAmbientSoundInterval() { return (24 * (int) (Math.random() * 100)); }
     public boolean checkSpawnRules(@NotNull LevelAccessor worldIn, @NotNull MobSpawnType spawnReasonIn) {
-        final Holder<Biome> currentBiome = this.level.getBiome(blockPosition().below());
+        final Holder<Biome> currentBiome = this.level().getBiome(blockPosition().below());
         if (!currentBiome.containsTag(IS_OVERWORLD)) {
-            if (currentBiome.containsTag(IS_END)) { return !this.level.getBlockState(blockPosition().below()).isAir();}
+            if (currentBiome.containsTag(IS_END)) { return !this.level().getBlockState(blockPosition().below()).isAir();}
             else { return true; }
         }
         return super.checkSpawnRules(worldIn, spawnReasonIn);
@@ -1052,7 +1048,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     public void setPersistentAngerTarget(@Nullable UUID pTarget) { this.persistentAngerTarget = pTarget; }
     public void startPersistentAngerTimer() { this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random)); }
     protected void customServerAiStep() {
-        this.updatePersistentAnger((ServerLevel)this.level, true);
+        this.updatePersistentAnger((ServerLevel)this.level(), true);
         if (this.getTarget() != null) { this.maybeAlertOthers(); }
         if (this.isAngry()) { this.lastHurtByPlayerTime = this.tickCount; }
     }
@@ -1066,20 +1062,20 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     private void alertOthers() {
         double d0 = this.getAttributeValue(Attributes.FOLLOW_RANGE);
         AABB aabb = AABB.unitCubeFromLowerCorner(this.position()).inflate(d0, 10.0D, d0);
-        this.level.getEntitiesOfClass(Chocobo.class, aabb, EntitySelector.NO_SPECTATORS).stream()
+        this.level().getEntitiesOfClass(Chocobo.class, aabb, EntitySelector.NO_SPECTATORS).stream()
                 .filter((p_34463_) -> p_34463_ != this)
                 .filter((p_34461_) -> p_34461_.getTarget() == null)
                 .filter((p_34456_) -> !p_34456_.isAlliedTo(this.getTarget()))
                 .forEach((p_34440_) -> p_34440_.setTarget(this.getTarget()));
     }
     public boolean isPersistenceRequired() { return this.isTame(); }
-    public boolean requiresCustomPersistence() { return this.isPassenger(); }
-    protected boolean shouldDespawnInPeaceful() { return false; }
+    public boolean requiresCustomPersistence() { return super.requiresCustomPersistence(); }
+    protected boolean shouldDespawnInPeaceful() { return super.shouldDespawnInPeaceful(); }
     public void checkDespawn() {
-        if (this.level.getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) { this.discard(); }
+        if (this.level().getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) { this.discard(); }
         else if (!this.isPersistenceRequired() && !this.requiresCustomPersistence()) {
-            Entity entity = this.level.getNearestPlayer(this, -1.0D);
-            net.minecraftforge.eventbus.api.Event.Result result = net.minecraftforge.event.ForgeEventFactory.canEntityDespawn(this);
+            Entity entity = this.level().getNearestPlayer(this, -1.0D);
+            net.minecraftforge.eventbus.api.Event.Result result = net.minecraftforge.event.ForgeEventFactory.canEntityDespawn(this, (ServerLevel)this.level());
             if (result == net.minecraftforge.eventbus.api.Event.Result.DENY) {
                 noActionTime = 0;
                 entity = null;

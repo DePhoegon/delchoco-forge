@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-import static com.dephoegon.delchoco.aid.chocoKB.hideChocoboMountInFirstPerson;
+import static com.dephoegon.delchoco.aid.util.chocoKB.hideChocoboMountInFirstPerson;
 
 public class ChocoboRenderer extends MobRenderer<Chocobo, EntityModel<Chocobo>> {
     private static final Map<ChocoboColor, ResourceLocation> CHOCOBO_PER_COLOR = Util.make(Maps.newHashMap(), (map) -> {

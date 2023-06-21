@@ -191,10 +191,10 @@ public class ChocoboSummoning {
     private boolean eatAlter(@NotNull Player player){
         int alterEatChance = 100;
         boolean eatAlter;
-        if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ChocoDisguiseItem armor && armor.getSlot() == EquipmentSlot.CHEST) { alterEatChance = alterEatChance-25; }
-        if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof ChocoDisguiseItem armor && armor.getSlot() == EquipmentSlot.HEAD) { alterEatChance = alterEatChance-25; }
-        if (player.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof ChocoDisguiseItem armor && armor.getSlot() == EquipmentSlot.LEGS) { alterEatChance = alterEatChance-25; }
-        if (player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof ChocoDisguiseItem armor && armor.getSlot() == EquipmentSlot.FEET) { alterEatChance = alterEatChance-25; }
+        if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ChocoDisguiseItem armor && armor.getEquipmentSlot() == EquipmentSlot.CHEST) { alterEatChance = alterEatChance-25; }
+        if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof ChocoDisguiseItem armor && armor.getEquipmentSlot() == EquipmentSlot.HEAD) { alterEatChance = alterEatChance-25; }
+        if (player.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof ChocoDisguiseItem armor && armor.getEquipmentSlot() == EquipmentSlot.LEGS) { alterEatChance = alterEatChance-25; }
+        if (player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof ChocoDisguiseItem armor && armor.getEquipmentSlot() == EquipmentSlot.FEET) { alterEatChance = alterEatChance-25; }
         eatAlter = random.nextInt(100) + 1 <= alterEatChance;
         this.damage = switch (alterEatChance) {
             case 75 -> 4;

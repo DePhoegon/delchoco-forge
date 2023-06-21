@@ -61,10 +61,10 @@ public class ChocoboGoals {
             this.mob = pathfinderChocobo;
         }
         private void TeleportTo(@NotNull BlockPos pPos) {
-            BlockPathTypes blockpathtypes = WalkNodeEvaluator.getBlockPathTypeStatic(mob.level, pPos.mutable());
+            BlockPathTypes blockpathtypes = WalkNodeEvaluator.getBlockPathTypeStatic(mob.level(), pPos.mutable());
             if (blockpathtypes == BlockPathTypes.WALKABLE) {
                 BlockPos blockpos = pPos.subtract(this.mob.blockPosition());
-                this.mob.level.noCollision(this.mob, this.mob.getBoundingBox().move(blockpos));
+                this.mob.level().noCollision(this.mob, this.mob.getBoundingBox().move(blockpos));
             } else { mob.getMoveControl().setWantedPosition(pPos.getX(), pPos.getY(), pPos.getZ(), this.chocobo.getFollowSpeedModifier()); }
         }
         private void canTeleport() {
@@ -75,9 +75,9 @@ public class ChocoboGoals {
             double mobZ = this.mob.getZ();
 
             for(BlockPos blockpos1 : BlockPos.betweenClosed(Mth.floor(mobX - 10.0D), Mth.floor(mobY - 10.0D), Mth.floor(mobZ - 10.0D), Mth.floor(mobX + 10.0D), Mth.floor(mobY + 10D), Mth.floor(mobZ + 10.0D))) {
-                if (!this.mob.level.getFluidState(blockpos1).is(FluidTags.LAVA)) {
+                if (!this.mob.level().getFluidState(blockpos1).is(FluidTags.LAVA)) {
                     block = blockpos1;
-                    newBlock = this.mob.level.getBlockState(blockpos1);
+                    newBlock = this.mob.level().getBlockState(blockpos1);
                     break;
                 }
             }
@@ -95,7 +95,7 @@ public class ChocoboGoals {
             this.mob = pMob;
             this.classes = classLists;
         }
-        public boolean canUse() { return mob.isOnGround(); }
+        public boolean canUse() { return mob.onGround(); }
         public void start() {
             BlockPos block = null;
             BlockPos newBlockPos = null;
@@ -105,7 +105,7 @@ public class ChocoboGoals {
 
             // Checks ArrayList for Classes of blocks for match, & moves on.
             for(BlockPos blockpos1 : BlockPos.betweenClosed(Mth.floor(mobX - 2.0D), Mth.floor(mobY - 2.0D), Mth.floor(mobZ - 2.0D), Mth.floor(mobX + 2.0D), this.mob.getBlockY(), Mth.floor(mobZ + 2.0D))) {
-                Class<? extends Block> block1 = mob.level.getBlockState(blockpos1).getBlock().getClass();
+                Class<? extends Block> block1 = mob.level().getBlockState(blockpos1).getBlock().getClass();
                 if (classes.contains(block1)) {
                     block = blockpos1;
                     break;
@@ -123,8 +123,8 @@ public class ChocoboGoals {
 
                 // Looks for Pathfindable ground within range of Chocobo to fence & Y+4 from chocobo, & blockposY-4,
                 for(BlockPos blockPos2 : BlockPos.betweenClosed(Mth.floor(posX), Mth.floor(mobY+4), Mth.floor(posZ), Mth.floor(mobX), Mth.floor(blockY-4), Mth.floor(mobZ))) {
-                    BlockState blockState = mob.level.getBlockState(blockPos2);
-                    if (blockState.isPathfindable(mob.level, blockPos2, LAND)){
+                    BlockState blockState = mob.level().getBlockState(blockPos2);
+                    if (blockState.isPathfindable(mob.level(), blockPos2, LAND)){
                         newBlockPos = blockPos2;
                         break;
                     }
@@ -194,6 +194,7 @@ public class ChocoboGoals {
     }
     @SuppressWarnings("rawtypes")
     public static class ChocoboAvoidPlayer extends AvoidEntityGoal {
+        @SuppressWarnings("unchecked")
         public ChocoboAvoidPlayer(PathfinderMob pMob) {
             super(pMob, Player.class, livingEntity -> {
                 if(livingEntity instanceof Player player) {
@@ -211,8 +212,8 @@ public class ChocoboGoals {
         public ChocoboHurtByTargetGoal(PathfinderMob pMob, Class<?>... pToIgnoreDamage) { super(pMob, pToIgnoreDamage); }
         public boolean canUse() {
             LivingEntity livingentity = this.mob.getLastHurtByMob();
-            boolean canAttack = true;
-            if (livingentity != null) { canAttack = doNotAttackClassCheck(livingentity.getClass()); }
+            boolean canAttack;
+            if (livingentity != null) { canAttack = doNotAttackClassCheck(livingentity.getClass()); } else { canAttack = false; }
             return canAttack && super.canUse();
         }
     }

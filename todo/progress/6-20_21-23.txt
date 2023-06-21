@@ -1,0 +1,7 @@
+Port to 1.20
+- Under the hood tweaks
+- Fixed Chocobos being immune to all non-entity Damage
+- Added Pink Chocobos to cherry fields.
+- Fixed Tag
+-- is mountain (functional on Minecraft, instead of forge)
+- Mild attempts at converting more into my own logic.

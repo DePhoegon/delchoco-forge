@@ -7,6 +7,7 @@ import com.dephoegon.delchoco.common.items.ChocoDisguiseItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -29,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 import static com.dephoegon.delchoco.common.items.ChocoDisguiseItem.*;
 import static com.dephoegon.delchoco.utils.RandomHelper.random;
+import static net.minecraft.world.damagesource.DamageTypes.*;
 import static net.minecraft.world.item.Items.*;
 
 public class ChocoboCombatEffects {
@@ -38,7 +40,8 @@ public class ChocoboCombatEffects {
         Chocobo chocoboTarget = event.getEntity() instanceof Chocobo choco ? choco : null;
         Player playerTarget = event.getEntity() instanceof Player player ? player : null;
         if (chocoboTarget != null) {
-            if (chocoboTarget.getControllingPassenger() == event.getSource().getEntity()) { event.setCanceled(true); return; }
+            boolean logicFix = event.getSource().getEntity() != null;
+            if (chocoboTarget.getControllingPassenger() == event.getSource().getEntity() && logicFix) { event.setCanceled(true); return; }
             if (chocoboTarget.isTame()) {
                 Player source = event.getSource().getEntity() instanceof Player play ? play : null;
                 Player owner = chocoboTarget.getOwner() instanceof Player play ? play : null;
@@ -54,10 +57,11 @@ public class ChocoboCombatEffects {
             if (ChocoConfig.COMMON.extraChocoboEffects.get()) {
                 DamageSource source = event.getSource();
                 ChocoboColor color = chocoboTarget.getChocoboColor();
-                if (source == DamageSource.SWEET_BERRY_BUSH) { event.setCanceled(true); return; }
-                if (source == DamageSource.FREEZE) { event.setCanceled(color == ChocoboColor.WHITE || color == ChocoboColor.GOLD); return; }
-                if (source == DamageSource.DRAGON_BREATH) { event.setCanceled(color == ChocoboColor.PURPLE || color == ChocoboColor.GOLD); return; }
+                if (source.is(SWEET_BERRY_BUSH)) { event.setCanceled(true); return; }
+                if (source.is(FREEZE)) { event.setCanceled(color == ChocoboColor.WHITE || color == ChocoboColor.GOLD); return; }
+                if (source.is(DamageTypes.DRAGON_BREATH)) { event.setCanceled(color == ChocoboColor.PURPLE || color == ChocoboColor.GOLD); return; }
             }
+            return;
         }
         if (chocoboAttacker != null && ChocoConfig.COMMON.chocoboResourcesOnHit.get()) {
              LivingEntity target = event.getEntity();
@@ -78,6 +82,7 @@ public class ChocoboCombatEffects {
                     target.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
                 }
             }
+            return;
         }
         if (playerTarget != null && ChocoConfig.COMMON.extraChocoboEffects.get()) {
             ItemStack hStack = playerTarget.getItemBySlot(EquipmentSlot.HEAD);
@@ -87,19 +92,19 @@ public class ChocoboCombatEffects {
             DamageSource source = event.getSource();
             if (armorColorMatch(hStack, cStack, lStack, fStack)) {
                 String headColor = getNBTKEY_COLOR(hStack);
-                if (source == DamageSource.WITHER) {
+                if (source.is(WITHER)) {
                     event.setCanceled(headColor.equals(black) || headColor.equals(red) || headColor.equals(purple) || headColor.equals(gold) || headColor.equals(pink));
                     return;
                 }
-                if (source == DamageSource.DRAGON_BREATH) {
+                if (source.is(DamageTypes.DRAGON_BREATH)) {
                     event.setCanceled(headColor.equals(purple) || headColor.equals(gold));
                     return;
                 }
-                if (source == DamageSource.SWEET_BERRY_BUSH) {
+                if (source.is(SWEET_BERRY_BUSH)) {
                     event.setCanceled(true);
                     return;
                 }
-                if (source == DamageSource.FREEZE) {
+                if (source.is(FREEZE)) {
                     event.setCanceled(headColor.equals(white) || headColor.equals(gold));
                 }
             }

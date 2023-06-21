@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import static com.dephoegon.delbase.item.shiftingDyes.CLEANSE_SHIFT_DYE;
-import static com.dephoegon.delchoco.aid.dyeList.CHOCO_COLOR_ITEMS;
+import static com.dephoegon.delchoco.aid.arraylists.dyeList.CHOCO_COLOR_ITEMS;
 import static com.dephoegon.delchoco.common.init.ModArmorMaterial.*;
 
 @SuppressWarnings("deprecation")
@@ -52,9 +52,9 @@ public class ChocoDisguiseItem extends ArmorItem {
 	public final static String white = "white";
 	public final static String purple = "purple";
 
-	public ChocoDisguiseItem(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
+	public ChocoDisguiseItem(ArmorMaterial material, ArmorItem.Type slot, Properties properties) {
 		super(material, slot, properties);
-		this.model = DistExecutor.unsafeRunForDist(() -> () -> new LazyLoadedValue<>(() -> this.provideArmorModelForSlot(this.slot)), () -> () -> null);
+		this.model = DistExecutor.unsafeRunForDist(() -> () -> new LazyLoadedValue<>(() -> this.provideArmorModelForSlot(this.getEquipmentSlot())), () -> () -> null);
 	}
 	public String setCustomModel(String customModelData) {
 		ArmorMaterial armor = getMaterial();

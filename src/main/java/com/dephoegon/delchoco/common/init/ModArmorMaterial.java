@@ -4,6 +4,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +40,17 @@ public enum ModArmorMaterial implements ArmorMaterial {
 	}
 	public int getDurabilityForSlot(@NotNull EquipmentSlot p_40484_) { return HEALTH_PER_SLOT[p_40484_.getIndex()] * this.durabilityMultiplier; }
 	public int getDefenseForSlot(@NotNull EquipmentSlot p_40487_) { return this.slotProtections[p_40487_.getIndex()]; }
+
+	@Override
+	public int getDurabilityForType(ArmorItem.Type type) {
+		return getDurabilityForSlot(type.getSlot());
+	}
+
+	@Override
+	public int getDefenseForType(ArmorItem.Type type) {
+		return getDefenseForSlot(type.getSlot());
+	}
+
 	public int getEnchantmentValue() { return this.enchantmentValue; }
 	public @NotNull SoundEvent getEquipSound() { return this.sound; }
 	public @NotNull Ingredient getRepairIngredient() { return this.repairIngredient.get(); }

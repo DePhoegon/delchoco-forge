@@ -9,6 +9,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumSet;
@@ -32,7 +33,7 @@ public class ChocoboMateGoal extends Goal {
 
     public ChocoboMateGoal(@NotNull Chocobo chocobo, double moveSpeed) {
         this.chocobo = chocobo;
-        this.world = chocobo.level;
+        this.world = chocobo.level();
         this.moveSpeed = moveSpeed;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
@@ -71,7 +72,7 @@ public class ChocoboMateGoal extends Goal {
         for (Vec3i offset : LAY_EGG_CHECK_OFFSETS) {
             BlockPos offsetPos = pos.offset(offset);
             BlockState state = this.world.getBlockState(offsetPos);
-            if (state.getMaterial().isReplaceable() && !state.getMaterial().isLiquid() && ModRegistry.CHOCOBO_EGG.get().canSurvive(state, this.world, offsetPos)) {
+            if (state.canBeReplaced() && state.getFluidState() == Fluids.EMPTY.defaultFluidState() && ModRegistry.CHOCOBO_EGG.get().defaultBlockState().canSurvive(this.world, offsetPos)) {
                 if (!this.world.setBlockAndUpdate(offsetPos, ModRegistry.CHOCOBO_EGG.get().defaultBlockState())) { return; }
                 BlockEntity tile = this.world.getBlockEntity(offsetPos);
                 if(tile instanceof ChocoboEggBlockEntity eggTile) { eggTile.setBreedInfo(new ChocoboBreedInfo(new ChocoboStatSnapshot(this.chocobo), new ChocoboStatSnapshot(this.targetMate))); }

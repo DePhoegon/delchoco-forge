@@ -52,9 +52,9 @@ public class chocoboTeams {
             PlayerTeam playerTeam = commandSourceStack.getSource().getScoreboard().getPlayerTeam(teamName);
             assert playerTeam != null;
             playerTeam.setAllowFriendlyFire(fire);
-            commandSourceStack.getSource().sendSuccess(Component.nullToEmpty("Player "+ player.getName().getContents()+ " set friendly fire to " + fire), true);
+            commandSourceStack.getSource().sendSuccess(() -> Component.nullToEmpty("Player "+ player.getName().getContents()+ " set friendly fire to " + fire), true);
         } else {
-            commandSourceStack.getSource().sendSuccess(Component.nullToEmpty("Player "+ player.getName().getContents()+ " Must be on a team to set Friendly fire for their team"), true);
+            commandSourceStack.getSource().sendSuccess(() -> Component.nullToEmpty("Player "+ player.getName().getContents()+ " Must be on a team to set Friendly fire for their team"), true);
         }
         return 1;
     }
@@ -65,14 +65,14 @@ public class chocoboTeams {
         PlayerTeam playerTeam = scoreboard.getPlayerTeam(teamName);
         assert playerTeam != null;
         scoreboard.addPlayerToTeam(player.getName().getString(), playerTeam);
-        commandSourceStack.getSource().sendSuccess(Component.nullToEmpty("Player " + player.getName().getContents() + " added to " + teamName + " team."), true);
+        commandSourceStack.getSource().sendSuccess(() -> Component.nullToEmpty("Player " + player.getName().getContents() + " added to " + teamName + " team."), true);
         return 1;
     }
     private static int leave(@NotNull CommandContext<CommandSourceStack> commandSourceStack) throws CommandSyntaxException {
         Scoreboard scoreboard = commandSourceStack.getSource().getScoreboard();
         ServerPlayer player = commandSourceStack.getSource().getPlayerOrException();
         scoreboard.removePlayerFromTeam(player.getName().getString());
-        commandSourceStack.getSource().sendSuccess(Component.nullToEmpty("Player " + player.getName().getContents() + " left their team."), true);
+        commandSourceStack.getSource().sendSuccess(() -> Component.nullToEmpty("Player " + player.getName().getContents() + " left their team."), true);
         return 1;
     }
     private static int refreshTeams(@NotNull CommandContext<CommandSourceStack> commandSourceStack) {
@@ -87,14 +87,14 @@ public class chocoboTeams {
         PlayerTeam chocoboTeam = scoreboard.getPlayerTeam(tName);
         if (chocoboTeam != null) {
             scoreboard.removePlayerTeam(chocoboTeam);
-            commandSourceStack.getSource().sendSuccess(Component.nullToEmpty("Removed " + tName + "team"), true);
+            commandSourceStack.getSource().sendSuccess(() -> Component.nullToEmpty("Removed " + tName + "team"), true);
         }
     }
     private static void addTeams(@NotNull Scoreboard scoreboard, String tName, CommandContext<CommandSourceStack> commandSourceStack) {
         PlayerTeam chocoboTeam = scoreboard.getPlayerTeam(tName);
         if (chocoboTeam == null) {
             scoreboard.addPlayerTeam(tName);
-            commandSourceStack.getSource().sendSuccess(Component.nullToEmpty("Added " + tName + "team"), true);
+            commandSourceStack.getSource().sendSuccess(() -> Component.nullToEmpty("Added " + tName + "team"), true);
         }
     }
     private static int createTeams(@NotNull CommandContext<CommandSourceStack> commandSourceStack) {
@@ -111,21 +111,21 @@ public class chocoboTeams {
         if(commandEntity instanceof Player player) {
             Entity mount = player.getVehicle();
             if (!(mount instanceof Chocobo chocobo)) {
-                source.sendSuccess(Component.translatable("command." + DELCHOCO_ID + ".chocobo.not_riding_chocobo"), false);
+                source.sendSuccess(() -> Component.translatable("command." + DELCHOCO_ID + ".chocobo.not_riding_chocobo"), false);
                 return 0;
             } else {
-                source.sendSuccess(getText("get_health", chocobo, Attributes.MAX_HEALTH), false);
-                source.sendSuccess(getText("get_resistance", chocobo, Attributes.ARMOR), false);
-                source.sendSuccess(getText("get_speed", chocobo, Attributes.MOVEMENT_SPEED), false);
-                source.sendSuccess(getText("get_stamina", chocobo, ModAttributes.MAX_STAMINA.get()), false);
-                source.sendSuccess(getText("get_attack", chocobo, Attributes.ATTACK_DAMAGE), false);
-                source.sendSuccess(getText(chocobo.getGenerationString()), false);
+                source.sendSuccess(() -> getText("get_health", chocobo, Attributes.MAX_HEALTH), false);
+                source.sendSuccess(() -> getText("get_resistance", chocobo, Attributes.ARMOR), false);
+                source.sendSuccess(() -> getText("get_speed", chocobo, Attributes.MOVEMENT_SPEED), false);
+                source.sendSuccess(() -> getText("get_stamina", chocobo, ModAttributes.MAX_STAMINA.get()), false);
+                source.sendSuccess(() -> getText("get_attack", chocobo, Attributes.ATTACK_DAMAGE), false);
+                source.sendSuccess(() -> getText(chocobo.getGenerationString()), false);
             }
         }
         return 0;
     }
     @Contract("_, _, _ -> new")
-    private static @NotNull Component getText(String key, @NotNull Chocobo chocobo, Attribute attribute) { return Component.translatable("command." + DELCHOCO_ID + ".chocobo." + key, Objects.requireNonNull(chocobo.getAttribute(attribute)).getBaseValue()); }
+    private static @NotNull net.minecraft.network.chat.Component getText(String key, @NotNull Chocobo chocobo, Attribute attribute) { return Component.translatable("command." + DELCHOCO_ID + ".chocobo." + key, Objects.requireNonNull(chocobo.getAttribute(attribute)).getBaseValue()); }
     @Contract(value = "_ -> new", pure = true)
-    private static @NotNull Component getText(String value) { return Component.translatable("command." + DELCHOCO_ID + ".chocobo." + "get_generation", value); }
+    private static @NotNull net.minecraft.network.chat.Component getText(String value) { return Component.translatable("command." + DELCHOCO_ID + ".chocobo." + "get_generation", value); }
 }

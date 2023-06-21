@@ -17,7 +17,7 @@ public class RidingEventHandler {
         if (event.isMounting()) { return; }
         if (!event.getEntityBeingMounted().isAlive()) { return; }
         if (!(event.getEntityBeingMounted() instanceof Chocobo)) { return; }
-        if (!event.getEntityBeingMounted().isOnGround()) { event.setCanceled(true); }
+        if (!event.getEntityBeingMounted().onGround()) { event.setCanceled(true); }
     }
 
     /* This Forcibly dismounts players that log out
