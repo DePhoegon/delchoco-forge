@@ -3,7 +3,7 @@
   "values": [
     "#minecraft:is_beach",
     "#minecraft:is_river",
-    "#forge:is_mountain",
+    "#minecraft:is_mountain",
     "#minecraft:is_badlands",
     "#minecraft:is_hill",
     "#minecraft:is_jungle",

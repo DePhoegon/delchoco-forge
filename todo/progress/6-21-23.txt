@@ -1,0 +1,4 @@
+Logic Fix
+- Fixed chocobos from being immune to all Non-Entity damage
+- Fixed Tag
+-- is mountain (functional on Minecraft, instead of forge)
