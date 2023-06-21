@@ -1,0 +1,4 @@
+Fixed Logic oversight
+- Fixed Chocobos being immune to all non-entity damage
+- Fixed Tag
+-- is mountain (functional on Minecraft, instead of forge)

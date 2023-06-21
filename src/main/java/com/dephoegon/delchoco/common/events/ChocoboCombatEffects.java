@@ -38,7 +38,8 @@ public class ChocoboCombatEffects {
         Chocobo chocoboTarget = event.getEntity() instanceof Chocobo choco ? choco : null;
         Player playerTarget = event.getEntity() instanceof Player player ? player : null;
         if (chocoboTarget != null) {
-            if (chocoboTarget.getControllingPassenger() == event.getSource().getEntity()) { event.setCanceled(true); return; }
+            boolean logicFix = event.getSource().getEntity() != null;
+            if (chocoboTarget.getControllingPassenger() == event.getSource().getEntity() && logicFix) { event.setCanceled(true); return; }
             if (chocoboTarget.isTame()) {
                 Player source = event.getSource().getEntity() instanceof Player play ? play : null;
                 Player owner = chocoboTarget.getOwner() instanceof Player play ? play : null;
