@@ -8,12 +8,15 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 
 import static net.minecraftforge.client.gui.overlay.VanillaGuiOverlay.PLAYER_HEALTH;
 
+@Mod.EventBusSubscriber(modid = DelChoco.DELCHOCO_ID, value = Dist.CLIENT)
 public class RenderChocoboOverlay {
     private static final ResourceLocation ICONS = new ResourceLocation(DelChoco.DELCHOCO_ID, "textures/gui/icons.png");
 

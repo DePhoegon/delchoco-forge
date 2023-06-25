@@ -1,14 +1,12 @@
 package com.dephoegon.delchoco;
 
 import com.dephoegon.delchoco.client.ClientHandler;
-import com.dephoegon.delchoco.client.gui.RenderChocoboOverlay;
 import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.entities.properties.ModDataSerializers;
 import com.dephoegon.delchoco.common.network.PacketManager;
 import com.dephoegon.delchoco.utils.Log4jFilter;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -22,8 +20,8 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import static com.dephoegon.delbase.aid.util.delbaseCreativeTabs.CREATIVE_MODE_TABS;
-import static com.dephoegon.delchoco.aid.util.creativeTabAid.CHOCO_TAB;
 import static com.dephoegon.delchoco.aid.arraylists.creativeTabArrayLists.*;
+import static com.dephoegon.delchoco.aid.util.creativeTabAid.CHOCO_TAB;
 import static com.dephoegon.delchoco.aid.util.regList.*;
 
 @Mod(DelChoco.DELCHOCO_ID)
@@ -42,7 +40,6 @@ public class DelChoco {
         attributes(eventBus);
         modBlocksItems(eventBus);
         entityRelated(eventBus);
-        MinecraftForge.EVENT_BUS.register(new RenderChocoboOverlay());
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             eventBus.addListener(ClientHandler::onClientSetup);
             eventBus.addListener(ClientHandler::registerEntityRenders);
