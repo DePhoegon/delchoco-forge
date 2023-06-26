@@ -21,6 +21,8 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.random;
+
 public class ChocoboSpawnEggItem extends Item {
     private final ChocoboColor color;
 
@@ -42,6 +44,7 @@ public class ChocoboSpawnEggItem extends Item {
             chocobo.moveTo(pos.getX() + .5, pos.getY() + 1.5F, pos.getZ() + .5, Mth.wrapDegrees(worldIn.random.nextFloat() * 360.0F), 0.0F);
             chocobo.yHeadRot = chocobo.getYRot();
             chocobo.yBodyRot = chocobo.getYRot();
+            chocobo.setMale(.50f > (float) random());
             chocobo.setChocoboColor(color);
             Component nameCheck = name(context.getItemInHand());
             if (context.getItemInHand().hasCustomHoverName()) { chocobo.setCustomName(nameCheck); }

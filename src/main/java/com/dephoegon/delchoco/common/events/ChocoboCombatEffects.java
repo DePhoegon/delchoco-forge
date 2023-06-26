@@ -1,6 +1,5 @@
 package com.dephoegon.delchoco.common.events;
 
-import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.dephoegon.delchoco.common.items.ChocoDisguiseItem;
@@ -27,6 +26,8 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
 
+import static com.dephoegon.delchoco.aid.util.fallbackValues.*;
+import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 import static com.dephoegon.delchoco.common.items.ChocoDisguiseItem.*;
 import static com.dephoegon.delchoco.utils.RandomHelper.random;
@@ -39,32 +40,37 @@ public class ChocoboCombatEffects {
         Chocobo chocoboAttacker = event.getSource().getEntity() instanceof Chocobo choco ? choco : null;
         Chocobo chocoboTarget = event.getEntity() instanceof Chocobo choco ? choco : null;
         Player playerTarget = event.getEntity() instanceof Player player ? player : null;
-        if (chocoboTarget != null) {
-            boolean logicFix = event.getSource().getEntity() != null;
-            if (chocoboTarget.getControllingPassenger() == event.getSource().getEntity() && logicFix) { event.setCanceled(true); return; }
-            if (chocoboTarget.isTame()) {
-                Player source = event.getSource().getEntity() instanceof Player play ? play : null;
-                Player owner = chocoboTarget.getOwner() instanceof Player play ? play : null;
-                Team group = owner != null ? owner.getTeam() : null;
-                boolean shift = ChocoConfig.COMMON.shiftBypassAllowed.get() && source != null && source.isShiftKeyDown();
-                boolean teams = group != null && source != null && source.getTeam() == group;
+        DamageSource damageSource = event.getSource();
+        if (chocoboTarget != null && chocoboTarget.isTame()) {
+            Player source = event.getSource().getEntity() instanceof Player play ? play : null;
+            Player owner = chocoboTarget.getOwner() instanceof Player play ? play : null;
+            Team group = owner != null ? owner.getTeam() : null;
+            if (source != null) {
+                boolean shift = ChocoConfigGet(COMMON.shiftBypassAllowed.get(), dShiftHitBypass) && source.isShiftKeyDown();
+                boolean teams = group != null && source.getTeam() == group;
                 if (!shift) {
-                    if (!ChocoConfig.COMMON.ownChocoboHittable.get()) { event.setCanceled((owner == source) || teams); return; }
-                    if (!ChocoConfig.COMMON.tamedChocoboHittable.get()) { event.setCanceled(source != null); return; }
+                    if (!ChocoConfigGet(COMMON.ownChocoboHittable.get(), dOwnChocoboHittable)) {
+                        event.setCanceled((owner == source) || teams);
+                        return;
+                    }
+                    if (!ChocoConfigGet(COMMON.tamedChocoboHittable.get(), dTamedChocoboHittable)) {
+                        event.setCanceled(true);
+                        return;
+                    }
                 }
             }
-            if (random.nextInt(100)+1 > 35) { chocoboTarget.spawnAtLocation(CHOCOBO_FEATHER.get()); }
-            if (ChocoConfig.COMMON.extraChocoboEffects.get()) {
-                DamageSource source = event.getSource();
-                ChocoboColor color = chocoboTarget.getChocoboColor();
-                if (source.is(SWEET_BERRY_BUSH)) { event.setCanceled(true); return; }
-                if (source.is(FREEZE)) { event.setCanceled(color == ChocoboColor.WHITE || color == ChocoboColor.GOLD); return; }
-                if (source.is(DamageTypes.DRAGON_BREATH)) { event.setCanceled(color == ChocoboColor.PURPLE || color == ChocoboColor.GOLD); return; }
-            }
-            return;
         }
-        if (chocoboAttacker != null && ChocoConfig.COMMON.chocoboResourcesOnHit.get()) {
-             LivingEntity target = event.getEntity();
+        if (chocoboTarget != null) {
+            ChocoboColor color = chocoboTarget.getChocoboColor();
+            if (ChocoConfigGet(COMMON.extraChocoboEffects.get(), dExtraChocoboEffects)) {
+                if (damageSource.is(SWEET_BERRY_BUSH)) { event.setCanceled(true); return; }
+                if (damageSource.is(FREEZE)) { event.setCanceled(color == ChocoboColor.WHITE || color == ChocoboColor.GOLD); return; }
+                if (damageSource.is(DamageTypes.DRAGON_BREATH)) { event.setCanceled(color == ChocoboColor.PURPLE || color == ChocoboColor.GOLD); return; }
+            }
+            if (random.nextInt(100)+1 > 35) { chocoboTarget.spawnAtLocation(CHOCOBO_FEATHER.get()); }
+        }
+        if (chocoboAttacker != null && ChocoConfigGet(COMMON.chocoboResourcesOnHit.get(), dExtraChocoboResourcesOnHit)) {
+            LivingEntity target = event.getEntity();
             if (target instanceof Spider e) { if (onHitMobChance(10)) { e.spawnAtLocation(STRING); } }
             if (target instanceof CaveSpider e) { if (onHitMobChance(5)) { e.spawnAtLocation(FERMENTED_SPIDER_EYE); } }
             if (target instanceof Skeleton e) { if (onHitMobChance(10)) { e.spawnAtLocation(BONE); } }
@@ -82,29 +88,27 @@ public class ChocoboCombatEffects {
                     target.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
                 }
             }
-            return;
         }
-        if (playerTarget != null && ChocoConfig.COMMON.extraChocoboEffects.get()) {
+        if (playerTarget != null && ChocoConfigGet(COMMON.extraChocoboEffects.get(), dExtraChocoboEffects)) {
             ItemStack hStack = playerTarget.getItemBySlot(EquipmentSlot.HEAD);
             ItemStack cStack = playerTarget.getItemBySlot(EquipmentSlot.CHEST);
             ItemStack lStack = playerTarget.getItemBySlot(EquipmentSlot.LEGS);
             ItemStack fStack = playerTarget.getItemBySlot(EquipmentSlot.FEET);
-            DamageSource source = event.getSource();
             if (armorColorMatch(hStack, cStack, lStack, fStack)) {
                 String headColor = getNBTKEY_COLOR(hStack);
-                if (source.is(WITHER)) {
+                if (damageSource.is(WITHER)) {
                     event.setCanceled(headColor.equals(black) || headColor.equals(red) || headColor.equals(purple) || headColor.equals(gold) || headColor.equals(pink));
                     return;
                 }
-                if (source.is(DamageTypes.DRAGON_BREATH)) {
+                if (damageSource.is(DamageTypes.DRAGON_BREATH)) {
                     event.setCanceled(headColor.equals(purple) || headColor.equals(gold));
                     return;
                 }
-                if (source.is(SWEET_BERRY_BUSH)) {
+                if (damageSource.is(SWEET_BERRY_BUSH)) {
                     event.setCanceled(true);
                     return;
                 }
-                if (source.is(FREEZE)) {
+                if (damageSource.is(FREEZE)) {
                     event.setCanceled(headColor.equals(white) || headColor.equals(gold));
                 }
             }
@@ -114,13 +118,13 @@ public class ChocoboCombatEffects {
     public void onChocoboKillOrDie(@NotNull LivingDeathEvent event) {
         Chocobo chocoboKill = event.getSource().getEntity() instanceof  Chocobo choco ? choco : null;
         Chocobo chocoboDie = event.getEntity() instanceof  Chocobo choco ? choco : null;
-        if (chocoboKill != null && ChocoConfig.COMMON.chocoboResourcesOnKill.get()) {
+        if (chocoboKill != null && ChocoConfigGet(COMMON.chocoboResourcesOnKill.get(),dExtraChocoboResourcesOnKill)) {
             ChocoboColor color = chocoboKill.getChocoboColor();
             LivingEntity target = event.getEntity();
             if (target instanceof Spider) { if (.20f > (float) Math.random()) { target.spawnAtLocation(COBWEB); } }
             if (color == ChocoboColor.BLACK) { if (flowerChance()) {
-               if (.50f > (float) Math.random()) { target.spawnAtLocation(WITHER_ROSE); }
-               else { target.spawnAtLocation(DEAD_BUSH); }
+                if (.50f > (float) Math.random()) { target.spawnAtLocation(WITHER_ROSE); }
+                else { target.spawnAtLocation(DEAD_BUSH); }
             }}
             if (color == ChocoboColor.FLAME) {
                 if (flowerChance()) {
@@ -208,7 +212,7 @@ public class ChocoboCombatEffects {
         ItemStack cStack = player.getItemBySlot(EquipmentSlot.CHEST);
         ItemStack lStack = player.getItemBySlot(EquipmentSlot.LEGS);
         ItemStack fStack = player.getItemBySlot(EquipmentSlot.FEET);
-        if (player.tickCount % 60 == 0 && ChocoConfig.COMMON.extraChocoboEffects.get()) {
+        if (player.tickCount % 60 == 0 && ChocoConfigGet(COMMON.extraChocoboEffects.get(), dExtraChocoboEffects)) {
             if (armorColorMatch(hStack, cStack, lStack, fStack)) {
                 String headColor = getNBTKEY_COLOR(hStack);
                 if (player.hasEffect(MobEffects.POISON) && (headColor.equals(green) || headColor.equals(black) || headColor.equals(gold))) { player.removeEffect(MobEffects.POISON); }

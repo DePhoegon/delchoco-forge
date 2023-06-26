@@ -1,6 +1,5 @@
 package com.dephoegon.delchoco.common.entities.breeding;
 
-import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.dephoegon.delchoco.common.init.ModAttributes;
@@ -9,6 +8,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+
+import static com.dephoegon.delchoco.aid.util.fallbackValues.*;
+import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 
 public class ChocoboStatSnapshot {
     public static final ChocoboStatSnapshot DEFAULT;
@@ -43,12 +45,12 @@ public class ChocoboStatSnapshot {
     static {
         DEFAULT = new ChocoboStatSnapshot();
         DEFAULT.generation = 1;
-        DEFAULT.health = ChocoConfig.COMMON.defaultHealth.get();
-        DEFAULT.stamina = ChocoConfig.COMMON.defaultStamina.get();
-        DEFAULT.speed = ChocoConfig.COMMON.defaultSpeed.get() / 100f;
-        DEFAULT.attack = ChocoConfig.COMMON.defaultAttackStrength.get();
-        DEFAULT.defense = ChocoConfig.COMMON.defaultArmor.get();
-        DEFAULT.toughness = ChocoConfig.COMMON.defaultArmorToughness.get();
+        DEFAULT.health = ChocoConfigGet(COMMON.defaultHealth.get(), dHealth);
+        DEFAULT.stamina = ChocoConfigGet(COMMON.defaultStamina.get(),dStamina);
+        DEFAULT.speed = ChocoConfigGet(COMMON.defaultSpeed.get(), dSpeed) / 100f;
+        DEFAULT.attack = ChocoConfigGet(COMMON.defaultAttackStrength.get(), dAttack);
+        DEFAULT.defense = ChocoConfigGet(COMMON.defaultArmor.get(), dArmor);
+        DEFAULT.toughness = ChocoConfigGet(COMMON.defaultArmorToughness.get(), dArmorTough);
         DEFAULT.flameBlood = false;
         DEFAULT.waterBreath = false;
         DEFAULT.color = ChocoboColor.YELLOW;

@@ -25,6 +25,7 @@
 
     "item.delchoco.chocobo_feather": "Chocobo Feather",
     "item.delchoco.chocobo_whistle": "Chocobo Whistle",
+    "item.delchoco.chocobo_leash_stick": "Chocobo Leashing Stick",
 
     "item.delchoco.chocobo_saddle": "Chocobo Saddle",
     "item.delchoco.chocobo_saddle_bags": "Chocobo Saddle Bags",
@@ -92,7 +93,7 @@
     "delchoco.entity_chocobo.tame_success": "§aTame succeeded",
     "delchoco.entity_chocobo.chocobo_follow_cmd": "Follow",
     "delchoco.entity_chocobo.chocobo_wander_cmd": "Wander",
-    "delchoco.entity_chocobo.chocobo_stay_cmd": "Stay",
+    "delchoco.entity_chocobo.chocobo_stay_cmd": "Stay Nearby",
     "delchoco.entity_chocobo.not_owner": "§cYou are not the owner of this Chocobo!",
 
     "delchoco.general.world": "World",
@@ -113,5 +114,11 @@
     "delchoco.alter.invalid_center": "Invalid Alter Center",
     "delchoco.alter.invalid_pillar": "Invalid/Wrong Pillar Block",
     "delchoco.alter.invalid_air": "Air Block Obstructed",
-    "delchoco.alter.invalid_air_base": "Alter Base Block Missing"
+    "delchoco.alter.invalid_air_base": "Alter Base Block Missing",
+
+    "delchoco.leash.spot": "Distance Leashed",
+    "delchoco.leash.dist": "Leash Range Point Set",
+    "delchoco.leash.center": "Leash Center Point Set",
+    "delchoco.leash.none": "No Leash Points Set",
+    "delchoco.leash.invalid": "Leash Distance Invalid"
 }

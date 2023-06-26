@@ -52,9 +52,9 @@ public class chocoboTeams {
             PlayerTeam playerTeam = commandSourceStack.getSource().getScoreboard().getPlayerTeam(teamName);
             assert playerTeam != null;
             playerTeam.setAllowFriendlyFire(fire);
-            commandSourceStack.getSource().sendSuccess(() -> Component.nullToEmpty("Player "+ player.getName().getContents()+ " set friendly fire to " + fire), true);
+            commandSourceStack.getSource().sendSuccess(() -> Component.nullToEmpty("Player "+ player.getName().getString()+ " set friendly fire to " + fire), true);
         } else {
-            commandSourceStack.getSource().sendSuccess(() -> Component.nullToEmpty("Player "+ player.getName().getContents()+ " Must be on a team to set Friendly fire for their team"), true);
+            commandSourceStack.getSource().sendSuccess(() -> Component.nullToEmpty("Player "+ player.getName().getString()+ " Must be on a team to set Friendly fire for their team"), true);
         }
         return 1;
     }
@@ -65,14 +65,14 @@ public class chocoboTeams {
         PlayerTeam playerTeam = scoreboard.getPlayerTeam(teamName);
         assert playerTeam != null;
         scoreboard.addPlayerToTeam(player.getName().getString(), playerTeam);
-        commandSourceStack.getSource().sendSuccess(() -> Component.nullToEmpty("Player " + player.getName().getContents() + " added to " + teamName + " team."), true);
+        commandSourceStack.getSource().sendSuccess(() -> Component.nullToEmpty("Player " + player.getName().getString() + " added to " + teamName + " team."), true);
         return 1;
     }
     private static int leave(@NotNull CommandContext<CommandSourceStack> commandSourceStack) throws CommandSyntaxException {
         Scoreboard scoreboard = commandSourceStack.getSource().getScoreboard();
         ServerPlayer player = commandSourceStack.getSource().getPlayerOrException();
         scoreboard.removePlayerFromTeam(player.getName().getString());
-        commandSourceStack.getSource().sendSuccess(() -> Component.nullToEmpty("Player " + player.getName().getContents() + " left their team."), true);
+        commandSourceStack.getSource().sendSuccess(() -> Component.nullToEmpty("Player " + player.getName().getString() + " left their team."), true);
         return 1;
     }
     private static int refreshTeams(@NotNull CommandContext<CommandSourceStack> commandSourceStack) {

@@ -158,23 +158,23 @@ public class ChocoConfig {
 
             builder.pop();
             builder.comment("Chocobo Transparencies - 0 is invisible\nControls how visible the Chocobo Part is when the Chocobo is invisible")
-                            .push("visibility");
+                    .push("visibility");
 
             collarInvisibility = builder
                     .comment("Collar - Default [0.2]")
-                            .defineInRange("collarInvisibility", 0.2, 0, collarAlpha);
+                    .defineInRange("collarInvisibility", 0.2, 0, collarAlpha);
 
             armorInvisibility = builder
                     .comment("Armor - Default [0.1]")
-                            .defineInRange("armorInvisibility", 0.1, 0, armorAlpha);
+                    .defineInRange("armorInvisibility", 0.1, 0, armorAlpha);
 
             weaponInvisibility = builder
                     .comment("Weapon - Default [0.1]")
-                            .defineInRange("weaponInvisibility", 0.1, 0, weaponAlpha);
+                    .defineInRange("weaponInvisibility", 0.1, 0, weaponAlpha);
 
             saddleInvisibility = builder
                     .comment("Saddles - Default [0.1]")
-                            .defineInRange("saddleInvisibility", 0.1, 0, saddleAlpha);
+                    .defineInRange("saddleInvisibility", 0.1, 0, saddleAlpha);
 
             builder.pop();
             builder.comment("Combat Stats")
@@ -204,66 +204,66 @@ public class ChocoConfig {
             builder.comment("Breeding configuration")
                     .push("breeding");
 
-                builder.comment("Max Stats")
-                        .push("max");
+            builder.comment("Max Stats")
+                    .push("max");
 
-                maxHealth = builder
-                        .comment("Controls the Max Health a Chocobo can have [Default: 50]")
-                        .defineInRange("maxHealth", 60, 25, 400);
+            maxHealth = builder
+                    .comment("Controls the Max Health a Chocobo can have [Default: 60]")
+                    .defineInRange("maxHealth", 60, 25, 400);
 
-                maxSpeed = builder
-                        .comment("Controls the Max Speed a Chocobo can have [Default: 40]")
-                        .defineInRange("maxSpeed", 40, 30, 160);
+            maxSpeed = builder
+                    .comment("Controls the Max Speed a Chocobo can have [Default: 40]")
+                    .defineInRange("maxSpeed", 40, 30, 160);
 
-                maxStamina = builder
-                        .comment("Controls the Max Stamina a Chocobo can have [Default: 25]")
-                        .defineInRange("maxStamina", 25D, 20D, 80D);
+            maxStamina = builder
+                    .comment("Controls the Max Stamina a Chocobo can have [Default: 25]")
+                    .defineInRange("maxStamina", 25D, 20D, 80D);
 
-                maxArmor = builder
-                        .comment("Controls the max Natural Armor of a Chocobo")
-                        .defineInRange("maxArmor", 20D, 10D, 30D);
+            maxArmor = builder
+                    .comment("Controls the max Natural Armor of a Chocobo")
+                    .defineInRange("maxArmor", 20D, 10D, 30D);
 
-                maxStrength = builder
-                        .comment("Controls the Max amount of damage a Chocobo can do without weapons")
-                        .defineInRange("maxStrength", 10D, 8D, 30D);
+            maxStrength = builder
+                    .comment("Controls the Max amount of damage a Chocobo can do without weapons")
+                    .defineInRange("maxStrength", 10D, 8D, 30D);
 
-                maxToughness = builder
-                        .comment("Controls The Max amount 'Armor Toughness' a Chocobo can have naturally")
-                        .defineInRange("maxToughness", 10D, 8D, 30D);
+            maxToughness = builder
+                    .comment("Controls The Max amount 'Armor Toughness' a Chocobo can have naturally")
+                    .defineInRange("maxToughness", 10D, 8D, 30D);
 
-                builder.pop();
-                builder.comment("Gain Stats")
-                        .push("gain_stats");
+            builder.pop();
+            builder.comment("Gain Stats")
+                    .push("gain_stats");
 
-                posgainHealth = builder
-                        .comment("Controls the multiplier the Health stat gains (for example 0.05 would result in a max gain of 5% so 20 to 21) [Default: .1]")
-                        .defineInRange("posgainHealth", .1D, 0, Integer.MAX_VALUE);
+            posgainHealth = builder
+                    .comment("Controls the multiplier the Health stat gains (for example 0.05 would result in a max gain of 5% so 20 to 21) [Default: .1]")
+                    .defineInRange("posgainHealth", .1D, 0, Integer.MAX_VALUE);
 
-                posgainSpeed = builder
-                        .comment("Controls the multiplier the Speed stat gains (for example 0.05 would result in a max gain of 5% so 20 to 21) [Default: .1]")
-                        .defineInRange("posgainSpeed", .1D, 0, Integer.MAX_VALUE);
+            posgainSpeed = builder
+                    .comment("Controls the multiplier the Speed stat gains (for example 0.05 would result in a max gain of 5% so 20 to 21) [Default: .1]")
+                    .defineInRange("posgainSpeed", .1D, 0, Integer.MAX_VALUE);
 
-                posgainStamina = builder
-                        .comment("Controls the multiplier the Stamina stat gains (for example 0.05 would result in a max gain of 5% so 20 to 21) [Default: .1]")
-                        .defineInRange("posgainStamina", .1D, 0, Integer.MAX_VALUE);
+            posgainStamina = builder
+                    .comment("Controls the multiplier the Stamina stat gains (for example 0.05 would result in a max gain of 5% so 20 to 21) [Default: .1]")
+                    .defineInRange("posgainStamina", .1D, 0, Integer.MAX_VALUE);
 
-                builder.pop();
-                builder.comment("Loss Stats")
-                        .push("loss_stats");
+            builder.pop();
+            builder.comment("Loss Stats")
+                    .push("loss_stats");
 
-                poslossHealth = builder
-                        .comment("Controls the multiplier the Health stat loss (for example 0.95 would result in a max loss of 5% so 20 to 19) [Default: 1]")
-                        .defineInRange("poslossHealth", 1D, 0, Integer.MAX_VALUE);
+            poslossHealth = builder
+                    .comment("Controls the multiplier the Health stat loss (for example 0.95 would result in a max loss of 5% so 20 to 19) [Default: 1]")
+                    .defineInRange("poslossHealth", 1D, 0, Integer.MAX_VALUE);
 
-                poslossSpeed = builder
-                        .comment("Controls the multiplier the Speed stat gains (for example 0.95 would result in a max loss of 5% so 20 to 19) [Default: 1]")
-                        .defineInRange("poslossSpeed", 1D, 0, Integer.MAX_VALUE);
+            poslossSpeed = builder
+                    .comment("Controls the multiplier the Speed stat gains (for example 0.95 would result in a max loss of 5% so 20 to 19) [Default: 1]")
+                    .defineInRange("poslossSpeed", 1D, 0, Integer.MAX_VALUE);
 
-                poslossStamina = builder
-                        .comment("Controls the multiplier the Stamina stat gains (for example 0.95 would result in a max loss of 5% so 20 to 19) [Default: 1]")
-                        .defineInRange("poslossStamina", 1D, 0, Integer.MAX_VALUE);
+            poslossStamina = builder
+                    .comment("Controls the multiplier the Stamina stat gains (for example 0.95 would result in a max loss of 5% so 20 to 19) [Default: 1]")
+                    .defineInRange("poslossStamina", 1D, 0, Integer.MAX_VALUE);
 
-                builder.pop();
+            builder.pop();
 
             eggHatchTimeTicks = builder
                     .comment("Controls the amount of ticks / time till an egg hatches. This value isn't super accurate [Default: 500-1000]")

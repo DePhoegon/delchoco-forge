@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
+import static com.dephoegon.delchoco.aid.util.fallbackValues.*;
 import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.entities.breeding.ChocoboSnap.setChocoScale;
 import static com.dephoegon.delchoco.common.items.ChocoboSpawnEggItem.*;
@@ -26,18 +27,21 @@ public class BreedingHelper {
         final ChocoboStatSnapshot father = breedInfo.getFather();
 
         baby.setGeneration(mother.generation > father.generation ? mother.generation+1 : father.generation+1);
-        float health = round(((mother.health + father.health) / 2) * (COMMON.poslossHealth.get().floatValue() + ((float) random() * COMMON.posgainHealth.get().floatValue())));
-        Objects.requireNonNull(baby.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(min(health, COMMON.maxHealth.get().floatValue()));
-        float speed = ((mother.speed + father.speed) / 2f) * (COMMON.poslossSpeed.get().floatValue() + ((float) random() * COMMON.posgainSpeed.get().floatValue()));
-        Objects.requireNonNull(baby.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(min(speed, (COMMON.maxSpeed.get().floatValue() / 100f)));
-        float stamina = round((mother.stamina + father.stamina) / 2) * (COMMON.poslossStamina.get().floatValue() + ((float) random() * COMMON.posgainStamina.get().floatValue()));
-        Objects.requireNonNull(baby.getAttribute(ModAttributes.MAX_STAMINA.get())).setBaseValue(min(stamina, COMMON.maxStamina.get()));
-        double attack = minCheck(mother.attack, father.attack) *(1D + ((float) random()* .25D));
-        Objects.requireNonNull(baby.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(min(attack, COMMON.maxStrength.get()));
-        double defence = minCheck(mother.defense, father.defense) *(1D + ((float) random()* .25D));
-        Objects.requireNonNull(baby.getAttribute(Attributes.ARMOR)).setBaseValue(min(defence, COMMON.maxArmor.get()));
-        double toughness = minCheck(mother.toughness, father.toughness) *(1D + ((float) random()* .25D));
-        Objects.requireNonNull(baby.getAttribute(Attributes.ARMOR_TOUGHNESS)).setBaseValue(min(toughness, COMMON.maxToughness.get()));
+        float health = round(((mother.health + father.health) / 2) * (ChocoConfigGet(COMMON.poslossHealth.get(), dPossLoss).floatValue() + ((float) random() * ChocoConfigGet(COMMON.posgainHealth.get(), dPossGain).floatValue())));
+        Objects.requireNonNull(baby.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(min(health, ChocoConfigGet(COMMON.maxHealth.get(),dMaxHealth).floatValue()));
+        float speed = ((mother.speed + father.speed) / 2f) * (ChocoConfigGet(COMMON.poslossSpeed.get(),dPossLoss).floatValue() + ((float) random() * ChocoConfigGet(COMMON.posgainSpeed.get(),dPossGain).floatValue()));
+        Objects.requireNonNull(baby.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(min(speed, (ChocoConfigGet(COMMON.maxSpeed.get(),dMaxSpeed).floatValue() / 100f)));
+        float stamina = round((mother.stamina + father.stamina) / 2) * (ChocoConfigGet(COMMON.poslossStamina.get(),dPossLoss).floatValue() + ((float) random() * ChocoConfigGet(COMMON.posgainStamina.get(),dPossGain).floatValue()));
+        Objects.requireNonNull(baby.getAttribute(ModAttributes.MAX_STAMINA.get())).setBaseValue(min(stamina, ChocoConfigGet(COMMON.maxStamina.get(), dMaxStamina)));
+        double attack = minCheck(mother.attack, father.attack) * (dPossLoss.floatValue() + ((float) random() * (dPossGain+25D)));
+        attack = attack < dAttack ? dAttack : attack;
+        Objects.requireNonNull(baby.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(min(attack, ChocoConfigGet(COMMON.maxStrength.get(), dMaxStrength)));
+        double defence = minCheck(mother.defense, father.defense) * (dPossLoss.floatValue() + ((float) random() * (dPossGain+25D)));
+        defence = defence < dArmor ? dArmor : defence;
+        Objects.requireNonNull(baby.getAttribute(Attributes.ARMOR)).setBaseValue(min(defence, ChocoConfigGet(COMMON.maxArmor.get(), dMaxArmor)));
+        double toughness = minCheck(mother.toughness, father.toughness) * (dPossLoss.floatValue() + ((float) random() * (dPossGain+25D)));
+        toughness = toughness < dArmorTough ? dArmorTough : toughness;
+        Objects.requireNonNull(baby.getAttribute(Attributes.ARMOR_TOUGHNESS)).setBaseValue(min(toughness, ChocoConfigGet(COMMON.maxToughness.get(),dMaxArmorToughness)));
 
         ChocoboColor yellow = ChocoboColor.YELLOW;
         ChocoboColor green = ChocoboColor.GREEN;
