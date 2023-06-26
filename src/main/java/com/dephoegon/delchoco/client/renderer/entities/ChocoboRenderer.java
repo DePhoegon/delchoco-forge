@@ -5,7 +5,6 @@ import com.dephoegon.delchoco.client.ClientHandler;
 import com.dephoegon.delchoco.client.models.entities.AdultChocoboModel;
 import com.dephoegon.delchoco.client.models.entities.ChicoboModel;
 import com.dephoegon.delchoco.client.renderer.layers.*;
-import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.google.common.collect.Maps;
@@ -21,6 +20,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 
 import static com.dephoegon.delchoco.aid.chocoKB.hideChocoboMountInFirstPerson;
+import static com.dephoegon.delchoco.aid.fallbackValues.ChocoConfigGet;
+import static com.dephoegon.delchoco.aid.fallbackValues.*;
+import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 
 public class ChocoboRenderer extends MobRenderer<Chocobo, EntityModel<Chocobo>> {
     private static final Map<ChocoboColor, ResourceLocation> CHOCOBO_PER_COLOR = Util.make(Maps.newHashMap(), (map) -> {
@@ -60,14 +62,14 @@ public class ChocoboRenderer extends MobRenderer<Chocobo, EntityModel<Chocobo>> 
         this.chicoboModel = new ChicoboModel<>(context.bakeLayer(ClientHandler.CHICOBO));
         // Bottom is the Top Layer (from the outside)
 
-        this.addLayer(new LayerCollar(this, collarAlpha, ChocoConfig.COMMON.collarInvisibility.get().floatValue()));
-        this.addLayer(new LayerCollarTells(this, collarTellAlpha, ChocoConfig.COMMON.collarInvisibility.get().floatValue()));
-        this.addLayer(new LayerSaddle(this, saddleAlpha, ChocoConfig.COMMON.saddleInvisibility.get().floatValue()));
+        this.addLayer(new LayerCollar(this, collarAlpha, ChocoConfigGet(COMMON.collarInvisibility.get(), dCollarAlpha).floatValue()));
+        this.addLayer(new LayerCollarTells(this, collarTellAlpha, ChocoConfigGet(COMMON.collarInvisibility.get(), dCollarAlpha).floatValue()));
         this.addLayer(new LayerMaleTrims(this, .85F));
         this.addLayer(new LayerChocoboTrims(this, .75F, .85F));
         this.addLayer(new LayerBeakClaws(this, true));
-        this.addLayer(new LayerArmor(this, armorAlpha, ChocoConfig.COMMON.armorInvisibility.get().floatValue()));
-        this.addLayer(new LayerWeapon(this, weaponAlpha, ChocoConfig.COMMON.weaponInvisibility.get().floatValue()));
+        this.addLayer(new LayerArmor(this, armorAlpha, ChocoConfigGet(COMMON.armorInvisibility.get(), dArmorAlpha).floatValue()));
+        this.addLayer(new LayerSaddle(this, saddleAlpha, ChocoConfigGet(COMMON.saddleInvisibility.get(), dSaddleAlpha).floatValue()));
+        this.addLayer(new LayerWeapon(this, weaponAlpha, ChocoConfigGet(COMMON.weaponInvisibility.get(), dWeaponAlpha).floatValue()));
     }
     public void render(@NotNull Chocobo chocobo, float entityYaw, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight) {
         this.model = chocobo.isBaby() ? chicoboModel : chocoboModel;

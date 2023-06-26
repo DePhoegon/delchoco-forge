@@ -82,6 +82,7 @@ public class SpawnBiomesChecks {
         overWorldList.add(SNOWY_BEACH);
         overWorldList.add(STONY_SHORE);
         overWorldList.add(WARM_OCEAN);
+        overWorldList.add(LUKEWARM_OCEAN);
         overWorldList.add(MUSHROOM_FIELDS);
         overWorldList.add(DRIPSTONE_CAVES);
         overWorldList.add(LUSH_CAVES);

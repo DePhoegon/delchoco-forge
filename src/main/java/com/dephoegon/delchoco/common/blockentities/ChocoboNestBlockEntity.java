@@ -1,7 +1,6 @@
 package com.dephoegon.delchoco.common.blockentities;
 
 import com.dephoegon.delchoco.DelChoco;
-import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.blocks.ChocoboEggBlock;
 import com.dephoegon.delchoco.common.blocks.StrawNestBlock;
 import com.dephoegon.delchoco.common.entities.Chocobo;
@@ -39,6 +38,9 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.Random;
 
+import static com.dephoegon.delchoco.aid.fallbackValues.ChocoConfigGet;
+import static com.dephoegon.delchoco.aid.fallbackValues.dEggHatchTimeTicks;
+import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.blocks.ChocoboEggBlock.NBTKEY_BREEDINFO;
 import static com.dephoegon.delchoco.common.entities.breeding.ChocoboBreedInfo.getFromNbtOrDefault;
 
@@ -100,7 +102,7 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
         int time = nbt.getInt(ChocoboEggBlock.NBTKEY_HATCHINGSTATE_TIME);
         time += this.isSheltered ? 2 : 1;
         nbt.putInt(ChocoboEggBlock.NBTKEY_HATCHINGSTATE_TIME, time);
-        if (time < ChocoConfig.COMMON.eggHatchTimeTicks.get()) { return false; }
+        if (time < ChocoConfigGet(COMMON.eggHatchTimeTicks.get(), dEggHatchTimeTicks)) { return false; }
 
         // egg is ready to hatch
         ChocoboBreedInfo breedInfo = ChocoboBreedInfo.getFromNbtOrDefault(egg.getTagElement(NBTKEY_BREEDINFO));

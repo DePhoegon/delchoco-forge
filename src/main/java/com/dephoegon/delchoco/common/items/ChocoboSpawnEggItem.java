@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import static com.dephoegon.delchoco.utils.RandomHelper.random;
+import static java.lang.Math.random;
 
 public class ChocoboSpawnEggItem extends Item {
     private final ChocoboColor color;
@@ -43,13 +43,10 @@ public class ChocoboSpawnEggItem extends Item {
             chocobo.moveTo(pos.getX() + .5, pos.getY() + 1.5F, pos.getZ() + .5, Mth.wrapDegrees(worldIn.random.nextFloat() * 360.0F), 0.0F);
             chocobo.yHeadRot = chocobo.getYRot();
             chocobo.yBodyRot = chocobo.getYRot();
-            chocobo.setChocoboColor(color);
             Component nameCheck = name(context.getItemInHand());
             if (context.getItemInHand().hasCustomHoverName()) { chocobo.setCustomName(nameCheck); }
-            chocobo.setFlame(color == ChocoboColor.FLAME);
-            chocobo.setWaterBreath(wbChocobos().contains(color));
-            chocobo.setWitherImmune(wiChocobos().contains(color));
-            chocobo.setPoisonImmune(piChocobos().contains(color));
+            chocobo.setMale(.50f > (float) random());
+            chocobo.setChocobo(color);
             chocobo.setFromEgg(true);
             chocobo.setChocoboScale(chocobo.isMale(), 0, false);
             chocobo.finalizeSpawn((ServerLevel)worldIn, worldIn.getCurrentDifficultyAt(chocobo.blockPosition()), MobSpawnType.SPAWN_EGG, (SpawnGroupData)null, (CompoundTag)null);

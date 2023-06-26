@@ -1,6 +1,5 @@
 package com.dephoegon.delchoco.common.items;
 
-import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.blocks.ChocoboEggBlock;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.BlockItem;
@@ -9,13 +8,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
+import static com.dephoegon.delchoco.aid.fallbackValues.ChocoConfigGet;
+import static com.dephoegon.delchoco.aid.fallbackValues.dEggHatchTimeTicks;
+import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
+
 public class ChocoboEggBlockItem extends BlockItem {
     public ChocoboEggBlockItem(Block block, Item.Properties builder) { super(block, builder); }
     public boolean isBarVisible(@NotNull ItemStack stack) {
         if (!ChocoboEggBlock.isChocoboEgg(stack)) { return super.isBarVisible(stack); }
         if (!stack.hasTag()) { return false; }
-        CompoundTag nbtHatchIngstate = stack.getTagElement(ChocoboEggBlock.NBTKEY_HATCHINGSTATE);
-        return nbtHatchIngstate != null;
+        CompoundTag nbtHatchingState = stack.getTagElement(ChocoboEggBlock.NBTKEY_HATCHINGSTATE);
+        return nbtHatchingState != null;
     }
     public int getBarWidth(@NotNull ItemStack stack) {
         if (!ChocoboEggBlock.isChocoboEgg(stack)) { return super.getBarWidth(stack); }
@@ -24,7 +27,7 @@ public class ChocoboEggBlockItem extends BlockItem {
         CompoundTag nbtHatchIngstate = stack.getTagElement(ChocoboEggBlock.NBTKEY_HATCHINGSTATE);
         if (nbtHatchIngstate != null) {
             int time = nbtHatchIngstate.getInt(ChocoboEggBlock.NBTKEY_HATCHINGSTATE_TIME);
-            return Math.round(time * 13.0F / (float)ChocoConfig.COMMON.eggHatchTimeTicks.get());
+            return Math.round(time * 13.0F / ChocoConfigGet(COMMON.eggHatchTimeTicks.get(),dEggHatchTimeTicks).floatValue());
         }
         return 1;
     }

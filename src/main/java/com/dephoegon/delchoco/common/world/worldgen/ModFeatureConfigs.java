@@ -5,7 +5,6 @@ import com.dephoegon.delchoco.common.blocks.GysahlGreenBlock;
 import com.dephoegon.delchoco.common.init.ModRegistry;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.features.FeatureUtils;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;

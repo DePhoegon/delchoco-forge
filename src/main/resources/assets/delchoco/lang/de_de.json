@@ -24,15 +24,39 @@
 
     "item.delchoco.chocobo_feather": "Chocobo Feder",
     "item.delchoco.chocobo_whistle": "Chocobo Pfeifton",
+    "item.delchoco.chocobo_leash_stick": "Chocobo Leashing Stick",
 
     "item.delchoco.chocobo_saddle": "Chocobo Sattel",
     "item.delchoco.chocobo_saddle_bags": "Chocobo Satteltaschen",
     "item.delchoco.chocobo_saddle_pack": "Chocobo Sattelpackung",
 
-    "item.delchoco.choco_disguise_helmet": "Choco Verkleidungshelm",
-    "item.delchoco.choco_disguise_chestplate": "Choco Körper verkleiden",
-    "item.delchoco.choco_disguise_leggings": "Choco Verkleidungsbeine",
-    "item.delchoco.choco_disguise_boots": "Choco Verkleidungsstiefel",
+    "item.delchoco.choco_disguise_leather_helmet": "Leather Helmet",
+    "item.delchoco.choco_disguise_leather_chestplate": "Leather Chestplate",
+    "item.delchoco.choco_disguise_leather_leggings": "Leather Legs",
+    "item.delchoco.choco_disguise_leather_boots": "Leather Boots",
+    "item.delchoco.choco_disguise_iron_helmet": "Iron Helmet",
+    "item.delchoco.choco_disguise_iron_chestplate": "Iron Chestplate",
+    "item.delchoco.choco_disguise_iron_leggings": "Iron Legs",
+    "item.delchoco.choco_disguise_iron_boots": "Iron Boots",
+    "item.delchoco.choco_disguise_diamond_helmet": "Diamond Helmet",
+    "item.delchoco.choco_disguise_diamond_chestplate": "Diamond Chestplate",
+    "item.delchoco.choco_disguise_diamond_leggings": "Diamond Legs",
+    "item.delchoco.choco_disguise_diamond_boots": "Diamond Boots",
+    "item.delchoco.choco_disguise_netherite_helmet": "Netherite Helmet",
+    "item.delchoco.choco_disguise_netherite_chestplate": "Netherite Chestplate",
+    "item.delchoco.choco_disguise_netherite_leggings": "Netherite Legs",
+    "item.delchoco.choco_disguise_netherite_boots": "Netherite Boots",
+
+    "item.delchoco.choco_disguise_yellow": "§eYellow Disguise",
+    "item.delchoco.choco_disguise_green": "§aGreen Disguise",
+    "item.delchoco.choco_disguise_pink": "§dPink Disguise",
+    "item.delchoco.choco_disguise_red": "§cRed Disguise",
+    "item.delchoco.choco_disguise_blue": "§9Blue Disguise",
+    "item.delchoco.choco_disguise_gold": "§6Gold Disguise",
+    "item.delchoco.choco_disguise_black": "§8Black Disguise",
+    "item.delchoco.choco_disguise_flame": "§4Flame Disguise",
+    "item.delchoco.choco_disguise_white": "§fWhite Disguise",
+    "item.delchoco.choco_disguise_purple": "§5Purple Disguise",
 
     "item.delchoco.gysahl_cake": "Gysahl Kuchen",
 
@@ -68,7 +92,7 @@
     "delchoco.entity_chocobo.tame_success": "Â§aZÃ¤hmung erfolgreich",
     "delchoco.entity_chocobo.chocobo_follow_cmd": "Folgen",
     "delchoco.entity_chocobo.chocobo_wander_cmd": "Schlendern",
-    "delchoco.entity_chocobo.chocobo_stay_cmd": "Bleibe",
+    "delchoco.entity_chocobo.chocobo_stay_cmd": "Bleiben Sie in der Nähe",
     "delchoco.entity_chocobo.not_owner": "§cSie sind nicht der Besitzer dieses Chocobo!",
 
     "delchoco.general.world": "Welt",
@@ -81,6 +105,19 @@
     "command.delchoco.chocobo.get_resistance": "Resistenz: %s",
     "command.delchoco.chocobo.get_speed": "Geschwindigkeit: %s",
     "command.delchoco.chocobo.get_stamina": "Ausdauer: %s",
+    "command.delchoco.chocobo.get_attack": "Attack Strength: %s",
+    "command.delchoco.chocobo.get_generation": "Chocobo Generation: %s",
 
-    "delchoco.container.nest": "Chocobo Nest"
+    "delchoco.container.nest": "Chocobo Nest",
+    "delchoco.alter.invalid_base": "Invalid Alter Base Block",
+    "delchoco.alter.invalid_center": "Invalid Alter Center",
+    "delchoco.alter.invalid_pillar": "Invalid/Wrong Pillar Block",
+    "delchoco.alter.invalid_air": "Air Block Obstructed",
+    "delchoco.alter.invalid_air_base": "Alter Base Block Missing",
+
+    "delchoco.leash.spot": "Distance Leashed",
+    "delchoco.leash.dist": "Leash Range Point Set",
+    "delchoco.leash.center": "Leash Center Point Set",
+    "delchoco.leash.none": "No Leash Points Set",
+    "delchoco.leash.invalid": "Leash Distance Invalid"
 }
