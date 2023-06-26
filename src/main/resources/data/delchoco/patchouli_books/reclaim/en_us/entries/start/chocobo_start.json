@@ -4,12 +4,6 @@
   "category": "delchoco:chocobo_ent",
   "pages": [
     {
-      "title": "No Natural Spawn Option",
-      "type": "patchouli:spotlight",
-      "item": "delchoco:chocobo_egg",
-      "text": "For when Natural Spawning is disabled.$(br)- $(l:delchoco:disabled_spawns/disabled_spawn)Basics$(/l)"
-    },
-    {
       "title": "Minimally Needed Mats",
       "type": "patchouli:spotlight",
       "item": "delchoco:chocobo_saddle",
@@ -37,7 +31,7 @@
       "title": "Chocobo Feather",
       "type": "patchouli:spotlight",
       "item": "delchoco:chocobo_feather",
-      "text": "1 $(item)Chocobo Feather$() will be needed$(br)Just stay near some for enough time & they drop."
+      "text": "$(item)Chocobo Feather$()s will be needed$(br)Just stay near some for enough time & they drop."
     },
     {
       "title": "The Chocobo Saddle",

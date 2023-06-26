@@ -7,12 +7,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.animal.horse.SkeletonHorse;
@@ -24,11 +24,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import static com.dephoegon.delchoco.utils.RandomHelper.random;
 import static net.minecraft.world.level.pathfinder.PathComputationType.LAND;
 
 public class ChocoboGoals {
@@ -133,6 +136,67 @@ public class ChocoboGoals {
                 if (newBlockPos != null) { mob.getMoveControl().setWantedPosition(newBlockPos.getX(), newBlockPos.getY(), newBlockPos.getZ(), 1.0D); }
             }
         }
+    }
+    protected static double boundsFlip(Double vec3, int block, double limit) {
+        double positiveDif = positiveDifference(vec3, block);
+        if (limit > positiveDif) { return vec3; }
+        return vec3 >= block ? block + limit : block - limit;
+    }
+    protected static double positiveDifference(Double vec3, int block) {
+        double out = vec3 < block ? block - vec3 : vec3 - block;
+        return out < 0 ? out * -1 : out;
+    }
+    private static int boundedModifier(double lower, double upper) {
+        return (int) (random.nextDouble(upper)-lower);
+    }
+    public static class ChocoboRandomStrollGoal extends RandomStrollGoal {
+        BlockPos blockPos;
+        double limit;
+        double xSpot;
+        double zSpot;
+        public ChocoboRandomStrollGoal(Chocobo pMob, double pSpeedModifier, BlockPos position, Double RangeLimit) {
+            super(pMob, pSpeedModifier);
+            this.blockPos = position;
+            this.limit = RangeLimit;
+        }
+        @Nullable
+        protected Vec3 getPosition() {
+            Vec3 vec3 = getRandomPosition();
+            int x = boundedModifier(limit/2, limit);
+            int z = boundedModifier(limit/2, limit);
+            if (vec3 == null) { vec3 = new Vec3(this.blockPos.getX()+x, this.blockPos.getY(), this.blockPos.getZ()+z); }
+            this.xSpot = boundsFlip(vec3.x(), this.blockPos.getX(), this.limit);
+            this.zSpot = boundsFlip(vec3.z(), this.blockPos.getZ(), this.limit);
+            return new Vec3(this.xSpot, vec3.y(), this.zSpot);
+        }
+        protected Vec3 getRandomPosition() { return DefaultRandomPos.getPos(this.mob, 10, 7); }
+    }
+    public static class ChocoboLocalizedWonder extends WaterAvoidingRandomStrollGoal {
+        BlockPos blockPos;
+        double limit;
+        double xSpot;
+        double zSpot;
+        public ChocoboLocalizedWonder(Chocobo pMob, double pSpeedModifier, BlockPos position, Double RangeLimit) {
+            super(pMob, pSpeedModifier);
+            this.blockPos = position;
+            this.limit = RangeLimit;
+        }
+        @Nullable
+        protected Vec3 getPosition() {
+            Vec3 vec3;
+            if (this.mob.isInWaterOrBubble()) {
+                vec3 = LandRandomPos.getPos(this.mob, 10, 7);
+            } else {
+                vec3 = this.mob.getRandom().nextFloat() >= this.probability ? LandRandomPos.getPos(this.mob, 10, 7) : getRandomPosition();
+            }
+            int x = boundedModifier(limit/2, limit);
+            int z = boundedModifier(limit/2, limit);
+            if (vec3 == null) { vec3 = new Vec3(this.blockPos.getX()+x, this.blockPos.getY(), this.blockPos.getZ()+z); }
+            this.xSpot = boundsFlip(vec3.x(), this.blockPos.getX(), this.limit);
+            this.zSpot = boundsFlip(vec3.z(), this.blockPos.getZ(), this.limit);
+            return new Vec3(this.xSpot, vec3.y(), this.zSpot);
+        }
+        protected Vec3 getRandomPosition() { return DefaultRandomPos.getPos(this.mob, 10, 7); }
     }
     public static class ChocoboOwnerHurtGoal extends OwnerHurtTargetGoal {
         private final TamableAnimal tameAnimal;

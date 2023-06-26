@@ -70,6 +70,7 @@ public class creativeTabArrayLists {
         out.add(CHOCOBO_FEATHER);
         out.add(LOVELY_GYSAHL_GREEN);
         out.add(GYSAHL_CAKE);
+        out.add(CHOCOBO_LEASH_STICK);
         return out;
     }
     public static @NotNull ArrayList<RegistryObject<? extends ItemLike>> getChocoboDisguiseItems() {

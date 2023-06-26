@@ -32,6 +32,18 @@
       "type": "patchouli:crafting",
       "recipe": "delchoco:chocobo_pack_bags",
       "text": "Large Inventory Chocobo Container w/ Riding"
+    },
+    {
+      "title": "The Chocobo Leash",
+      "type": "patchouli:crafting",
+      "recipe": "delchoco:chocobo_leash_stick",
+      "text": "You will Need one of these."
+    },
+    {
+      "title": "The Chocobo Leash",
+      "type": "patchouli:spotlight",
+      "item": "delchoco:chocobo_leash_stick",
+      "text": "You will Need one of these.$(br)This is useful for setting an area for chocobo to roam around in.$(br)Right-Click -> Choose center | Crouch Right-Click -> Choose Distance (from Center)$(br)When both points are set correctly, Right-click your tamed chocobo & it will head there on its own."
     }
   ]
 }
