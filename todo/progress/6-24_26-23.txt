@@ -1,0 +1,15 @@
+Bugs
+- find why crashing when on edge of block
+-- null value in chocobo stamina
+- Fix persistence for non-tamed chocobos
+- Combat effects for chocobos
+
+Features
+- change whistle setting that limits their wander distance
+- change whistle setting that limits & extends the stay distance
+- made leashing stick through restarts/unloads
+
+added
+- Leashing Stick for chocobos
+
+AI tweaks to the chocobos.

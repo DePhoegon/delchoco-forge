@@ -73,6 +73,7 @@ public class ModRegistry {
     public static final RegistryObject<Item> CHOCOBO_DRUMSTICK_COOKED = ITEMS.register("chocobo_drumstick_cooked", () -> new Item(itemBuilder(false).food(ModFoods.CHOCOBO_DRUMSTICK_COOKED)));
     public static final RegistryObject<Item> PICKLED_GYSAHL_RAW = ITEMS.register("pickled_gysahl_raw", () -> new Item(itemBuilder(false).food(ModFoods.PICKLED_GYSAHL_RAW)));
     public static final RegistryObject<Item> PICKLED_GYSAHL_COOKED = ITEMS.register("pickled_gysahl_cooked", () -> new Item(itemBuilder(false).food(ModFoods.PICKLED_GYSAHL_COOKED)));
+    public static final RegistryObject<Item> CHOCOBO_LEASH_STICK = ITEMS.register("chocobo_leash_stick", () -> new ChocoboLeashPointer(itemBuilder(false)));
 
     public static final RegistryObject<Item> LEATHER_CHOCO_DISGUISE_HELMET = ITEMS.register("choco_disguise_leather_helmet", () -> new ChocoDisguiseItem(ModArmorMaterial.LEATHER_CHOCO_DISGUISE, EquipmentSlot.HEAD, itemBuilder(false)));
     public static final RegistryObject<Item> LEATHER_CHOCO_DISGUISE_CHEST = ITEMS.register("choco_disguise_leather_chestplate", () -> new ChocoDisguiseItem(ModArmorMaterial.LEATHER_CHOCO_DISGUISE, EquipmentSlot.CHEST, itemBuilder(false)));

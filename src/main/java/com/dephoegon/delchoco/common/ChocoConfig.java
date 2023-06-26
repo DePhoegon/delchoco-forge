@@ -208,7 +208,7 @@ public class ChocoConfig {
                         .push("max");
 
                 maxHealth = builder
-                        .comment("Controls the Max Health a Chocobo can have [Default: 50]")
+                        .comment("Controls the Max Health a Chocobo can have [Default: 60]")
                         .defineInRange("maxHealth", 60, 25, 400);
 
                 maxSpeed = builder

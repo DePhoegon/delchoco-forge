@@ -3,7 +3,7 @@
   "biomes": "#forge:is_mushroom",
   "spawners": {
     "type": "delchoco:chocobo",
-    "weight": 1,
+    "weight": 2,
     "minCount": 2,
     "maxCount" : 4
   }

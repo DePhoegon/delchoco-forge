@@ -1,6 +1,5 @@
 package com.dephoegon.delchoco.common.items;
 
-import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.blocks.ChocoboEggBlock;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.BlockItem;
@@ -8,6 +7,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
+
+import static com.dephoegon.delchoco.aid.fallbackValues.ChocoConfigGet;
+import static com.dephoegon.delchoco.aid.fallbackValues.dEggHatchTimeTicks;
+import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 
 public class ChocoboEggBlockItem extends BlockItem {
     public ChocoboEggBlockItem(Block block, Item.Properties builder) { super(block, builder); }
@@ -24,7 +27,7 @@ public class ChocoboEggBlockItem extends BlockItem {
         CompoundTag nbtHatchingState = stack.getTagElement(ChocoboEggBlock.NBTKEY_HATCHING_STATE);
         if (nbtHatchingState != null) {
             int time = nbtHatchingState.getInt(ChocoboEggBlock.NBTKEY_HATCHING_STATE_TIME);
-            return Math.round(time * 13.0F / (float)ChocoConfig.COMMON.eggHatchTimeTicks.get());
+            return Math.round(time * 13.0F / ChocoConfigGet(COMMON.eggHatchTimeTicks.get(),dEggHatchTimeTicks).floatValue());
         }
         return 1;
     }

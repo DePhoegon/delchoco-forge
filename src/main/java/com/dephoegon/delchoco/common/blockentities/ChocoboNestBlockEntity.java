@@ -1,7 +1,6 @@
 package com.dephoegon.delchoco.common.blockentities;
 
 import com.dephoegon.delchoco.DelChoco;
-import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.blocks.ChocoboEggBlock;
 import com.dephoegon.delchoco.common.blocks.StrawNestBlock;
 import com.dephoegon.delchoco.common.entities.Chocobo;
@@ -38,6 +37,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
+import static com.dephoegon.delchoco.aid.fallbackValues.ChocoConfigGet;
+import static com.dephoegon.delchoco.aid.fallbackValues.dEggHatchTimeTicks;
+import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.blocks.ChocoboEggBlock.NBTKEY_BREED_INFO;
 import static com.dephoegon.delchoco.common.entities.breeding.ChocoboBreedInfo.getFromNbtOrDefault;
 
@@ -99,7 +101,7 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
         int time = nbt.getInt(ChocoboEggBlock.NBTKEY_HATCHING_STATE_TIME);
         time += this.isSheltered ? 2 : 1;
         nbt.putInt(ChocoboEggBlock.NBTKEY_HATCHING_STATE_TIME, time);
-        if (time < ChocoConfig.COMMON.eggHatchTimeTicks.get()) { return false; }
+        if (time < ChocoConfigGet(COMMON.eggHatchTimeTicks.get(), dEggHatchTimeTicks)) { return false; }
 
         // egg is ready to hatch
         ChocoboBreedInfo breedInfo = ChocoboBreedInfo.getFromNbtOrDefault(egg.getTagElement(NBTKEY_BREED_INFO));
@@ -178,7 +180,7 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
             this.shouldBeAir = shouldBeAir;
         }
     }
-    public Component getDisplayName() { return Component.translatable(DelChoco.DELCHOCO_ID + ".container.nest"); }
+    public @NotNull Component getDisplayName() { return Component.translatable(DelChoco.DELCHOCO_ID + ".container.nest"); }
     public void onInventoryChanged() {
         this.setChanged();
         BlockState newState = ModRegistry.STRAW_NEST.get().defaultBlockState().setValue(StrawNestBlock.HAS_EGG, !this.getEggItemStack().isEmpty());
@@ -195,7 +197,7 @@ public class ChocoboNestBlockEntity extends BlockEntity implements MenuProvider 
         }
         return sheltered;
     }
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+    public <T> @NotNull LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) { return inventoryHolder.cast(); }
         return super.getCapability(cap, side);
     }

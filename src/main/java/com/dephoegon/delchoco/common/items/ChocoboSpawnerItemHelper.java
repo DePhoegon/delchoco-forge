@@ -1,6 +1,5 @@
 package com.dephoegon.delchoco.common.items;
 
-import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.dephoegon.delchoco.common.handler.ChocoboSummoning;
 import com.google.common.collect.Maps;
@@ -18,19 +17,22 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Map;
 
+import static com.dephoegon.delchoco.aid.fallbackValues.ChocoConfigGet;
+import static com.dephoegon.delchoco.aid.fallbackValues.dCanSpawn;
+import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
 import static net.minecraft.world.level.block.Blocks.*;
 
 public class ChocoboSpawnerItemHelper extends Item {
     public ChocoboSpawnerItemHelper(Properties pProperties) { super(pProperties); }
     public @NotNull InteractionResult useOn(@NotNull UseOnContext context) {
-        if (ChocoConfig.COMMON.summonSpawns.get()) {
+        if (ChocoConfigGet(COMMON.summonSpawns.get(), dCanSpawn)) {
             Level worldIn = context.getLevel();
             BlockPos alter = context.getClickedPos();
             Player player = context.getPlayer();
             ItemStack summonObject = context.getItemInHand();
             new ChocoboSummoning(worldIn, alter, player, summonObject);
-        }
-        return InteractionResult.PASS;
+            return InteractionResult.PASS;
+        } else { return InteractionResult.FAIL;}
     }
     public static final Map<BlockState, ChocoboColor> TARGETED_ALTERS = Util.make(Maps.newHashMap(), (map) ->{
         map.put(MAGMA_BLOCK.defaultBlockState(), ChocoboColor.FLAME);
