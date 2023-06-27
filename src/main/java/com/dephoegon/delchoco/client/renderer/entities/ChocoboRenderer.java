@@ -60,7 +60,7 @@ public class ChocoboRenderer extends MobRenderer<Chocobo, EntityModel<Chocobo>> 
     public ChocoboRenderer(EntityRendererProvider.Context context) {
         super(context, new AdultChocoboModel<>(context.bakeLayer(ClientHandler.CHOCOBO)), .75f);
         this.chicoboModel = new ChicoboModel<>(context.bakeLayer(ClientHandler.CHICOBO));
-        // Bottom is the Top Layer (from the outside)
+        // The Bottom layer is the Top Layer (from the outside)
 
         this.addLayer(new LayerCollar(this, collarAlpha, ChocoConfigGet(COMMON.collarInvisibility.get(), dCollarAlpha).floatValue()));
         this.addLayer(new LayerCollarTells(this, collarTellAlpha, ChocoConfigGet(COMMON.collarInvisibility.get(), dCollarAlpha).floatValue()));
@@ -74,7 +74,8 @@ public class ChocoboRenderer extends MobRenderer<Chocobo, EntityModel<Chocobo>> 
     public void render(@NotNull Chocobo chocobo, float entityYaw, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight) {
         this.model = chocobo.isBaby() ? chicoboModel : chocoboModel;
         if (hideChocoboMountInFirstPerson(chocobo)) { return; }
-        float factor = chocobo.getChocoboScale() == 0 ? 1 : chocobo.getChocoboScaleMod();
+        float factor = chocobo.getChocoboScale() == 0 ? 1 : Math.max(chocobo.getChocoboScaleMod(), .85F);
+        if (factor < .86F) { chocobo.setChocoboScale(true, -15, true); }
         poseStack.scale(factor, factor, factor);
         super.render(chocobo, entityYaw, partialTicks, poseStack, bufferSource, packedLight);
     }
