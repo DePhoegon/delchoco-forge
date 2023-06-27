@@ -93,7 +93,7 @@
     "delchoco.entity_chocobo.tame_success": "§aTame succeeded",
     "delchoco.entity_chocobo.chocobo_follow_cmd": "Follow",
     "delchoco.entity_chocobo.chocobo_wander_cmd": "Wander",
-    "delchoco.entity_chocobo.chocobo_stay_cmd": "Stay",
+    "delchoco.entity_chocobo.chocobo_stay_cmd": "Stay Nearby",
     "delchoco.entity_chocobo.not_owner": "§cYou are not the owner of this Chocobo!",
 
     "delchoco.general.world": "World",
