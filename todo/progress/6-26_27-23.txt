@@ -1,0 +1,2 @@
+Chocobo + Player Hit boxes addressed
+Chocobos will remember the last set whistle command through load/unload.
