@@ -1,12 +1,15 @@
 package com.dephoegon.delchoco;
 
 import com.dephoegon.delchoco.client.ClientHandler;
-import com.dephoegon.delchoco.common.ChocoConfig;
 import com.dephoegon.delchoco.common.entities.properties.ModDataSerializers;
 import com.dephoegon.delchoco.common.events.ChocoboCombatEffects;
 import com.dephoegon.delchoco.common.events.ModCommonEvents;
 import com.dephoegon.delchoco.common.init.*;
 import com.dephoegon.delchoco.common.network.PacketManager;
+import com.dephoegon.delchoco.common.world.config.ChocoConfig;
+import com.dephoegon.delchoco.proxy.ClientProxy;
+import com.dephoegon.delchoco.proxy.CommonProxy;
+import com.dephoegon.delchoco.proxy.IProxy;
 import com.dephoegon.delchoco.utils.Log4jFilter;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -17,20 +20,30 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.forgespi.language.IModInfo;
+import net.minecraftforge.network.simple.SimpleChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+
+import static com.dephoegon.delchoco.common.world.config.ChocoConfig.commonSpec;
+import static com.dephoegon.delchoco.common.world.config.ChocoCaller.choco_call;
 
 @Mod(DelChoco.DELCHOCO_ID)
 public class DelChoco {
     public static final String DELCHOCO_ID = "delchoco";
     public final static Logger log = LogManager.getLogger(DELCHOCO_ID);
+    public static SimpleChannel network;
+    public static IProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+
+    public static IModInfo info;
 
     public DelChoco() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ChocoConfig.commonSpec);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, commonSpec);
         eventBus.register(ChocoConfig.class);
         eventBus.addListener(this::commonSetup);
+        eventBus.addListener(CommonProxy::setup);
 
         ModRegistry.BLOCKS.register(eventBus);
         ModRegistry.ITEMS.register(eventBus);
@@ -47,6 +60,7 @@ public class DelChoco {
         MinecraftForge.EVENT_BUS.addListener(ModCommonEvents::addCustomTrades);
         MinecraftForge.EVENT_BUS.addListener(ModCommonEvents::onServerStartAddCompostItems);
 
+        info = ModLoadingContext.get().getActiveContainer().getModInfo();
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             eventBus.addListener(ClientHandler::onClientSetup);
             eventBus.addListener(ClientHandler::registerEntityRenders);

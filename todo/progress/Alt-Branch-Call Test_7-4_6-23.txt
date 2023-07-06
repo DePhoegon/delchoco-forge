@@ -1,0 +1,40 @@
+Taken Steps
+- Added in java classes
+- merged config file into one
+-- Both used Common Space
+- Removed Attribute addition for 'horse'
+-- Can roll it directly into the Chocobo Class
+- Added fallback config values
+
+
+
+To Do
+- Change 'Save Chocobo'
+-- include the following
+= Color
+= scale
+== scale sets scaleMod
+= Gender
+= generation #
+= Stats
+== Strength
+== Armor
+== Armor Toughness
+== HP
+== Speed
+== Stamina
+= Abilities
+== Flame blood
+== water Breathing
+== Poison Immune
+== Wither Immune
+= Inventories
+== Saddle
+== Armor
+== Weapon
+== Gen Inventory
+= Null out Inventory on death respawn
+== on Death they dropped their inventory if killed (or it vanishes when forcefully de-spawned/discarded via command override, /kill drops loot)
+= Null out Leash Floats
+= Set Movement Type to WANDER (in save)
+- Test, Test, Re-Test, & Test again

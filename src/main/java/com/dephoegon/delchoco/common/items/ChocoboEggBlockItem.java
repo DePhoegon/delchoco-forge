@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.dephoegon.delchoco.aid.fallbackValues.ChocoConfigGet;
 import static com.dephoegon.delchoco.aid.fallbackValues.dEggHatchTimeTicks;
-import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
+import static com.dephoegon.delchoco.common.world.config.ChocoConfig.COMMON;
 
 public class ChocoboEggBlockItem extends BlockItem {
     public ChocoboEggBlockItem(Block block, Item.Properties builder) { super(block, builder); }

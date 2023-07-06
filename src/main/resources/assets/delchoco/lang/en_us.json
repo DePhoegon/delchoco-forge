@@ -120,5 +120,26 @@
     "delchoco.leash.dist": "Leash Range Point Set",
     "delchoco.leash.center": "Leash Center Point Set",
     "delchoco.leash.none": "No Leash Points Set",
-    "delchoco.leash.invalid": "Leash Distance Invalid"
+    "delchoco.leash.invalid": "Leash Distance Invalid",
+
+    "key.callable_chocobos.category": "Callable Chocobos",
+    "key.set_chocobo.desc": "Set Chocobo",
+    "key.call_chocobo.desc": "Call Chocobo",
+    "key.show_stats.desc": "Show Chocobo Stats",
+
+    "delchoco.error.dim": "You can't call your chocobo in this dimension!",
+    "delchoco.error.riding": "You can't be riding while calling your chocobo!",
+    "delchoco.error.no_choco": "You currently don't have a personal Chocobo!",
+    "delchoco.error.not_riding": "You need to be riding a chocobo to do this!",
+    "delchoco.error.already_owned": "This Chocobo already has an owner!",
+    "delchoco.error.already_personal": "This is already your personal chocobo!",
+    "delchoco.error.area": "You can't call your chocobo in this area!",
+    "delchoco.error.range": "Your chocobo is too far away to hear you!",
+    "delchoco.error.set_area": "You can't set your horse in this area!",
+    "delchoco.error.no_space": "There is not enough space here to call your chocobo!",
+
+    "delchoco.success": "This is now your personal chocobo!",
+
+    "delchoco.alert.death": "Your personal chocobo just died!",
+    "delchoco.alert.offline_death": "Your personal horse died while you were offline!"
 }

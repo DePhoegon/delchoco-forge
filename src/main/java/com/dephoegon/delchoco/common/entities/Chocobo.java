@@ -1,7 +1,9 @@
 package com.dephoegon.delchoco.common.entities;
 
 import com.dephoegon.delchoco.DelChoco;
-import com.dephoegon.delchoco.common.ChocoConfig;
+import com.dephoegon.delchoco.common.world.config.ChocoConfig;
+import com.dephoegon.delchoco.common.capabilities.CapabilityHandler;
+import com.dephoegon.delchoco.common.capabilities.storedchocobo.IStoredChocobo;
 import com.dephoegon.delchoco.common.entities.breeding.ChocoboMateGoal;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboGoals.*;
@@ -22,6 +24,7 @@ import com.google.common.collect.Maps;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Position;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -75,6 +78,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.items.ItemStackHandler;
@@ -90,7 +95,7 @@ import static com.dephoegon.delchoco.aid.SpawnBiomesChecks.allBiomes;
 import static com.dephoegon.delchoco.aid.chocoKB.isAltDown;
 import static com.dephoegon.delchoco.aid.dyeList.getDyeList;
 import static com.dephoegon.delchoco.aid.fallbackValues.*;
-import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
+import static com.dephoegon.delchoco.common.world.config.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.blocks.GysahlGreenBlock.blockPlaceableOnList;
 import static com.dephoegon.delchoco.common.entities.breeding.ChocoboSnap.setChocoScale;
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
@@ -105,7 +110,7 @@ import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 import static net.minecraftforge.common.Tags.Biomes.*;
 
 @SuppressWarnings({"rawtypes", "ConstantConditions"})
-public class Chocobo extends TamableAnimal implements NeutralMob {
+public class Chocobo extends TamableAnimal implements NeutralMob, IStoredChocobo {
     @Nullable private UUID persistentAngerTarget;
     private int remainingPersistentAngerTime;
     private int ticksUntilNextAlert;
@@ -151,6 +156,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     private static final String NBTKEY_CHOCOBO_LEASH_BLOCK_Y = "LeashBlockY";
     private static final String NBTKEY_CHOCOBO_LEASH_BLOCK_Z = "LeashBlockZ";
     private static final String NBTKEY_CHOCOBO_LEASH_DISTANCE = "LeashDistance";
+    private static final String NBTKEY_CHOCOBO_NUMBER = "chocoboNumber";
+    private static final String NBTKEY_CHOCOBO_STORAGE = "storage";
     private static final UUID CHOCOBO_CHEST_ARMOR_MOD_UUID = UUID.fromString("c03d8021-8839-4377-ac23-ed723ece6454");
     private static final UUID CHOCOBO_CHEST_ARMOR_TOUGH_MOD_UUID = UUID.fromString("f7dcb185-7182-4a28-83ae-d1a2de9c022d");
     private static final UUID CHOCOBO_WEAPON_DAM_MOD_UUID = UUID.fromString("b9f0dc43-15a7-49f5-815c-915322c30402");
@@ -179,6 +186,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     private static final EntityDataAccessor<Integer> PARAM_LEASH_BLOCK_Y = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> PARAM_LEASH_BLOCK_Z = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> PARAM_LEASH_LENGTH = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> PARAM_CHOCOBO_NUMBER = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<String> PARAM_CHOCOBO_STORAGE = SynchedEntityData.defineId(Chocobo.class, EntityDataSerializers.STRING);
     private static final AttributeModifier CHOCOBO_SPRINTING_SPEED_BOOST = (new AttributeModifier(CHOCOBO_SPRINTING_BOOST_ID, "Chocobo sprinting speed boost", 1, Operation.MULTIPLY_BASE));
     public static final int tier_one_chocobo_inv_slot_count = 15; // 3*5
     public static final int tier_two_chocobo_inv_slot_count = 45; //5*9
@@ -226,6 +235,10 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             Chocobo.this.setSaddleType(this.itemStack);
         }
     };
+    @Override
+    public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, @org.jetbrains.annotations.Nullable Direction side) {
+        return CapabilityHandler.CHOCOBO_CAPABILITY.orEmpty(cap, LazyOptional.of(() -> this));
+    }
 
     public Chocobo(EntityType<? extends Chocobo> type, Level world) { super(type, world); }
     @Override
@@ -286,6 +299,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         this.entityData.define(PARAM_LEASH_BLOCK_Y, 50000);
         this.entityData.define(PARAM_LEASH_BLOCK_X, 0);
         this.entityData.define(PARAM_LEASH_LENGTH, 0);
+        this.entityData.define(PARAM_CHOCOBO_STORAGE, "");
+        this.entityData.define(PARAM_CHOCOBO_NUMBER, 0);
     }
     public void readAdditionalSaveData(@NotNull CompoundTag compound) {
         super.readAdditionalSaveData(compound);
@@ -309,6 +324,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         this.setCollarColor(compound.getInt(NBTKEY_CHOCOBO_COLLAR));
         this.setLeashSpot(compound.getInt(NBTKEY_CHOCOBO_LEASH_BLOCK_X), compound.getInt(NBTKEY_CHOCOBO_LEASH_BLOCK_Y), compound.getInt(NBTKEY_CHOCOBO_LEASH_BLOCK_Z));
         this.setLeashedDistance(compound.getDouble(NBTKEY_CHOCOBO_LEASH_DISTANCE));
+        this.setChocoboNum(compound.getInt(NBTKEY_CHOCOBO_NUMBER));
+        this.setStorageUUID(compound.getString(NBTKEY_CHOCOBO_STORAGE));
     }
     public void addAdditionalSaveData(@NotNull CompoundTag compound) {
         super.addAdditionalSaveData(compound);
@@ -334,7 +351,17 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         compound.putInt(NBTKEY_CHOCOBO_LEASH_BLOCK_Y, this.getLeashSpot().getY());
         compound.putInt(NBTKEY_CHOCOBO_LEASH_BLOCK_Z, this.getLeashSpot().getZ());
         compound.putDouble(NBTKEY_CHOCOBO_LEASH_DISTANCE, this.getLeashDistance());
+        compound.putString(NBTKEY_CHOCOBO_STORAGE, this.getStorageUUID());
+        compound.putInt(NBTKEY_CHOCOBO_NUMBER, this.getChocoboNum());
     }
+    public String getStorageUUID() { return this.entityData.get(PARAM_CHOCOBO_STORAGE); }
+    public void setStorageUUID(String uuid) { this.entityData.set(PARAM_CHOCOBO_STORAGE, uuid); }
+    public UUID getOwnerUUID() { return super.getOwnerUUID(); }
+    public void setOwnerUUID(@Nullable UUID pUuid) { super.setOwnerUUID(pUuid); }
+    public void setChocoboNum(int num) { this.entityData.set(PARAM_CHOCOBO_NUMBER, num); }
+    public int getChocoboNum() { return this.entityData.get(PARAM_CHOCOBO_NUMBER); }
+    public void setOwned(boolean bool) { this.setTame(bool); }
+    public boolean isOwned() { return this.isTame(); }
     private void setLeashSpot(int x, int y, int z) {
         this.entityData.set(PARAM_LEASH_BLOCK_Z, z);
         this.entityData.set(PARAM_LEASH_BLOCK_Y, y);

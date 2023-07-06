@@ -1,4 +1,4 @@
-package com.dephoegon.delchoco.common;
+package com.dephoegon.delchoco.common.world.config;
 
 import com.dephoegon.delchoco.DelChoco;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -9,6 +9,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 import static com.dephoegon.delchoco.client.renderer.entities.ChocoboRenderer.*;
 
@@ -56,6 +58,14 @@ public class ChocoConfig {
         public final BooleanValue ownChocoboHittable;
         public final BooleanValue tamedChocoboHittable;
         public final BooleanValue shiftBypassAllowed;
+        public final BooleanValue deathIsPermanent;
+        public final BooleanValue callableInEveryDimension;
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> callableDimsWhitelist;
+        public final IntValue maxCallingDistance;
+        public final BooleanValue enableStatsViewer;
+        public final DoubleValue chocoboWalkRange;
+        public final BooleanValue continuousAntiDupeChecking;
+        public final BooleanValue checkForSpace;
 
         Common(ForgeConfigSpec.@NotNull Builder builder) {
             builder.comment("Chocobo Spawn Configuration")
@@ -136,6 +146,44 @@ public class ChocoConfig {
                     .comment("Controls the amount of Stamina recharged per tick [Default: 0.025]")
                     .defineInRange("staminaRegenRate", 0.025, 0, 1);
 
+            builder.comment("Chocobo Call Settings")
+                    .push("caller");
+
+            deathIsPermanent = builder
+                    .comment("Personal Chocobos get deleted if they're killed")
+                    .define("deathIsPermanent", true);
+
+            callableInEveryDimension = builder
+                    .comment("If the chocobo can be called in every dimension")
+                    .define("callableInEveryDimension", true);
+
+            callableDimsWhitelist = builder
+                    .comment("Whitelist for dimensions where chocobos can be called. callableInEveryDimension needs to be false!")
+                    .defineList("callableDimsWhitelist", List.of("minecraft:overworld"), obj -> {
+                        return obj instanceof String;
+                    });
+
+            maxCallingDistance = builder
+                    .comment("Maximum block distance from last chocobo where new chocobo can be called. Set to -1 to disable range.")
+                    .defineInRange("maxCallingDistance", -1, -1, 30_000_000);
+
+            enableStatsViewer = builder
+                    .comment("Enable/disable the chocobo stat viewer GUI")
+                    .define("enableStatsViewer", true);
+
+            chocoboWalkRange = builder
+                    .comment("Range in which the chocobo will not teleport, but walk to you. Set to 0 to force the chocobo to always teleport.")
+                    .defineInRange("chocoboWalkRange", 30d, 0d, 64d);
+
+            continuousAntiDupeChecking = builder
+                    .comment("Check against duplicate chocobos every game tick (20 times per second) instead of only on load. Only use this if you're experiencing problem with duplicate chocobos! THIS COULD CAUSE LAG!")
+                    .define("continuousAntiDupeChecking", false);
+
+            checkForSpace = builder
+                    .comment("If you need a 3x3x3 space to call your chocobo")
+                    .define("checkForSpace", true);
+
+            builder.pop();
             builder.pop();
             builder.comment("Defaults")
                     .push("defaults");

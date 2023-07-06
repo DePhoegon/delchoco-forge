@@ -1,5 +1,7 @@
 package com.dephoegon.delchoco.aid;
 
+import java.util.List;
+
 public class fallbackValues {
     public static final Integer dStamina = 10;
     public static final Integer dSpeed = 20;
@@ -34,6 +36,15 @@ public class fallbackValues {
     public static final Double dWeaponAlpha = 0.1;
     public static final Double dCollarAlpha = 0.2;
     public static final Double dSaddleAlpha = 0.1;
+    public static final Boolean dDeathIsPermanent = true;
+    public static final Boolean dCallableInEveryDimension = true;
+    public static final List<? extends String> dCallableDimsWhiteList = List.of("minecraft:overworld");
+    public static final Integer dMaxCallDistance = -1;
+    public static final Boolean dEnableStatViewer = true;
+    public static final Double dChocoboWalkingRange = 30d;
+    public static final Boolean dContinuousAntiDupeChecking = false;
+    public static final Boolean dCheckForFreeSpace = true;
+
     public static Integer ChocoConfigGet(Integer value, Integer FallBack) {
         return value == null ? FallBack : value;
     }
