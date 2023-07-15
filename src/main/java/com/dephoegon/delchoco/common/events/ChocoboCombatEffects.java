@@ -26,7 +26,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
 
 import static com.dephoegon.delchoco.aid.fallbackValues.*;
-import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
+import static com.dephoegon.delchoco.common.configs.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 import static com.dephoegon.delchoco.common.items.ChocoDisguiseItem.*;
 import static com.dephoegon.delchoco.utils.RandomHelper.random;

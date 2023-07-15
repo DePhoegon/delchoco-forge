@@ -1,7 +1,7 @@
 package com.dephoegon.delchoco.common.entities;
 
 import com.dephoegon.delchoco.DelChoco;
-import com.dephoegon.delchoco.common.ChocoConfig;
+import com.dephoegon.delchoco.common.configs.ChocoConfig;
 import com.dephoegon.delchoco.common.entities.breeding.ChocoboMateGoal;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboGoals.*;
@@ -86,11 +86,13 @@ import java.util.*;
 
 import static com.dephoegon.delbase.item.shiftingDyes.*;
 import static com.dephoegon.delchoco.aid.SpawnBiomesChecks.allBiomes;
-import static com.dephoegon.delchoco.aid.chocoKB.isAltDown;
+import static com.dephoegon.delchoco.aid.chocoKB.isChocoShiftDown;
+import static com.dephoegon.delchoco.aid.chocoKB.isChocoboWaterGlide;
 import static com.dephoegon.delchoco.aid.dyeList.getDyeList;
 import static com.dephoegon.delchoco.aid.fallbackValues.*;
-import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
+import static com.dephoegon.delchoco.common.configs.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.blocks.GysahlGreenBlock.blockPlaceableOnList;
+import static com.dephoegon.delchoco.common.configs.SpawnControl.COMMON_WORLD;
 import static com.dephoegon.delchoco.common.entities.breeding.ChocoboSnap.setChocoScale;
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 import static com.dephoegon.delchoco.common.init.ModSounds.AMBIENT_SOUND;
@@ -364,6 +366,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     }
     private @NotNull ArrayList<ResourceKey<Biome>> blueChocobo() {
         ArrayList<ResourceKey<Biome>> out = new ArrayList<>();
+        out.add(LUKEWARM_OCEAN);
+        out.add(DEEP_LUKEWARM_OCEAN);
         out.add(WARM_OCEAN);
         out.add(RIVER);
         return out;
@@ -705,7 +709,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                     else if (this.getDeltaMovement().y < 0 && !this.isWaterBreather()) {
                         int distance = WorldUtils.getDistanceToSurface(this.blockPosition(), this.getCommandSenderWorld());
                         if (distance > 0) { setDeltaMovement(new Vec3(motion.x, .05f, motion.z)); }
-                    } else if (this.isWaterBreather() && isAltDown(rider)) {
+                    } else if (this.isWaterBreather() && isChocoboWaterGlide()) {
                         Vec3 waterMotion = getDeltaMovement();
                         setDeltaMovement(new Vec3(waterMotion.x, waterMotion.y * 0.65F, waterMotion.z));
                     }
@@ -719,7 +723,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
                     }
                 }
                 // Insert override for slow-fall Option on Chocobo
-                if (!this.onGround && !this.isInWater() && !this.isInLava() && !rider.isShiftKeyDown() && this.getDeltaMovement().y < 0 &&
+                if (!this.onGround && !this.isInWater() && !this.isInLava() && !isChocoShiftDown() && this.getDeltaMovement().y < 0 &&
                         this.useStamina(ChocoConfigGet(COMMON.glideStaminaCost.get(), dStaminaGlide).floatValue())) {
                     if (Minecraft.getInstance().options.keyJump.isDown()) {
                         Vec3 motion = getDeltaMovement();
@@ -1294,11 +1298,11 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         } else if (pLevelBiomes.containsTag(IS_OCEAN) || pLevelBiomes.containsTag(MINESHAFT_BLOCKING)) { spawn = false; } else {
             spawn = pLevel.getBlockState(blockpos).isValidSpawn(pLevel, blockpos, entityType);
         }
-        if (pLevelBiomes.containsTag(IS_OVERWORLD)) { spawn = COMMON.overWorldSpawns.get() && spawn; }
-        if (pLevelBiomes.containsTag(IS_NETHER)) { spawn = COMMON.netherSpawns.get() && spawn; }
-        if (pLevelBiomes.containsTag(IS_END)) { spawn = COMMON.endSpawns.get() && spawn; }
+        if (pLevelBiomes.containsTag(IS_OVERWORLD)) { spawn = ChocoConfigGet(COMMON_WORLD.overworldSpawns.get(), dOverworldSpawns) && spawn; }
+        if (pLevelBiomes.containsTag(IS_NETHER)) { spawn = ChocoConfigGet(COMMON_WORLD.netherSpawns.get(), dNetherSpawns) && spawn; }
+        if (pLevelBiomes.containsTag(IS_END)) { spawn = ChocoConfigGet(COMMON_WORLD.endSpawns.get(), dEndSpawns) && spawn; }
 
-        spawn = COMMON.chocoboSpawnEnabler.get() && spawn;
+        spawn = ChocoConfigGet(COMMON_WORLD.chocoboSpawnEnabler.get(), dCanSpawn) && spawn;
         return spawn;
     }
 }

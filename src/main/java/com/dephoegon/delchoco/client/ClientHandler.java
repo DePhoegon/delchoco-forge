@@ -20,7 +20,9 @@ public class ClientHandler {
     public static final ModelLayerLocation CHICOBO = new ModelLayerLocation(new ResourceLocation(DelChoco.DELCHOCO_ID, "main"), "chicobo");
     public static final ModelLayerLocation CHOCO_DISGUISE = new ModelLayerLocation(new ResourceLocation(DelChoco.DELCHOCO_ID, "main"), "choco_disguise");
 
-    public static void onClientSetup(final FMLClientSetupEvent ignoredEvent) { MenuScreens.register(ModContainers.NEST.get(), NestScreen::new); }
+    public static void onClientSetup(final FMLClientSetupEvent ignoredEventbus) {
+        MenuScreens.register(ModContainers.NEST.get(), NestScreen::new);
+    }
     public static void registerEntityRenders(EntityRenderersEvent.@NotNull RegisterRenderers event) { event.registerEntityRenderer(ModEntities.CHOCOBO.get(), ChocoboRenderer::new); }
     public static void registerLayerDefinitions(EntityRenderersEvent.@NotNull RegisterLayerDefinitions event) {
         event.registerLayerDefinition(CHOCOBO, AdultChocoboModel::createBodyLayer);
