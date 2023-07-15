@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 import static com.dephoegon.delchoco.aid.util.fallbackValues.*;
-import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
+import static com.dephoegon.delchoco.common.configs.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.entities.breeding.ChocoboSnap.setChocoScale;
 import static com.dephoegon.delchoco.common.items.ChocoboSpawnEggItem.*;
 import static java.lang.Math.*;

@@ -1,0 +1,13 @@
+Fixes
+- Configuration File
+-- Pruning
+-- Fixed Thrashing
+
+Added
+- HotKey support
+- French Translation
+
+Adjustments
+- Split Config files
+- Under the hood adjustments
+- machine translated new entries into old translations

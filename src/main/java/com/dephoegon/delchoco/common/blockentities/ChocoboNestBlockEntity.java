@@ -38,7 +38,7 @@ import java.util.Objects;
 
 import static com.dephoegon.delchoco.aid.util.fallbackValues.ChocoConfigGet;
 import static com.dephoegon.delchoco.aid.util.fallbackValues.dEggHatchTimeTicks;
-import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
+import static com.dephoegon.delchoco.common.configs.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.blocks.ChocoboEggBlock.NBTKEY_BREED_INFO;
 import static com.dephoegon.delchoco.common.entities.breeding.ChocoboBreedInfo.getFromNbtOrDefault;
 import static net.minecraftforge.common.capabilities.ForgeCapabilities.ITEM_HANDLER;

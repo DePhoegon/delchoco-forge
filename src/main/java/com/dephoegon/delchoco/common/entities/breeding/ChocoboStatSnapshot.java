@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 import static com.dephoegon.delchoco.aid.util.fallbackValues.*;
-import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
+import static com.dephoegon.delchoco.common.configs.ChocoConfig.COMMON;
 
 public class ChocoboStatSnapshot {
     public static final ChocoboStatSnapshot DEFAULT;

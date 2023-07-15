@@ -1,7 +1,7 @@
 package com.dephoegon.delchoco.common.entities.breeding;
 
 import static com.dephoegon.delchoco.aid.util.fallbackValues.*;
-import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
+import static com.dephoegon.delchoco.common.configs.ChocoConfig.COMMON;
 import static com.dephoegon.delchoco.common.entities.properties.ChocoboColor.FLAME;
 import static com.dephoegon.delchoco.common.entities.properties.ChocoboColor.getRandomColor;
 import static com.dephoegon.delchoco.common.items.ChocoboSpawnEggItem.*;

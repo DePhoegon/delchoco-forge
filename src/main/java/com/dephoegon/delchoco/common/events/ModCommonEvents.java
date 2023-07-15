@@ -7,9 +7,11 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
@@ -20,6 +22,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import static com.dephoegon.delchoco.aid.arraylists.creativeTabArrayLists.*;
+import static com.dephoegon.delchoco.aid.util.creativeTabAid.CHOCO_TAB;
 import static com.dephoegon.delchoco.aid.util.tradeMaps.MOD_FARMER_TRADES;
 import static com.dephoegon.delchoco.aid.util.tradeMaps.MOD_TRADE_LEVEL;
 import static com.dephoegon.delchoco.common.entities.Chocobo.createAttributes;
@@ -37,6 +41,17 @@ public class ModCommonEvents {
             Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
             MOD_FARMER_TRADES.forEach((give, get) -> trades.get((int) MOD_TRADE_LEVEL.get(give.getItem() == Items.EMERALD.asItem() ? get : give)).add((trader, rand) -> new MerchantOffer(give, get, 10, 3, 0.02F)));
         }
+    }
+    public static void addCreative(@NotNull BuildCreativeModeTabContentsEvent event) {
+        if(event.getTabKey() == CHOCO_TAB.getKey()) { getChocoBlocks().forEach(event::accept); }
+        if(event.getTabKey() == CHOCO_TAB.getKey()) { getAllChocoboItems().forEach(event::accept); }
+        if(event.getTabKey() == CreativeModeTabs.COMBAT) { getChocoboArmors().forEach(event::accept); }
+        if(event.getTabKey() == CreativeModeTabs.COMBAT) { getChocoboWeapons().forEach(event::accept); }
+        if(event.getTabKey() == CreativeModeTabs.COMBAT) { getChocoboDisguiseItems().forEach(event::accept); }
+        if(event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) { getChocoboFood().forEach(event::accept); }
+        if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) { getChocoboMiscItems().forEach(event::accept); }
+        if(event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) { getChocoboSpawnEggs().forEach(event::accept); }
+        if(event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) { getChocoboSaddles().forEach(event::accept); }
     }
     // No SubscribeEvent - Controlled loading order because items.
     public static void registerEntityAttributes(@NotNull EntityAttributeCreationEvent event) { event.put(CHOCOBO.get(), createAttributes().build()); }
