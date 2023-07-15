@@ -14,7 +14,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    mappings channel: project.map_type, version: project.map_type_version
+    mappings channel: 'parchment', version: '2023.02.26-1.19.3'
 
     runs {
         client {

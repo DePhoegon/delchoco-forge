@@ -3,7 +3,7 @@ package com.dephoegon.delchoco.common.handler;
 //@Mod.EventBusSubscriber(modid = delchoco.MOD_ID)
 public class LootTableEventHandler {
     // Selective Removal of the ability fruits, & commenting out the skeleton code for future use.
-    // Handled in the Configs. currently in ' com.dephoegon.delchoco.common.ChocoConfig.java ', names must match.
+    // Handled in the Configs. currently in ' com.dephoegon.delchoco.common.configs.ChocoConfig.java ', names must match.
     // Removal of Ability Fruits
     // Keeping the LootPool InjectPool setup for possible future use
 

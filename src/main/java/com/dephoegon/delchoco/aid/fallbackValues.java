@@ -34,13 +34,10 @@ public class fallbackValues {
     public static final Double dWeaponAlpha = 0.1;
     public static final Double dCollarAlpha = 0.2;
     public static final Double dSaddleAlpha = 0.1;
-    public static Integer ChocoConfigGet(Integer value, Integer FallBack) {
-        return value == null ? FallBack : value;
-    }
-    public static Double ChocoConfigGet(Double value, Double FallBack) {
-        return value == null ? FallBack : value;
-    }
-    public static Boolean ChocoConfigGet(Boolean config, Boolean FallBack) {
-        return config == null ? FallBack : config;
-    }
+    public static final boolean dOverworldSpawns = true;
+    public static final boolean dNetherSpawns = true;
+    public static final boolean dEndSpawns = true;
+    public static Integer ChocoConfigGet(Integer value, Integer FallBack) { return value == null ? FallBack : value; }
+    public static Double ChocoConfigGet(Double value, Double FallBack) { return value == null ? FallBack : value; }
+    public static Boolean ChocoConfigGet(Boolean config, Boolean FallBack) { return config == null ? FallBack : config; }
 }

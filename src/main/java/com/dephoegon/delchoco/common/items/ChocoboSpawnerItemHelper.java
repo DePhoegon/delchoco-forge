@@ -19,13 +19,14 @@ import java.util.Map;
 
 import static com.dephoegon.delchoco.aid.fallbackValues.ChocoConfigGet;
 import static com.dephoegon.delchoco.aid.fallbackValues.dCanSpawn;
-import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
+import static com.dephoegon.delchoco.common.configs.ChocoConfig.COMMON;
+import static com.dephoegon.delchoco.common.configs.SpawnControl.COMMON_WORLD;
 import static net.minecraft.world.level.block.Blocks.*;
 
 public class ChocoboSpawnerItemHelper extends Item {
     public ChocoboSpawnerItemHelper(Properties pProperties) { super(pProperties); }
     public @NotNull InteractionResult useOn(@NotNull UseOnContext context) {
-        if (ChocoConfigGet(COMMON.summonSpawns.get(), dCanSpawn)) {
+        if (ChocoConfigGet(COMMON_WORLD.summonSpawns.get(), dCanSpawn)) {
             Level worldIn = context.getLevel();
             BlockPos alter = context.getClickedPos();
             Player player = context.getPlayer();

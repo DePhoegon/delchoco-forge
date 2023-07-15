@@ -1,4 +1,4 @@
-package com.dephoegon.delchoco.common;
+package com.dephoegon.delchoco.common.configs;
 
 import com.dephoegon.delchoco.DelChoco;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -45,57 +45,36 @@ public class ChocoConfig {
         public final DoubleValue armorInvisibility;
         public final DoubleValue saddleInvisibility;
         public final DoubleValue weaponInvisibility;
-        public final BooleanValue overWorldSpawns;
-        public final BooleanValue netherSpawns;
-        public final BooleanValue endSpawns;
-        public final BooleanValue summonSpawns;
         public final BooleanValue chocoboResourcesOnHit;
         public final BooleanValue chocoboResourcesOnKill;
         public final BooleanValue extraChocoboEffects;
-        public final BooleanValue chocoboSpawnEnabler;
+
         public final BooleanValue ownChocoboHittable;
         public final BooleanValue tamedChocoboHittable;
         public final BooleanValue shiftBypassAllowed;
 
         Common(ForgeConfigSpec.@NotNull Builder builder) {
-            builder.comment("Chocobo Spawn Configuration")
-                    .push("spawning");
+            builder.comment("General Chocobo Configuration").push("chocobo");
+            builder.comment("Tamed Chocobo Protections").push("tamed");
 
             ownChocoboHittable = builder
-                    .comment("Enables/Disable Hitting of Your Own Tamed/TeamTamed Chocobo\n-AKA, Stops Owner/Team Members From hitting Their Tamed Chocobos")
+                    .comment("Enables/Disable Hitting of Your Own Tamed/TeamTamed Chocobo")
                     .define("allowOwnTamedChocoboHit", false);
 
             tamedChocoboHittable = builder
-                    .comment("Enables/Disable Hitting of Tamed Chocobo\n-AKA, Stops Players From hitting Tamed Chocobos[Intended for Non-pvp servers]")
-                    .define("allowAnyTamedChocoboHit", false);
+                    .comment("Enables/Disable Hitting of Tamed Chocobos")
+                    .define("allowTamedChocoboHit", false);
 
             shiftBypassAllowed = builder
                     .comment("Enables/Disable Use of Shift to Hit Tamed Chocobo\n-AKA, Allows you to hit Chocobo while using Shift[Intended as an intentional bypass]")
-                    .define("allowAnyTamedChocoboHit", true);
+                    .define("shiftToHitChocobo", true);
 
-            chocoboSpawnEnabler = builder
-                    .comment("Enables/Disables Chocobo Natural Spawning")
-                    .define("naturalSpawns", true);
-
-            overWorldSpawns = builder
-                    .comment("Allows Chocobo to spawn in the OverWorld [Default: true]")
-                    .define("overworldSpawns", true);
-
-            netherSpawns = builder
-                    .comment("Allows Chocobo to spawn in the Nether [Default: true]")
-                    .define("netherSpawns", true);
-
-            endSpawns = builder
-                    .comment("Allows Chocobo to spawn in the End [Default: true]")
-                    .define("endSpawns", true);
-
-            summonSpawns = builder
-                    .comment("Allows Chocobo to spawned in by the player with spawning [Default: true]\nSpawn weights lowered, if summonSpawns is disabled raise weights to commented Defaults")
-                    .define("summonSpawns", true);
+            tameChance = builder
+                    .comment("This multiplier controls the tame chance per gysahl used, so .15 results in 15% chance to tame [Default: 0.15]")
+                    .defineInRange("tameChance", 0.15, 0, 1);
 
             builder.pop();
-            builder.comment("Chocobo Extras")
-                    .push("extras");
+            builder.comment("Chocobo Combat Extras").push("combat");
 
             chocoboResourcesOnHit = builder
                     .comment("Controls if the Chocobos will produce extra resources on combat hits. (Includes Disarming Targets on hit chance)")
@@ -107,18 +86,36 @@ public class ChocoConfig {
 
             extraChocoboEffects = builder
                     .comment("Controls if the chocobos get extra effects outside traits that can be passed through breeding & outside of no fall damage.\n-Also Controls if the player receives stats/buff bonuses from wearing the a full color set of the ChocoGuise Gear.")
-                    .define("effects", true);
+                    .define("chocobo_effects", true);
 
             builder.pop();
-            builder.comment("Chocobo configuration")
-                    .push("chocobo");
+            builder.comment("Combat Stats").push("stats");
+
+            modifier = builder
+                    .comment("Armor/Weapon Value Modifier {Weapons & Armor For Chocobo are More Effective} [Default:1]")
+                    .defineInRange("modifier", 1, 1, 3);
+
+            defaultArmor = builder
+                    .comment("Default Amount of 'Armor' Points [Default:4]")
+                    .defineInRange("defaultArmor", 4, 0, 20);
+
+            defaultArmorToughness = builder
+                    .comment("Default Amount of 'Armor Toughness' Value [Default:1]")
+                    .defineInRange("defaultArmorToughness", 1,0, 10);
+
+            defaultAttackStrength = builder
+                    .comment("Default Attack Value [Default: 2]")
+                    .defineInRange("defaultAttackStrength", 2, 1, 10);
+
+            builder.pop();
+            builder.comment("Access").push("access");
 
             ownerOnlyAccess = builder
                     .comment("Chocobos Rideable & Custom Nameable by Owners (Player that tamed it) Only. [Default: False]")
                     .define("ownerOnlyAccess", false);
 
-            builder.comment("Stamina Costs")
-                    .push("stamina_costs");
+            builder.pop();
+            builder.comment("Stamina Costs").push("stamina_costs");
 
             sprintStaminaCost = builder
                     .comment("Controls the Sprint Stamina cost [Default: 0.06]")
@@ -137,8 +134,7 @@ public class ChocoConfig {
                     .defineInRange("staminaRegenRate", 0.025, 0, 1);
 
             builder.pop();
-            builder.comment("Defaults")
-                    .push("defaults");
+            builder.comment("Chocobo Defaults").push("defaults");
 
             defaultHealAmount = builder
                     .comment("Amount of HP Restored per Green { 1HP = 1/2 Heart } [Default: 5]")
@@ -146,19 +142,18 @@ public class ChocoConfig {
 
             defaultStamina = builder
                     .comment("Controls the default Stamina [Default: 10]")
-                    .defineInRange("defaultStamina", 10, 0, Integer.MAX_VALUE);
+                    .defineInRange("defaultStamina", 10, 0, 60);
 
             defaultSpeed = builder
                     .comment("Controls the default Speed [Default: 20]")
-                    .defineInRange("defaultSpeed", 20, 0, Integer.MAX_VALUE);
+                    .defineInRange("defaultSpeed", 20, 0, 80);
 
             defaultHealth = builder
                     .comment("Controls the default Health [Default: 20]")
-                    .defineInRange("defaultHealth", 20, 0, Integer.MAX_VALUE);
+                    .defineInRange("defaultHealth", 20, 0, 1000);
 
             builder.pop();
-            builder.comment("Chocobo Transparencies - 0 is invisible\nControls how visible the Chocobo Part is when the Chocobo is invisible")
-                    .push("visibility");
+            builder.comment("Chocobo Transparencies with 'invisibility' effect - (0 is invisible)").push("visibility");
 
             collarInvisibility = builder
                     .comment("Collar - Default [0.2]")
@@ -177,35 +172,15 @@ public class ChocoConfig {
                     .defineInRange("saddleInvisibility", 0.1, 0, saddleAlpha);
 
             builder.pop();
-            builder.comment("Combat Stats")
-                    .push("stats");
+            builder.comment("Breeding configuration").push("breeding");
+            builder.comment("Egg Configuration").push("egg");
 
-            modifier = builder
-                    .comment("Armor/Weapon Value Modifier {Weapons & Armor For Chocobo are More Effective} [Default:1]")
-                    .defineInRange("modifier", 1, 1, 3);
+            eggHatchTimeTicks = builder
+                    .comment("Controls the amount of ticks / time till an egg hatches. This value isn't super accurate [Default: 500]")
+                    .defineInRange("eggHatchTimeTicks", 500, 0, 2000);
 
-            defaultArmor = builder
-                    .comment("Default Amount of 'Armor' Points [Default:4]")
-                    .defineInRange("defaultArmor", 4, 0, 20);
-
-            defaultArmorToughness = builder
-                    .comment("Default Amount of 'Armor Toughness' Value [Default:1]")
-                    .defineInRange("defaultArmorToughness", 1,0, 10);
-
-            defaultAttackStrength = builder
-                    .comment("Default Attack Value [Default: 2]")
-                    .defineInRange("defaultAttackStrength", 2, 1, 10);
-
-            tameChance = builder
-                    .comment("This multiplier controls the tame chance per gysahl used, so .15 results in 15% chance to tame [Default: 0.15]")
-                    .defineInRange("tameChance", 0.15, 0, 1);
-
-            builder.pop(2);
-            builder.comment("Breeding configuration")
-                    .push("breeding");
-
-            builder.comment("Max Stats")
-                    .push("max");
+            builder.pop();
+            builder.comment("Max Stats").push("max");
 
             maxHealth = builder
                     .comment("Controls the Max Health a Chocobo can have [Default: 60]")
@@ -216,60 +191,53 @@ public class ChocoConfig {
                     .defineInRange("maxSpeed", 40, 30, 160);
 
             maxStamina = builder
-                    .comment("Controls the Max Stamina a Chocobo can have [Default: 25]")
-                    .defineInRange("maxStamina", 25D, 20D, 80D);
+                    .comment("Controls the Max Stamina a Chocobo can have [Default: 35]")
+                    .defineInRange("maxStamina", 35, 20D, 80D);
 
             maxArmor = builder
                     .comment("Controls the max Natural Armor of a Chocobo")
-                    .defineInRange("maxArmor", 20D, 10D, 30D);
+                    .defineInRange("maxArmor", 200, 20D, 300D);
 
             maxStrength = builder
                     .comment("Controls the Max amount of damage a Chocobo can do without weapons")
-                    .defineInRange("maxStrength", 10D, 8D, 30D);
+                    .defineInRange("maxStrength", 60, 8D, 100D);
 
             maxToughness = builder
                     .comment("Controls The Max amount 'Armor Toughness' a Chocobo can have naturally")
-                    .defineInRange("maxToughness", 10D, 8D, 30D);
+                    .defineInRange("maxToughness", 20, 8D, 60D);
 
             builder.pop();
-            builder.comment("Gain Stats")
-                    .push("gain_stats");
+            builder.comment("Gain Stats").push("gain_stats");
 
             posgainHealth = builder
                     .comment("Controls the multiplier the Health stat gains (for example 0.05 would result in a max gain of 5% so 20 to 21) [Default: .1]")
-                    .defineInRange("posgainHealth", .1D, 0, Integer.MAX_VALUE);
+                    .defineInRange("posgainHealth", .1D, 0, 1);
 
             posgainSpeed = builder
                     .comment("Controls the multiplier the Speed stat gains (for example 0.05 would result in a max gain of 5% so 20 to 21) [Default: .1]")
-                    .defineInRange("posgainSpeed", .1D, 0, Integer.MAX_VALUE);
+                    .defineInRange("posgainSpeed", .1D, 0, 1);
 
             posgainStamina = builder
                     .comment("Controls the multiplier the Stamina stat gains (for example 0.05 would result in a max gain of 5% so 20 to 21) [Default: .1]")
-                    .defineInRange("posgainStamina", .1D, 0, Integer.MAX_VALUE);
+                    .defineInRange("posgainStamina", .1D, 0, 1);
 
             builder.pop();
-            builder.comment("Loss Stats")
-                    .push("loss_stats");
+            builder.comment("Loss Stats").push("loss_stats");
 
             poslossHealth = builder
                     .comment("Controls the multiplier the Health stat loss (for example 0.95 would result in a max loss of 5% so 20 to 19) [Default: 1]")
-                    .defineInRange("poslossHealth", 1D, 0, Integer.MAX_VALUE);
+                    .defineInRange("poslossHealth", 1D, 0, 1);
 
             poslossSpeed = builder
                     .comment("Controls the multiplier the Speed stat gains (for example 0.95 would result in a max loss of 5% so 20 to 19) [Default: 1]")
-                    .defineInRange("poslossSpeed", 1D, 0, Integer.MAX_VALUE);
+                    .defineInRange("poslossSpeed", 1D, 0, 1);
 
             poslossStamina = builder
                     .comment("Controls the multiplier the Stamina stat gains (for example 0.95 would result in a max loss of 5% so 20 to 19) [Default: 1]")
-                    .defineInRange("poslossStamina", 1D, 0, Integer.MAX_VALUE);
+                    .defineInRange("poslossStamina", 1D, 0, 1);
 
-            builder.pop();
+            builder.pop(3);
 
-            eggHatchTimeTicks = builder
-                    .comment("Controls the amount of ticks / time till an egg hatches. This value isn't super accurate [Default: 500-1000]")
-                    .defineInRange("eggHatchTimeTicks", 500, 0, Integer.MAX_VALUE);
-
-            builder.pop();
         }
     }
     public static final ForgeConfigSpec commonSpec;
@@ -279,14 +247,5 @@ public class ChocoConfig {
         final Pair<Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Common::new);
         commonSpec = specPair.getRight();
         COMMON = specPair.getLeft();
-    }
-    @SubscribeEvent
-    public static void onLoad(final ModConfigEvent.@NotNull Loading configEvent) { DelChoco.log.debug("Loaded delchoco' config file {}", configEvent.getConfig().getFileName()); }
-    @SubscribeEvent
-    public static void onFileChange(final ModConfigEvent.@NotNull Reloading configEvent) {
-        DelChoco.log.debug("delchoco' config just got changed on the file system!");
-        if(configEvent.getConfig().getModId().equals(DelChoco.DELCHOCO_ID)) {
-            configEvent.getConfig().save();
-        }
     }
 }
