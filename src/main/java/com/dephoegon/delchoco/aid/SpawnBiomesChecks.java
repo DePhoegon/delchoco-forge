@@ -6,7 +6,8 @@ import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.ArrayList;
 
-import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
+import static com.dephoegon.delchoco.aid.fallbackValues.*;
+import static com.dephoegon.delchoco.common.configs.WorldConfig.COMMON;
 import static net.minecraft.world.level.biome.Biomes.*;
 import static net.minecraftforge.common.BiomeDictionary.hasType;
 
@@ -28,7 +29,7 @@ public class SpawnBiomesChecks {
     public static boolean netherCheck(ResourceKey<Biome> biomesKey, boolean includeBiomesCheck) {
         boolean nether = hasType(biomesKey, BiomeDictionary.Type.NETHER);
         boolean biomesCheck = !includeBiomesCheck || netherBiomes(biomesKey);
-        return (biomesCheck || nether) && COMMON.netherSpawns.get();
+        return (biomesCheck || nether) && ChocoConfigGet(COMMON.netherSpawns.get(), dNetherSpawn);
     }
     private static boolean netherBiomes(ResourceKey<Biome> Key) {
         ArrayList<ResourceKey<Biome>> netherList = new ArrayList<>();
@@ -42,7 +43,7 @@ public class SpawnBiomesChecks {
         boolean oceans = typeCheck(biomesKey, BiomeDictionary.Type.OCEAN, null);
         boolean overWorld = hasType(biomesKey, BiomeDictionary.Type.OVERWORLD) && !oceans;
         boolean biomesCheck = !includeBiomesCheck || overWorldBiomes(biomesKey);
-        return (biomesCheck || overWorld) && COMMON.overworldSpawns.get();
+        return (biomesCheck || overWorld) && ChocoConfigGet(COMMON.overworldSpawns.get(), dOverworldSpawn);
     }
     private static boolean overWorldBiomes(ResourceKey<Biome> Key) {
         ArrayList<ResourceKey<Biome>> overWorldList = new ArrayList<>();
@@ -91,7 +92,7 @@ public class SpawnBiomesChecks {
     public static boolean theEndCheck(ResourceKey<Biome> biomesKey, boolean includeBiomesCheck) {
         boolean theEnd = hasType(biomesKey, BiomeDictionary.Type.END);
         boolean biomesCheck = !includeBiomesCheck || endBiomes(biomesKey);
-        return (biomesCheck || theEnd) && COMMON.endSpawns.get();
+        return (biomesCheck || theEnd) && ChocoConfigGet(COMMON.endSpawns.get(), dEndSpawn);
     }
     private static boolean endBiomes(ResourceKey<Biome> Key) {
         ArrayList<ResourceKey<Biome>> endList = new ArrayList<>();
@@ -102,5 +103,4 @@ public class SpawnBiomesChecks {
         endList.add(END_BARRENS);
         return  endList.contains(Key);
     }
-    public static boolean biomesCheck(ResourceKey<Biome> biomesKey, ResourceKey<Biome> biomes) { return biomesKey == biomes; }
 }

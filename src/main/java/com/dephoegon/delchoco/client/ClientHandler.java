@@ -2,6 +2,7 @@ package com.dephoegon.delchoco.client;
 
 import com.dephoegon.delchoco.DelChoco;
 import com.dephoegon.delchoco.client.gui.NestScreen;
+import com.dephoegon.delchoco.client.keybind.KeyBindManager;
 import com.dephoegon.delchoco.client.models.armor.ChocoDisguiseModel;
 import com.dephoegon.delchoco.client.models.entities.AdultChocoboModel;
 import com.dephoegon.delchoco.client.models.entities.ChicoboModel;
@@ -23,9 +24,10 @@ public class ClientHandler {
     public static final ModelLayerLocation CHICOBO = new ModelLayerLocation(new ResourceLocation(DelChoco.DELCHOCO_ID, "main"), "chicobo");
     public static final ModelLayerLocation CHOCO_DISGUISE = new ModelLayerLocation(new ResourceLocation(DelChoco.DELCHOCO_ID, "main"), "choco_disguise");
 
-    public static void onClientSetup(final FMLClientSetupEvent event) {
+    public static void onClientSetup(final FMLClientSetupEvent ignoredEvent) {
         ItemBlockRenderTypes.setRenderLayer(ModRegistry.GYSAHL_GREEN.get(), RenderType.cutout());
         MenuScreens.register(ModContainers.NEST.get(), NestScreen::new);
+        KeyBindManager.mapKeys();
     }
     public static void registerEntityRenders(EntityRenderersEvent.@NotNull RegisterRenderers event) { event.registerEntityRenderer(ModEntities.CHOCOBO.get(), ChocoboRenderer::new); }
     public static void registerLayerDefinitions(EntityRenderersEvent.@NotNull RegisterLayerDefinitions event) {

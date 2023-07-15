@@ -1,11 +1,12 @@
 {
-    "itemGroup.delchoco": "DePhoegons' Chocobos",
+    "itemGroup.dephoegon_chocobos": "DePhoegons' Chocobos",
 
     "block.delchoco.gysahl_green": "Gysahl Green",
     "block.delchoco.chocobo_egg": "Chocobo Egg",
     "block.delchoco.straw_nest": "Chocobo Nest",
 
     "entity.delchoco.chocobo": "Chocobo",
+    "tooltip.delchoco.info.spawn_egg": "Not Compatible with Spawners",
 
     "item.delchoco.gysahl_green": "Gysahl Green",
     "item.delchoco.gysahl_green_seeds": "Gysahl Green Seeds",
@@ -119,5 +120,9 @@
     "delchoco.leash.dist": "Leash Range Point Set",
     "delchoco.leash.center": "Leash Center Point Set",
     "delchoco.leash.none": "No Leash Points Set",
-    "delchoco.leash.invalid": "Leash Distance Invalid"
+    "delchoco.leash.invalid": "Leash Distance Invalid",
+
+	"delchoco.key.category": "Chocobo Movement (Supports KeyBoard Keys Only)",
+	"delchoco.key.in_water_glide": "Water Breather - Glide in Water",
+	"delchoco.key.stop_in_air_glide": "In Air - Fall Faster"
 }

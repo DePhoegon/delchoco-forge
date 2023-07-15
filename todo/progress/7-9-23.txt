@@ -1,0 +1,19 @@
+Added
+- Keybindings
+- RegList (Mod Event Bus)
+- RegList (Forge Event Bus)
+
+Fixed
+- Config File thrashing
+
+Under The Hood Stuff
+- Organized Config file
+- Capped Config Numbers
+- Changed shift & alt held down checks to keybindings
+- Cleaned up Main File
+
+Upload to Curseforge
+- After checking functionality
+- After ensuring matching functionality across all versions
+
+Update other Versions.

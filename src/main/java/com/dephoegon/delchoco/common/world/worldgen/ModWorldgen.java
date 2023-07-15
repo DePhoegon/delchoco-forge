@@ -1,6 +1,5 @@
 package com.dephoegon.delchoco.common.world.worldgen;
 
-import com.dephoegon.delchoco.common.ChocoConfig;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;

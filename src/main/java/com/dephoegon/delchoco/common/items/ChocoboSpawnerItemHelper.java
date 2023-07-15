@@ -19,7 +19,7 @@ import java.util.Map;
 
 import static com.dephoegon.delchoco.aid.fallbackValues.ChocoConfigGet;
 import static com.dephoegon.delchoco.aid.fallbackValues.dCanSpawn;
-import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
+import static com.dephoegon.delchoco.common.configs.WorldConfig.COMMON;
 import static net.minecraft.world.level.block.Blocks.*;
 
 public class ChocoboSpawnerItemHelper extends Item {

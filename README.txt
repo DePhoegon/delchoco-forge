@@ -26,5 +26,8 @@ I can produce a depenancy free version (from my mod), but it will still require
 Better ToDo & Done Checklists
 
 Current Version
-1.19.3 - 3.2.7
-1.18.2 - 3.2.7
+1.20 / 1.20.1 - 3.3.4
+1.19.3 - 3.3.4
+1.19.2 - 3.3.4
+1.18.2 - 3.3.4
+

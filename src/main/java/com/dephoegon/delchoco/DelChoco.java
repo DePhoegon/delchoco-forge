@@ -1,13 +1,10 @@
 package com.dephoegon.delchoco;
 
-import com.dephoegon.delchoco.client.ClientHandler;
-import com.dephoegon.delchoco.common.ChocoConfig;
-import com.dephoegon.delchoco.common.effects.ChocoboCombatEffects;
-import com.dephoegon.delchoco.common.effects.ModCommonEvents;
+import com.dephoegon.delchoco.common.configs.ChocoConfig;
+import com.dephoegon.delchoco.common.configs.WorldConfig;
 import com.dephoegon.delchoco.common.entities.properties.ModDataSerializers;
-import com.dephoegon.delchoco.common.init.*;
+import com.dephoegon.delchoco.common.init.ModRegistry;
 import com.dephoegon.delchoco.common.network.PacketManager;
-import com.dephoegon.delchoco.common.world.worldgen.ModWorldgen;
 import com.dephoegon.delchoco.utils.Log4jFilter;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -24,6 +21,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
+import static com.dephoegon.delchoco.aid.chocoList.*;
+
 @Mod(DelChoco.DELCHOCO_ID)
 public class DelChoco {
     public static final String DELCHOCO_ID = "delchoco";
@@ -32,32 +31,12 @@ public class DelChoco {
 
     public DelChoco() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ChocoConfig.commonSpec);
-        eventBus.register(ChocoConfig.class);
-
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ChocoConfig.commonSpec, "delchoco-chocobo_settings-common.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, WorldConfig.commonSpec, "delchoco-world_config-common.toml");
         eventBus.addListener(this::setup);
-
-        ModRegistry.BLOCKS.register(eventBus);
-        ModRegistry.ITEMS.register(eventBus);
-        ModRegistry.BLOCK_ENTITIES.register(eventBus);
-        ModEntities.ENTITIES.register(eventBus);
-        ModSounds.SOUND_EVENTS.register(eventBus);
-        ModContainers.CONTAINERS.register(eventBus);
-        ModAttributes.ATTRIBUTES.register(eventBus);
-
-        MinecraftForge.EVENT_BUS.register(new ModWorldgen());
-        MinecraftForge.EVENT_BUS.register(new ChocoboCombatEffects());
-        MinecraftForge.EVENT_BUS.addListener(ModCommonEvents::onRegisterCommandsEvent);
-        MinecraftForge.EVENT_BUS.addListener(ModEntities::addSpawns);
-        MinecraftForge.EVENT_BUS.addListener(ModCommonEvents::onWorldLoad);
-        eventBus.addListener(ModEntities::registerEntityAttributes);
-        MinecraftForge.EVENT_BUS.addListener(ModCommonEvents::addCustomTrades);
-
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-            eventBus.addListener(ClientHandler::onClientSetup);
-            eventBus.addListener(ClientHandler::registerEntityRenders);
-            eventBus.addListener(ClientHandler::registerLayerDefinitions);
-        });
+        chocoOrder(eventBus);
+        forgeEventBus(MinecraftForge.EVENT_BUS);
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> clientOnly(eventBus));
     }
     private void setup(final FMLCommonSetupEvent event) {
         ModDataSerializers.init();

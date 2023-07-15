@@ -18,7 +18,8 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
 import static com.dephoegon.delchoco.aid.SpawnBiomesChecks.*;
-import static com.dephoegon.delchoco.common.ChocoConfig.COMMON;
+import static com.dephoegon.delchoco.aid.fallbackValues.*;
+import static com.dephoegon.delchoco.common.configs.WorldConfig.COMMON;
 import static com.dephoegon.delchoco.common.entities.Chocobo.createAttributes;
 
 public class ModEntities {
@@ -30,12 +31,16 @@ public class ModEntities {
         if (event.getName() == null) { return; }
         ResourceKey<Biome> biomesKey = ResourceKey.create(Registry.BIOME_REGISTRY, event.getName());
 
-         if (COMMON.chocoboSpawnEnabler.get()) {
-            if (netherCheck(biomesKey, true)) { event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(), COMMON.chocoboSpawnWeightNether.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get())); }
-            if (theEndCheck(biomesKey, true)) { event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(), COMMON.chocoboSpawnWeightEnd.get(), COMMON.chocoboPackSizeMin.get() + 1, COMMON.chocoboPackSizeMax.get() + 2)); }
-            if (typeCheck(biomesKey, Type.MUSHROOM, overWorld)) { event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(), COMMON.chocoboSpawnWeightMushroom.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get())); }
-            else if (overWorldCheck(biomesKey, true)) { event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(), COMMON.chocoboSpawnWeight.get(), COMMON.chocoboPackSizeMin.get(), COMMON.chocoboPackSizeMax.get())); }
+         if (ChocoConfigGet(COMMON.chocoboSpawnEnabler.get(), dCanSpawn)) {
+            if (netherCheck(biomesKey, true)) { event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(), ChocoConfigGet(COMMON.chocoboSpawnWeightNether.get(), dNetherSpawnWeight), getEffectiveMinPack(), getEffectiveMaxPack())); }
+            if (theEndCheck(biomesKey, true)) { event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(), ChocoConfigGet(COMMON.chocoboSpawnWeightEnd.get(), dEndSpawnWeight), getEffectiveMinPack() + 1, getEffectiveMaxPack() + 2)); }
+            if (typeCheck(biomesKey, Type.MUSHROOM, overWorld)) { event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(), ChocoConfigGet(COMMON.chocoboSpawnWeightMushroom.get(), dMushroomSpawnWeight), getEffectiveMinPack(), getEffectiveMaxPack())); }
+            else if (overWorldCheck(biomesKey, true)) { event.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData(CHOCOBO.get(), ChocoConfigGet(COMMON.chocoboSpawnWeight.get(), dOverWorldSpawnWeight), getEffectiveMinPack(), getEffectiveMaxPack())); }
         }
     }
+    private static int getMaxPack() { return ChocoConfigGet(COMMON.chocoboPackSizeMax.get(), dChocoboMaxPack); }
+    private static int getMinPack() { return ChocoConfigGet(COMMON.chocoboPackSizeMin.get(), dChocoboMinPack); }
+    private static int getEffectiveMinPack() { return Math.min(getMinPack(), getMaxPack()); }
+    private static int getEffectiveMaxPack() { return Math.max(getMaxPack(), getMinPack()); }
     public static void registerEntityAttributes(@NotNull EntityAttributeCreationEvent event) { event.put(CHOCOBO.get(), createAttributes().build()); }
 }
