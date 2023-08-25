@@ -15,7 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import org.jetbrains.annotations.NotNull;
 
-public class 	ChocoDisguiseModel extends HumanoidModel<LivingEntity> {
+public class ChocoDisguiseModel extends HumanoidModel<LivingEntity> {
 	private final EquipmentSlot slot;
 	private final ModelPart chocobo_head;
 	private final ModelPart chocobo_body;

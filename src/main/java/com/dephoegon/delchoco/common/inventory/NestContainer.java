@@ -18,6 +18,13 @@ public class NestContainer extends AbstractContainerMenu {
     private final ChocoboNestBlockEntity tile;
 
     public NestContainer(final int windowId, final Inventory playerInventory, final FriendlyByteBuf data) { this(windowId, playerInventory, getTileEntity(playerInventory, data)); }
+
+    public NestContainer(int id, Inventory playerInventoryIn, ChocoboNestBlockEntity chocoboNest) {
+        super(ModContainers.NEST.get(), id);
+        this.tile = chocoboNest;
+        this.addSlot(new SlotItemHandler(tile.getInventory(), 0, 80, 35));
+        this.bindPlayerInventory(playerInventoryIn);
+    }
     private static @NotNull ChocoboNestBlockEntity getTileEntity(final Inventory playerInventory, final FriendlyByteBuf data) {
         Objects.requireNonNull(playerInventory, "playerInventory cannot be null!");
         Objects.requireNonNull(data, "data cannot be null!");
@@ -25,12 +32,6 @@ public class NestContainer extends AbstractContainerMenu {
 
         if (tileAtPos instanceof ChocoboNestBlockEntity) {return (ChocoboNestBlockEntity) tileAtPos; }
         throw new IllegalStateException("Tile entity is not correct! " + tileAtPos);
-    }
-    public NestContainer(int id, Inventory playerInventoryIn, ChocoboNestBlockEntity chocoboNest) {
-        super(ModContainers.NEST.get(), id);
-        this.tile = chocoboNest;
-        this.addSlot(new SlotItemHandler(tile.getInventory(), 0, 80, 35));
-        this.bindPlayerInventory(playerInventoryIn);
     }
     private void bindPlayerInventory(Inventory inventory) {
         for (int row = 0; row < 3; ++row) { for (int col = 0; col < 9; ++col) {
