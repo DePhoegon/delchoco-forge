@@ -1,0 +1,12 @@
+{
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/jungle_temple"
+    }
+  ],
+  "addition": "delchoco:pink_gysahl_green",
+  "chance": 0.50,
+  "number": 1,
+  "type": "delchoco:jungle_temple_chest_addition"
+}

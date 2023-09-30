@@ -24,7 +24,7 @@ import static com.dephoegon.delchoco.common.entities.Chocobo.createAttributes;
 
 public class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, DelChoco.DELCHOCO_ID);
-    public static final RegistryObject<EntityType<Chocobo>> CHOCOBO = ENTITIES.register("chocobo", () -> register("chocobo", EntityType.Builder.of(Chocobo::new, MobCategory.CREATURE).sized(1.2f, 2.8f).clientTrackingRange(64)));
+    public static final RegistryObject<EntityType<Chocobo>> CHOCOBO = ENTITIES.register("chocobo", () -> register("chocobo", EntityType.Builder.of(Chocobo::new, MobCategory.CREATURE).canSpawnFarFromPlayer().sized(1.2f, 2.8f).clientTrackingRange(64)));
 
     public static <T extends Entity> @NotNull EntityType<T> register(String id, EntityType.@NotNull Builder<T> builder) { return builder.build(id); }
     public static void addSpawns(@NotNull BiomeLoadingEvent event) {

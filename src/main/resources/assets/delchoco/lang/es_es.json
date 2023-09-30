@@ -1,9 +1,7 @@
 {
-  "itemGroup.dephoegon_chocobos": "Chocobos de DePhoegons",
+  "itemGroup.delchoco": "Chocobos de DePhoegons",
 
   "block.delchoco.gysahl_green": "Gysahl Verde",
-  "block.delchoco.chocobo_egg": "Huevo Chocobo",
-  "block.delchoco.straw_nest": "Nido de Chocobo",
 
   "entity.delchoco.chocobo": "Chocobo",
   "tooltip.delchoco.info.spawn_egg": "No compatible con los reproductores",
@@ -11,6 +9,10 @@
   "item.delchoco.gysahl_green": "Gysahl Verde",
   "item.delchoco.gysahl_green_seeds": "Gysahl Semillas Verdes",
   "item.delchoco.lovely_gysahl_green": "Precioso verde Gysahl",
+  "item.delchoco.golden_gysahl_green": "Golden Gysahl Green",
+  "item.delchoco.pink_gysahl_green": "Pink Gysahl Green",
+  "item.delchoco.dead_pepper": "Dead Pepper",
+  "item.delchoco.spike_fruit": "Spike Fruit",
   "item.delchoco.pickled_gysahl_raw": "Gysahl en escabeche crudo",
   "item.delchoco.pickled_gysahl_cooked": "Gysahl en escabeche al horno",
 
@@ -74,9 +76,6 @@
   "item.delchoco.purple_chocobo_spawn_egg": "Huevo de Prole de Chocobo Púrpura",
   "item.delchoco.flame_chocobo_spawn_egg": "Huevo de Flame Chocobo",
 
-  "item.delchoco.chocobo_egg.tooltip.invalid_egg": "§cHuevo inestable. Puesto en el suelo para estabilizar",
-  "item.delchoco.chocobo_egg.tooltip.mother_info": "Madre: %s / %s / %s / %s",
-  "item.delchoco.chocobo_egg.tooltip.father_info": "Padre: %s / %s / %s / %s",
   "item.delchoco.chocobo_egg.tooltip.yellow": "Amarillo",
   "item.delchoco.chocobo_egg.tooltip.green": "Verde",
   "item.delchoco.chocobo_egg.tooltip.blue": "Azul",
@@ -95,6 +94,16 @@
   "delchoco.entity_chocobo.chocobo_wander_cmd": "Vagar",
   "delchoco.entity_chocobo.chocobo_stay_cmd": "Quédate cerca",
   "delchoco.entity_chocobo.not_owner": "§c¡Usted no es el dueño de este Chocobo!",
+  "delchoco.entity_chocobo.str.room" : "%s looks stronger",
+  "delchoco.entity_chocobo.str.full" : "%s looks as strong as can be",
+  "delchoco.entity_chocobo.arm.room" : "%s feathers look denser",
+  "delchoco.entity_chocobo.arm.full" : "%s feathers are as dense as can be",
+  "delchoco.entity_chocobo.arm_tough.room" : "%s looks tougher",
+  "delchoco.entity_chocobo.arm_tough.full" : "%s looks as tough as can be",
+  "delchoco.entity_chocobo.hp.room" : "%s looks healthier",
+  "delchoco.entity_chocobo.hp.full" : "%s looks as healthy as can be",
+  "delchoco.entity_chocobo.sta.room" : "%s looks like it can last longer",
+  "delchoco.entity_chocobo.sta.full" : "%s looks like it can last as long as it could last",
 
   "delchoco.general.world": "Mundo",
   "delchoco.general.world.gysahlgreenspawnweight": "Gysahl Green Spawn Peso",

@@ -4,18 +4,18 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
 public enum ModArmorMaterial implements ArmorMaterial {
-	LEATHER_CHOCO_DISGUISE("delchoco:leather_choco_disguise", 10, new int[] { 3, 4, 5, 3 }, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F, 0.0F, () -> { return Ingredient.of(ModRegistry.CHOCOBO_FEATHER.get()); }),
-	IRON_CHOCO_DISGUISE("delchoco:iron_choco_disguise", 30, new int[] { 4, 7, 8, 4 }, 15, SoundEvents.ARMOR_EQUIP_IRON, 0.5F, 0.0F, () -> { return Ingredient.of(ModRegistry.CHOCOBO_FEATHER.get()); }),
-	DIAMOND_CHOCO_DISGUISE("delchoco:diamond_choco_disguise", 66, new int[] { 5, 8, 10, 5 }, 15, SoundEvents.ARMOR_EQUIP_DIAMOND, 2.5F, 0.0F, () -> { return Ingredient.of(ModRegistry.CHOCOBO_FEATHER.get()); }),
-	NETHERITE_CHOCO_DISGUISE("delchoco:netherite_choco_disguise", 68, new int[] { 5, 8, 10, 5 }, 15, SoundEvents.ARMOR_EQUIP_NETHERITE, 3.5F, 0.1F, () -> { return Ingredient.of(ModRegistry.CHOCOBO_FEATHER.get()); });
+	LEATHER_CHOCO_DISGUISE("delchoco:leather_choco_disguise", 10, new int[] { 3, 4, 5, 3 }, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F, 0.0F, () -> Ingredient.of(ModRegistry.CHOCOBO_FEATHER.get(), Items.LEATHER)),
+	IRON_CHOCO_DISGUISE("delchoco:iron_choco_disguise", 30, new int[] { 4, 7, 8, 4 }, 15, SoundEvents.ARMOR_EQUIP_IRON, 0.5F, 0.0F, () -> Ingredient.of(ModRegistry.CHOCOBO_FEATHER.get(), Items.IRON_INGOT)),
+	DIAMOND_CHOCO_DISGUISE("delchoco:diamond_choco_disguise", 66, new int[] { 5, 8, 10, 5 }, 15, SoundEvents.ARMOR_EQUIP_DIAMOND, 2.5F, 0.0F, () -> Ingredient.of(ModRegistry.CHOCOBO_FEATHER.get(), Items.DIAMOND)),
+	NETHERITE_CHOCO_DISGUISE("delchoco:netherite_choco_disguise", 68, new int[] { 5, 8, 10, 5 }, 15, SoundEvents.ARMOR_EQUIP_NETHERITE, 3.5F, 0.1F, () -> Ingredient.of(ModRegistry.CHOCOBO_FEATHER.get(), Items.NETHERITE_INGOT));
 
 	private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
 	private final String name;

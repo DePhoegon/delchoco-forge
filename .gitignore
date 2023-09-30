@@ -36,3 +36,4 @@ run/servers.*
 
 # Files from Forge MDK
 forge*changelog.txt
+/run/saves-birjed/

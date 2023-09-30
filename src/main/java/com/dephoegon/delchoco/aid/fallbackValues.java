@@ -42,6 +42,7 @@ public class fallbackValues {
     public static final Integer dEndSpawnWeight = 100;
     public static final Double dGysahlGreenSpawnChance = 0.1;
     public static final Integer dGysahlGreenPatchSize = 64;
+    public static final Integer dFruitEatTimer = 60;
     public static final boolean dOverworldSpawn = true;
     public static final boolean dNetherSpawn = true;
     public static final boolean dEndSpawn = true;

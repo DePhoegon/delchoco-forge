@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "entries": [
+    "delchoco:desert_chest_addition",
+    "delchoco:end_city_chest_addition",
+    "delchoco:jungle_temple_chest_addition",
+    "delchoco:woodland_mansion_chest_addition",
+    "delchoco:grass_block_addition"
+  ]
+}

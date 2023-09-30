@@ -16,10 +16,8 @@ public class chocoList {
         eventBus.register(ChocoConfig.class);
         ModRegistry.BLOCKS.register(eventBus);
         ModRegistry.ITEMS.register(eventBus);
-        ModRegistry.BLOCK_ENTITIES.register(eventBus);
         ModEntities.ENTITIES.register(eventBus);
         ModSounds.SOUND_EVENTS.register(eventBus);
-        ModContainers.CONTAINERS.register(eventBus);
         ModAttributes.ATTRIBUTES.register(eventBus);
         eventBus.addListener(ModEntities::registerEntityAttributes);
     }
@@ -30,6 +28,7 @@ public class chocoList {
         eventBus.addListener(ModEntities::addSpawns);
         eventBus.addListener(ModCommonEvents::onWorldLoad);
         eventBus.addListener(ModCommonEvents::addCustomTrades);
+        eventBus.addListener(ModCommonEvents::onCheckSpawn);
     }
     @OnlyIn(Dist.CLIENT)
     public static void clientOnly(@NotNull IEventBus eventBus) {

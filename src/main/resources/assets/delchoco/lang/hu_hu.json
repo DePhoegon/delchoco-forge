@@ -1,9 +1,7 @@
 {
-  "itemGroup.dephoegon_chocobos": "DePhoegons csokoládéja",
+  "itemGroup.delchoco": "DePhoegons csokoládéja",
 
   "block.delchoco.gysahl_green": "Gysahl zöld",
-  "block.delchoco.chocobo_egg": "Chocobo tojás",
-  "block.delchoco.straw_nest": "Chocobo fészek",
 
   "entity.delchoco.chocobo": "Csokoládé",
   "tooltip.delchoco.info.spawn_egg": "Nem kompatibilis az ívókkal",
@@ -11,6 +9,10 @@
   "item.delchoco.gysahl_green": "Gysahl zöld",
   "item.delchoco.gysahl_green_seeds": "Gysahl zöld magok",
   "item.delchoco.lovely_gysahl_green": "Szép Gysahl zöld",
+  "item.delchoco.golden_gysahl_green": "Golden Gysahl Green",
+  "item.delchoco.pink_gysahl_green": "Pink Gysahl Green",
+  "item.delchoco.dead_pepper": "Dead Pepper",
+  "item.delchoco.spike_fruit": "Spike Fruit",
   "item.delchoco.pickled_gysahl_raw": "Nyers pácolt Gysahl",
   "item.delchoco.pickled_gysahl_cooked": "Sült pácolt gysahl",
 
@@ -74,9 +76,6 @@
   "item.delchoco.purple_chocobo_spawn_egg": "Lila Chocobo ívási tojás",
   "item.delchoco.flame_chocobo_spawn_egg": "Láng Chocobo ívási tojás",
 
-  "item.delchoco.chocobo_egg.tooltip.invalid_egg": "§Instabil tojás. Állítsa a földre a stabilizáláshoz",
-  "item.delchoco.chocobo_egg.tooltip.mother_info": "Anya: %s / %s / %s / %s",
-  "item.delchoco.chocobo_egg.tooltip.father_info": "Atya: %s / %s / %s / %s",
   "item.delchoco.chocobo_egg.tooltip.yellow": "Sárga",
   "item.delchoco.chocobo_egg.tooltip.green": "Zöld",
   "item.delchoco.chocobo_egg.tooltip.blue": "Kék",
@@ -95,6 +94,16 @@
   "delchoco.entity_chocobo.chocobo_wander_cmd": "Vándorol",
   "delchoco.entity_chocobo.chocobo_stay_cmd": "Maradj a közelben",
   "delchoco.entity_chocobo.not_owner": "§cNem te vagy a Chocobo tulajdonosa!",
+  "delchoco.entity_chocobo.str.room" : "%s looks stronger",
+  "delchoco.entity_chocobo.str.full" : "%s looks as strong as can be",
+  "delchoco.entity_chocobo.arm.room" : "%s feathers look denser",
+  "delchoco.entity_chocobo.arm.full" : "%s feathers are as dense as can be",
+  "delchoco.entity_chocobo.arm_tough.room" : "%s looks tougher",
+  "delchoco.entity_chocobo.arm_tough.full" : "%s looks as tough as can be",
+  "delchoco.entity_chocobo.hp.room" : "%s looks healthier",
+  "delchoco.entity_chocobo.hp.full" : "%s looks as healthy as can be",
+  "delchoco.entity_chocobo.sta.room" : "%s looks like it can last longer",
+  "delchoco.entity_chocobo.sta.full" : "%s looks like it can last as long as it could last",
 
   "delchoco.general.world": "Világ",
   "delchoco.general.world.gysahlgreenspawnweight": "Gysahl zöld ívás súlya",

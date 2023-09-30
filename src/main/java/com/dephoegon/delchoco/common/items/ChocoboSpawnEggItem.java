@@ -2,24 +2,30 @@ package com.dephoegon.delchoco.common.items;
 
 import com.dephoegon.delchoco.common.entities.Chocobo;
 import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
-import com.dephoegon.delchoco.common.init.ModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.BaseSpawner;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import static com.dephoegon.delchoco.common.init.ModEntities.CHOCOBO;
 import static java.lang.Math.random;
 
 public class ChocoboSpawnEggItem extends Item {
@@ -34,24 +40,36 @@ public class ChocoboSpawnEggItem extends Item {
         Level worldIn = context.getLevel();
         if (worldIn.isClientSide) { return InteractionResult.SUCCESS; }
 
-        final Chocobo chocobo = ModEntities.CHOCOBO.get().create(worldIn);
+        final Chocobo chocobo = CHOCOBO.get().create(worldIn);
         if (chocobo != null) {
             final BlockPos pos = context.getClickedPos();
             final Player player = context.getPlayer();
-            if (player != null) { if (player.isCrouching()) { chocobo.setAge(-7500); } }
+            BlockState blockState = worldIn.getBlockState(pos);
 
-            chocobo.moveTo(pos.getX() + .5, pos.getY() + 1.5F, pos.getZ() + .5, Mth.wrapDegrees(worldIn.random.nextFloat() * 360.0F), 0.0F);
-            chocobo.yHeadRot = chocobo.getYRot();
-            chocobo.yBodyRot = chocobo.getYRot();
-            Component nameCheck = name(context.getItemInHand());
-            if (context.getItemInHand().hasCustomHoverName()) { chocobo.setCustomName(nameCheck); }
-            chocobo.setMale(.50f > (float) random());
-            chocobo.setChocobo(color);
-            chocobo.setFromEgg(true);
-            chocobo.setChocoboScale(chocobo.isMale(), 0, false);
-            chocobo.finalizeSpawn((ServerLevel)worldIn, worldIn.getCurrentDifficultyAt(chocobo.blockPosition()), MobSpawnType.SPAWN_EGG, (SpawnGroupData)null, (CompoundTag)null);
-            worldIn.addFreshEntity(chocobo);
-            chocobo.playAmbientSound();
+            if (blockState.is(Blocks.SPAWNER)) {
+                BlockEntity blockentity = worldIn.getBlockEntity(pos);
+                if (blockentity instanceof SpawnerBlockEntity) {
+                    BaseSpawner basespawner = ((SpawnerBlockEntity)blockentity).getSpawner();
+                    EntityType<?> entityType = chocobo.getType();
+                    basespawner.setEntityId(entityType);
+                    blockentity.setChanged();
+                    worldIn.sendBlockUpdated(pos, blockState, blockState, 3);
+                }
+            } else {
+                if (player != null) { if (player.isCrouching()) { chocobo.setAge(-7500); } }
+                chocobo.moveTo(pos.getX() + .5, pos.getY() + 1.5F, pos.getZ() + .5, Mth.wrapDegrees(worldIn.random.nextFloat() * 360.0F), 0.0F);
+                chocobo.yHeadRot = chocobo.getYRot();
+                chocobo.yBodyRot = chocobo.getYRot();
+                Component nameCheck = name(context.getItemInHand());
+                if (context.getItemInHand().hasCustomHoverName()) { chocobo.setCustomName(nameCheck); }
+                chocobo.setMale(.50f > (float) random());
+                chocobo.setChocobo(color);
+                chocobo.setFromEgg(true);
+                chocobo.setChocoboScale(chocobo.isMale(), 0, false);
+                chocobo.finalizeSpawn((ServerLevel) worldIn, worldIn.getCurrentDifficultyAt(chocobo.blockPosition()), MobSpawnType.SPAWN_EGG, (SpawnGroupData) null, (CompoundTag) null);
+                worldIn.addFreshEntity(chocobo);
+                chocobo.playAmbientSound();
+            }
             context.getItemInHand().shrink(1);
         }
         return InteractionResult.CONSUME;

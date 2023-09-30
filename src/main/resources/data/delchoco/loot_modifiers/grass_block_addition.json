@@ -1,0 +1,12 @@
+{
+  "conditions": [
+    {
+      "condition": "block_state_property",
+      "block": "minecraft:grass"
+    }
+  ],
+  "addition": "delchoco:gysahl_green_seeds",
+  "chance": 0.15,
+  "number": 1,
+  "type": "delchoco:grass_block_addition"
+}

@@ -1,16 +1,13 @@
 package com.dephoegon.delchoco.client;
 
 import com.dephoegon.delchoco.DelChoco;
-import com.dephoegon.delchoco.client.gui.NestScreen;
 import com.dephoegon.delchoco.client.keybind.KeyBindManager;
 import com.dephoegon.delchoco.client.models.armor.ChocoDisguiseModel;
 import com.dephoegon.delchoco.client.models.entities.AdultChocoboModel;
 import com.dephoegon.delchoco.client.models.entities.ChicoboModel;
 import com.dephoegon.delchoco.client.renderer.entities.ChocoboRenderer;
-import com.dephoegon.delchoco.common.init.ModContainers;
 import com.dephoegon.delchoco.common.init.ModEntities;
 import com.dephoegon.delchoco.common.init.ModRegistry;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -26,7 +23,6 @@ public class ClientHandler {
 
     public static void onClientSetup(final FMLClientSetupEvent ignoredEvent) {
         ItemBlockRenderTypes.setRenderLayer(ModRegistry.GYSAHL_GREEN.get(), RenderType.cutout());
-        MenuScreens.register(ModContainers.NEST.get(), NestScreen::new);
         KeyBindManager.mapKeys();
     }
     public static void registerEntityRenders(EntityRenderersEvent.@NotNull RegisterRenderers event) { event.registerEntityRenderer(ModEntities.CHOCOBO.get(), ChocoboRenderer::new); }

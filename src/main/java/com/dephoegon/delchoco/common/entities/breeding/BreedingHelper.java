@@ -5,10 +5,12 @@ import com.dephoegon.delchoco.common.entities.properties.ChocoboColor;
 import com.dephoegon.delchoco.common.init.ModAttributes;
 import com.dephoegon.delchoco.common.init.ModEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,7 +25,7 @@ import static java.lang.Math.*;
 public class BreedingHelper {
     private static double minCheck(double one, double two) { return round((one + two) / 2) < 11 ? round((one+two)/2+1) : round((one + two) / 2); }
 
-    public static @Nullable Chocobo createChild(ChocoboBreedInfo breedInfo, Level world, ItemStack egg) {
+    public static @Nullable Chocobo createChild(ChocoboBreedInfo breedInfo, Level world) {
         final Chocobo baby = ModEntities.CHOCOBO.get().create(world);
         if (baby == null) { return null; }
         final ChocoboStatSnapshot mother = breedInfo.getMother();
@@ -95,7 +97,7 @@ public class BreedingHelper {
         baby.setPoisonImmune(mother.poisonImmune || father.poisonImmune || piChocobos().contains(bColor));
         baby.setFlame(mother.flameBlood || father.flameBlood || bColor == flame);
         baby.setFromEgg(true);
-        if (egg.hasCustomHoverName()) { baby.setCustomName(egg.getHoverName()); }
+        baby.setCustomName(getChocoName());
         baby.setAge(-7500);
         return baby;
     }
@@ -105,4 +107,10 @@ public class BreedingHelper {
         else return .50f > Math.random() ? mother : father;
     }
     private static boolean alter(BlockState centerDefaultBlockstate, BlockState NEWS_blockstate, BlockPos centerPos, @NotNull Level world) { return world.getBlockState(centerPos).getBlock().defaultBlockState() == centerDefaultBlockstate && world.getBlockState(centerPos.north()).getBlock().defaultBlockState() == NEWS_blockstate && world.getBlockState(centerPos.south()).getBlock().defaultBlockState() == NEWS_blockstate && world.getBlockState(centerPos.east()).getBlock().defaultBlockState() == NEWS_blockstate && world.getBlockState(centerPos.west()).getBlock().defaultBlockState() == NEWS_blockstate; }
+    private static final String[] PREFIX = {"Swift", "Golden", "Silver", "Tiny", "Giant", "Happy", "Sad", "Angry", "Calm", "Brave", "Shiny", "Dashing", "Prancing", "Majestic", "Noble", "Gallant", "Fierce", "Graceful", "Mighty", "Daring", "Bold", "Fearless", "Loyal", "Reliable", "Steady", "Sturdy", "Robust", "Hardy", "Energetic", "Vigorous", "Vital", "Vibrant", "Vivacious", "Vigilant", "Voracious", "Vorpal", "Vicious", "Vexing", "Vexatious", "Volatile", "Vivifying", "Viv"};
+    private static final String[] SUFFIX = {"Feather", "Beak", "Wing", "Claw", "Eye", "Talon", "Plume", "Crest", "Squawk", "Caw", "Trotter", "Runner", "Racer", "Sprinter", "Flyer", "Pacer", "Strider", "Galloper", "Charger", "Dasher", "Leaper", "Bounder", "Jumper", "Hopper", "Skipper", "Bouncer", "Pouncer", "Soarer", "Glider", "Swooper", "Diver", "Plunger", "Ducker", "Diver", "Dropper", "Plummet", "Plunge", "Plumage", "Plummet", "Plummeting", "Plummeted"};
+    @Contract(" -> new")
+    public static @NotNull Component getChocoName() {
+        return new TextComponent(PREFIX[(int) (Math.random() * PREFIX.length)] + " " + SUFFIX[(int) (Math.random() * SUFFIX.length)]);
+    }
 }
