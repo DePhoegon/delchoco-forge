@@ -40,13 +40,13 @@ public class ModCommonEvents {
         // No SubscribeEvent - Controlled loading order because items.
         if (event.getType() == VillagerProfession.FARMER) {
             Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            MOD_FARMER_TRADES.forEach((give, get) -> trades.get((int)MOD_TRADE_LEVEL.get(give.getItem() == Items.EMERALD.asItem() ? get : give)).add((trader, rand) -> new MerchantOffer(give, get, 10, 8, 0.02F)));
+            MOD_FARMER_TRADES.forEach((give, get) -> trades.get((int)MOD_TRADE_LEVEL.get(give.getItem() == Items.EMERALD.asItem() ? get : give)).add((trader, rand) -> new MerchantOffer(give, get, 10, MOD_TRADE_LEVEL.get(give.getItem() == Items.EMERALD.asItem() ? get : give)*8, 0.02F)));
         }
     }
     // No SubscribeEvent - Controlled loading order because items.
     public static void onRegisterCommandsEvent(@NotNull RegisterCommandsEvent event) { chocoboTeams.commands(event.getDispatcher()); }
     // No SubscribeEvent - Controlled loading order because items.
-    public static void onWorldLoad(WorldEvent.Load event) { composable.addToList(); }
+    public static void onWorldLoad(WorldEvent.Load ignoredEvent) { composable.addToList(); }
     public static void onCheckSpawn(LivingSpawnEvent.@NotNull CheckSpawn event) {
         if (event.getEntity() instanceof Chocobo) {
             LevelAccessor level1 = event.getWorld();

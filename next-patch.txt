@@ -1,0 +1,4 @@
+Already done
+- Changed repair material for chocoguise gear (Iron) from Iron bars to Iron Ingots
+- Trimmed lang file entry some
+- Added Missing Trades
