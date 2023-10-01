@@ -22,7 +22,10 @@ public class composable {
         add(f3, CHOCOBO_DRUMSTICK_COOKED.get());
         add(f3, CHOCOBO_DRUMSTICK_RAW.get());
         add(f4, LOVELY_GYSAHL_GREEN.get());
-        add(f4, STRAW_NEST_ITEM.get());
+        add(f4, PINK_GYSAHL_GREEN.get());
+        add(f4, GOLDEN_GYSAHL_GREEN.get());
+        add(f4, SPIKE_FRUIT.get());
+        add(f4, DEAD_PEPPER.get());
         add(f4, GYSAHL_CAKE.get());
         add(f4, LEATHER_CHOCO_DISGUISE_LEGS.get());
         add(f4, LEATHER_CHOCO_DISGUISE_FEET.get());

@@ -9,23 +9,15 @@ import java.util.ArrayList;
 import static com.dephoegon.delchoco.common.init.ModRegistry.*;
 
 public class creativeTabArrayLists {
-    public static @NotNull ArrayList<RegistryObject<? extends ItemLike>> getChocoBlocks() {
-        ArrayList<RegistryObject<? extends ItemLike>> out = new ArrayList<>();
-        out.add(GYSAHL_GREEN);
-        out.add(STRAW_NEST);
-        out.add(CHOCOBO_EGG);
-        return out;
-    }
     public static @NotNull ArrayList<RegistryObject<? extends ItemLike>> getAllChocoboItems() {
         ArrayList<RegistryObject<? extends ItemLike>> out = new ArrayList<>();
+        out.addAll(getChocoboMiscItems());
         out.addAll(getChocoboFood());
         out.addAll(getChocoboWeapons());
         out.addAll(getChocoboArmors());
         out.addAll(getChocoboSaddles());
         out.addAll(getChocoboDisguiseItems());
-        out.addAll(getChocoboMiscItems());
         out.addAll(getChocoboSpawnEggs());
-
         return out;
     }
     public static @NotNull ArrayList<RegistryObject<? extends ItemLike>> getChocoboWeapons() {
@@ -69,7 +61,14 @@ public class creativeTabArrayLists {
         ArrayList<RegistryObject<? extends ItemLike>> out = new ArrayList<>();
         out.add(CHOCOBO_WHISTLE);
         out.add(CHOCOBO_FEATHER);
+        out.add(GYSAHL_GREEN);
+        out.add(GYSAHL_GREEN_ITEM);
+        // out.add(GYSAHL_GREEN_SEEDS);
         out.add(LOVELY_GYSAHL_GREEN);
+        out.add(GOLDEN_GYSAHL_GREEN);
+        out.add(PINK_GYSAHL_GREEN);
+        out.add(SPIKE_FRUIT);
+        out.add(DEAD_PEPPER);
         out.add(GYSAHL_CAKE);
         out.add(CHOCOBO_LEASH_STICK);
         return out;
@@ -100,8 +99,6 @@ public class creativeTabArrayLists {
         out.add(CHOCOBO_DRUMSTICK_COOKED);
         out.add(PICKLED_GYSAHL_RAW);
         out.add(PICKLED_GYSAHL_COOKED);
-        out.add(GYSAHL_GREEN_ITEM);
-        out.add(GYSAHL_GREEN_SEEDS);
         return out;
     }
 }

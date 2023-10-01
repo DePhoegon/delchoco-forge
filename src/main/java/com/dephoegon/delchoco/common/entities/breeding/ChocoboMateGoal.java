@@ -1,30 +1,17 @@
 package com.dephoegon.delchoco.common.entities.breeding;
 
-import com.dephoegon.delchoco.common.blockentities.ChocoboEggBlockEntity;
 import com.dephoegon.delchoco.common.entities.Chocobo;
-import com.dephoegon.delchoco.common.init.ModRegistry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Vec3i;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumSet;
 import java.util.List;
 
 public class ChocoboMateGoal extends Goal {
-    private final static Vec3i[] LAY_EGG_CHECK_OFFSETS = {
-            new Vec3i(0, 0, 0), new Vec3i(-1, 0, 0), new Vec3i(-1, 0, -1),
-            new Vec3i(0, 0, -1), new Vec3i(+1, 0, -1), new Vec3i(+1, 0, 0),
-            new Vec3i(+1, 0, +1), new Vec3i(0, 0, +1), new Vec3i(-1, 0, +1),
-            new Vec3i(0, 1, 0), new Vec3i(-1, 1, 0), new Vec3i(-1, 1, -1),
-            new Vec3i(0, 1, -1), new Vec3i(+1, 1, -1), new Vec3i(+1, 1, 0),
-            new Vec3i(+1, 1, +1), new Vec3i(0, 1, +1), new Vec3i(-1, 1, +1),
-    };
-
     private final Chocobo chocobo;
     private final Level world;
     private final double moveSpeed;
@@ -69,16 +56,22 @@ public class ChocoboMateGoal extends Goal {
         this.targetMate.resetLove();
 
         BlockPos pos = this.chocobo.blockPosition();
-        for (Vec3i offset : LAY_EGG_CHECK_OFFSETS) {
-            BlockPos offsetPos = pos.offset(offset);
-            BlockState state = this.world.getBlockState(offsetPos);
-            if (state.canBeReplaced() && state.getFluidState() == Fluids.EMPTY.defaultFluidState() && ModRegistry.CHOCOBO_EGG.get().defaultBlockState().canSurvive(this.world, offsetPos)) {
-                if (!this.world.setBlockAndUpdate(offsetPos, ModRegistry.CHOCOBO_EGG.get().defaultBlockState())) { return; }
-                BlockEntity tile = this.world.getBlockEntity(offsetPos);
-                if(tile instanceof ChocoboEggBlockEntity eggTile) { eggTile.setBreedInfo(new ChocoboBreedInfo(new ChocoboStatSnapshot(this.chocobo), new ChocoboStatSnapshot(this.targetMate))); }
-                return;
-            }
-        }
+        ChocoboBreedInfo breedInfo = new ChocoboBreedInfo(new ChocoboStatSnapshot(this.chocobo), new ChocoboStatSnapshot(this.targetMate));
+        Chocobo baby = BreedingHelper.createChild(breedInfo, this.world);
+        assert baby != null;
+        baby.moveTo(pos.getX() + 0.5, pos.getY() + 0.2, pos.getZ() + 0.5, 0.0F, 0.0F);
+        assert this.world != null;
+        this.world.addFreshEntity(baby);
 
+        RandomSource random = baby.getRandom();
+        for (int i =0; i < 7; ++i) {
+            double d0 = random.nextGaussian() * 0.02D;
+            double d1 = random.nextGaussian() * 0.02D;
+            double d2 = random.nextGaussian() * 0.02D;
+            double d3 = random.nextDouble() * baby.getBbWidth() * 2.0D - baby.getBbWidth();
+            double d4 = 0.5D + random.nextDouble() * baby.getBbHeight();
+            double d5 = random.nextDouble() * baby.getBbWidth() * 2.0D - baby.getBbWidth();
+            this.world.addParticle(ParticleTypes.HEART, baby.getX() + d3, baby.getY() + d4, baby.getZ() + d5, d0, d1, d2);
+        }
     }
 }
