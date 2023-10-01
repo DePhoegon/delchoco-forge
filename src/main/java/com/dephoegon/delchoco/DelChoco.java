@@ -27,7 +27,7 @@ import static com.dephoegon.delchoco.aid.chocoLists.*;
 public class DelChoco {
     public static final String DELCHOCO_ID = "delchoco";
     public final static Logger log = LogManager.getLogger(DELCHOCO_ID);
-    public static final CreativeModeTab CHOCO_TAB = new CreativeModeTab(DELCHOCO_ID) { public @NotNull ItemStack makeIcon() { return new ItemStack(ModRegistry.GYSAHL_GREEN.get()); } };
+    public static final CreativeModeTab CHOCO_TAB = new CreativeModeTab(DELCHOCO_ID) { public @NotNull ItemStack makeIcon() { return new ItemStack(ModRegistry.CHOCOBO_SADDLE.get()); } };
 
     public DelChoco() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();

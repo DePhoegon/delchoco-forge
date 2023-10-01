@@ -17,10 +17,10 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraft.world.scores.Scoreboard;
-import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import static com.dephoegon.delchoco.DelChoco.DELCHOCO_ID;
@@ -34,10 +34,9 @@ public class chocoboTeams {
         delChocobo.then(Commands.literal("TeamSettings").then(Commands.literal("TeamFriendlyFire")
                 .then(Commands.literal("True").executes((command) -> setFriendlyFire(command, true)))
                 .then(Commands.literal("False").executes((command)-> setFriendlyFire(command, false)))));
-        for (teamColors delCo: teamColors.values()) {
-            delChocobo.then(Commands.literal("Player").then(Commands.literal("JoinTeam")
-                            .then(Commands.literal(delCo.getColorName()).executes((command) -> join(command, delCo.getTeamName())))));
-        }
+        Arrays.stream(teamColors.values()).map(delCo -> Commands.literal("Player")
+                .then(Commands.literal("JoinTeam").then(Commands.literal(delCo.getColorName())
+                        .executes((command) -> join(command, delCo.getTeamName()))))).forEach(delChocobo::then);
         delChocobo.then(Commands.literal("Player")
                 .then(Commands.literal("LeaveTeam").executes(chocoboTeams::leave)));
         delChocobo.then(Commands.literal("Chocobo")
@@ -46,13 +45,10 @@ public class chocoboTeams {
     }
     private static int setFriendlyFire(@NotNull CommandContext<CommandSourceStack> commandSourceStack, boolean fire) throws CommandSyntaxException {
         ServerPlayer player = commandSourceStack.getSource().getPlayerOrException();
-        Team playerTeamName = player.getTeam();
-        if (playerTeamName != null) {
-            String teamName = playerTeamName.getName();
-            PlayerTeam playerTeam = commandSourceStack.getSource().getScoreboard().getPlayerTeam(teamName);
-            assert playerTeam != null;
+        PlayerTeam playerTeam = commandSourceStack.getSource().getScoreboard().getPlayersTeam(player.getName().getString());
+        if (playerTeam != null) {
             playerTeam.setAllowFriendlyFire(fire);
-            commandSourceStack.getSource().sendSuccess(Component.nullToEmpty("Player "+ player.getName().getString() + " set friendly fire to " + fire), true);
+            commandSourceStack.getSource().sendSuccess(Component.nullToEmpty("Player "+ player.getName().getString() + " set friendly fire to " + fire + " for "+ playerTeam.getName()), true);
         } else {
             commandSourceStack.getSource().sendSuccess(Component.nullToEmpty("Player "+ player.getName().getString() + " Must be on a team to set Friendly fire for their team"), true);
         }
@@ -99,9 +95,7 @@ public class chocoboTeams {
     }
     private static int createTeams(@NotNull CommandContext<CommandSourceStack> commandSourceStack) {
         Scoreboard scoreboard = commandSourceStack.getSource().getScoreboard();
-        for (teamColors colors: teamColors.values()) {
-            addTeams(scoreboard, colors.getTeamName() ,commandSourceStack);
-        }
+        Arrays.stream(teamColors.values()).forEach(colors -> addTeams(scoreboard, colors.getTeamName(), commandSourceStack));
         return 1;
     }
     @SuppressWarnings("SameReturnValue")
@@ -125,7 +119,7 @@ public class chocoboTeams {
         return 0;
     }
     @Contract("_, _, _ -> new")
-    private static @NotNull Component getText(String key, @NotNull Chocobo chocobo, Attribute attribute) { return Component.translatable("command." + DELCHOCO_ID + ".chocobo." + key, Objects.requireNonNull(chocobo.getAttribute(attribute)).getBaseValue()); }
+    private static @NotNull Component getText(String key, @NotNull Chocobo chocobo, Attribute attribute) { return Component.translatable("command." + DELCHOCO_ID + ".chocobo." + key, Objects.requireNonNull(chocobo.getAttribute(attribute)).getValue()); }
     @Contract(value = "_ -> new", pure = true)
     private static @NotNull Component getText(String value) { return Component.translatable("command." + DELCHOCO_ID + ".chocobo." + "get_generation", value); }
 }

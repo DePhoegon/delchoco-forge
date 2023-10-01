@@ -1,18 +1,14 @@
 package com.dephoegon.delchoco.client;
 
 import com.dephoegon.delchoco.DelChoco;
-import com.dephoegon.delchoco.client.gui.NestScreen;
 import com.dephoegon.delchoco.client.models.armor.ChocoDisguiseModel;
 import com.dephoegon.delchoco.client.models.entities.AdultChocoboModel;
 import com.dephoegon.delchoco.client.models.entities.ChicoboModel;
 import com.dephoegon.delchoco.client.renderer.entities.ChocoboRenderer;
-import com.dephoegon.delchoco.common.init.ModContainers;
 import com.dephoegon.delchoco.common.init.ModEntities;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class ClientHandler {
@@ -20,9 +16,6 @@ public class ClientHandler {
     public static final ModelLayerLocation CHICOBO = new ModelLayerLocation(new ResourceLocation(DelChoco.DELCHOCO_ID, "main"), "chicobo");
     public static final ModelLayerLocation CHOCO_DISGUISE = new ModelLayerLocation(new ResourceLocation(DelChoco.DELCHOCO_ID, "main"), "choco_disguise");
 
-    public static void onClientSetup(final FMLClientSetupEvent ignoredEventbus) {
-        MenuScreens.register(ModContainers.NEST.get(), NestScreen::new);
-    }
     public static void registerEntityRenders(EntityRenderersEvent.@NotNull RegisterRenderers event) { event.registerEntityRenderer(ModEntities.CHOCOBO.get(), ChocoboRenderer::new); }
     public static void registerLayerDefinitions(EntityRenderersEvent.@NotNull RegisterLayerDefinitions event) {
         event.registerLayerDefinition(CHOCOBO, AdultChocoboModel::createBodyLayer);

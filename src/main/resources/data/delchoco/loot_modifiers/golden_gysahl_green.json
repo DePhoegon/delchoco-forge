@@ -1,0 +1,12 @@
+{
+  "type": "delchoco:add_item",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/end_city_treasure"
+    }
+  ],
+  "item": "delchoco:golden_gysahl_green",
+  "chance": 0.45,
+  "number": 1
+}

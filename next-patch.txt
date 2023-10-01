@@ -1,0 +1,4 @@
+already done
+- removed improper tooltip on chocobo eggs.
+- Added new Greens to compostables
+- Added Missing Trades

@@ -36,7 +36,7 @@ public class ChocoConfig {
         public final DoubleValue poslossHealth;
         public final DoubleValue poslossSpeed;
         public final DoubleValue poslossStamina;
-        public final IntValue eggHatchTimeTicks;
+        public final IntValue fruitEatTimer;
         public final BooleanValue ownerOnlyAccess;
         public final DoubleValue collarInvisibility;
         public final DoubleValue armorInvisibility;
@@ -172,9 +172,9 @@ public class ChocoConfig {
             builder.comment("Breeding configuration").push("breeding");
             builder.comment("Egg Configuration").push("egg");
 
-            eggHatchTimeTicks = builder
-                    .comment("Controls the amount of ticks / time till an egg hatches. This value isn't super accurate [Default: 500]")
-                    .defineInRange("eggHatchTimeTicks", 500, 0, 2000);
+            fruitEatTimer = builder
+                    .comment("Controls the amount of ticks until a Chocobo can eat another fruit. This value isn't super accurate [Default: 60]")
+                    .defineInRange("fruitEatTimer", 60, 40, 600);
 
             builder.pop();
             builder.comment("Max Stats").push("max");
