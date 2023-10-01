@@ -139,7 +139,7 @@ public class ChocoConfig {
 
             defaultStamina = builder
                     .comment("Controls the default Stamina [Default: 10]")
-                    .defineInRange("defaultStamina", 10, 0, 60);
+                    .defineInRange("defaultStamina", 10, 5, 60);
 
             defaultSpeed = builder
                     .comment("Controls the default Speed [Default: 20]")
@@ -188,8 +188,8 @@ public class ChocoConfig {
                     .defineInRange("maxSpeed", 40, 30, 160);
 
             maxStamina = builder
-                    .comment("Controls the Max Stamina a Chocobo can have [Default: 35]")
-                    .defineInRange("maxStamina", 35, 20D, 80D);
+                    .comment("Controls the Max Stamina a Chocobo can have [Default: 200]")
+                    .defineInRange("maxStamina", 200, 20D, 1024D);
 
             maxArmor = builder
                     .comment("Controls the max Natural Armor of a Chocobo")
