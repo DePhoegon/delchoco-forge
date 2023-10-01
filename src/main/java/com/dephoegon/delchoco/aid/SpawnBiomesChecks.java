@@ -61,7 +61,7 @@ public class SpawnBiomesChecks {
         overWorldList.add(LUSH_CAVES);
         return overWorldList;
     }
-    private static ArrayList<ResourceKey<Biome>> endBiomes() {
+    private static @NotNull ArrayList<ResourceKey<Biome>> endBiomes() {
         ArrayList<ResourceKey<Biome>> endList = new ArrayList<>();
         endList.add(THE_END);
         endList.add(END_HIGHLANDS);

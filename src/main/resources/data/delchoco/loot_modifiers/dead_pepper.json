@@ -1,0 +1,12 @@
+{
+  "type": "delchoco:add_item",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/desert_pyramid"
+    }
+  ],
+  "item": "delchoco:dead_pepper",
+  "chance": 0.45,
+  "number": 1
+}

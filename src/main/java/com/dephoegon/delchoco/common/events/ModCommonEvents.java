@@ -37,7 +37,6 @@ public class ModCommonEvents {
     }
     public static void addCreative(CreativeModeTabEvent.@NotNull BuildContents event) {
         // No Subscribe event to control loading order.
-        if(event.getTab() == CHOCO_TAB) { getChocoBlocks().forEach(event::accept); }
         if(event.getTab() == CHOCO_TAB) { getAllChocoboItems().forEach(event::accept); }
         if(event.getTab() == CreativeModeTabs.COMBAT) { getChocoboArmors().forEach(event::accept); }
         if(event.getTab() == CreativeModeTabs.COMBAT) { getChocoboWeapons().forEach(event::accept); }
@@ -51,7 +50,7 @@ public class ModCommonEvents {
         // No Subscribe event to control loading order.
         if (event.getType() == VillagerProfession.FARMER) {
             Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-            MOD_FARMER_TRADES.forEach((give, get) -> trades.get((int) MOD_TRADE_LEVEL.get(give.getItem() == Items.EMERALD.asItem() ? get : give)).add((trader, rand) -> new MerchantOffer(give, get, 10, 3, 0.02F)));
+            MOD_FARMER_TRADES.forEach((give, get) -> trades.get((int) MOD_TRADE_LEVEL.get(give.getItem() == Items.EMERALD.asItem() ? get : give)).add((trader, rand) -> new MerchantOffer(give, get, 10, MOD_TRADE_LEVEL.get(give.getItem() == Items.EMERALD.asItem() ? get : give)*8, 0.02F)));
         }
     }
     // No SubscribeEvent - Controlled loading order because items.

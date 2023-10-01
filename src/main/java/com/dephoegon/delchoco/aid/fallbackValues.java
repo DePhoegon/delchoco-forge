@@ -21,7 +21,7 @@ public class fallbackValues {
     public static final Boolean dShiftHitBypass = true;
     public static final Boolean dOwnChocoboHittable = false;
     public static final Boolean dTamedChocoboHittable = false;
-    public static final Integer dEggHatchTimeTicks = 500;
+    public static final Integer dFruitEatTimer = 60;
     public static final Double dPossLoss = 1D;
     public static final Double dPossGain = .1D;
     public static final Integer dMaxHealth = 60;
