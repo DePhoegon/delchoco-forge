@@ -134,7 +134,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
     private final double followSpeedModifier = 2.0D;
     private static final float maxStepUp = 1.5f;
     private final UniformInt ALERT_INTERVAL = TimeUtil.rangeOfSeconds(4, 6);
-    private static final String NBTKEY_CHOCOBO_COLOR = "Color";
+    protected static final String NBTKEY_CHOCOBO_COLOR = "Color";
     private static final String NBTKEY_CHOCOBO_IS_MALE = "Male";
     private static final String NBTKEY_CHOCOBO_FROM_EGG = "Egg";
     private static final String NBTKEY_MOVEMENT_TYPE = "MovementType";
@@ -403,7 +403,7 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
         final Holder<Biome> currentBiomes = this.level().getBiome(blockPosition().below());
         //noinspection OptionalGetWithoutIsPresent
         final ResourceKey<Biome> BiomesKey = currentBiomes.unwrapKey().get();
-        if (!fromEgg()) {
+        if (!fromEgg() & reason != MobSpawnType.SPAWNER) {
             setChocoboSpawnCheck(ChocoboColor.YELLOW);
             if (currentBiomes.containsTag(IS_NETHER)) { setChocoboSpawnCheck(ChocoboColor.FLAME); }
             if (currentBiomes.containsTag(IS_END)) { setChocoboSpawnCheck(ChocoboColor.PURPLE); }
@@ -413,8 +413,8 @@ public class Chocobo extends TamableAnimal implements NeutralMob {
             if (currentBiomes.containsTag(IS_FOREST) || currentBiomes.containsTag(IS_BADLANDS)) { setChocoboSpawnCheck(ChocoboColor.RED); }
             if (greenChocobo().contains(BiomesKey)) { setChocoboSpawnCheck(ChocoboColor.GREEN); }
             if (currentBiomes.containsTag(IS_HOT_OVERWORLD) && !currentBiomes.containsTag(IS_SAVANNA)) { setChocoboSpawnCheck(ChocoboColor.BLACK); }
-            this.setChocoboScale(this.isMale(), 0, false);
         }
+        this.setChocoboScale(this.isMale(), 0, false);
         chocoboStatShake(MAX_HEALTH, "health");
         chocoboStatShake(ATTACK_DAMAGE, "attack");
         chocoboStatShake(ARMOR, "defense");
