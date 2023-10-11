@@ -33,7 +33,7 @@ import static com.dephoegon.delchoco.aid.tradeMaps.MOD_FARMER_TRADES;
 import static com.dephoegon.delchoco.aid.tradeMaps.MOD_TRADE_LEVEL;
 import static com.dephoegon.delchoco.common.entities.Chocobo.blueChocobo;
 import static com.dephoegon.delchoco.common.entities.Chocobo.createAttributes;
-import static com.dephoegon.delchoco.common.init.ModEntities.CHOCOBO;
+import static com.dephoegon.delchoco.common.init.ModEntities.*;
 import static net.minecraft.tags.BiomeTags.*;
 import static net.minecraft.world.level.biome.Biomes.*;
 
@@ -51,7 +51,19 @@ public class ModCommonEvents {
         }
     }
     // No SubscribeEvent - Controlled loading order because items.
-    public static void registerEntityAttributes(@NotNull EntityAttributeCreationEvent event) { event.put(CHOCOBO.get(), createAttributes().build()); }
+    public static void registerEntityAttributes(@NotNull EntityAttributeCreationEvent event) {
+        event.put(CHOCOBO.get(), createAttributes().build());
+        event.put(YELLOW_SPAWNER_CHOCOBO.get(), createAttributes().build());
+        event.put(GREEN_SPAWNER_CHOCOBO.get(), createAttributes().build());
+        event.put(BLUE_SPAWNER_CHOCOBO.get(), createAttributes().build());
+        event.put(WHITE_SPAWNER_CHOCOBO.get(), createAttributes().build());
+        event.put(BLACK_SPAWNER_CHOCOBO.get(), createAttributes().build());
+        event.put(GOLD_SPAWNER_CHOCOBO.get(), createAttributes().build());
+        event.put(PINK_SPAWNER_CHOCOBO.get(), createAttributes().build());
+        event.put(RED_SPAWNER_CHOCOBO.get(), createAttributes().build());
+        event.put(PURPLE_SPAWNER_CHOCOBO.get(), createAttributes().build());
+        event.put(FLAME_SPAWNER_CHOCOBO.get(), createAttributes().build());
+    }
     // No SubscribeEvent - Controlled loading order because items.
     public static void onServerStartAddCompostItems(ServerStartedEvent ignoredEvent) { composable.addToList(); }
     public static void onCheckSpawn(LivingSpawnEvent.@NotNull CheckSpawn event) {

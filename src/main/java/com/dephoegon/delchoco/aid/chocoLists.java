@@ -18,7 +18,7 @@ public class chocoLists {
     public static void chocoOrder(@NotNull IEventBus eventBus) {
         ModRegistry.BLOCKS.register(eventBus);
         ModRegistry.ITEMS.register(eventBus);
-        ModEntities.ENTITY_TYPES.register(eventBus);
+        ModEntities.ENTITIES.register(eventBus);
         ModSounds.SOUND_EVENTS.register(eventBus);
         ModAttributes.ATTRIBUTES.register(eventBus);
         ModLootModifiers.register(eventBus);

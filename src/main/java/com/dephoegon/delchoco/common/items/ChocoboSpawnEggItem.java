@@ -50,8 +50,7 @@ public class ChocoboSpawnEggItem extends Item {
                 BlockEntity blockEntity = worldIn.getBlockEntity(pos);
                 if (blockEntity instanceof SpawnerBlockEntity) {
                     BaseSpawner baseSpawner = ((SpawnerBlockEntity)blockEntity).getSpawner();
-                    EntityType<?> entityType = chocobo.getType();
-                    baseSpawner.setEntityId(entityType);
+                    baseSpawner.setEntityId(this.color.getTypeByColor());
                     blockEntity.setChanged();
                     worldIn.sendBlockUpdated(pos, blockState, blockState, 3);
                 }
