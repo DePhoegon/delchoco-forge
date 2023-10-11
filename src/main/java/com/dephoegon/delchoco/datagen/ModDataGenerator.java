@@ -45,6 +45,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -88,12 +89,27 @@ public class ModDataGenerator {
 		}
 
 		private static class ModEntityTables extends EntityLoot {
+			private @NotNull List<EntityType<?>> getChocobos() {
+				List<EntityType<?>> Chocobos = new ArrayList<>();
+				Chocobos.add(CHOCOBO.get());
+				Chocobos.add(YELLOW_SPAWNER_CHOCOBO.get());
+				Chocobos.add(GREEN_SPAWNER_CHOCOBO.get());
+				Chocobos.add(BLUE_SPAWNER_CHOCOBO.get());
+				Chocobos.add(WHITE_SPAWNER_CHOCOBO.get());
+				Chocobos.add(BLACK_SPAWNER_CHOCOBO.get());
+				Chocobos.add(GOLD_SPAWNER_CHOCOBO.get());
+				Chocobos.add(PINK_SPAWNER_CHOCOBO.get());
+				Chocobos.add(RED_SPAWNER_CHOCOBO.get());
+				Chocobos.add(PURPLE_SPAWNER_CHOCOBO.get());
+				Chocobos.add(FLAME_SPAWNER_CHOCOBO.get());
+				return Chocobos;
+			}
 			@Override
 			protected void addTables() {
-				this.add(CHOCOBO.get(), LootTable.lootTable()
+				getChocobos().forEach(chocobo -> this.add(chocobo, LootTable.lootTable()
 						.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(CHOCOBO_FEATHER.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
 						.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(Items.LEATHER).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
-						.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(CHOCOBO_DRUMSTICK_RAW.get()).apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
+						.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(CHOCOBO_DRUMSTICK_RAW.get()).apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))));
 			}
 
 			@Override

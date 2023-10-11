@@ -19,9 +19,9 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 
-version = "${delchoco_ver}"
+version = "${delchoco_ver}-${mc_version}"
 group = 'com.dephoegon.delchoco' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'delchoco'
+archivesBaseName = "${file_name}"
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)

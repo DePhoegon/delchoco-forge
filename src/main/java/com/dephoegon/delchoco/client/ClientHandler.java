@@ -25,7 +25,19 @@ public class ClientHandler {
         ItemBlockRenderTypes.setRenderLayer(ModRegistry.GYSAHL_GREEN.get(), RenderType.cutout());
         KeyBindManager.mapKeys();
     }
-    public static void registerEntityRenders(EntityRenderersEvent.@NotNull RegisterRenderers event) { event.registerEntityRenderer(ModEntities.CHOCOBO.get(), ChocoboRenderer::new); }
+    public static void registerEntityRenders(EntityRenderersEvent.@NotNull RegisterRenderers event) {
+        event.registerEntityRenderer(ModEntities.CHOCOBO.get(), ChocoboRenderer::new);
+        event.registerEntityRenderer(ModEntities.YELLOW_SPAWNER_CHOCOBO.get(), ChocoboRenderer::new);
+        event.registerEntityRenderer(ModEntities.GREEN_SPAWNER_CHOCOBO.get(), ChocoboRenderer::new);
+        event.registerEntityRenderer(ModEntities.BLUE_SPAWNER_CHOCOBO.get(), ChocoboRenderer::new);
+        event.registerEntityRenderer(ModEntities.WHITE_SPAWNER_CHOCOBO.get(), ChocoboRenderer::new);
+        event.registerEntityRenderer(ModEntities.BLACK_SPAWNER_CHOCOBO.get(), ChocoboRenderer::new);
+        event.registerEntityRenderer(ModEntities.GOLD_SPAWNER_CHOCOBO.get(), ChocoboRenderer::new);
+        event.registerEntityRenderer(ModEntities.PINK_SPAWNER_CHOCOBO.get(), ChocoboRenderer::new);
+        event.registerEntityRenderer(ModEntities.RED_SPAWNER_CHOCOBO.get(), ChocoboRenderer::new);
+        event.registerEntityRenderer(ModEntities.PURPLE_SPAWNER_CHOCOBO.get(), ChocoboRenderer::new);
+        event.registerEntityRenderer(ModEntities.FLAME_SPAWNER_CHOCOBO.get(), ChocoboRenderer::new);
+    }
     public static void registerLayerDefinitions(EntityRenderersEvent.@NotNull RegisterLayerDefinitions event) {
         event.registerLayerDefinition(CHOCOBO, AdultChocoboModel::createBodyLayer);
         event.registerLayerDefinition(CHICOBO, ChicoboModel::createBodyLayer);

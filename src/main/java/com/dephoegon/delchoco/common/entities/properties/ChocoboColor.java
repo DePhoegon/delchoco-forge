@@ -1,8 +1,10 @@
 package com.dephoegon.delchoco.common.entities.properties;
 
 import com.dephoegon.delchoco.DelChoco;
+import com.dephoegon.delchoco.common.init.ModEntities;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -38,4 +40,18 @@ public enum ChocoboColor {
         return Optional.empty();
     }
     public TranslatableComponent getEggText() { return eggText; }
+    public EntityType<?> getTypeByColor() {
+        return switch (this) {
+            case RED -> ModEntities.RED_SPAWNER_CHOCOBO.get();
+            case BLUE -> ModEntities.BLUE_SPAWNER_CHOCOBO.get();
+            case GOLD -> ModEntities.GOLD_SPAWNER_CHOCOBO.get();
+            case PINK -> ModEntities.PINK_SPAWNER_CHOCOBO.get();
+            case BLACK -> ModEntities.BLACK_SPAWNER_CHOCOBO.get();
+            case FLAME -> ModEntities.FLAME_SPAWNER_CHOCOBO.get();
+            case GREEN -> ModEntities.GREEN_SPAWNER_CHOCOBO.get();
+            case WHITE -> ModEntities.WHITE_SPAWNER_CHOCOBO.get();
+            case PURPLE -> ModEntities.PURPLE_SPAWNER_CHOCOBO.get();
+            case YELLOW -> ModEntities.YELLOW_SPAWNER_CHOCOBO.get();
+        };
+    }
 }
